@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import org.controlsfx.control.ToggleSwitch?>
+<HBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.messcode.client.views.private_chat.PrivateChatController">
+    <children>
+        <VBox prefHeight="380.0" prefWidth="222.0">
+            <children>
+                <Label contentDisplay="CENTER" prefHeight="35.0" prefWidth="73.0" text="%online" textAlignment="CENTER">
+                    <VBox.margin>
+                        <Insets left="80.0"/>
+                    </VBox.margin>
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Label>
+                <ListView fx:id="usersListFXML" prefHeight="97.0" prefWidth="222.0"/>
+                <Label fx:id="invitePmErrorLabel">
+                    <VBox.margin>
+                        <Insets left="11.0"/>
+                    </VBox.margin>
+                </Label>
+                <Button mnemonicParsing="false" text="%end_session">
+                    <VBox.margin>
+                        <Insets left="70.0"/>
+                    </VBox.margin>
+                </Button>
+                <Label fx:id="userDisplayedName" alignment="TOP_LEFT">
+                    <padding>
+                        <Insets left="20.0" top="180.0"/>
+                    </padding>
+                </Label>
+            </children>
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+                <children>
+                    <Label alignment="CENTER" text="%dark_theme" HBox.hgrow="ALWAYS"/>
+                    <ToggleSwitch fx:id="toggleSwitch" alignment="CENTER" contentDisplay="CENTER" HBox.hgrow="ALWAYS">
+                    </ToggleSwitch>
+                </children>
+                <VBox.margin>
+                    <Insets bottom="5.0"/>
+                </VBox.margin>
+            </HBox>
+        </VBox>
+        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+              prefWidth="600.0">
+            <children>
+                <ListView fx:id="messagesListFXML" editable="false" prefHeight="438.0" prefWidth="348.0" VBox.vgrow="ALWAYS" />                <HBox>
+                    <children>
+                        <TextField fx:id="textField" HBox.hgrow="ALWAYS"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                                onAction="#sendButton" text="%send" HBox.hgrow="ALWAYS"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>

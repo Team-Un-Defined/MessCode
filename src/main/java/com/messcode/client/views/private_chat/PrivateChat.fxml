@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.private_chat.PrivateChatController">
+   <children>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <TextArea fx:id="textArea" editable="false" prefHeight="291.0" prefWidth="600.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="textField" prefHeight="100.0" prefWidth="470.0" />
+                  <Button mnemonicParsing="false" onAction="#sendButton" prefHeight="124.0" prefWidth="130.0" text="Send" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox prefHeight="380.0" prefWidth="222.0">
+         <children>
+            <Label contentDisplay="CENTER" prefHeight="35.0" prefWidth="73.0" text="ONLINE" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets left="80.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <ListView fx:id="usersListFXML" prefHeight="97.0" prefWidth="222.0" />
+            <Label fx:id="invitePmErrorLabel">
+               <VBox.margin>
+                  <Insets left="11.0" />
+               </VBox.margin>
+            </Label>
+            <Button mnemonicParsing="false" text="End Session">
+               <VBox.margin>
+                  <Insets left="70.0" />
+               </VBox.margin>
+            </Button>
+            <Label fx:id="userDisplayedName" alignment="TOP_LEFT">
+               <padding>
+                  <Insets left="20.0" top="180.0" />
+               </padding>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</HBox>
