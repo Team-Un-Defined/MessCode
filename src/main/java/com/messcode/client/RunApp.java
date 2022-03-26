@@ -18,6 +18,10 @@ public class RunApp extends Application {
         ViewModelFactory vmf = new ViewModelFactory(mf);
         ViewHandler vh = new ViewHandler(vmf);
         vh.start();
+
+
+
+
     }
 
 

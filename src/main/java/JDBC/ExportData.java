@@ -32,11 +32,10 @@ public class ExportData
   }
 
   /**
-   * Creates an SQL statement, if the username or email is found in the database
+   * Creates an SQL statement, if the  email is found in the database
    * the method will return a boolean false. If they are not in the database the
    * credentials are unique and the method will return a boolean true
    *
-   * @param username String containing the username
    * @param email    String containing the email
    * @return boolean true if the account is unique and false if it is not
    * @throws SQLException an exception that provides information on a database
@@ -48,26 +47,25 @@ public class ExportData
     boolean unique = false;
     Statement st = c.createStatement();
     String query =
-        "SELECT * FROM \"Users\".\"Users\" WHERE  username  = '" + username
-            + "' OR email ='" + email + "' ;";
+        "SELECT * FROM Accounts WHERE email ='" + email + "' ;";
 
     ResultSet rs = st.executeQuery(query);
-    String userame = null;
+
     String ema = null;
     while (rs.next())
     {
-      userame = rs.getString("username");
+
       ema = rs.getString("email");
-      System.out.println("name = " + userame);
+
       System.out.println("email = " + ema);
-      if (userame != null || ema != null)
+      if ( ema != null)
       {
         System.out.println(unique);
         break;
       }
       System.out.println(unique);
     }
-    if (userame == null && ema == null)
+    if ( ema == null)
     {
       unique = true;
       System.out.println(unique);
@@ -79,13 +77,13 @@ public class ExportData
    * the database. If the credentials are found a Container will be created containing the
    * answer(true), otherwise the answer will be false
    *
-   * @param username String containing the username
+   * @param email String containing the username
    * @param password String containing the password
    * @return a container that has the answer(boolean) from the database
    * @throws SQLException An exception that provides information on a database
    *                      access error or other errors.
    */
-  public Container checkLogin(String username, String password)
+  public Container checkLogin(String email, String password)
       throws SQLException
 
   {
@@ -93,24 +91,24 @@ public class ExportData
 
     Statement st = c.createStatement();
     String query =
-        "SELECT * FROM \"Users\".\"Users\" WHERE  username  = '" + username
+        "SELECT * FROM Account WHERE  email = '" + email
             + "' AND password ='" + password + "' ;";
 
     ResultSet rs = st.executeQuery(query);
-    String userame = null;
+
     String ema = null;
     String pass = null;
 
     while (rs.next())
     {
-      userame = rs.getString("username");
+
       pass = rs.getString("password");
       ema = rs.getString("email");
 
-      System.out.println("name = " + userame);
+      System.out.println("pass= " + password);
       System.out.println("email = " + ema);
 
-      if (userame != null && password != null)
+      if (email != null && password != null)
       {
         answer = true;
         System.out.println("ans1" + answer);
@@ -128,17 +126,17 @@ public class ExportData
   /**
    * Creates an SQL statement that will get the account information and the groups, that
    * the user is part of , from the database.
-   * @param username String containing the username
+   * @param email String containing the username
    * @param password String containing the password
    * @throws SQLException an exception that provides information on a database
    *                      access error or other errors.
    * @returns Container that contains a boolean true stating that the login was successfull, the account of the user and an ArrayList of groups.
    */
-  public Container acceptLogin(String username, String password)
+  public Container acceptLogin(String email, String password)
       throws SQLException
   {
     Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-    String query ="SELECT u.username, u.password, u.email, u.\"project_ids\", g.name, g.id, g.\"usernameDM\", g.\"usernamePlayers\", g.\"characterIDs\" FROM \"Groups\".\"Groups\" g, \"Users\".\"Users\" u     WHERE u.username = '"+username +"' AND u.password= '"+password +"' AND u.\"groupIDs\" IS NOT NULL  AND  g.id IN (select(unnest(u.\"groupIDs\")));";
+    String query ="SELECT a.fname,a.lname, a.lname, a.email a.type  from public.account   WHERE public.username = '"+email +"' AND public.password= '"+password +"' AND  ";
 
     ResultSet rs = st.executeQuery(query);
 
@@ -153,7 +151,7 @@ public class ExportData
     {
       doesAccountHaveGroups = false;
       query =
-          "SELECT * FROM \"Users\".\"Users\" WHERE  username  = '" + username + "' AND password ='" + password + "' ;";
+          "SELECT * FROM \"Users\".\"Users\" WHERE  username  = '" + email + "' AND password ='" + password + "' ;";
       rs = st.executeQuery(query);
 
 
@@ -162,7 +160,7 @@ public class ExportData
     rs.beforeFirst();
 
 
-    ArrayList<Group> groupList = new ArrayList<>();
+    //ArrayList<> groupList = new ArrayList<>();
 
     ArrayList<String> plys = new ArrayList<>();
     ArrayList<Integer> charIDs = new ArrayList<>();
@@ -182,9 +180,9 @@ public class ExportData
 
       String k = rs.getString("usernamePlayers");
       String charid = rs.getString("characterIDs");
-      Group ng = null;
-      ng  = new Group(rs.getString("name"), rs.getInt("id"));
-      ng.addDM(new DM(rs.getString("usernameDM")));
+      // ng = null;
+      //ng  = new Group(rs.getString("name"), rs.getInt("id"));
+      //ng.addDM(new DM(rs.getString("usernameDM")));
       if(k!=null)
       {
         plys = sqlArrayToArrayListString(k);
@@ -195,19 +193,20 @@ public class ExportData
         {
           if(plys.get(i)!=null)
           {
-            Player a = new Player(plys.get(i));
+        //    Player a = new Player(plys.get(i));
 
             if(charIDs.get(i)!=0)
-            { a.addCharacterID(charIDs.get(i));
-              System.out.println("char id for "+ a.getName() + " is: " +charIDs.get(i));} else {a.addCharacterID(null);}
-            ng.addPlayer(a);
+            { //a.addCharacterID(charIDs.get(i));
+              //System.out.println("char id for "+ a.getName() + " is: " +charIDs.get(i));} else {a.addCharacterID(null);
+              }
+            //ng.addPlayer(a);
           }
 
         }
       }
 
-      System.out.println("group : "+ng.toString());
-      groupList.add(ng);
+      //System.out.println("group : "+ng.toString());
+      //groupList.add(ng);
 
 
     }
@@ -215,12 +214,12 @@ public class ExportData
 
     ArrayList<Object> objs = new ArrayList<>();
     boolean b = true; objs.add(b);
-    Account acc = new Account(userame, password, ema);
-    objs.add(acc);
+    //Account acc = new Account(userame, password, ema);
+    //objs.add(acc);
 
     if(doesAccountHaveGroups)
     {
-      objs.add(groupList);
+      //objs.add(groupList);
 
     }
 
