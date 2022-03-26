@@ -1,29 +1,32 @@
 package com.messcode.transferobjects;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Random;
 
 public class Employee extends User {
+    int id;
+    private String type = "employee";
     String name;
     String surname;
     String email;
-    byte[] hashedPassword;
-    String salt;
+    private byte[] hashedPassword;
+    private String salt;
 
-    Employee(String name, String surname, String email, String password) throws NoSuchAlgorithmException {
+    // if you are creating new employee you use this constructor
+    Employee(int id, String name, String surname, String email, String password) throws NoSuchAlgorithmException {
         super(name + " " + surname);
+        AccountManager myAccountManager = new AccountManager();
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.salt = generateSalt();
-        this.hashedPassword = hashPassword(password, salt);
+        this.salt = myAccountManager.generateSalt();
+        this.hashedPassword = myAccountManager.hashPassword(password, salt);
     }
 
-    Employee(String name, String surname, String email, byte[] hashedPassword, String salt) {
+    // if you took employee from database you use this constructor
+    Employee(int id, String name, String surname, String email, byte[] hashedPassword, String salt) {
         super(name + " " + surname);
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -31,20 +34,49 @@ public class Employee extends User {
         this.salt = salt;
     }
 
-    public byte[] hashPassword(String password, String salt) throws NoSuchAlgorithmException {
-        String appendedPassword = password + salt;
-        MessageDigest digest = MessageDigest.getInstance("SHA-512");
-        return digest.digest(appendedPassword.getBytes(StandardCharsets.UTF_8));
+    public boolean isEmployee() {
+        return type.equals("employee");
     }
 
-    public String generateSalt() {
-        byte[] array = new byte[10];
-        new Random().nextBytes(array);
-        return new String(array, StandardCharsets.UTF_8);
+    public boolean isProjectLeader() {
+        return type.equals("projectLeader");
     }
 
-    public boolean passwordCheck(String password) throws NoSuchAlgorithmException {
-        return Arrays.equals(this.hashedPassword, hashPassword(password, salt));
+    public boolean isSuperuser() {
+        return type.equals("superuser");
     }
 
+    public boolean isEmployer() {
+        return type.equals("employer");
+    }
+
+    public void setEmployee() {
+        type = "employee";
+    }
+
+    public void setProjectLeader() {
+        type = "projectLeader";
+    }
+
+    public void setSuperuser() {
+        type = "superuser";
+    }
+
+    public void setEmployer() {
+        type = "employer";
+    }
+
+    public byte[] getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setPassword(String password) throws NoSuchAlgorithmException {
+        AccountManager myAccountManager = new AccountManager();
+        this.salt = myAccountManager.generateSalt();
+        this.hashedPassword = myAccountManager.hashPassword(password, salt);
+    }
+
+    public String getSalt() {
+        return salt;
+    }
 }
