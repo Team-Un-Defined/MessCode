@@ -4,8 +4,9 @@ module com.example.messcode {
     requires java.desktop;
     requires org.controlsfx.controls;
   requires java.sql;
+    requires slf4j.api;
 
-  opens com.messcode.client.views.login to javafx.fxml;
+    opens com.messcode.client.views.login to javafx.fxml;
     opens com.messcode.client.views.chat to javafx.fxml;
     opens com.messcode.client.views.private_chat to javafx.fxml;
     exports com.messcode.client.views.chat;
