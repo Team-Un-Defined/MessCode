@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class AccountManager {
-    public boolean equals(Employee employee1, Employee employee2) {
-        return employee1.id == employee2.id;
+    public boolean equals(User user1, User user2) {
+        return user1.getEmail().equals(user2.getEmail());
     }
 
     public String generateSalt() {
@@ -23,7 +23,7 @@ public class AccountManager {
         return digest.digest(appendedPassword.getBytes(StandardCharsets.UTF_8));
     }
 
-    public boolean passwordCheck(Employee myEmployee, String password) throws NoSuchAlgorithmException {
-        return Arrays.equals(myEmployee.getHashedPassword(), hashPassword(password, myEmployee.getSalt()));
+    public boolean passwordCheck(User myUser, String password) throws NoSuchAlgorithmException {
+        return Arrays.equals(myUser.getHashedPassword(), hashPassword(password, myUser.getSalt()));
     }
 }
