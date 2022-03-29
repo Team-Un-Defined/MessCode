@@ -1,6 +1,7 @@
 package com.messcode.client.views.login;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
@@ -10,6 +11,7 @@ import java.util.ResourceBundle;
 public class LoginController {
     public TextField textField;
     public Label usernameErrorLabel;
+    public PasswordField passwordField;
 
     private LoginViewModel loginVM;
     private ViewHandler vh;

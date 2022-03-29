@@ -4,10 +4,12 @@ import com.messcode.transferobjects.UsersPM;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.Message;
+import javafx.scene.layout.Pane;
 import org.controlsfx.control.ToggleSwitch;
 
 import javax.swing.*;
@@ -22,6 +24,14 @@ public class ChatClientController {
     public Label invitePmErrorLabel;
     public Label userDisplayedName;
     public ToggleSwitch toggleSwitch;
+    public Button buttonAll;
+    public Button buttonGroup;
+    public Button buttonPrivate;
+    public Button buttonProfile;
+    public Pane paneAll;
+    public Pane panePrivate;
+    public Pane paneProfile;
+    public Pane paneGroup;
 
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
@@ -121,5 +131,16 @@ public class ChatClientController {
                 invitePmErrorLabel.setText(bundle.getString("talk_to_yourself"));
             }
         }
+    }
+
+    public void handleClicks(ActionEvent actionEvent) {
+        if(actionEvent.getSource() == buttonAll)
+            paneAll.toFront();
+        if(actionEvent.getSource() == buttonGroup)
+            paneGroup.toFront();
+        if(actionEvent.getSource() == buttonPrivate)
+            panePrivate.toFront();
+        if(actionEvent.getSource() == buttonProfile)
+            paneProfile.toFront();
     }
 }
