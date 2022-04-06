@@ -28,6 +28,7 @@ public class ChatClientController {
     public Button buttonGroup;
     public Button buttonPrivate;
     public Button buttonProfile;
+    public Button buttonChangePass;
     public Pane paneAll;
     public Pane panePrivate;
     public Pane paneProfile;
@@ -142,5 +143,15 @@ public class ChatClientController {
             panePrivate.toFront();
         if(actionEvent.getSource() == buttonProfile)
             paneProfile.toFront();
+    }
+
+    public void changePasswordClicked(ActionEvent actionEvent) { vh.openChangePassword(); }
+
+    public void newEmployeeClicked(ActionEvent actionEvent){
+        vh.openNewEmployee();
+    }
+
+    public void newGroupClicked(ActionEvent actionEvent) {
+        vh.openNewGroup();
     }
 }
