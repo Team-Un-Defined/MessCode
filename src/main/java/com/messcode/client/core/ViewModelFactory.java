@@ -1,7 +1,10 @@
 package com.messcode.client.core;
 
+import com.messcode.client.views.change_password.ChangePasswordViewModel;
 import com.messcode.client.views.chat.ChatClientViewModel;
 import com.messcode.client.views.login.LoginViewModel;
+import com.messcode.client.views.new_employee.NewEmployeeViewModel;
+import com.messcode.client.views.new_group.NewGroupViewModel;
 import com.messcode.client.views.private_chat.PrivateChatViewModel;
 
 public class ViewModelFactory {
@@ -9,13 +12,17 @@ public class ViewModelFactory {
     private ChatClientViewModel chatVM;
     private LoginViewModel loginVM;
     private PrivateChatViewModel privateChatVM;
+    private NewEmployeeViewModel newEmployeeVM;
+    private NewGroupViewModel newGroupVM;
+    private ChangePasswordViewModel changePasswordVM;
 
     public ViewModelFactory(ModelFactory mf) {
         this.mf = mf;
         chatVM = new ChatClientViewModel(mf.getMainModel());
         loginVM = new LoginViewModel(mf.getMainModel());
         privateChatVM = new PrivateChatViewModel(mf.getMainModel());
-
+        newEmployeeVM = new NewEmployeeViewModel(mf.getMainModel());
+        newGroupVM = new NewGroupViewModel(mf.getMainModel());
     }
 
     public ChatClientViewModel getChatVM() {
@@ -29,4 +36,10 @@ public class ViewModelFactory {
     public PrivateChatViewModel getPrivateChatVM() {
         return privateChatVM;
     }
+
+    public NewEmployeeViewModel getNewEmployeeVM() { return newEmployeeVM; }
+
+    public NewGroupViewModel getNewGroupVM() { return newGroupVM; }
+
+    public ChangePasswordViewModel getChangePasswordVM() { return changePasswordVM; }
 }

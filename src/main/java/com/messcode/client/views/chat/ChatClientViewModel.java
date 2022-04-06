@@ -100,7 +100,6 @@ public class ChatClientViewModel implements Subject {
     public void addListener(String eventName,
                             PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
-
     }
 
     @Override

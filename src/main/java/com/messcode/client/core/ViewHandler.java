@@ -1,19 +1,18 @@
 package com.messcode.client.core;
 
+import com.messcode.client.views.change_password.ChangePasswordController;
 import com.messcode.client.views.chat.ChatClientController;
 import com.messcode.client.views.login.LoginController;
+import com.messcode.client.views.new_employee.NewEmployeeController;
+import com.messcode.client.views.new_group.NewGroupController;
 import com.messcode.client.views.private_chat.PrivateChatController;
 import com.messcode.transferobjects.User;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -22,7 +21,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ViewHandler {
@@ -32,6 +30,9 @@ public class ViewHandler {
     private Scene login;
     private Scene chatPM;
     private Scene chatPM2;
+    private Scene newEmployee;
+    private Scene newGroup;
+    private Scene changePassword;
     private ResourceBundle bundle;
 
     public ViewHandler(ViewModelFactory vmf) {
@@ -45,9 +46,11 @@ public class ViewHandler {
 
     private void showConfirmation() {
         Dialog dialog = new Dialog();
+
         ImageView enView = new ImageView("en.gif");
         Button enButton = new Button();
         enButton.setGraphic(enView);
+
         ImageView skView = new ImageView("sk.gif");
         Button skButton = new Button();
         skButton.setGraphic(skView);
@@ -58,34 +61,38 @@ public class ViewHandler {
 
         dialog.getDialogPane().setContent(grid);
         Platform.runLater(skButton::requestFocus);
+
         enButton.setOnAction((event) -> {
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("en", "EN"));
             grid.getScene().getWindow().hide();
         });
+
         skButton.setOnAction((event) -> {
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));
             grid.getScene().getWindow().hide();
         });
+
         dialog.initModality(Modality.APPLICATION_MODAL);
 
         stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("icon.png"));
         stage.setTitle("MessCode");
         dialog.showAndWait();
+
         openLogin();
     }
 
     public void openChatClientView() {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
+
         if (chat == null) {
             Parent root = getRootByPath("ChatClient.fxml", loader);
-            //root.setStyle(".root{-fx-background-color: red;}");
             ChatClientController controller = loader.getController();
             controller.init(vmf.getChatVM(), this, bundle);
             chat = new Scene(root);
-
         }
+
         stage.setTitle("MessCode");
         stage.setScene(chat);
         stage.getIcons().add(new Image("icon.png"));
@@ -95,6 +102,7 @@ public class ViewHandler {
     private void openLogin() {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
+
         if (login == null) {
             Parent root = getRootByPath("login.fxml", loader);
             LoginController controller = loader.getController();
@@ -112,13 +120,14 @@ public class ViewHandler {
         Stage stage2 = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
+
         if (chatPM == null) {
-            Parent root = getRootByPath("PrivateChat.fxml",
-                    loader);
+            Parent root = getRootByPath("PrivateChat.fxml", loader);
             PrivateChatController controller = loader.getController();
             controller.init(vmf.getPrivateChatVM(), user, bundle);
             chatPM = new Scene(root);
         }
+
         stage2.setTitle("PM");
         stage2.setScene(chatPM);
         stage2.getIcons().add(new Image("icon.png"));
@@ -129,17 +138,72 @@ public class ViewHandler {
         Stage stage3 = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
+
         if (chatPM2 == null) {
-            Parent root = getRootByPath("PrivateChat.fxml",
-                    loader);
+            Parent root = getRootByPath("PrivateChat.fxml", loader);
             PrivateChatController controller = loader.getController();
             controller.init(vmf.getPrivateChatVM(), user, bundle);
             chatPM2 = new Scene(root);
         }
+
         stage3.setTitle("PM");
         stage3.setScene(chatPM2);
         stage3.getIcons().add(new Image("icon.png"));
         stage3.show();
+    }
+
+    public void openNewEmployee() {
+        Stage newEmployeeStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        if (newEmployee == null) {
+            Parent root = getRootByPath("NewEmployee.fxml", loader);
+            NewEmployeeController controller = loader.getController();
+            controller.init(vmf.getNewEmployeeVM(), this, bundle);
+            newEmployee = new Scene(root);
+        }
+
+        newEmployeeStage.setTitle("Add a new employee");
+        newEmployeeStage.setScene(newEmployee);
+        newEmployeeStage.getIcons().add(new Image("icon.png"));
+        newEmployeeStage.show();
+    }
+
+    public void openNewGroup() {
+        Stage newGroupStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        if (newGroup == null) {
+            Parent root = getRootByPath("NewGroup.fxml", loader);
+            NewGroupController controller = loader.getController();
+            controller.init(vmf.getNewGroupVM(), this, bundle);
+            newGroup = new Scene(root);
+        }
+
+        newGroupStage.setTitle("Add a new project");
+        newGroupStage.setScene(newGroup);
+        newGroupStage.getIcons().add(new Image("icon.png"));
+        newGroupStage.show();
+    }
+
+    public void openChangePassword() {
+        Stage changePasswordStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        if(changePassword == null) {
+            Parent root = getRootByPath("ChangePassword.fxml", loader);
+            ChangePasswordController controller = loader.getController();
+            controller.init(vmf.getChangePasswordVM(), this, bundle);
+            changePassword = new Scene(root);
+        }
+
+        changePasswordStage.setTitle("Change your password");
+        changePasswordStage.setScene(changePassword);
+        changePasswordStage.getIcons().add(new Image("icon.png"));
+        changePasswordStage.show();
     }
 
     private Parent getRootByPath(String path, FXMLLoader loader) {

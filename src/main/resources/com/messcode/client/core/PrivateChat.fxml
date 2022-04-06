@@ -6,8 +6,7 @@
 <?import javafx.scene.text.*?>
 
 <?import org.controlsfx.control.ToggleSwitch?>
-<HBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.messcode.client.views.private_chat.PrivateChatController">
+<HBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.private_chat.PrivateChatController">
     <children>
         <VBox prefHeight="380.0" prefWidth="222.0">
             <children>
