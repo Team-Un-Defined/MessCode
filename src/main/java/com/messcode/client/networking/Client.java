@@ -4,7 +4,6 @@ import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.util.Subject;
-import com.messcode.transferobjects.UsersPM;
 
 import java.io.IOException;
 
@@ -14,7 +13,7 @@ public interface Client extends Subject
   void displayMessage(PublicMessage message);
   void addUser(User username);
   void sendMessage(PublicMessage um);
-  void invitePmToServer(UsersPM usersPM);
+  void invitePmToServer(PrivateMessage message);
   void sendMessageInPMToServer(PrivateMessage message);
 
 }

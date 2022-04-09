@@ -1,7 +1,6 @@
 package com.messcode.client.views.chat;
 
 import com.messcode.client.model.MainModel;
-import com.messcode.transferobjects.UsersPM;
 import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.messcode.transferobjects.InviteAccept;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.util.Subject;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -53,7 +53,7 @@ public class ChatClientViewModel implements Subject {
     }
 
     private void receiveInvitePM(PropertyChangeEvent propertyChangeEvent) {
-        UsersPM usersPM = ((UsersPM) propertyChangeEvent.getNewValue());
+        PrivateMessage usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         support.firePropertyChange("SendInvite", null, usersPM);
     }
 
@@ -90,7 +90,7 @@ public class ChatClientViewModel implements Subject {
         return currentUser;
     }
 
-    public void sendListOfPmRoomUsers(UsersPM usersPM) {
+    public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
         mainModel.sendListOfPmRoomUsers(usersPM);
     }
 

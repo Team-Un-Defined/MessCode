@@ -1,35 +1,30 @@
 package com.messcode.transferobjects.messages;
 
-import com.messcode.transferobjects.UsersPM;
 import com.messcode.transferobjects.User;
 
 import java.io.Serializable;
 
 public class PrivateMessage extends PublicMessage implements Serializable 
 {
-  private String User;
-  private UsersPM usersPM;
-
-  public PrivateMessage(User username, String message)
-  {
-    super(username, message);
-  }
+    
+  private User receiver;
  
-  public PrivateMessage(User user, UsersPM usersPM, String msg)
+  public PrivateMessage(User user, User receiver, String msg)
   {
     super(user, msg);
-    this.usersPM = usersPM;
+    this.receiver = receiver;
     
   }
-
-  public User getUserOne()
+  public PrivateMessage(User user, String msg)
   {
-    return usersPM.getSender();
+    super(user, msg);
+    
   }
+  
 
-  public User getUserTwo()
+  public User getReceiver()
   {
-    return usersPM.getReceiver();
+    return this.receiver;
   }
 
 

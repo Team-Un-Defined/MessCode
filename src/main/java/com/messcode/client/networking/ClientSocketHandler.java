@@ -5,7 +5,6 @@ import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.util.Request;
-import com.messcode.transferobjects.UsersPM;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,8 +43,8 @@ public class ClientSocketHandler implements Runnable {
                     for (int i = 0; i < users.getSize(); i++) {
                         addToUsersList(users.get(i));
                     }
-                } else if (obj instanceof UsersPM) {
-                    UsersPM usersPM = ((UsersPM) obj);
+                } else if (obj instanceof PrivateMessage) {
+                    PrivateMessage usersPM = ((PrivateMessage) obj);
                     sendInvitePMtoUser(usersPM);
 
                 } else if (obj instanceof PrivateMessage) {
@@ -75,7 +74,7 @@ public class ClientSocketHandler implements Runnable {
     }
 
 
-    private void sendInvitePMtoUser(UsersPM usersPM) {
+    private void sendInvitePMtoUser(PrivateMessage usersPM) {
         socketClient.sendInvitePmFromServer(usersPM);
     }
 
@@ -105,7 +104,7 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
-    public void sendInvitePMtoServer(UsersPM usersPM) {
+    public void sendInvitePMtoServer(PrivateMessage usersPM) {
         try {
             outToServer.writeObject(usersPM);
         } catch (IOException e) {

@@ -4,7 +4,6 @@ import com.messcode.client.networking.Client;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.UsersPM;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -15,7 +14,7 @@ public class MainModelManager implements MainModel {
     private Client client;
     private PropertyChangeSupport support;
     private User user;
-    private UsersPM usersPM;
+    private PrivateMessage usersPM;
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
@@ -39,19 +38,19 @@ public class MainModelManager implements MainModel {
     // PRIVATE CHAT
     @Override
     public void sendInviteToPM(User user) {
-        UsersPM usersPM = new UsersPM(this.user, user);
+        PrivateMessage usersPM = new PrivateMessage(this.user, user, null);
         client.invitePmToServer(usersPM);
     }
 
     private void receiveInvitePM(PropertyChangeEvent propertyChangeEvent) {
-        UsersPM usersPM = ((UsersPM) propertyChangeEvent.getNewValue());
+        PrivateMessage usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         support.firePropertyChange("SendInvitePM", null, usersPM);
     }
 
 
     @Override
     public void sendMessageInPmToServer(PrivateMessage message) {
-        PrivateMessage pm = new PrivateMessage(message.getUserOne(), usersPM, message.getMsg());
+        PrivateMessage pm = new PrivateMessage(message.getSender(),message.getReceiver(), message.getMsg());
         client.sendMessageInPMToServer(pm);
     }
 
@@ -62,7 +61,7 @@ public class MainModelManager implements MainModel {
 
     //  GLOBAL CHAT
     @Override
-    public void sendListOfPmRoomUsers(UsersPM usersPM) {
+    public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
         this.usersPM = usersPM;
         support.firePropertyChange("UsersOnlineInPM", null, usersPM);
     }

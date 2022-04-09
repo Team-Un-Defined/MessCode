@@ -130,3 +130,39 @@ java.lang.NullPointerException: NullError
 [INFO ] 2022-04-09 15:07:56.769 [main] RunApp - INFO INFO !!!
 java.lang.NullPointerException: NullError
 	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
+[ERROR] 2022-04-09 15:29:22.707 [main] RunApp - Error Message Logged !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
+[INFO ] 2022-04-09 15:29:22.716 [main] RunApp - INFO INFO !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
+[ERROR] 2022-04-09 15:29:24.376 [main] RunApp - Error Message Logged !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
+[INFO ] 2022-04-09 15:29:24.415 [main] RunApp - INFO INFO !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
+[ERROR] 2022-04-09 17:15:43.186 [main] RunApp - Error Message Logged !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
+[INFO ] 2022-04-09 17:15:43.194 [main] RunApp - INFO INFO !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
+[ERROR] 2022-04-09 17:15:48.533 [main] RunApp - Error Message Logged !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
+[INFO ] 2022-04-09 17:15:48.542 [main] RunApp - INFO INFO !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
+[ERROR] 2022-04-09 17:19:31.670 [main] RunApp - Error Message Logged !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
+[INFO ] 2022-04-09 17:19:31.679 [main] RunApp - INFO INFO !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
+[ERROR] 2022-04-09 17:19:33.821 [main] RunApp - Error Message Logged !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
+[INFO ] 2022-04-09 17:19:33.829 [main] RunApp - INFO INFO !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:12) [classes/:?]

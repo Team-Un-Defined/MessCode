@@ -18,7 +18,7 @@ public class PublicMessage implements Serializable
     this.msg = message;
   }
 
-  public User getUser()
+  public User getSender()
   {
     return user;
   }
