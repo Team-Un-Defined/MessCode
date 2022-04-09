@@ -3,7 +3,6 @@ package com.messcode.client.networking;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.UsersPM;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -37,7 +36,7 @@ public class SocketClient implements Client {
     }
 
     @Override
-    public void invitePmToServer(UsersPM usersPM) {
+    public void invitePmToServer(PrivateMessage usersPM) {
         socketHandler.sendInvitePMtoServer(usersPM);
     }
 
@@ -76,7 +75,7 @@ public class SocketClient implements Client {
         support.removePropertyChangeListener(eventName, listener);
     }
 
-    public void sendInvitePmFromServer(UsersPM usersPM) {
+    public void sendInvitePmFromServer(PrivateMessage usersPM) {
         support.firePropertyChange("SendInvitePM", null, usersPM);
     }
 
@@ -87,6 +86,8 @@ public class SocketClient implements Client {
     public void removeFromList(User user) {
         support.firePropertyChange("RemoveUser", null, user);
     }
+
+    
 }
 
 
