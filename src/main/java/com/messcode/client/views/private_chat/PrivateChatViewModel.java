@@ -1,7 +1,6 @@
 package com.messcode.client.views.private_chat;
 
 import com.messcode.client.model.MainModel;
-import com.messcode.transferobjects.UsersPM;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -36,10 +35,10 @@ public class PrivateChatViewModel {
     }
 
     private void addToUserList(PropertyChangeEvent propertyChangeEvent) {
-        UsersPM user = (UsersPM) propertyChangeEvent.getNewValue();
+        PrivateMessage message = (PrivateMessage) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
-            users.add(user.getSender());
-            users.add(user.getReceiver());
+            users.add(message.getSender());
+            users.add(message.getReceiver());
         });
     }
 

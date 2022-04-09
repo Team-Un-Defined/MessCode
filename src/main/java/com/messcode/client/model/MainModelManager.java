@@ -1,11 +1,9 @@
 package com.messcode.client.model;
 
 import com.messcode.client.networking.Client;
-import com.messcode.transferobjects.messages.Message;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.UsersPM;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,7 +14,7 @@ public class MainModelManager implements MainModel {
     private Client client;
     private PropertyChangeSupport support;
     private User user;
-    private UsersPM usersPM;
+    private PrivateMessage usersPM;
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
@@ -40,19 +38,19 @@ public class MainModelManager implements MainModel {
     // PRIVATE CHAT
     @Override
     public void sendInviteToPM(User user) {
-        UsersPM usersPM = new UsersPM(this.user, user);
+        PrivateMessage usersPM = new PrivateMessage(this.user, user, null);
         client.invitePmToServer(usersPM);
     }
 
     private void receiveInvitePM(PropertyChangeEvent propertyChangeEvent) {
-        UsersPM usersPM = ((UsersPM) propertyChangeEvent.getNewValue());
+        PrivateMessage usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         support.firePropertyChange("SendInvitePM", null, usersPM);
     }
 
 
     @Override
     public void sendMessageInPmToServer(PrivateMessage message) {
-        PrivateMessage pm = new PrivateMessage(message.getUser(), usersPM, message.getMsg());
+        PrivateMessage pm = new PrivateMessage(message.getSender(),message.getReceiver(), message.getMsg());
         client.sendMessageInPMToServer(pm);
     }
 
@@ -63,7 +61,7 @@ public class MainModelManager implements MainModel {
 
     //  GLOBAL CHAT
     @Override
-    public void sendListOfPmRoomUsers(UsersPM usersPM) {
+    public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
         this.usersPM = usersPM;
         support.firePropertyChange("UsersOnlineInPM", null, usersPM);
     }
@@ -80,13 +78,6 @@ public class MainModelManager implements MainModel {
         User user = (User) propertyChangeEvent.getNewValue();
         support.firePropertyChange("AddNewUser", null, user);
     }
-
-    @Override
-    public void sendMessage(Message message) {
-        PublicMessage um = new PublicMessage(user, message);
-        client.sendMessage(um);
-    }
-
 
     @Override
     public void addUser(User username) {
@@ -107,6 +98,11 @@ public class MainModelManager implements MainModel {
     public void removeListener(String eventName,
                                PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
+    }
+
+    @Override
+    public void sendMessage(PublicMessage message) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

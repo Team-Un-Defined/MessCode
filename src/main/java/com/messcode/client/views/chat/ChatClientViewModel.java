@@ -1,7 +1,6 @@
 package com.messcode.client.views.chat;
 
 import com.messcode.client.model.MainModel;
-import com.messcode.transferobjects.UsersPM;
 import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,9 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.messcode.transferobjects.InviteAccept;
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.messages.Message;
+import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.util.Subject;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -55,13 +53,13 @@ public class ChatClientViewModel implements Subject {
     }
 
     private void receiveInvitePM(PropertyChangeEvent propertyChangeEvent) {
-        UsersPM usersPM = ((UsersPM) propertyChangeEvent.getNewValue());
+        PrivateMessage usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         support.firePropertyChange("SendInvite", null, usersPM);
     }
 
     private void displayMessageToEveryone(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
-        message.setValue(publicMessage.getUsername() + ": " + publicMessage.getMessageString());
+        message.setValue(publicMessage.getUsername() + ": " + publicMessage.getMsg());
     }
 
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -72,7 +70,7 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
-    public void sendMessageToEveryone(Message message) {
+    public void sendMessageToEveryone(PublicMessage message) {
         mainModel.sendMessage(message);
     }
 
@@ -92,7 +90,7 @@ public class ChatClientViewModel implements Subject {
         return currentUser;
     }
 
-    public void sendListOfPmRoomUsers(UsersPM usersPM) {
+    public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
         mainModel.sendListOfPmRoomUsers(usersPM);
     }
 
