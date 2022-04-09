@@ -1,3 +1,25 @@
+.pane{
+    -fx-background-color: #f4f4f4;
+}
+
+.buttonBar{
+    -fx-background-color: #f4f4f4;
+}
+
+.buttonPass:hover{
+    -fx-text-fill: blue;
+}
+
+.list-view {
+    -fx-border-color: f4f4f4;
+    -fx-background-color: fff;
+}
+
+.text-field {
+    -fx-border-color: f4f4f4;
+    -fx-background-color: fff;
+}
+
 .list-cell:even,
 .list-cell:odd{
     -fx-control-inner-background: derive(-fx-base, 15%);
