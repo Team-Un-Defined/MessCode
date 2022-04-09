@@ -5,33 +5,21 @@ import com.messcode.transferobjects.User;
 
 import java.io.Serializable;
 
-public class PrivateMessage implements Serializable
+public class PrivateMessage extends PublicMessage implements Serializable 
 {
-  private String msg;
-  private User user;
+  private String User;
   private UsersPM usersPM;
 
-  public PrivateMessage(User user, String msg)
+  public PrivateMessage(User username, String message)
   {
-    this.msg = msg;
-    this.user = user;
+    super(username, message);
   }
-
+ 
   public PrivateMessage(User user, UsersPM usersPM, String msg)
   {
-    this.user = user;
+    super(user, msg);
     this.usersPM = usersPM;
-    this.msg = msg;
-  }
-
-  public String getMsg()
-  {
-    return msg;
-  }
-
-  public String getUsername()
-  {
-    return user.getUsername();
+    
   }
 
   public User getUserOne()
@@ -44,8 +32,5 @@ public class PrivateMessage implements Serializable
     return usersPM.getReceiver();
   }
 
-  public User getUser()
-  {
-    return user;
-  }
+
 }

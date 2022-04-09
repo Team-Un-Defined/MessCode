@@ -8,7 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.messages.Message;
+import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -117,7 +117,7 @@ public class ChatClientController {
 
     public void sendButton() {
         String message = textField.getText();
-        chatVM.sendMessageToEveryone(new Message(message));
+        chatVM.sendMessageToEveryone(new PublicMessage(this.user, message ));
         textField.clear();
     }
 
