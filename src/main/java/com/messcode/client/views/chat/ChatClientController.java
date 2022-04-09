@@ -15,6 +15,7 @@ import org.controlsfx.control.ToggleSwitch;
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 
 public class ChatClientController {
     public TextArea textArea;
@@ -36,7 +37,8 @@ public class ChatClientController {
 
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
-    private User user;
+    private User sender;
+    private User receiver; 
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
 
@@ -72,10 +74,10 @@ public class ChatClientController {
                         messagesListFXML.getItems().add(label);
                     });
                 });
-        chatVM.addListener("SendInvite", this::openPrivateChat);
+        chatVM.addListener("NewPMess", this::openPrivateChat);
 
-        user = chatVM.getCurrentUser();
-        userDisplayedName.setText(bundle.getString("your_nick") + user.getUsername() + "'");
+        sender = chatVM.getCurrentUser();
+        userDisplayedName.setText(bundle.getString("your_nick") + sender.getUsername() + "'");
 
         Platform.runLater(()->toggleSwitch.getScene().getStylesheets().add("lite.css"));
 
@@ -91,33 +93,17 @@ public class ChatClientController {
     }
 
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
-        usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
-        JPanel panel = new JPanel();
-
-        Object[] options = {bundle.getString("yes"), bundle.getString("no")};
-
-        int selected = JOptionPane.showOptionDialog(panel,
-                bundle.getString("hey") + " " + user + ", " + bundle.getString("user") +
-                        usersPM.getSender() + bundle.getString("invites_you"), bundle.getString("invite"),
-                JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
-                options, options[0]);
-
-        if (selected == JOptionPane.NO_OPTION) {
-        } else if (selected == JOptionPane.YES_OPTION) {
-
-            openPrivateChatForSender(usersPM.getSender());
-            Platform.runLater(() -> vh.openPrivateChat(usersPM.getReceiver()));
-            chatVM.sendListOfPmRoomUsers(usersPM);
-        }
+        usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());        
+        this.receiver = usersPM.getReceiver();
+        panePrivate.toFront();
+        chatVM.sendListOfPmRoomUsers(usersPM);
+        
     }
 
-    private void openPrivateChatForSender(User user) {
-        Platform.runLater(() -> vh.openPrivateChat2(user));
-    }
 
     public void sendButton() {
         String message = textField.getText();
-        chatVM.sendMessageToEveryone(new PublicMessage(this.user, message ));
+        chatVM.sendPublic(new PublicMessage(this.sender, message));
         textField.clear();
     }
 
@@ -125,9 +111,11 @@ public class ChatClientController {
         if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
-            User user = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
-            if (!user.getUsername().equals(this.user.getUsername())) {
-                chatVM.sentInviteToPM(user);
+            User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
+            if (!use.getUsername().equals(this.sender.getUsername())) {
+                 this.receiver = use;
+                panePrivate.toFront();
+               
             } else {
                 invitePmErrorLabel.setText(bundle.getString("talk_to_yourself"));
             }
@@ -154,4 +142,5 @@ public class ChatClientController {
     public void newGroupClicked(ActionEvent actionEvent) {
         vh.openNewGroup();
     }
+   
 }

@@ -9,11 +9,11 @@ import java.beans.PropertyChangeEvent;
 
 public interface MainModel extends Subject
 {
-  void sendMessage( PublicMessage mess);
+  void sendPublic( PublicMessage mess);
   void addUser(User username);
-  void receiveMessageInChat(PropertyChangeEvent propertyChangeEvent);
+  void receivePublic(PropertyChangeEvent propertyChangeEvent);
   void addToUsersList(PropertyChangeEvent propertyChangeEvent);
-  void sendInviteToPM(User user);
   void sendListOfPmRoomUsers(PrivateMessage PMmessage);
-  void sendMessageInPmToServer(PrivateMessage message);
+  void sendPM(PrivateMessage message);
+  void receivePM(PropertyChangeEvent propertyChangeEvent);
 }

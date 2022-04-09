@@ -31,9 +31,13 @@ public class ClientSocketHandler implements Runnable {
         try {
             while (true) {
                 Object obj = inFromServer.readObject();
-                if (obj instanceof PublicMessage) {
+                if (obj instanceof PrivateMessage) {
+                    PrivateMessage pm = (PrivateMessage) obj;
+                    receivePM(pm);
+                }
+                else if (obj instanceof PublicMessage) {
                     PublicMessage message = ((PublicMessage) obj);
-                    messageReceived(message);
+                    receivePublic(message);
                 } else if (obj instanceof User) {
                     User user = ((User) obj);
                     addToUsersList(user);
@@ -43,14 +47,8 @@ public class ClientSocketHandler implements Runnable {
                     for (int i = 0; i < users.getSize(); i++) {
                         addToUsersList(users.get(i));
                     }
-                } else if (obj instanceof PrivateMessage) {
-                    PrivateMessage usersPM = ((PrivateMessage) obj);
-                    sendInvitePMtoUser(usersPM);
-
-                } else if (obj instanceof PrivateMessage) {
-                    PrivateMessage pm = (PrivateMessage) obj;
-                    messagePmReceived(pm);
-                } else if (obj instanceof Request) {
+                }
+                  else if (obj instanceof Request) {
                     Request request = (Request) obj;
                     if (request.getType().equals("UserLeft")) {
                         userLeft(request.getArg());
@@ -68,27 +66,30 @@ public class ClientSocketHandler implements Runnable {
     }
 
     //  BACK TO FXML
-    private void messagePmReceived(PrivateMessage pm) {
-        socketClient.displayMessagesPM(pm);
-
-    }
-
-
-    private void sendInvitePMtoUser(PrivateMessage usersPM) {
-        socketClient.sendInvitePmFromServer(usersPM);
-    }
 
     private void addToUsersList(User user) {
         socketClient.addToList(user);
     }
 
-    private void messageReceived(PublicMessage message) {
+    private void receivePublic(PublicMessage message) {
         socketClient.displayMessage(message);
         System.out.println(message.getUsername() + " " + message.getMsg());
     }
-
+    private void receivePM(PrivateMessage message) {
+        socketClient.displayMessage(message);
+        System.out.println(message.getUsername() + " " + message.getMsg());
+    }
+    
+    public void sendPM(PrivateMessage message) {
+        try {
+            outToServer.writeObject(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     //  TO SERVER
-    public void sendMessage(PublicMessage message) {
+    public void sendPublic(PublicMessage message) {
         try {
             outToServer.writeObject(message);
         } catch (IOException e) {
@@ -104,13 +105,7 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
-    public void sendInvitePMtoServer(PrivateMessage usersPM) {
-        try {
-            outToServer.writeObject(usersPM);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    
 
     public void sendMessageInPM(PrivateMessage message) {
         try {
