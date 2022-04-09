@@ -77,7 +77,7 @@ public class ServerSocketHandler implements Runnable {
         try {
             System.out.println(
                     "[SERVER] " + "user: " + publicMessage.getUsername() + " sent: "
-                            + publicMessage.getMessageString());
+                            + publicMessage.getMsg());
             outToClient.writeObject(publicMessage);
         } catch (IOException e) {
             e.printStackTrace();

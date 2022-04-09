@@ -85,7 +85,7 @@ public class ClientSocketHandler implements Runnable {
 
     private void messageReceived(PublicMessage message) {
         socketClient.displayMessage(message);
-        System.out.println(message.getUsername() + " " + message.getMessageString());
+        System.out.println(message.getUsername() + " " + message.getMsg());
     }
 
     //  TO SERVER

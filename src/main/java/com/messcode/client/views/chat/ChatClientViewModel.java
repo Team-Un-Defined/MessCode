@@ -10,9 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.messcode.transferobjects.InviteAccept;
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.messages.Message;
 import com.messcode.transferobjects.util.Subject;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -61,7 +59,7 @@ public class ChatClientViewModel implements Subject {
 
     private void displayMessageToEveryone(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
-        message.setValue(publicMessage.getUsername() + ": " + publicMessage.getMessageString());
+        message.setValue(publicMessage.getUsername() + ": " + publicMessage.getMsg());
     }
 
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -72,7 +70,7 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
-    public void sendMessageToEveryone(Message message) {
+    public void sendMessageToEveryone(PublicMessage message) {
         mainModel.sendMessage(message);
     }
 
