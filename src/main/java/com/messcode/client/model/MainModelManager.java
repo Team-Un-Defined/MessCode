@@ -22,9 +22,8 @@ public class MainModelManager implements MainModel {
         try {
             client.start();
             client.addListener("AddNewUser", this::addToUsersList);
-            client.addListener("MessageForEveryone", this::receiveMessageInChat);
-            client.addListener("SendInvitePM", this::receiveInvitePM);
-            client.addListener("PrivateMessages", this::receiveMessagesPM);
+            client.addListener("MessageForEveryone", this::receivePublic);
+            client.addListener("newPM", this::receivePM);
             client.addListener("RemoveUser", this::removeFromUsersList);
         } catch (IOException e) {
             e.printStackTrace();
@@ -34,31 +33,7 @@ public class MainModelManager implements MainModel {
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         support.firePropertyChange(propertyChangeEvent);
     }
-
-    // PRIVATE CHAT
-    @Override
-    public void sendInviteToPM(User user) {
-        PrivateMessage usersPM = new PrivateMessage(this.user, user, null);
-        client.invitePmToServer(usersPM);
-    }
-
-    private void receiveInvitePM(PropertyChangeEvent propertyChangeEvent) {
-        PrivateMessage usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
-        support.firePropertyChange("SendInvitePM", null, usersPM);
-    }
-
-
-    @Override
-    public void sendMessageInPmToServer(PrivateMessage message) {
-        PrivateMessage pm = new PrivateMessage(message.getSender(),message.getReceiver(), message.getMsg());
-        client.sendMessageInPMToServer(pm);
-    }
-
-    private void receiveMessagesPM(PropertyChangeEvent propertyChangeEvent) {
-        PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
-        support.firePropertyChange("PrivateMessages", null, pm);
-    }
-
+    
     //  GLOBAL CHAT
     @Override
     public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
@@ -67,12 +42,18 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void receiveMessageInChat(
+    public void receivePublic(
             PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
 
+    @Override
+    public void receivePM(
+        PropertyChangeEvent propertyChangeEvent) {
+        PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
+        support.firePropertyChange("newPM", null, pm);
+    }
     @Override
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
@@ -101,8 +82,15 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void sendMessage(PublicMessage message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void sendPublic(PublicMessage mess) {
+        client.sendPublic(mess);
+        
     }
+
+    @Override
+    public void sendPM(PrivateMessage message) {
+        client.sendPM(message);
+    }
+
 
 }

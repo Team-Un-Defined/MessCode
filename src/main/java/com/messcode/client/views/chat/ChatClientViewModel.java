@@ -27,10 +27,10 @@ public class ChatClientViewModel implements Subject {
         message = new SimpleStringProperty();
         usersList = FXCollections.observableArrayList();
         this.mainModel = mainModel;
+        mainModel.addListener("PrivateMessages", this::displayMessageInChat);
         mainModel.addListener("AddNewUser", this::getUsersList);
-        mainModel.addListener("MessageForEveryone", this::displayMessageToEveryone);
-        mainModel.addListener("SendInvitePM", this::receiveInvitePM);
-        mainModel.addListener("SendInviteAcceptPM", this::sendInviteAcceptPM);
+        mainModel.addListener("MessageForEveryone", this::displayPublic);
+        mainModel.addListener("NewPM", this::receivePM);
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
     }
@@ -47,17 +47,12 @@ public class ChatClientViewModel implements Subject {
         currentUser = (User) propertyChangeEvent.getNewValue();
     }
 
-    private void sendInviteAcceptPM(PropertyChangeEvent propertyChangeEvent) {
-        InviteAccept inviteAccept = (InviteAccept) propertyChangeEvent.getNewValue();
-        support.firePropertyChange("SendInviteAcceptPM", null, inviteAccept);
-    }
-
-    private void receiveInvitePM(PropertyChangeEvent propertyChangeEvent) {
+    private void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         support.firePropertyChange("SendInvite", null, usersPM);
     }
 
-    private void displayMessageToEveryone(PropertyChangeEvent propertyChangeEvent) {
+    private void displayPublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         message.setValue(publicMessage.getUsername() + ": " + publicMessage.getMsg());
     }
@@ -70,8 +65,8 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
-    public void sendMessageToEveryone(PublicMessage message) {
-        mainModel.sendMessage(message);
+    public void sendPublic(PublicMessage message) {
+        mainModel.sendPublic(message);
     }
 
     public ObservableList<User> getUsersList() {
@@ -82,8 +77,8 @@ public class ChatClientViewModel implements Subject {
         return message;
     }
 
-    public void sentInviteToPM(User user) {
-        mainModel.sendInviteToPM(user);
+    public void sendPM(PrivateMessage mess) {
+        mainModel.sendPM(mess);
     }
 
     public User getCurrentUser() {
@@ -105,4 +100,11 @@ public class ChatClientViewModel implements Subject {
                                PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
+    
+
+    private void displayMessageInChat(PropertyChangeEvent propertyChangeEvent) {
+        PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
+        message.setValue(pm.getUsername() + ": " + pm.getMsg());
+    }
+    
 }
