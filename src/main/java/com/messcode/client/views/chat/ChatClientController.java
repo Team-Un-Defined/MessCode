@@ -1,6 +1,5 @@
 package com.messcode.client.views.chat;
 
-import com.messcode.transferobjects.UsersPM;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -8,7 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.messages.Message;
+import com.messcode.transferobjects.messages.PrivateMessage;
+import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -37,7 +37,7 @@ public class ChatClientController {
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
     private User user;
-    private UsersPM usersPM;
+    private PrivateMessage usersPM;
     private ResourceBundle bundle;
 
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
@@ -91,7 +91,7 @@ public class ChatClientController {
     }
 
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
-        usersPM = ((UsersPM) propertyChangeEvent.getNewValue());
+        usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         JPanel panel = new JPanel();
 
         Object[] options = {bundle.getString("yes"), bundle.getString("no")};
@@ -117,7 +117,7 @@ public class ChatClientController {
 
     public void sendButton() {
         String message = textField.getText();
-        chatVM.sendMessageToEveryone(new Message(message));
+        chatVM.sendMessageToEveryone(new PublicMessage(this.user, message ));
         textField.clear();
     }
 

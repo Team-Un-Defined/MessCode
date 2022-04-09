@@ -1,7 +1,6 @@
 package com.messcode.server.networking;
 
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.UsersPM;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 
@@ -27,7 +26,7 @@ public class ConnectionPool {
         users.add(user);
     }
 
-    public void inviteToPM(UsersPM usersPM) {
+    public void inviteToPM(PrivateMessage usersPM) {
         for (ServerSocketHandler handler : connections) {
             if (handler.getUser().equals(usersPM.getReceiver())) {
                 handler.sendInvite(usersPM);
@@ -38,7 +37,7 @@ public class ConnectionPool {
     public void sendMessageInPM(PrivateMessage pm) {
         for (ServerSocketHandler handler : connections) {
 
-            if (handler.getUser().equals(pm.getUserOne()) || handler.getUser().equals(pm.getUserTwo()))
+            if (handler.getUser().equals(pm.getSender()) || handler.getUser().equals(pm.getReceiver()))
                 handler.sendMessageInPM(pm);
         }
     }

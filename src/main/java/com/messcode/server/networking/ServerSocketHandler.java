@@ -5,8 +5,6 @@ import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.util.Request;
-import com.messcode.transferobjects.UsersPM;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -45,8 +43,8 @@ public class ServerSocketHandler implements Runnable {
                 } else if (obj instanceof PublicMessage) {
                     PublicMessage message = (PublicMessage) obj;
                     pool.broadcastMessage(message);
-                } else if (obj instanceof UsersPM) {
-                    UsersPM usersPM = (UsersPM) obj;
+                } else if (obj instanceof PrivateMessage) {
+                    PrivateMessage usersPM = (PrivateMessage) obj;
                     pool.inviteToPM(usersPM);
                 } else if (obj instanceof PrivateMessage) {
                     PrivateMessage pm = (PrivateMessage) obj;
@@ -77,7 +75,7 @@ public class ServerSocketHandler implements Runnable {
         try {
             System.out.println(
                     "[SERVER] " + "user: " + publicMessage.getUsername() + " sent: "
-                            + publicMessage.getMessageString());
+                            + publicMessage.getMsg());
             outToClient.writeObject(publicMessage);
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,7 +94,7 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
-    public void sendInvite(UsersPM usersPM) {
+    public void sendInvite(PrivateMessage usersPM) {
         try {
             outToClient.writeObject(usersPM);
         } catch (IOException e) {

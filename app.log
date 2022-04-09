@@ -1,0 +1,6 @@
+[ERROR] 2022-03-27 18:09:25.243 [main] RunApp - Error Message Logged !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:17) [classes/:?]
+[INFO ] 2022-03-27 18:09:25.251 [main] RunApp - xcvazsdfvasddvc !!!
+java.lang.NullPointerException: NullError
+	at com.messcode.client.Start.main(Start.java:18) [classes/:?]

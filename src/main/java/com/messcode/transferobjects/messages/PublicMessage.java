@@ -3,35 +3,45 @@ package com.messcode.transferobjects.messages;
 import com.messcode.transferobjects.User;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class PublicMessage implements Serializable
-{
-  private User username;
-  private Message message;
-
-  public PublicMessage(User username, Message message)
-  {
-    this.username = username;
-    this.message = message;
+{ 
+  private User user;
+  private String msg;
+  private Timestamp time;
+  
+  
+  public PublicMessage(User username, String message)
+  { this.time=new Timestamp(System.currentTimeMillis());
+    this.user = username;
+    this.msg = message;
   }
 
-  public User message()
+  public User getSender()
   {
-    return username;
-  }
-
-  public Message getMessage()
-  {
-    return message;
+    return user;
   }
 
   public String getUsername()
   {
-    return username.getUsername();
+    return user.getUsername();
+  }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public String getMsg()
+  {
+    return msg;
   }
 
-  public String getMessageString()
-  {
-    return message.getMsg();
-  }
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+    
+  
 }

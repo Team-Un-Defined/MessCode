@@ -70,7 +70,7 @@ public class PrivateChatController {
 
     public void sendButton() {
         String message = textField.getText();
-        pmVM.sendMessageInPM(new PrivateMessage(user, message));
+        pmVM.sendMessageInPM(new PrivateMessage(user,null, message));
         textField.clear();
     }
 }
