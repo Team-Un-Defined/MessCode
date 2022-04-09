@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import org.apache.logging.log4j.core.appender.routing.PurgePolicy;
 
 public class ChatClientController {
     public TextArea textArea;
@@ -102,10 +103,18 @@ public class ChatClientController {
 
 
     public void sendButton() {
+        System.out.println("*************************************");
         String message = textField.getText();
         chatVM.sendPublic(new PublicMessage(this.sender, message));
         textField.clear();
     }
+    public void sendPM() {
+        System.out.println("-------------------------------------");
+        String message = textField.getText();
+        chatVM.sendPM(new PrivateMessage(this.sender,this.receiver, message));
+        textField.clear();
+    }
+    
 
     public void inviteToPmButton() {
         if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
