@@ -17,7 +17,6 @@ public class LoginController {
     private ViewHandler vh;
     private ResourceBundle bundle;
 
-
     public void init(LoginViewModel loginVM, ViewHandler vh, ResourceBundle bundle) {
         this.loginVM = loginVM;
         this.vh = vh;
