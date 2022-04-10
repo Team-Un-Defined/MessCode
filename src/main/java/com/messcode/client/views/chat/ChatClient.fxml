@@ -17,7 +17,7 @@
             <TextArea fx:id="textArea" editable="false" prefHeight="294.0" prefWidth="600.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="textField" prefHeight="100.0" prefWidth="470.0" />
+                  <TextField fx:id="textFieldAll" prefHeight="100.0" prefWidth="470.0" />
                   <Button mnemonicParsing="false" onAction="#sendButton" prefHeight="124.0" prefWidth="130.0" text="Send" />
                </children>
             </HBox>
