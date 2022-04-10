@@ -5,13 +5,11 @@ import com.messcode.client.views.chat.ChatClientViewModel;
 import com.messcode.client.views.login.LoginViewModel;
 import com.messcode.client.views.new_employee.NewEmployeeViewModel;
 import com.messcode.client.views.new_group.NewGroupViewModel;
-import com.messcode.client.views.private_chat.PrivateChatViewModel;
 
 public class ViewModelFactory {
     private ModelFactory mf;
     private ChatClientViewModel chatVM;
     private LoginViewModel loginVM;
-    private PrivateChatViewModel privateChatVM;
     private NewEmployeeViewModel newEmployeeVM;
     private NewGroupViewModel newGroupVM;
     private ChangePasswordViewModel changePasswordVM;
@@ -20,7 +18,6 @@ public class ViewModelFactory {
         this.mf = mf;
         chatVM = new ChatClientViewModel(mf.getMainModel());
         loginVM = new LoginViewModel(mf.getMainModel());
-        privateChatVM = new PrivateChatViewModel(mf.getMainModel());
         newEmployeeVM = new NewEmployeeViewModel(mf.getMainModel());
         newGroupVM = new NewGroupViewModel(mf.getMainModel());
     }
@@ -31,10 +28,6 @@ public class ViewModelFactory {
 
     public LoginViewModel getLoginVM() {
         return loginVM;
-    }
-
-    public PrivateChatViewModel getPrivateChatVM() {
-        return privateChatVM;
     }
 
     public NewEmployeeViewModel getNewEmployeeVM() { return newEmployeeVM; }
