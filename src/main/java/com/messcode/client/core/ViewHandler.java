@@ -5,7 +5,6 @@ import com.messcode.client.views.chat.ChatClientController;
 import com.messcode.client.views.login.LoginController;
 import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
-import com.messcode.client.views.private_chat.PrivateChatController;
 import com.messcode.transferobjects.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -116,41 +115,6 @@ public class ViewHandler {
         stage.show();
     }
 
-    public void openPrivateChat(User user) {
-        Stage stage2 = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setResources(bundle);
-
-        if (chatPM == null) {
-            Parent root = getRootByPath("PrivateChat.fxml", loader);
-            PrivateChatController controller = loader.getController();
-            controller.init(vmf.getPrivateChatVM(), user, bundle);
-            chatPM = new Scene(root);
-        }
-
-        stage2.setTitle("PM");
-        stage2.setScene(chatPM);
-        stage2.getIcons().add(new Image("icon.png"));
-        stage2.show();
-    }
-
-    public void openPrivateChat2(User user) {
-        Stage stage3 = new Stage();
-        FXMLLoader loader = new FXMLLoader();
-        loader.setResources(bundle);
-
-        if (chatPM2 == null) {
-            Parent root = getRootByPath("PrivateChat.fxml", loader);
-            PrivateChatController controller = loader.getController();
-            controller.init(vmf.getPrivateChatVM(), user, bundle);
-            chatPM2 = new Scene(root);
-        }
-
-        stage3.setTitle("PM");
-        stage3.setScene(chatPM2);
-        stage3.getIcons().add(new Image("icon.png"));
-        stage3.show();
-    }
 
     public void openNewEmployee() {
         Stage newEmployeeStage = new Stage();

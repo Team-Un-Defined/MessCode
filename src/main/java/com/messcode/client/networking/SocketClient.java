@@ -31,20 +31,10 @@ public class SocketClient implements Client {
     }
 
     @Override
-    public void sendMessage(PublicMessage message) {
-        socketHandler.sendMessage(message);
+    public void sendPublic(PublicMessage message) {
+        socketHandler.sendPublic(message);
     }
 
-    @Override
-    public void invitePmToServer(PrivateMessage usersPM) {
-        socketHandler.sendInvitePMtoServer(usersPM);
-    }
-
-    @Override
-    public void sendMessageInPMToServer(PrivateMessage message) {
-        socketHandler.sendMessageInPM(message);
-
-    }
 
     @Override
     public void displayMessage(PublicMessage message) {
@@ -57,8 +47,7 @@ public class SocketClient implements Client {
     }
 
     public void addToList(User user) {
-        System.out
-                .println("[CLIENT] user " + user.getUsername() + " added to list");
+        System.out.println("[CLIENT] user " + user.getUsername() + " added to list");
         support.firePropertyChange("AddNewUser", null, user);
     }
 
@@ -75,16 +64,18 @@ public class SocketClient implements Client {
         support.removePropertyChangeListener(eventName, listener);
     }
 
-    public void sendInvitePmFromServer(PrivateMessage usersPM) {
-        support.firePropertyChange("SendInvitePM", null, usersPM);
-    }
-
+   
     public void displayMessagesPM(PrivateMessage pm) {
         support.firePropertyChange("PrivateMessages", null, pm);
     }
 
     public void removeFromList(User user) {
         support.firePropertyChange("RemoveUser", null, user);
+    }
+
+    @Override
+    public void sendPM(PrivateMessage pm) {
+       socketHandler.sendPM(pm);
     }
 
     

@@ -26,6 +26,7 @@ public class PrivateMessage extends PublicMessage implements Serializable
   {
     return this.receiver;
   }
-
-
+public User setReceiver(){
+    return this.receiver;
+}
 }
