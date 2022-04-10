@@ -11,9 +11,9 @@ import java.util.ResourceBundle;
 public class ChangePasswordController {
 
     public Button confirmButton;
-    private Label errorLabel;
-    private TextField passwordConfirmTextField;
-    private TextField passwordTextField;
+    public Label errorLabel;
+    public TextField passwordConfirmTextField;
+    public TextField passwordTextField;
 
     private ChangePasswordViewModel changePasswordVM;
     private ViewHandler vh;

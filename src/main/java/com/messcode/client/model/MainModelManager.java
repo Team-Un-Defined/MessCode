@@ -55,6 +55,7 @@ public class MainModelManager implements MainModel {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         support.firePropertyChange("newPM", null, pm);
     }
+
     @Override
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
@@ -67,7 +68,6 @@ public class MainModelManager implements MainModel {
         this.user = username;
         support.firePropertyChange("SetUsernameInChat", null, username);
     }
-
 
     @Override
     public void addListener(String eventName,
@@ -92,6 +92,4 @@ public class MainModelManager implements MainModel {
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
     }
-
-
 }
