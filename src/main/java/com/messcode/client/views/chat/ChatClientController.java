@@ -76,7 +76,18 @@ public class ChatClientController {
                         messagesListAll.getItems().add(label);
                     });
                 });
-        chatVM.addListener("NewPMess", this::openPrivateChat);
+        StringProperty pmChat = new SimpleStringProperty();
+        pmChat.bind(chatVM.PMProperty());
+
+        pmChat.addListener((observableValue, s, t1) ->{
+                    Platform.runLater(()->{
+                        Label label = new Label(pmChat.getValue());
+                        label.setMaxWidth(messagesListPM.getWidth() - 25);
+                        label.setWrapText(true);
+                        messagesListPM.getItems().add(label);
+                    });
+                });
+      //  chatVM.addListener("NewPM", this::openPrivateChat);
 
         sender = chatVM.getCurrentUser();
         userDisplayedName.setText(bundle.getString("your_nick") + sender.getUsername() + "'");

@@ -97,7 +97,7 @@ public class ClientSocketHandler implements Runnable {
         System.out.println("I GOT THIS: "+message.getUsername() + " " + message.getMsg());
     }
     private void receivePM(PrivateMessage message) {
-        socketClient.displayMessage(message);
+        socketClient.displayPM(message);
         System.out.println(message.getUsername() + " " + message.getMsg());
     }
     

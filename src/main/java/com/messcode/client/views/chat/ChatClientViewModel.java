@@ -21,16 +21,17 @@ public class ChatClientViewModel implements Subject {
     private ObservableList<User> usersList;
     private MainModel mainModel;
     private StringProperty message;
+    private StringProperty PMmessage;
 
     public ChatClientViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
         message = new SimpleStringProperty();
+        PMmessage= new SimpleStringProperty();
         usersList = FXCollections.observableArrayList();
         this.mainModel = mainModel;
-        mainModel.addListener("PrivateMessages", this::displayMessageInChat);
         mainModel.addListener("AddNewUser", this::getUsersList);
         mainModel.addListener("MessageForEveryone", this::displayPublic);
-        mainModel.addListener("NewPM", this::receivePM);
+        mainModel.addListener("newPM", this::displayPM);
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
     }
@@ -45,11 +46,6 @@ public class ChatClientViewModel implements Subject {
 
     private void setUsernameInChat(PropertyChangeEvent propertyChangeEvent) {
         currentUser = (User) propertyChangeEvent.getNewValue();
-    }
-
-    private void receivePM(PropertyChangeEvent propertyChangeEvent) {
-        PrivateMessage usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
-        support.firePropertyChange("SendInvite", null, usersPM);
     }
 
     private void displayPublic(PropertyChangeEvent propertyChangeEvent) {
@@ -78,7 +74,9 @@ public class ChatClientViewModel implements Subject {
     public StringProperty messageProperty() {
         return message;
     }
-
+    public StringProperty PMProperty() {
+        return PMmessage;
+    }
     public void sendPM(PrivateMessage mess) {
         mainModel.sendPM(mess);
     }
@@ -104,9 +102,11 @@ public class ChatClientViewModel implements Subject {
     }
     
 
-    private void displayMessageInChat(PropertyChangeEvent propertyChangeEvent) {
+    private void displayPM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
-        message.setValue(pm.getUsername() + ": " + pm.getMsg());
+        PMmessage.setValue(pm.getUsername() + ": " + pm.getMsg());
+          System.out.println("got to PMPM :" + PMmessage.getValue());
+        
     }
     
 }

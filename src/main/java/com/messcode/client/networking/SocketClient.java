@@ -65,8 +65,8 @@ public class SocketClient implements Client {
     }
 
    
-    public void displayMessagesPM(PrivateMessage pm) {
-        support.firePropertyChange("PrivateMessages", null, pm);
+    public void displayPM(PrivateMessage pm) {
+        support.firePropertyChange("newPM", null, pm);
     }
 
     public void removeFromList(User user) {
