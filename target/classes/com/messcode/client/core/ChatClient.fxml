@@ -68,21 +68,21 @@
         <children>
             <Pane fx:id="paneAll" styleClass="pane">
                 <children>
-                    <ListView fx:id="messagesListFXML" layoutX="14.0" layoutY="14.0" prefHeight="530.0" prefWidth="600.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
+                    <ListView fx:id="messagesListAll" layoutX="14.0" layoutY="14.0" prefHeight="530.0" prefWidth="600.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Button layoutX="524.0" layoutY="561.0" mnemonicParsing="false" onAction="#sendButton" prefHeight="25.0" prefWidth="88.0" text="Send" />
                     <TextField fx:id="textFieldAll" layoutX="14.0" layoutY="560.0" prefHeight="27.0" prefWidth="497.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                 </children>
             </Pane>
             <Pane fx:id="panePrivate" styleClass="pane">
                 <children>
-                    <ListView layoutX="14.0" layoutY="40.0" prefHeight="504.0" prefWidth="600.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
+                    <ListView fx:id="messagesListPM" layoutX="14.0" layoutY="40.0" prefHeight="504.0" prefWidth="600.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Button layoutX="524.0" layoutY="561.0" mnemonicParsing="false" onAction="#sendPM" prefHeight="25.0" prefWidth="88.0" text="Send" />
                     <TextField fx:id="textFieldPM" layoutX="13.0" layoutY="560.0" prefHeight="27.0" prefWidth="497.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Label layoutX="14.0" layoutY="14.0" text="Peter Griffin" />
                 </children></Pane>
             <Pane fx:id="paneGroup" styleClass="pane">
                 <children>
-                    <ListView layoutX="14.0" layoutY="40.0" prefHeight="504.0" prefWidth="600.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
+                    <ListView fx:id="messagesListGroup" layoutX="14.0" layoutY="40.0" prefHeight="504.0" prefWidth="600.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Button layoutX="524.0" layoutY="561.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Send" />
                     <TextField fx:id="textFieldGroup" layoutX="14.0" layoutY="560.0" prefHeight="27.0" prefWidth="497.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Label layoutX="14.0" layoutY="14.0" text="Group X" />

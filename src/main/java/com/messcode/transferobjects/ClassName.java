@@ -20,6 +20,14 @@ public enum ClassName
   //remove user from client
   REMOVE_USER,
 
+  //private message
+  PRIVATE_MESSAGE,
+
+  //public messages
+  PUBLIC_MESSAGE,
+
+  USER_LEFT, // user join
+  USER_LIST, USER_JOIN
 
 
 }

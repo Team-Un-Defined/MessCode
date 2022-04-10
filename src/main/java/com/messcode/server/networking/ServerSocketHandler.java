@@ -1,5 +1,9 @@
 package com.messcode.server.networking;
 
+import JDBC.ExportData;
+import JDBC.ImportData;
+import com.messcode.transferobjects.ClassName;
+import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.messages.PrivateMessage;
@@ -13,7 +17,8 @@ import java.net.Socket;
 public class ServerSocketHandler implements Runnable {
     private ConnectionPool pool;
     private Socket socket;
-
+private ExportData dbe;
+private ImportData dbi;
     private ObjectOutputStream outToClient;
     private ObjectInputStream inFromClient;
 
@@ -21,6 +26,8 @@ public class ServerSocketHandler implements Runnable {
 
     public ServerSocketHandler(Socket socket, ConnectionPool pool)
             throws IOException {
+        dbe=new ExportData();
+        dbi=new ImportData();
         this.socket = socket;
         this.pool = pool;
         inFromClient = new ObjectInputStream(socket.getInputStream());
@@ -32,24 +39,36 @@ public class ServerSocketHandler implements Runnable {
     public void run() {
         try {
             while (true) {
-                Object obj = inFromClient.readObject();
-                if (obj instanceof User) {
-                    pool.addHandler(this);
-                    user = (User) obj;
-                    System.out
-                            .println("[SERVER] " + user.getUsername() + " joined the chat");
-                    pool.userJoin(user);
-                    updateUsersList();
-                } else if (obj instanceof PublicMessage) {
-                    PublicMessage message = (PublicMessage) obj;
-                    pool.broadcastMessage(message);
-                } else if (obj instanceof PrivateMessage) {
-                    PrivateMessage usersPM = (PrivateMessage) obj;
-                    pool.inviteToPM(usersPM);
-                } else if (obj instanceof PrivateMessage) {
-                    PrivateMessage pm = (PrivateMessage) obj;
-                    pool.sendMessageInPM(pm);
+                Container packet = (Container)(inFromClient.readObject());
+                System.out.println("NEW PACKET : "+ packet.getClassName() + " object "+ packet.getObject() );
+                switch(packet.getClassName())
+                {
+                    case PRIVATE_MESSAGE:
+                    {
+                        PrivateMessage pm = (PrivateMessage)packet.getObject();
+                        pool.sendMessageInPM(pm);
+                        break;
+                    }
+                    case USER_JOIN:
+                    {
+                        pool.addHandler(this);
+                        user = (User) packet.getObject();
+                        System.out
+                                .println("[SERVER] " + user.getUsername() + " joined the chat");
+                        pool.userJoin(user);
+                        updateUsersList();
+                        break;
+                    }
+                    case PUBLIC_MESSAGE:
+                    {
+                        PublicMessage message = (PublicMessage)packet.getObject();
+                        pool.broadcastMessage(message);
+                        break;
+                    }
+
                 }
+
+
             }
         } catch (IOException | ClassNotFoundException e) {
             try {
@@ -65,7 +84,8 @@ public class ServerSocketHandler implements Runnable {
         try {
             UserList users = new UserList();
             users.addList(pool.getUsers());
-            outToClient.writeObject(users);
+            Container packet = new Container(users, ClassName.USER_LIST);
+            outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,7 +96,8 @@ public class ServerSocketHandler implements Runnable {
             System.out.println(
                     "[SERVER] " + "user: " + publicMessage.getUsername() + " sent: "
                             + publicMessage.getMsg());
-            outToClient.writeObject(publicMessage);
+            Container packet = new Container(publicMessage, ClassName.PUBLIC_MESSAGE);
+            outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -87,8 +108,8 @@ public class ServerSocketHandler implements Runnable {
     }
 
     public void joinChat(User user) {
-        try {
-            outToClient.writeObject(user);
+        try { Container packet = new Container(user, ClassName.USER_JOIN);
+            outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,6 +118,7 @@ public class ServerSocketHandler implements Runnable {
     public void sendInvite(PrivateMessage usersPM) {
         try {
             outToClient.writeObject(usersPM);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,16 +126,18 @@ public class ServerSocketHandler implements Runnable {
 
     public void sendMessageInPM(PrivateMessage pm) {
         try {
-            outToClient.writeObject(pm);
+            Container packet = new Container(pm, ClassName.PRIVATE_MESSAGE);
+            outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void userLeft(User user) {
-        Request request = new Request("UserLeft", user);
+
+        Container packet = new Container(user, ClassName.USER_LEFT);
         try {
-            outToClient.writeObject(request);
+            outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
