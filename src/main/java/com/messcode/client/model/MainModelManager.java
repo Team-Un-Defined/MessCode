@@ -53,6 +53,7 @@ public class MainModelManager implements MainModel {
     public void receivePM(
         PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
+        System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
 
