@@ -36,6 +36,7 @@ public class ChatClientController {
     public Pane panePrivate;
     public Pane paneProfile;
     public Pane paneGroup;
+    public Label userNameLabel;
 
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
@@ -76,6 +77,7 @@ public class ChatClientController {
                         messagesListAll.getItems().add(label);
                     });
                 });
+
         StringProperty pmChat = new SimpleStringProperty();
         pmChat.bind(chatVM.PMProperty());
 
@@ -136,10 +138,11 @@ public class ChatClientController {
             if (!use.getUsername().equals(this.sender.getUsername())) {
                  this.receiver = use;
                 panePrivate.toFront();
-               
+               userNameLabel.setText(use.getUsername());
             } else {
                 invitePmErrorLabel.setText(bundle.getString("talk_to_yourself"));
             }
+
         }
     }
 
