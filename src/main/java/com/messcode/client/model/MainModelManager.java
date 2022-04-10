@@ -45,6 +45,7 @@ public class MainModelManager implements MainModel {
     public void receivePublic(
             PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
+        System.out.println("got to model");
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
 

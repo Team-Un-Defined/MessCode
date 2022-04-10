@@ -54,7 +54,9 @@ public class ChatClientViewModel implements Subject {
 
     private void displayPublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
+
         message.setValue(publicMessage.getUsername() + ": " + publicMessage.getMsg());
+        System.out.println("got to model :" + message.getValue());
     }
 
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -65,8 +67,8 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
-    public void sendPublic(PublicMessage message) {
-        mainModel.sendPublic(message);
+    public void sendPublic(PublicMessage mess) {
+        mainModel.sendPublic(mess);
     }
 
     public ObservableList<User> getUsersList() {

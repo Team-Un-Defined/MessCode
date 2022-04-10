@@ -26,13 +26,7 @@ public class ConnectionPool {
         users.add(user);
     }
 
-    public void inviteToPM(PrivateMessage usersPM) {
-        for (ServerSocketHandler handler : connections) {
-            if (handler.getUser().equals(usersPM.getReceiver())) {
-                handler.sendInvite(usersPM);
-            }
-        }
-    }
+
 
     public void sendMessageInPM(PrivateMessage pm) {
         for (ServerSocketHandler handler : connections) {

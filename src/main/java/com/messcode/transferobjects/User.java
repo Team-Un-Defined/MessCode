@@ -3,7 +3,8 @@ package com.messcode.transferobjects;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 
-public class User implements Serializable {
+public class
+User implements Serializable {
     private String type = "employee";
     private String name;
     private String surname;

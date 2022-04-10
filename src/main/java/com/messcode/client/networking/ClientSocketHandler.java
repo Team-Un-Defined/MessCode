@@ -1,5 +1,7 @@
 package com.messcode.client.networking;
 
+import com.messcode.transferobjects.ClassName;
+import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.messages.PrivateMessage;
@@ -10,6 +12,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
+import static com.messcode.transferobjects.ClassName.*;
 
 public class ClientSocketHandler implements Runnable {
     private SocketClient socketClient;
@@ -30,30 +34,47 @@ public class ClientSocketHandler implements Runnable {
     public void run() {
         try {
             while (true) {
-                Object obj = inFromServer.readObject();
-                if (obj instanceof PrivateMessage) {
-                    PrivateMessage pm = (PrivateMessage) obj;
-                    receivePM(pm);
-                }
-                else if (obj instanceof PublicMessage) {
-                    PublicMessage message = ((PublicMessage) obj);
-                    receivePublic(message);
-                } else if (obj instanceof User) {
-                    User user = ((User) obj);
-                    addToUsersList(user);
-                } else if (obj instanceof UserList) {
-                    UserList users = (UserList) obj;
+                Container packet =(Container)inFromServer.readObject();
+                switch(packet.getClassName()) {
 
-                    for (int i = 0; i < users.getSize(); i++) {
-                        addToUsersList(users.get(i));
+                    case PRIVATE_MESSAGE:
+                    {
+                        PrivateMessage pm = (PrivateMessage)packet.getObject();
+                        receivePM(pm);
+                        break;
                     }
-                }
-                  else if (obj instanceof Request) {
-                    Request request = (Request) obj;
-                    if (request.getType().equals("UserLeft")) {
-                        userLeft(request.getArg());
+                    case PUBLIC_MESSAGE:
+                    {
+                      PublicMessage pub = (PublicMessage)packet.getObject();
+                        receivePublic(pub);
+                        break;
                     }
+                    case USER_JOIN:
+                    {
+                        User us = (User)packet.getObject();
+                        addToUsersList(us);
+                        break;
+                    }
+                    case USER_LIST:
+                    {
+                        UserList users = (UserList) packet.getObject();
+
+                        for (int i = 0; i < users.getSize(); i++) {
+                            addToUsersList(users.get(i));
+                        }
+                        break;
+                    }
+                    case USER_LEFT:
+                    {
+                        User user = (User) packet.getObject();
+
+                            userLeft(user);
+
+                        break;
+                    }
+
                 }
+
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -73,7 +94,7 @@ public class ClientSocketHandler implements Runnable {
 
     private void receivePublic(PublicMessage message) {
         socketClient.displayMessage(message);
-        System.out.println(message.getUsername() + " " + message.getMsg());
+        System.out.println("I GOT THIS: "+message.getUsername() + " " + message.getMsg());
     }
     private void receivePM(PrivateMessage message) {
         socketClient.displayMessage(message);
@@ -82,7 +103,8 @@ public class ClientSocketHandler implements Runnable {
     
     public void sendPM(PrivateMessage message) {
         try {
-            outToServer.writeObject(message);
+            Container packet= new Container(message, PRIVATE_MESSAGE);
+            outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,16 +112,16 @@ public class ClientSocketHandler implements Runnable {
     
     //  TO SERVER
     public void sendPublic(PublicMessage message) {
-        try {
-            outToServer.writeObject(message);
+        try {   Container packet= new Container(message, ClassName.PUBLIC_MESSAGE);
+            outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void addUser(User username) {
-        try {
-            outToServer.writeObject(username);
+        try {   Container packet= new Container(username, ClassName.USER_JOIN);
+            outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
