@@ -8,7 +8,6 @@ module com.example.messcode {
 
     opens com.messcode.client.views.login to javafx.fxml;
     opens com.messcode.client.views.chat to javafx.fxml;
-    opens com.messcode.client.views.private_chat to javafx.fxml;
     opens com.messcode.client.views.new_employee to javafx.fxml;
     opens com.messcode.client.views.new_group to javafx.fxml;
     opens com.messcode.client.views.change_password to javafx.fxml;

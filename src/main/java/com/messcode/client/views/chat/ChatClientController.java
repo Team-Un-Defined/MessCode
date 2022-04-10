@@ -12,17 +12,18 @@ import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.ToggleSwitch;
 
-import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.util.ResourceBundle;
-import javafx.fxml.FXML;
-import org.apache.logging.log4j.core.appender.routing.PurgePolicy;
 
 public class ChatClientController {
     public TextArea textArea;
-    public TextField textField;
+    public TextField textFieldAll;
+    public TextField textFieldPM;
+    public TextField textFieldGroup;
     public ListView<User> usersListFXML;
-    public ListView<Label> messagesListFXML;
+    public ListView<Label> messagesListAll;
+    public ListView<Label> messagesListPM;
+    public ListView<Label> messagesListGroup;
     public Label invitePmErrorLabel;
     public Label userDisplayedName;
     public ToggleSwitch toggleSwitch;
@@ -70,9 +71,9 @@ public class ChatClientController {
         textChat.addListener((observableValue, s, t1) ->{
                     Platform.runLater(()->{
                         Label label = new Label(textChat.getValue());
-                        label.setMaxWidth(messagesListFXML.getWidth() - 25);
+                        label.setMaxWidth(messagesListAll.getWidth() - 25);
                         label.setWrapText(true);
-                        messagesListFXML.getItems().add(label);
+                        messagesListAll.getItems().add(label);
                     });
                 });
         chatVM.addListener("NewPMess", this::openPrivateChat);
@@ -94,25 +95,25 @@ public class ChatClientController {
     }
 
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
-        usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());        
+        usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         this.receiver = usersPM.getReceiver();
         panePrivate.toFront();
         chatVM.sendListOfPmRoomUsers(usersPM);
-        
-    }
 
+    }
 
     public void sendButton() {
         System.out.println("*************************************");
-        String message = textField.getText();
+        String message = textFieldAll.getText();
         chatVM.sendPublic(new PublicMessage(this.sender, message));
-        textField.clear();
+        textFieldAll.clear();
     }
+
     public void sendPM() {
         System.out.println("-------------------------------------");
-        String message = textField.getText();
+        String message = textFieldPM.getText();
         chatVM.sendPM(new PrivateMessage(this.sender,this.receiver, message));
-        textField.clear();
+        textFieldPM.clear();
     }
     
 
