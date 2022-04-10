@@ -51,7 +51,7 @@ public class ChatClientViewModel implements Subject {
     private void displayPublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
 
-        message.setValue(publicMessage.getUsername() + ": " + publicMessage.getMsg());
+        message.setValue(publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
         System.out.println("got to model :" + message.getValue());
     }
 
@@ -104,7 +104,7 @@ public class ChatClientViewModel implements Subject {
 
     private void displayPM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
-        PMmessage.setValue(pm.getUsername() + ": " + pm.getMsg());
+        PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
           System.out.println("got to PMPM :" + PMmessage.getValue());
         
     }
