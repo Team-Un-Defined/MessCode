@@ -18,6 +18,7 @@ User implements Serializable {
         AccountManager myAccountManager = new AccountManager();
         this.name = name;
         this.surname = surname;
+        this.username = name + " " + surname;
         this.email = email;
         this.salt = myAccountManager.generateSalt();
         this.hashedPassword = myAccountManager.hashPassword(password, salt);
