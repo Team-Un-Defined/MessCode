@@ -17,13 +17,10 @@ public class RunApp extends Application {
 
     @Override
     public void start(Stage stage) {
-
-
         ClientFactory cf = new ClientFactory();
         ModelFactory mf = new ModelFactory(cf);
         ViewModelFactory vmf = new ViewModelFactory(mf);
         ViewHandler vh = new ViewHandler(vmf);
         vh.start();
-
     }
 }

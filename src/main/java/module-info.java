@@ -4,7 +4,6 @@ module com.example.messcode {
     requires java.desktop;
     requires org.controlsfx.controls;
     requires java.sql;
-   
 
     opens com.messcode.client.views.login to javafx.fxml;
     opens com.messcode.client.views.chat to javafx.fxml;
@@ -17,6 +16,4 @@ module com.example.messcode {
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
     requires org.postgresql.jdbc;
-
-
 }

@@ -4,6 +4,7 @@ import com.messcode.client.networking.Client;
 import com.messcode.client.networking.SocketClient;
 
 public class ClientFactory {
+
     private Client client;
 
     public Client getClient() {

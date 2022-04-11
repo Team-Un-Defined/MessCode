@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionPool {
+
     private List<ServerSocketHandler> connections = new ArrayList<>();
     private List<User> users = new ArrayList<>();
 
@@ -25,8 +26,6 @@ public class ConnectionPool {
         }
         users.add(user);
     }
-
-
 
     public void sendMessageInPM(PrivateMessage pm) {
         for (ServerSocketHandler handler : connections) {
@@ -56,7 +55,5 @@ public class ConnectionPool {
                 handler.userLeft(user);
             }
         }
-
     }
-
 }

@@ -5,9 +5,7 @@ import com.messcode.client.views.chat.ChatClientController;
 import com.messcode.client.views.login.LoginController;
 import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
-import com.messcode.transferobjects.User;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,13 +16,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ViewHandler {
+
     private ViewModelFactory vmf;
     private Stage stage;
     private Scene chat;
@@ -78,12 +76,7 @@ public class ViewHandler {
         stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("icon.png"));
         stage.setTitle("MessCode");
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                stage.close();
-            }
-        });
+        stage.setOnCloseRequest(windowEvent -> stage.close());
         dialog.showAndWait();
         if (bundle != null)
             openLogin();
@@ -104,12 +97,7 @@ public class ViewHandler {
         stage.setScene(chat);
         stage.getIcons().add(new Image("icon.png"));
         stage.show();
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                stage.close();
-            }
-        });
+        stage.setOnCloseRequest(windowEvent -> stage.close());
     }
 
     private void openLogin() {
@@ -127,12 +115,7 @@ public class ViewHandler {
         stage.setScene(login);
         stage.getIcons().add(new Image("icon.png"));
         stage.show();
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent windowEvent) {
-                stage.close();
-            }
-        });
+        stage.setOnCloseRequest(windowEvent -> stage.close());
     }
 
     public void openNewEmployee() {

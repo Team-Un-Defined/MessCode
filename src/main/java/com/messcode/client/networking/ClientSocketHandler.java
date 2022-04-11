@@ -6,24 +6,23 @@ import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
-import com.messcode.transferobjects.util.Request;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import static com.messcode.transferobjects.ClassName.*;
+import static com.messcode.transferobjects.ClassName.PRIVATE_MESSAGE;
 
 public class ClientSocketHandler implements Runnable {
+
     private SocketClient socketClient;
     private Socket socket;
 
     private ObjectOutputStream outToServer;
     private ObjectInputStream inFromServer;
 
-    public ClientSocketHandler(Socket socket, SocketClient socketClient)
-            throws IOException {
+    public ClientSocketHandler(Socket socket, SocketClient socketClient) throws IOException {
         this.socket = socket;
         this.socketClient = socketClient;
         outToServer = new ObjectOutputStream(socket.getOutputStream());
@@ -34,63 +33,49 @@ public class ClientSocketHandler implements Runnable {
     public void run() {
         try {
             while (true) {
-                Container packet =(Container)inFromServer.readObject();
-                switch(packet.getClassName()) {
-
-                    case PRIVATE_MESSAGE:
-                    {
-                        PrivateMessage pm = (PrivateMessage)packet.getObject();
+                Container packet = (Container) inFromServer.readObject();
+                switch (packet.getClassName()) {
+                    case PRIVATE_MESSAGE: {
+                        PrivateMessage pm = (PrivateMessage) packet.getObject();
                         receivePM(pm);
                         break;
                     }
-
-                    case PUBLIC_MESSAGE:
-                    {
-                      PublicMessage pub = (PublicMessage)packet.getObject();
+                    case PUBLIC_MESSAGE: {
+                        PublicMessage pub = (PublicMessage) packet.getObject();
                         receivePublic(pub);
                         break;
                     }
-                    case USER_JOIN:
-                    {
-                        User us = (User)packet.getObject();
+                    case USER_JOIN: {
+                        User us = (User) packet.getObject();
                         addToUsersList(us);
                         break;
                     }
-                    case USER_LIST:
-                    {
-
+                    case USER_LIST: {
                         UserList users = (UserList) packet.getObject();
-                        System.out.println("got this message from server: "+users.getSize() +" user: "+ users.get(0).getEmail());
+                        System.out.println("got this message from server: " + users.getSize()
+                                + " user: " + users.get(0).getEmail());
                         for (int i = 0; i < users.getSize(); i++) {
                             addToUsersList(users.get(i));
                         }
                         break;
                     }
-                    case USER_LEFT:
-                    {
+                    case USER_LEFT: {
                         User user = (User) packet.getObject();
-
-                            userLeft(user);
-
+                        userLeft(user);
                         break;
                     }
-                    case LOGIN_RESPONSE:
-                    {
-                        boolean answ= (boolean)packet.getObject();
-                        System.out.println("in client: " +answ);
+                    case LOGIN_RESPONSE: {
+                        boolean answ = (boolean) packet.getObject();
+                        System.out.println("in client: " + answ);
                         loginResponse(answ);
                         break;
                     }
-                    case LOGIN_DATA:
-                    {
-
-                        System.out.println("i got the data " +packet);
+                    case LOGIN_DATA: {
+                        System.out.println("i got the data " + packet);
                         loginData(packet);
                         break;
                     }
-
                 }
-
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -100,7 +85,6 @@ public class ClientSocketHandler implements Runnable {
     private void loginData(Container packet) {
         socketClient.loginData(packet);
     }
-
 
     private void userLeft(Object arg) {
         User user = (User) arg;
@@ -118,25 +102,27 @@ public class ClientSocketHandler implements Runnable {
 
     private void receivePublic(PublicMessage message) {
         socketClient.displayMessage(message);
-        System.out.println("I GOT THIS: "+message.getUsername() + " " + message.getMsg());
+        System.out.println("I GOT THIS: " + message.getUsername() + " " + message.getMsg());
     }
+
     private void receivePM(PrivateMessage message) {
         socketClient.displayPM(message);
         System.out.println(message.getUsername() + " " + message.getMsg());
     }
-    
+
     public void sendPM(PrivateMessage message) {
         try {
-            Container packet= new Container(message, PRIVATE_MESSAGE);
+            Container packet = new Container(message, PRIVATE_MESSAGE);
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     //  TO SERVER
     public void sendPublic(PublicMessage message) {
-        try {   Container packet= new Container(message, ClassName.PUBLIC_MESSAGE);
+        try {
+            Container packet = new Container(message, ClassName.PUBLIC_MESSAGE);
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,20 +130,10 @@ public class ClientSocketHandler implements Runnable {
     }
 
     public void addUser(User username) {
-        try {   Container packet= new Container(username, ClassName.USER_JOIN);
-            System.out.println(username.getUsername() + " pas: "+ username.getEmail());
-            outToServer.writeObject(packet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    
-
-    public void sendMessageInPM(PrivateMessage message) {
         try {
-            outToServer.writeObject(message);
-
+            Container packet = new Container(username, ClassName.USER_JOIN);
+            System.out.println(username.getUsername() + " pas: " + username.getEmail());
+            outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -7,13 +7,15 @@ import com.messcode.transferobjects.util.Subject;
 
 import java.io.IOException;
 
-public interface Client extends Subject
-{
-  void start() throws IOException;
-  void displayMessage(PublicMessage message);
-  void addUser(User username);
-  void sendPublic(PublicMessage um);
-  void sendPM(PrivateMessage pm);
+public interface Client extends Subject {
 
+    void start() throws IOException;
 
+    void displayMessage(PublicMessage message);
+
+    void addUser(User username);
+
+    void sendPublic(PublicMessage um);
+
+    void sendPM(PrivateMessage pm);
 }

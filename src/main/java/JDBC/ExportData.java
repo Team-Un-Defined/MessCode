@@ -10,260 +10,238 @@ import java.sql.DriverManager;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ExportData
-{
+public class ExportData {
 
-  private Connection c;
+    private Connection c;
+
+    public ExportData() {
+        /**
+         * Constructor method for Loading stuff from database. Gets the PostgreSQL connection.
+         */
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/MessCode", "postgres",
+                            "chickenattack777"); //use your own password here
+            System.out.println("hello success");
 
 
-  public ExportData()
-  {
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
-     * Constructor method for Loading stuff from database. Gets the PostgreSQL connection.
+     * Creates an SQL statement, if the  email is found in the database
+     * the method will return a boolean false. If they are not in the database the
+     * credentials are unique and the method will return a boolean true
+     *
+     * @param email String containing the email
+     * @return boolean true if the account is unique and false if it is not
+     * @throws SQLException an exception that provides information on a database
+     *                      access error or other errors.
      */
-    try
-    {
-      Class.forName("org.postgresql.Driver");
-      c = DriverManager
-          .getConnection("jdbc:postgresql://localhost:5432/MessCode", "postgres",
-              "chickenattack777"); //use your own password here
-      System.out.println("hello success");
+    public boolean checkAccountUniqueness(String username, String email) throws SQLException {
+        boolean unique = false;
+        Statement st = c.createStatement();
+        String query =
+                "SELECT * FROM Accounts WHERE email ='" + email + "' ;";
 
+        ResultSet rs = st.executeQuery(query);
+
+        String ema = null;
+        while (rs.next()) {
+
+            ema = rs.getString("email");
+
+            System.out.println("email = " + ema);
+            if (ema != null) {
+                System.out.println(unique);
+                break;
+            }
+            System.out.println(unique);
+        }
+        if (ema == null) {
+            unique = true;
+            System.out.println(unique);
+        }
+        return unique;
+    }
+
+    /**
+     * Creates an SQL statement that checks if the username and password are found in
+     * the database. If the credentials are found a Container will be created containing the
+     * answer(true), otherwise the answer will be false
+     *
+     * @param email    String containing the username
+     * @param password String containing the password
+     * @return a container that has the answer(boolean) from the database
+     * @throws SQLException An exception that provides information on a database
+     *                      access error or other errors.
+     */
+    public Container checkLogin(String email, String password) throws SQLException {
+        System.out.println("hello why not?");
+        boolean answer = false;
+
+        System.out.println("HELLO ");
+        Statement st = c.createStatement();
+        String query =
+                "SELECT * FROM Account WHERE  email = '" + email
+                        + "' AND pwd_hash ='" + password + "' ;";
+
+        ResultSet rs = st.executeQuery(query);
+        System.out.println("HELLO2 ");
+        String ema = null;
+        String pass = null;
+
+        while (rs.next()) {
+
+            pass = rs.getString("pwd_hash");
+            ema = rs.getString("email");
+
+            System.out.println("pass= " + password);
+            System.out.println("email = " + ema);
+
+            if (email != null && password != null) {
+                answer = true;
+                System.out.println("ans1" + answer);
+                break;
+            }
+
+        }
+        System.out.println("ans3" + answer);
+
+        Container datapack = new Container(answer, ClassName.LOGIN_RESPONSE);
+        return datapack;
+    }
+
+    /**
+     * Creates an SQL statement that will get the account information and the groups, that
+     * the user is part of , from the database.
+     *
+     * @param email    String containing the username
+     * @param password String containing the password
+     * @throws SQLException an exception that provides information on a database
+     *                      access error or other errors.
+     * @returns Container that contains a boolean true stating that the login was successfull, the account of the user and an ArrayList of groups.
+     */
+    public Container acceptLogin(String email, String password) throws SQLException {
+        Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        String query = "SELECT a.id,a.fname,a.lname, a.email, a.type  from public.account as a   WHERE a.email = '" + email + "' AND a.pwd_hash= '" + password + "'  ";
+
+
+        ResultSet rs = st.executeQuery(query);
+
+        boolean doesAccountHaveGroups = true;
+        String fname = null;
+        String lname = null;
+        String ema = null;
+        int id = 0;
+        String type = null;
+        int publicMID = 0;
+        int privateMID = 0;
+        ArrayList<PublicMessage> allPublicMessages = new ArrayList<>();
+        ArrayList<PublicMessage> lastSeen = new ArrayList<>();
+
+
+        rs.beforeFirst();
+
+        while (rs.next()) {
+            id = rs.getInt("id");
+            fname = rs.getString("fname");
+            lname = rs.getString("lname");
+            ema = rs.getString("email");
+            type = rs.getString("type");
+
+
+        }
+        rs.beforeFirst();
+        String query2 = "select m.public_message_id from last_seen as m where m.user_id =" + id + "and m.public_message_id is not null";
+        rs = st.executeQuery(query2);
+
+        while (rs.next()) {
+            publicMID = rs.getInt("public_message_id");
+
+
+        }
+        String query3 = "select * from public.public_messages as s join public.account as pa\n" +
+                "on s.sender_id=pa.id";
+        rs = st.executeQuery(query3);
+        rs.beforeFirst();
+        int cid = 0;
+        while (rs.next()) {
+            cid = rs.getInt("id");
+            User us = new User(rs.getString("fname"), rs.getString("lname"));
+
+            allPublicMessages.add(new PublicMessage(us, rs.getString("message")));
+
+        }
+        if (cid > publicMID) {
+            lastSeen.add(new PublicMessage(null, "PublicMessageTrue"));
+        }
+        //String query4= "select m.private_message_id from last_seen as m where m.user_id ="+id +"and m.public_message_id is not null";
+
+
+        ArrayList<Object> objs = new ArrayList<>();
+        objs.add(allPublicMessages);
+        objs.add(lastSeen);
+        Container dataPack = new Container(objs, ClassName.LOGIN_DATA);
+        return dataPack;
 
     }
-    catch (SQLException | ClassNotFoundException e)
-    {
-      e.printStackTrace();
+
+    /**
+     * Just a parser to change sql Arrays to ArrayList of integers.
+     *
+     * @param ar String
+     * @return ArrayList<Integer>
+     */
+    public ArrayList<Integer> sqlArrayToArrayListInteger(String ar) {
+        ArrayList<Integer> temp = new ArrayList<>();
+        String[] ara = ar.split("\\{");
+        String part2 = ara[1];
+        String[] h = part2.split("}");
+        String o = h[0];
+        String[] l = o.split(",");
+
+        for (int i = 0; i < l.length; i++) {
+            if (l[i].equals("NULL")) {
+                l[i] = "0";
+            }
+            temp.add(Integer.parseInt(l[i]));
+
+        }
+        return temp;
     }
-  }
 
-  /**
-   * Creates an SQL statement, if the  email is found in the database
-   * the method will return a boolean false. If they are not in the database the
-   * credentials are unique and the method will return a boolean true
-   *
-   * @param email    String containing the email
-   * @return boolean true if the account is unique and false if it is not
-   * @throws SQLException an exception that provides information on a database
-   *                      access error or other errors.
-   */
-  public boolean checkAccountUniqueness(String username, String email)
-      throws SQLException
-  {
-    boolean unique = false;
-    Statement st = c.createStatement();
-    String query =
-        "SELECT * FROM Accounts WHERE email ='" + email + "' ;";
+    /**
+     * Just a parser to change sql Arrays to ArrayList of Strings.
+     *
+     * @param ar String
+     * @return ArrayList<String>
+     */
+    public static ArrayList<String> sqlArrayToArrayListString(String ar) {
+        ArrayList<String> temp = new ArrayList<>();
+        System.out.println("This is the array of usernames:" + ar);
 
-    ResultSet rs = st.executeQuery(query);
+        String[] ara = ar.split("\\{");
+        String part2 = ara[1];
+        String[] h = part2.split("}");
+        String o = h[0];
+        String[] l = o.split(",");
 
-    String ema = null;
-    while (rs.next())
-    {
+        for (int i = 0; i < l.length; i++) {
+            temp.add(l[i]);
 
-      ema = rs.getString("email");
-
-      System.out.println("email = " + ema);
-      if ( ema != null)
-      {
-        System.out.println(unique);
-        break;
-      }
-      System.out.println(unique);
+        }
+        return temp;
     }
-    if ( ema == null)
-    {
-      unique = true;
-      System.out.println(unique);
-    }
-    return unique;
-  }
-  /**
-   * Creates an SQL statement that checks if the username and password are found in
-   * the database. If the credentials are found a Container will be created containing the
-   * answer(true), otherwise the answer will be false
-   *
-   * @param email String containing the username
-   * @param password String containing the password
-   * @return a container that has the answer(boolean) from the database
-   * @throws SQLException An exception that provides information on a database
-   *                      access error or other errors.
-   */
-  public Container checkLogin(String email, String password)
-      throws SQLException
-
-  {
-    System.out.println("hello why not?");
-    boolean answer = false;
-
-    System.out.println("HELLO ");
-    Statement st = c.createStatement();
-    String query =
-        "SELECT * FROM Account WHERE  email = '" + email
-            + "' AND pwd_hash ='" + password + "' ;";
-
-    ResultSet rs = st.executeQuery(query);
-    System.out.println("HELLO2 ");
-    String ema = null;
-    String pass = null;
-
-    while (rs.next())
-    {
-
-      pass = rs.getString("pwd_hash");
-      ema = rs.getString("email");
-
-      System.out.println("pass= " + password);
-      System.out.println("email = " + ema);
-
-      if (email != null && password != null)
-      {
-        answer = true;
-        System.out.println("ans1" + answer);
-        break;
-      }
-
-    }
-    System.out.println("ans3" + answer);
-
-    Container datapack = new Container(answer, ClassName.LOGIN_RESPONSE);
-    return datapack;
-  }
-
-  /**
-   * Creates an SQL statement that will get the account information and the groups, that
-   * the user is part of , from the database.
-   * @param email String containing the username
-   * @param password String containing the password
-   * @throws SQLException an exception that provides information on a database
-   *                      access error or other errors.
-   * @returns Container that contains a boolean true stating that the login was successfull, the account of the user and an ArrayList of groups.
-   */
-  public Container acceptLogin(String email, String password)
-      throws SQLException {
-    Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-    String query = "SELECT a.id,a.fname,a.lname, a.email, a.type  from public.account as a   WHERE a.email = '" + email + "' AND a.pwd_hash= '" + password + "'  ";
-
-
-    ResultSet rs = st.executeQuery(query);
-
-    boolean doesAccountHaveGroups = true;
-    String fname = null;
-    String lname = null;
-    String ema = null;
-    int id = 0;
-    String type = null;
-    int publicMID = 0;
-    int privateMID = 0;
-    ArrayList<PublicMessage> allPublicMessages = new ArrayList<>();
-    ArrayList<PublicMessage> lastSeen = new ArrayList<>();
-
-
-
-
-    rs.beforeFirst();
-
-    while (rs.next()) {
-      id = rs.getInt("id");
-      fname = rs.getString("fname");
-      lname = rs.getString("lname");
-      ema = rs.getString("email");
-      type = rs.getString("type");
-
-
-    }
-    rs.beforeFirst();
-    String query2 = "select m.public_message_id from last_seen as m where m.user_id =" + id + "and m.public_message_id is not null";
-    rs = st.executeQuery(query2);
-
-    while (rs.next()) {
-      publicMID = rs.getInt("public_message_id");
-
-
-    }
-    String query3 = "select * from public.public_messages as s join public.account as pa\n" +
-            "on s.sender_id=pa.id";
-    rs = st.executeQuery(query3);
-    rs.beforeFirst();
-    int cid = 0;
-    while (rs.next()) {
-      cid = rs.getInt("id");
-      User us = new User(rs.getString("fname"),rs.getString("lname"));
-
-      allPublicMessages.add(new PublicMessage(us,rs.getString("message")));
-
-    }
-    if (cid > publicMID){
-      lastSeen.add(new PublicMessage(null, "PublicMessageTrue"));
-    }
-    //String query4= "select m.private_message_id from last_seen as m where m.user_id ="+id +"and m.public_message_id is not null";
-
-
-
-
-
-
-
-
-    ArrayList<Object> objs = new ArrayList<>();
-    objs.add(allPublicMessages);
-    objs.add(lastSeen);
-    Container dataPack = new Container(objs, ClassName.LOGIN_DATA);
-    return dataPack;
-
-  }
-
-  /**
-   * Just a parser to change sql Arrays to ArrayList of integers.
-   * @param ar String
-   * @return ArrayList<Integer>
-   */
-  public ArrayList<Integer> sqlArrayToArrayListInteger(String ar)
-  {
-    ArrayList<Integer> temp = new ArrayList<>();
-    String[] ara = ar.split("\\{");
-    String part2 = ara[1];
-    String[] h = part2.split("}");
-    String o = h[0];
-    String[] l = o.split(",");
-
-    for (int i = 0; i < l.length; i++)
-    { if(l[i].equals("NULL")) {l[i]="0";}
-      temp.add(Integer.parseInt(l[i]));
-
-    }
-    return temp;
-  }
-  /**
-   * Just a parser to change sql Arrays to ArrayList of Strings.
-   * @param ar String
-   * @return ArrayList<String>
-   */
-  public static ArrayList<String> sqlArrayToArrayListString(String ar)
-  {
-    ArrayList<String> temp = new ArrayList<>();
-    System.out.println("This is the array of usernames:"+ar);
-
-    String[] ara = ar.split("\\{");
-    String part2 = ara[1];
-    String[] h = part2.split("}");
-    String o = h[0];
-    String[] l = o.split(",");
-
-    for (int i = 0; i < l.length; i++)
-    {
-      temp.add(l[i]);
-
-    }
-    return temp;
-  }
-  /**
-   * Creates an SQL statement that will search for a group and return whether it exists or not.
-   * @param id int ID to search for the group
-   * @throws SQLException an exception that provides information on a database
-   *                      access error or other errors.
-   * @returns boolean stating true if the group exists, and false if otherwise.
-   */
-
+    /**
+     * Creates an SQL statement that will search for a group and return whether it exists or not.
+     * @param id int ID to search for the group
+     * @throws SQLException an exception that provides information on a database
+     *                      access error or other errors.
+     * @returns boolean stating true if the group exists, and false if otherwise.
+     */
 
 }

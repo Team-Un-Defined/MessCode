@@ -17,8 +17,6 @@ public class SocketClient implements Client {
 
     private ClientSocketHandler socketHandler;
     private Socket socket;
-
-
     private PropertyChangeSupport support;
 
     @Override
@@ -36,7 +34,6 @@ public class SocketClient implements Client {
         socketHandler.sendPublic(message);
     }
 
-
     @Override
     public void displayMessage(PublicMessage message) {
         support.firePropertyChange("MessageForEveryone", null, message);
@@ -48,24 +45,19 @@ public class SocketClient implements Client {
     }
 
     public void addToList(User user) {
-
         support.firePropertyChange("AddNewUser", null, user);
     }
 
-
     @Override
-    public void addListener(String eventName,
-                            PropertyChangeListener listener) {
+    public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
     @Override
-    public void removeListener(String eventName,
-                               PropertyChangeListener listener) {
+    public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
-   
     public void displayPM(PrivateMessage pm) {
         support.firePropertyChange("newPM", null, pm);
     }
@@ -76,16 +68,15 @@ public class SocketClient implements Client {
 
     @Override
     public void sendPM(PrivateMessage pm) {
-       socketHandler.sendPM(pm);
+        socketHandler.sendPM(pm);
     }
 
-
     public void loginResponse(boolean answ) {
-        support.firePropertyChange("LoginResponse",null,answ);
+        support.firePropertyChange("LoginResponse", null, answ);
     }
 
     public void loginData(Container packet) {
-        support.firePropertyChange("LoginData",null,packet);
+        support.firePropertyChange("LoginData", null, packet);
     }
 }
 
