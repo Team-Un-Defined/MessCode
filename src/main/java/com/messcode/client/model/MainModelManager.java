@@ -1,6 +1,7 @@
 package com.messcode.client.model;
 
 import com.messcode.client.networking.Client;
+import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.User;
@@ -9,15 +10,19 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MainModelManager implements MainModel {
     private Client client;
     private PropertyChangeSupport support;
     private User user;
     private PrivateMessage usersPM;
+    private ArrayList<PublicMessage> allPublicMessage;
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
+        allPublicMessage = new ArrayList<>();
+
         this.client = client;
         try {
             client.start();
@@ -25,9 +30,31 @@ public class MainModelManager implements MainModel {
             client.addListener("MessageForEveryone", this::receivePublic);
             client.addListener("newPM", this::receivePM);
             client.addListener("RemoveUser", this::removeFromUsersList);
+            client.addListener("LoginResponse", this::loginResponse);
+            client.addListener("LoginData", this::loginData);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loginData(PropertyChangeEvent propertyChangeEvent) {
+       Container packet= ((Container) propertyChangeEvent.getNewValue());
+        ArrayList<Object> objs = (ArrayList<Object>) packet.getObject();
+        ArrayList<PublicMessage> allPublicMessages= (ArrayList<PublicMessage>)objs.get(0);
+        ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>)objs.get(1);
+        System.out.println("Everything has been casted");
+        allPublicMessage.addAll(allPublicMessages);
+        // user.getLastSeen.add(lastSeen);
+        support.firePropertyChange("LoginData", null, allPublicMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
+
+
+    }
+
+    private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
+        boolean answer= (boolean) propertyChangeEvent.getNewValue();
+        System.out.println("in model: " +answer);
+        support.firePropertyChange("LoginResponseToVM", null, answer);
+
     }
 
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {

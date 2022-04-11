@@ -14,8 +14,9 @@ User implements Serializable {
     private String salt;
 
     // temporary, will remove later
-    public User(String username) {
+    public User(String username,String password) {
         this.username = username;
+        this.email = password;
     }
 
     // if you are creating new employee you use this constructor
