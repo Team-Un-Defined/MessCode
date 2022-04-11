@@ -1,5 +1,6 @@
 package com.messcode.client.networking;
 
+import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.User;
@@ -47,7 +48,7 @@ public class SocketClient implements Client {
     }
 
     public void addToList(User user) {
-        System.out.println("[CLIENT] user " + user.getUsername() + " added to list");
+
         support.firePropertyChange("AddNewUser", null, user);
     }
 
@@ -78,7 +79,14 @@ public class SocketClient implements Client {
        socketHandler.sendPM(pm);
     }
 
-    
+
+    public void loginResponse(boolean answ) {
+        support.firePropertyChange("LoginResponse",null,answ);
+    }
+
+    public void loginData(Container packet) {
+        support.firePropertyChange("LoginData",null,packet);
+    }
 }
 
 

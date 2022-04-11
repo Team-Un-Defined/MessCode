@@ -2,27 +2,33 @@ package JDBC;
 
 import com.messcode.transferobjects.ClassName;
 import com.messcode.transferobjects.Container;
+import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.PublicMessage;
+
+import java.sql.DriverManager;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class ExportData
 {
-  private Character character;
+
   private Connection c;
 
 
   public ExportData()
   {
     /**
-     * Constructor method for LoadCharacter. Gets the PostgreSQL connection.
+     * Constructor method for Loading stuff from database. Gets the PostgreSQL connection.
      */
     try
     {
       Class.forName("org.postgresql.Driver");
       c = DriverManager
           .getConnection("jdbc:postgresql://localhost:5432/MessCode", "postgres",
-              "almafast325"); //use your own password here
+              "chickenattack777"); //use your own password here
+      System.out.println("hello success");
+
 
     }
     catch (SQLException | ClassNotFoundException e)
@@ -87,22 +93,24 @@ public class ExportData
       throws SQLException
 
   {
+    System.out.println("hello why not?");
     boolean answer = false;
 
+    System.out.println("HELLO ");
     Statement st = c.createStatement();
     String query =
         "SELECT * FROM Account WHERE  email = '" + email
-            + "' AND password ='" + password + "' ;";
+            + "' AND pwd_hash ='" + password + "' ;";
 
     ResultSet rs = st.executeQuery(query);
-
+    System.out.println("HELLO2 ");
     String ema = null;
     String pass = null;
 
     while (rs.next())
     {
 
-      pass = rs.getString("password");
+      pass = rs.getString("pwd_hash");
       ema = rs.getString("email");
 
       System.out.println("pass= " + password);
@@ -117,9 +125,8 @@ public class ExportData
 
     }
     System.out.println("ans3" + answer);
-    ArrayList<Object> obj = new ArrayList<>();
-    obj.add(answer);
-    Container datapack = new Container(obj, ClassName.LOGIN_RESPONSE);
+
+    Container datapack = new Container(answer, ClassName.LOGIN_RESPONSE);
     return datapack;
   }
 
@@ -133,99 +140,75 @@ public class ExportData
    * @returns Container that contains a boolean true stating that the login was successfull, the account of the user and an ArrayList of groups.
    */
   public Container acceptLogin(String email, String password)
-      throws SQLException
-  {
+      throws SQLException {
     Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-    String query ="SELECT a.fname,a.lname, a.lname, a.email a.type  from public.account   WHERE public.username = '"+email +"' AND public.password= '"+password +"' AND  ";
+    String query = "SELECT a.id,a.fname,a.lname, a.email, a.type  from public.account as a   WHERE a.email = '" + email + "' AND a.pwd_hash= '" + password + "'  ";
+
 
     ResultSet rs = st.executeQuery(query);
 
-    boolean doesAccountHaveGroups=true;
-    String userame = null;
+    boolean doesAccountHaveGroups = true;
+    String fname = null;
+    String lname = null;
     String ema = null;
-    String pass = null;
+    int id = 0;
+    String type = null;
+    int publicMID = 0;
+    int privateMID = 0;
+    ArrayList<PublicMessage> allPublicMessages = new ArrayList<>();
+    ArrayList<PublicMessage> lastSeen = new ArrayList<>();
 
 
 
-    if(!rs.next())
-    {
-      doesAccountHaveGroups = false;
-      query =
-          "SELECT * FROM \"Users\".\"Users\" WHERE  username  = '" + email + "' AND password ='" + password + "' ;";
-      rs = st.executeQuery(query);
 
+    rs.beforeFirst();
+
+    while (rs.next()) {
+      id = rs.getInt("id");
+      fname = rs.getString("fname");
+      lname = rs.getString("lname");
+      ema = rs.getString("email");
+      type = rs.getString("type");
 
 
     }
     rs.beforeFirst();
+    String query2 = "select m.public_message_id from last_seen as m where m.user_id =" + id + "and m.public_message_id is not null";
+    rs = st.executeQuery(query2);
 
-
-    //ArrayList<> groupList = new ArrayList<>();
-
-    ArrayList<String> plys = new ArrayList<>();
-    ArrayList<Integer> charIDs = new ArrayList<>();
-
-    while (rs.next())
-    {
-      userame = rs.getString("username");
-      pass = rs.getString("password");
-      ema = rs.getString("email");
-
-      if(doesAccountHaveGroups==false) {
-        break;}
-
-
-
-
-
-      String k = rs.getString("usernamePlayers");
-      String charid = rs.getString("characterIDs");
-      // ng = null;
-      //ng  = new Group(rs.getString("name"), rs.getInt("id"));
-      //ng.addDM(new DM(rs.getString("usernameDM")));
-      if(k!=null)
-      {
-        plys = sqlArrayToArrayListString(k);
-
-        charIDs = sqlArrayToArrayListInteger(charid);
-
-        for (int i = 0; i < plys.size(); i++)
-        {
-          if(plys.get(i)!=null)
-          {
-        //    Player a = new Player(plys.get(i));
-
-            if(charIDs.get(i)!=0)
-            { //a.addCharacterID(charIDs.get(i));
-              //System.out.println("char id for "+ a.getName() + " is: " +charIDs.get(i));} else {a.addCharacterID(null);
-              }
-            //ng.addPlayer(a);
-          }
-
-        }
-      }
-
-      //System.out.println("group : "+ng.toString());
-      //groupList.add(ng);
+    while (rs.next()) {
+      publicMID = rs.getInt("public_message_id");
 
 
     }
+    String query3 = "select * from public.public_messages as s join public.account as pa\n" +
+            "on s.sender_id=pa.id";
+    rs = st.executeQuery(query3);
+    rs.beforeFirst();
+    int cid = 0;
+    while (rs.next()) {
+      cid = rs.getInt("id");
+      User us = new User(rs.getString("fname"),rs.getString("lname"));
+
+      allPublicMessages.add(new PublicMessage(us,rs.getString("message")));
+
+    }
+    if (cid > publicMID){
+      lastSeen.add(new PublicMessage(null, "PublicMessageTrue"));
+    }
+    //String query4= "select m.private_message_id from last_seen as m where m.user_id ="+id +"and m.public_message_id is not null";
+
+
+
+
+
+
 
 
     ArrayList<Object> objs = new ArrayList<>();
-    boolean b = true; objs.add(b);
-    //Account acc = new Account(userame, password, ema);
-    //objs.add(acc);
-
-    if(doesAccountHaveGroups)
-    {
-      //objs.add(groupList);
-
-    }
-
-
-
-    Container dataPack = new Container(objs, ClassName.LOGIN_RESPONSE);
+    objs.add(allPublicMessages);
+    objs.add(lastSeen);
+    Container dataPack = new Container(objs, ClassName.LOGIN_DATA);
     return dataPack;
 
   }
