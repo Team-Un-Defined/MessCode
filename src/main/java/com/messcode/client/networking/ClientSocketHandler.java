@@ -43,6 +43,7 @@ public class ClientSocketHandler implements Runnable {
                         receivePM(pm);
                         break;
                     }
+
                     case PUBLIC_MESSAGE:
                     {
                       PublicMessage pub = (PublicMessage)packet.getObject();
@@ -57,8 +58,9 @@ public class ClientSocketHandler implements Runnable {
                     }
                     case USER_LIST:
                     {
-                        UserList users = (UserList) packet.getObject();
 
+                        UserList users = (UserList) packet.getObject();
+                        System.out.println("got this message from server: "+users.getSize() +" user: "+ users.get(0).getEmail());
                         for (int i = 0; i < users.getSize(); i++) {
                             addToUsersList(users.get(i));
                         }
@@ -72,6 +74,20 @@ public class ClientSocketHandler implements Runnable {
 
                         break;
                     }
+                    case LOGIN_RESPONSE:
+                    {
+                        boolean answ= (boolean)packet.getObject();
+                        System.out.println("in client: " +answ);
+                        loginResponse(answ);
+                        break;
+                    }
+                    case LOGIN_DATA:
+                    {
+
+                        System.out.println("i got the data " +packet);
+                        loginData(packet);
+                        break;
+                    }
 
                 }
 
@@ -81,12 +97,20 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    private void loginData(Container packet) {
+        socketClient.loginData(packet);
+    }
+
+
     private void userLeft(Object arg) {
         User user = (User) arg;
         socketClient.removeFromList(user);
     }
 
     //  BACK TO FXML
+    private void loginResponse(boolean answ) {
+        socketClient.loginResponse(answ);
+    }
 
     private void addToUsersList(User user) {
         socketClient.addToList(user);
@@ -121,6 +145,7 @@ public class ClientSocketHandler implements Runnable {
 
     public void addUser(User username) {
         try {   Container packet= new Container(username, ClassName.USER_JOIN);
+            System.out.println(username.getUsername() + " pas: "+ username.getEmail());
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();

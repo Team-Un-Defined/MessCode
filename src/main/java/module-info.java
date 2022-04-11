@@ -16,6 +16,7 @@ module com.example.messcode {
     exports com.messcode.client;
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
+    requires org.postgresql.jdbc;
 
-   
+
 }

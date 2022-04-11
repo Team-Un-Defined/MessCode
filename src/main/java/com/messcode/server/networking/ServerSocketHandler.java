@@ -13,21 +13,24 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ServerSocketHandler implements Runnable {
     private ConnectionPool pool;
     private Socket socket;
+    private ImportData dbi;
 private ExportData dbe;
-private ImportData dbi;
+
     private ObjectOutputStream outToClient;
     private ObjectInputStream inFromClient;
 
     private User user;
 
-    public ServerSocketHandler(Socket socket, ConnectionPool pool)
+    public ServerSocketHandler(Socket socket, ConnectionPool pool,ImportData dbii, ExportData dbee)
             throws IOException {
-        dbe=new ExportData();
-        dbi=new ImportData();
+        dbe=dbee;
+        dbi=dbii;
         this.socket = socket;
         this.pool = pool;
         inFromClient = new ObjectInputStream(socket.getInputStream());
@@ -49,14 +52,25 @@ private ImportData dbi;
                         pool.sendMessageInPM(pm);
                         break;
                     }
-                    case USER_JOIN:
-                    {
+                    case USER_JOIN: {
+                        User usertemp = (User) packet.getObject();
+                        Container packetToClient = null;
+
+                            packetToClient = dbe.checkLogin(usertemp.getUsername(), usertemp.getEmail()); /// here the username, should be email, and email should be passowrd
+
+
+                        if ((boolean) (packetToClient.getObject()))
+                        {
+                           packetToClient= dbe.acceptLogin(usertemp.getUsername(),usertemp.getEmail());
+                        }else {
+                            outToClient.writeObject(packetToClient);
+                            break;
+                        }
                         pool.addHandler(this);
-                        user = (User) packet.getObject();
-                        System.out
-                                .println("[SERVER] " + user.getUsername() + " joined the chat");
-                        pool.userJoin(user);
+
+                        pool.userJoin(usertemp);
                         updateUsersList();
+                        outToClient.writeObject(packetToClient);
                         break;
                     }
                     case PUBLIC_MESSAGE:
@@ -77,6 +91,8 @@ private ImportData dbi;
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -84,6 +100,7 @@ private ImportData dbi;
         try {
             UserList users = new UserList();
             users.addList(pool.getUsers());
+            System.out.println("server, user size: "+users.getSize());
             Container packet = new Container(users, ClassName.USER_LIST);
             outToClient.writeObject(packet);
         } catch (IOException e) {
