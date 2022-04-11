@@ -13,16 +13,18 @@ import java.util.ArrayList;
 public class ExportData {
 
     private Connection c;
+    private DatabaseConnection conn;
 
     public ExportData() {
         /**
          * Constructor method for Loading stuff from database. Gets the PostgreSQL connection.
          */
+        conn = new DatabaseConnection();
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/MessCode", "postgres",
-                            "chickenattack777"); //use your own password here
+                    .getConnection(conn.getConn(), conn.getName(),
+                            conn.getPass()); //use your own password here
             System.out.println("hello success");
 
 
