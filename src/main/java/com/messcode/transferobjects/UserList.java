@@ -8,10 +8,14 @@ public class UserList implements Serializable
 {
   private ArrayList<User> users=new ArrayList<>();
 
-  public void addList(List<User> user){
+  public void addUser(User newUser) {
+    users.add(newUser);
+  }
 
+  public void addList(List<User> user){
     users.addAll(user);
   }
+
   public int getSize(){
     return users.size();
   }

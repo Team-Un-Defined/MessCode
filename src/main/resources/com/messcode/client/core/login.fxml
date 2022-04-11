@@ -53,7 +53,7 @@
          <children>
             <Label layoutX="13.0" layoutY="27.0" text="Email" />
             <Label layoutX="13.0" layoutY="68.0" text="Password" />
-            <TextField fx:id="textField" layoutX="79.0" layoutY="23.0" prefHeight="25.0" prefWidth="165.0" />
+            <TextField fx:id="emailField" layoutX="79.0" layoutY="23.0" prefHeight="25.0" prefWidth="165.0" />
             <PasswordField fx:id="passwordField" layoutX="79.0" layoutY="64.0" prefHeight="25.0" prefWidth="165.0" />
             <Label fx:id="usernameErrorLabel" layoutX="14.0" layoutY="103.0" prefHeight="17.0" prefWidth="27.0" />
          </children>
@@ -75,6 +75,6 @@
       </Pane>
    </top>
    <bottom>
-      <Button mnemonicParsing="false" onAction="#enterChatBtn" prefHeight="45.0" prefWidth="298.0" text="Sign in" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" onAction="#loginBtn" prefHeight="45.0" prefWidth="298.0" text="Sign in" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
