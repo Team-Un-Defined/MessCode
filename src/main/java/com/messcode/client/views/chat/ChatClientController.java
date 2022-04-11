@@ -32,12 +32,14 @@ public class ChatClientController {
     public Button buttonGroup;
     public Button buttonPrivate;
     public Button buttonProfile;
-    public Button buttonChangePass;
     public Pane paneAll;
     public Pane panePrivate;
     public Pane paneProfile;
     public Pane paneGroup;
+    public Label otherUserNameLabel;
     public Label userNameLabel;
+    public Label userEmailLabel;
+    public Label userTypeLabel;
 
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
@@ -45,6 +47,7 @@ public class ChatClientController {
     private User receiver;
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
+    private String cssUsed;
 
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
         this.chatVM = chatVM;
@@ -93,7 +96,10 @@ public class ChatClientController {
         //  chatVM.addListener("NewPM", this::openPrivateChat);
 
         sender = chatVM.getCurrentUser();
-        userDisplayedName.setText(bundle.getString("your_nick") + sender.getUsername() + "'");
+        userDisplayedName.setText("'" + sender.getSurname() + " " +sender.getName() + "'");
+        userNameLabel.setText(sender.getSurname() + " " +sender.getName());
+        userEmailLabel.setText(sender.getEmail());
+        userTypeLabel.setText(sender.getType());
 
         Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
 
@@ -101,9 +107,11 @@ public class ChatClientController {
             Boolean value = observableValue.getValue();
             toggleSwitch.getScene().getStylesheets().clear();
             if (value) {
-                toggleSwitch.getScene().getStylesheets().add("dark.css");
+                cssUsed = "dark.css";
+                toggleSwitch.getScene().getStylesheets().add(cssUsed);
             } else {
-                toggleSwitch.getScene().getStylesheets().add("lite.css");
+                cssUsed = "lite.css";
+                toggleSwitch.getScene().getStylesheets().add(cssUsed);
             }
         });
     }
@@ -134,10 +142,10 @@ public class ChatClientController {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
-            if (!use.getUsername().equals(this.sender.getUsername())) {
+            if (!use.getSurname().equals(this.sender.getSurname()) && !use.getName().equals(this.sender.getName())) {
                 this.receiver = use;
                 panePrivate.toFront();
-                userNameLabel.setText(use.getUsername());
+                otherUserNameLabel.setText(use.getSurname() + " " + use.getName());
             } else {
                 invitePmErrorLabel.setText(bundle.getString("talk_to_yourself"));
             }
@@ -156,14 +164,18 @@ public class ChatClientController {
     }
 
     public void changePasswordClicked(ActionEvent actionEvent) {
-        vh.openChangePassword();
+        vh.openChangePassword(cssUsed);
     }
 
     public void newEmployeeClicked(ActionEvent actionEvent) {
-        vh.openNewEmployee();
+        vh.openNewEmployee(cssUsed);
     }
 
     public void newGroupClicked(ActionEvent actionEvent) {
-        vh.openNewGroup();
+        vh.openNewGroup(cssUsed);
+    }
+
+    public String getCssUsed() {
+        return cssUsed;
     }
 }

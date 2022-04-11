@@ -93,14 +93,12 @@ public class ChatClientViewModel implements Subject {
     }
 
     @Override
-    public void addListener(String eventName,
-                            PropertyChangeListener listener) {
+    public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
     @Override
-    public void removeListener(String eventName,
-                               PropertyChangeListener listener) {
+    public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
@@ -108,6 +106,5 @@ public class ChatClientViewModel implements Subject {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
         System.out.println("got to PMPM :" + PMmessage.getValue());
-
     }
 }
