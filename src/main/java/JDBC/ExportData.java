@@ -5,6 +5,7 @@ import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PublicMessage;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.DriverManager;
 
 import java.sql.*;
@@ -129,7 +130,8 @@ public class ExportData {
      */
     public Container acceptLogin(String email, String password) throws SQLException {
         Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        String query = "SELECT a.id,a.fname,a.lname, a.email, a.type  from public.account as a   WHERE a.email = '" + email + "' AND a.pwd_hash= '" + password + "'  ";
+        System.out.println("db: "+ email + " "+ password);
+        String query = "SELECT * from public.account as a   WHERE a.email = '" + email + "' AND a.pwd_hash= '" + password + "'  ";
 
 
         ResultSet rs = st.executeQuery(query);
@@ -138,6 +140,8 @@ public class ExportData {
         String fname = null;
         String lname = null;
         String ema = null;
+        // hash = password;
+        String salt =null;
         int id = 0;
         String type = null;
         int publicMID = 0;
@@ -153,6 +157,8 @@ public class ExportData {
             fname = rs.getString("fname");
             lname = rs.getString("lname");
             ema = rs.getString("email");
+
+            salt = rs.getString("pwd_salt");
             type = rs.getString("type");
 
 
@@ -185,8 +191,11 @@ public class ExportData {
 
 
         ArrayList<Object> objs = new ArrayList<>();
+        User use = new User(fname,lname,ema,password.getBytes(StandardCharsets.UTF_8),salt,type);
+        System.out.println("database: "+ use.getSurname() +" "+ use.getName());
         objs.add(allPublicMessages);
         objs.add(lastSeen);
+        objs.add(use);
         Container dataPack = new Container(objs, ClassName.LOGIN_DATA);
         return dataPack;
 

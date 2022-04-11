@@ -17,9 +17,9 @@ User implements Serializable {
     private String salt;
     private ArrayList<PublicMessage> unreadMessages;
     // temporary, will remove later
-    public User(String username, String password) {
-        this.username = username;
-        this.email = password;
+    public User(String email, String password) {
+        this.email = email;
+        this.username = password;
     }
 
     // added constructor to start working on login in client -Kamilla
@@ -41,7 +41,7 @@ User implements Serializable {
     }
 
     // if you took employee from database you use this constructor
-    public User(String name, String surname, String email, byte[] hashedPassword, String salt) {
+    public User(String name, String surname, String email, byte[] hashedPassword, String salt,String type) {
         this.name = name;
         this.surname = surname;
         this.username = name + " " + surname;
@@ -49,6 +49,7 @@ User implements Serializable {
         this.hashedPassword = hashedPassword;
         this.salt = salt;
         this.unreadMessages = new ArrayList<>();
+        this.type=type;
     }
 
     public boolean isEmployee() {
@@ -151,9 +152,6 @@ User implements Serializable {
         this.username = username;
     }
 
-    public String getType() {
-        return type;
-    }
 
     public void setType(String type) {
         this.type = type;

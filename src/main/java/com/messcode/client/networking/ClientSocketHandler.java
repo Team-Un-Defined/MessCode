@@ -132,7 +132,7 @@ public class ClientSocketHandler implements Runnable {
     public void addUser(User username) {
         try {
             Container packet = new Container(username, ClassName.USER_JOIN);
-            System.out.println(username.getUsername() + " pas: " + username.getEmail());
+
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();

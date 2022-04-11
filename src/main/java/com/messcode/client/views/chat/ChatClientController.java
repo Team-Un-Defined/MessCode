@@ -63,7 +63,7 @@ public class ChatClientController {
                 if (empty) {
                     setText(null);
                 } else {
-                    String text = item.getUsername(); // get text from item
+                    String text = item.getName()+" "+item.getSurname(); // get text from item
                     setText(text);
                 }
             }
