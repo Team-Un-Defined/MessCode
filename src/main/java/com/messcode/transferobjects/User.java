@@ -83,6 +83,10 @@ User implements Serializable {
         type = "employer";
     }
 
+    public String getType() {
+        return type;
+    }
+
     public String getEmail() {
         return email;
     }
