@@ -6,16 +6,17 @@ public class ImportData {
 
     private Character character;
     private Connection c;
-
+    private DatabaseConnection conn;
     public ImportData() {
         /**
          * Constructor method for LoadCharacter. Gets the PostgreSQL connection.
          */
+        conn = new DatabaseConnection();
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/MessCode", "postgres",
-                            "chickenattack777"); //use your own password here
+                    .getConnection(conn.getConn(), conn.getName(),
+                            conn.getPass()); //use your own password here
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
