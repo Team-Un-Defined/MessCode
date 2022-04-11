@@ -1,7 +1,9 @@
 package com.messcode.client.views.new_employee;
 
 import com.messcode.client.core.ViewHandler;
+import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.UserList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
@@ -31,6 +33,16 @@ public class NewEmployeeController {
         String lastName = lastNameTextField.getText();
         String email = emailTextField.getText();
 
-        // NOMMI regex for employee name & email
+        AccountManager myAccountManager = new AccountManager();
+        String password = myAccountManager.generatePassword();
+        if (!myAccountManager.emailRegex(email)) {
+            errorLabel.setText("Invalid email format!");
+            return;
+        } else {
+            errorLabel.setText("Generated password : " + password);
+        }
+
+        UserList myUserList = vh.getUserList();
+        myAccountManager.register(firstName, lastName, email, password, myUserList);
     }
 }
