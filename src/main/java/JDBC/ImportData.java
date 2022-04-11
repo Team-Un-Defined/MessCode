@@ -19,7 +19,7 @@ public class ImportData
       Class.forName("org.postgresql.Driver");
       c = DriverManager
           .getConnection("jdbc:postgresql://localhost:5432/MessCode", "postgres",
-              "almafast325"); //use your own password here
+              "chickenattack777"); //use your own password here
 
     }
     catch (SQLException | ClassNotFoundException e)
