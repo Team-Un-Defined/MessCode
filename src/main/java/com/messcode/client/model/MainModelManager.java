@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainModelManager implements MainModel {
+
     private Client client;
     private PropertyChangeSupport support;
     private User user;
@@ -38,21 +39,19 @@ public class MainModelManager implements MainModel {
     }
 
     private void loginData(PropertyChangeEvent propertyChangeEvent) {
-       Container packet= ((Container) propertyChangeEvent.getNewValue());
+        Container packet = ((Container) propertyChangeEvent.getNewValue());
         ArrayList<Object> objs = (ArrayList<Object>) packet.getObject();
-        ArrayList<PublicMessage> allPublicMessages= (ArrayList<PublicMessage>)objs.get(0);
-        ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>)objs.get(1);
+        ArrayList<PublicMessage> allPublicMessages = (ArrayList<PublicMessage>) objs.get(0);
+        ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>) objs.get(1);
         System.out.println("Everything has been casted");
         allPublicMessage.addAll(allPublicMessages);
         // user.getLastSeen.add(lastSeen);
         support.firePropertyChange("LoginData", null, allPublicMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
-
-
     }
 
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
-        boolean answer= (boolean) propertyChangeEvent.getNewValue();
-        System.out.println("in model: " +answer);
+        boolean answer = (boolean) propertyChangeEvent.getNewValue();
+        System.out.println("in model: " + answer);
         support.firePropertyChange("LoginResponseToVM", null, answer);
 
     }
@@ -60,7 +59,7 @@ public class MainModelManager implements MainModel {
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         support.firePropertyChange(propertyChangeEvent);
     }
-    
+
     //  GLOBAL CHAT
     @Override
     public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
@@ -69,16 +68,14 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void receivePublic(
-            PropertyChangeEvent propertyChangeEvent) {
+    public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         System.out.println("got to model");
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
 
     @Override
-    public void receivePM(
-        PropertyChangeEvent propertyChangeEvent) {
+    public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
@@ -98,22 +95,18 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void addListener(String eventName,
-                            PropertyChangeListener listener) {
+    public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
-
     }
 
     @Override
-    public void removeListener(String eventName,
-                               PropertyChangeListener listener) {
+    public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
     @Override
     public void sendPublic(PublicMessage mess) {
         client.sendPublic(mess);
-        
     }
 
     @Override

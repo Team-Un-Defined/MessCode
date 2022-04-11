@@ -1,10 +1,11 @@
 package com.messcode.client.views.change_password;
 
 import com.messcode.client.core.ViewHandler;
-import com.messcode.client.views.new_employee.NewEmployeeViewModel;
 import com.messcode.transferobjects.User;
 import javafx.event.ActionEvent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 import java.util.ResourceBundle;
 
@@ -26,11 +27,10 @@ public class ChangePasswordController {
         this.bundle = bundle;
     }
 
-    public void confirmClicked(ActionEvent event) {
+    public void confirmClicked() {
         String password = passwordTextField.getText();
         String passwordConfirmed = passwordConfirmTextField.getText();
 
         // NOMMI do we need regex for passwords?
     }
-
 }

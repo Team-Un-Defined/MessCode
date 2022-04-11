@@ -7,6 +7,7 @@ import com.messcode.client.views.new_employee.NewEmployeeViewModel;
 import com.messcode.client.views.new_group.NewGroupViewModel;
 
 public class ViewModelFactory {
+
     private ModelFactory mf;
     private ChatClientViewModel chatVM;
     private LoginViewModel loginVM;
@@ -30,9 +31,15 @@ public class ViewModelFactory {
         return loginVM;
     }
 
-    public NewEmployeeViewModel getNewEmployeeVM() { return newEmployeeVM; }
+    public NewEmployeeViewModel getNewEmployeeVM() {
+        return newEmployeeVM;
+    }
 
-    public NewGroupViewModel getNewGroupVM() { return newGroupVM; }
+    public NewGroupViewModel getNewGroupVM() {
+        return newGroupVM;
+    }
 
-    public ChangePasswordViewModel getChangePasswordVM() { return changePasswordVM; }
+    public ChangePasswordViewModel getChangePasswordVM() {
+        return changePasswordVM;
+    }
 }

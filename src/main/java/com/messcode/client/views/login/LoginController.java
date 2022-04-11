@@ -1,14 +1,11 @@
 package com.messcode.client.views.login;
 
+import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.util.Subject;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import com.messcode.client.core.ViewHandler;
-import com.messcode.transferobjects.User;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,6 +13,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
 public class LoginController implements Subject {
+
     public TextField textField;
     public Label usernameErrorLabel;
     public PasswordField passwordField;
@@ -35,11 +33,7 @@ public class LoginController implements Subject {
     }
 
     private void openChat(PropertyChangeEvent propertyChangeEvent) {
-
-        Platform.runLater(() -> {
-            vh.openChatClientView();
-        });
-
+        Platform.runLater(() -> vh.openChatClientView());
     }
 
     private void response(PropertyChangeEvent propertyChangeEvent) {
@@ -47,22 +41,16 @@ public class LoginController implements Subject {
     }
 
     public void enterChatBtn() {
-       loginVM.login(textField.getText(),passwordField.getText(),bundle);
+        loginVM.login(textField.getText(), passwordField.getText(), bundle);
     }
 
+    @Override
+    public void addListener(String eventName, PropertyChangeListener listener) {
+        support.addPropertyChangeListener(eventName, listener);
+    }
 
-        @Override
-        public void addListener(String eventName,
-                PropertyChangeListener listener) {
-            support.addPropertyChangeListener(eventName, listener);
-        }
-
-        @Override
-        public void removeListener(String eventName,
-                PropertyChangeListener listener) {
-            support.removePropertyChangeListener(eventName, listener);
-        }
-
-
-
+    @Override
+    public void removeListener(String eventName, PropertyChangeListener listener) {
+        support.removePropertyChangeListener(eventName, listener);
+    }
 }

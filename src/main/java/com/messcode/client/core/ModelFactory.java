@@ -4,6 +4,7 @@ import com.messcode.client.model.MainModel;
 import com.messcode.client.model.MainModelManager;
 
 public class ModelFactory {
+
     private ClientFactory cf;
     private MainModel mainModel;
 

@@ -16,6 +16,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ResourceBundle;
 
 public class ChatClientController {
+
     public TextArea textArea;
     public TextField textFieldAll;
     public TextField textFieldPM;
@@ -41,7 +42,7 @@ public class ChatClientController {
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
     private User sender;
-    private User receiver; 
+    private User receiver;
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
 
@@ -69,39 +70,39 @@ public class ChatClientController {
         StringProperty textChat = new SimpleStringProperty();
         textChat.bind(chatVM.messageProperty());
 
-        textChat.addListener((observableValue, s, t1) ->{
-                    Platform.runLater(()->{
-                        Label label = new Label(textChat.getValue());
-                        label.setMaxWidth(messagesListAll.getWidth() - 25);
-                        label.setWrapText(true);
-                        messagesListAll.getItems().add(label);
-                    });
-                });
+        textChat.addListener((observableValue, s, t1) -> {
+            Platform.runLater(() -> {
+                Label label = new Label(textChat.getValue());
+                label.setMaxWidth(messagesListAll.getWidth() - 25);
+                label.setWrapText(true);
+                messagesListAll.getItems().add(label);
+            });
+        });
 
         StringProperty pmChat = new SimpleStringProperty();
         pmChat.bind(chatVM.PMProperty());
 
-        pmChat.addListener((observableValue, s, t1) ->{
-                    Platform.runLater(()->{
-                        Label label = new Label(pmChat.getValue());
-                        label.setMaxWidth(messagesListPM.getWidth() - 25);
-                        label.setWrapText(true);
-                        messagesListPM.getItems().add(label);
-                    });
-                });
-      //  chatVM.addListener("NewPM", this::openPrivateChat);
+        pmChat.addListener((observableValue, s, t1) -> {
+            Platform.runLater(() -> {
+                Label label = new Label(pmChat.getValue());
+                label.setMaxWidth(messagesListPM.getWidth() - 25);
+                label.setWrapText(true);
+                messagesListPM.getItems().add(label);
+            });
+        });
+        //  chatVM.addListener("NewPM", this::openPrivateChat);
 
         sender = chatVM.getCurrentUser();
         userDisplayedName.setText(bundle.getString("your_nick") + sender.getUsername() + "'");
 
-        Platform.runLater(()->toggleSwitch.getScene().getStylesheets().add("lite.css"));
+        Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
 
         toggleSwitch.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
             Boolean value = observableValue.getValue();
-            if (value){
+            toggleSwitch.getScene().getStylesheets().clear();
+            if (value) {
                 toggleSwitch.getScene().getStylesheets().add("dark.css");
-            }else {
-                toggleSwitch.getScene().getStylesheets().clear();
+            } else {
                 toggleSwitch.getScene().getStylesheets().add("lite.css");
             }
         });
@@ -112,7 +113,6 @@ public class ChatClientController {
         this.receiver = usersPM.getReceiver();
         panePrivate.toFront();
         chatVM.sendListOfPmRoomUsers(usersPM);
-
     }
 
     public void sendButton() {
@@ -125,10 +125,9 @@ public class ChatClientController {
     public void sendPM() {
         System.out.println("-------------------------------------");
         String message = textFieldPM.getText();
-        chatVM.sendPM(new PrivateMessage(this.sender,this.receiver, message));
+        chatVM.sendPM(new PrivateMessage(this.sender, this.receiver, message));
         textFieldPM.clear();
     }
-    
 
     public void inviteToPmButton() {
         if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
@@ -136,35 +135,35 @@ public class ChatClientController {
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
             if (!use.getUsername().equals(this.sender.getUsername())) {
-                 this.receiver = use;
+                this.receiver = use;
                 panePrivate.toFront();
-               userNameLabel.setText(use.getUsername());
+                userNameLabel.setText(use.getUsername());
             } else {
                 invitePmErrorLabel.setText(bundle.getString("talk_to_yourself"));
             }
-
         }
     }
 
     public void handleClicks(ActionEvent actionEvent) {
-        if(actionEvent.getSource() == buttonAll)
+        if (actionEvent.getSource() == buttonAll)
             paneAll.toFront();
-        if(actionEvent.getSource() == buttonGroup)
+        if (actionEvent.getSource() == buttonGroup)
             paneGroup.toFront();
-        if(actionEvent.getSource() == buttonPrivate)
+        if (actionEvent.getSource() == buttonPrivate)
             panePrivate.toFront();
-        if(actionEvent.getSource() == buttonProfile)
+        if (actionEvent.getSource() == buttonProfile)
             paneProfile.toFront();
     }
 
-    public void changePasswordClicked(ActionEvent actionEvent) { vh.openChangePassword(); }
+    public void changePasswordClicked(ActionEvent actionEvent) {
+        vh.openChangePassword();
+    }
 
-    public void newEmployeeClicked(ActionEvent actionEvent){
+    public void newEmployeeClicked(ActionEvent actionEvent) {
         vh.openNewEmployee();
     }
 
     public void newGroupClicked(ActionEvent actionEvent) {
         vh.openNewGroup();
     }
-   
 }

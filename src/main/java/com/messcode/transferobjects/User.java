@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class
 User implements Serializable {
+
     private String type = "employee";
     private String name;
     private String surname;
@@ -14,9 +15,16 @@ User implements Serializable {
     private String salt;
 
     // temporary, will remove later
-    public User(String username,String password) {
+    public User(String username, String password) {
         this.username = username;
         this.email = password;
+    }
+
+    // added constructor to start working on login in client -Kamilla
+    public User(String username, String email, String password) throws NoSuchAlgorithmException {
+        AccountManager myAccountManager = new AccountManager();
+        this.email = email;
+        this.hashedPassword = myAccountManager.hashPassword(password, myAccountManager.generateSalt());
     }
 
     // if you are creating new employee you use this constructor

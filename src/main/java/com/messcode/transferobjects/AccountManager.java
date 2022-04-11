@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class AccountManager {
+
     public boolean equals(User user1, User user2) {
         return user1.getEmail().equals(user2.getEmail());
     }

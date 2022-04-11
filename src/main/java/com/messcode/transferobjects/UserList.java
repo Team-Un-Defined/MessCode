@@ -4,22 +4,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserList implements Serializable
-{
-  private ArrayList<User> users=new ArrayList<>();
+public class UserList implements Serializable {
 
-  public void addList(List<User> user){
+    private ArrayList<User> users = new ArrayList<>();
 
-    users.addAll(user);
-  }
-  public int getSize(){
-    return users.size();
-  }
+    public void addList(List<User> user) {
+        users.addAll(user);
+    }
 
-  public User get(int i)
-  {
-    return users.get(i);
-  }
+    public int getSize() {
+        return users.size();
+    }
 
-
+    public User get(int i) {
+        return users.get(i);
+    }
 }
