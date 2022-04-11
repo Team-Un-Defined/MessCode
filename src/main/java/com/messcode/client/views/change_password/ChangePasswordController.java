@@ -2,7 +2,6 @@ package com.messcode.client.views.change_password;
 
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

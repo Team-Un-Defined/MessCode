@@ -118,7 +118,7 @@ public class ViewHandler {
         stage.setOnCloseRequest(windowEvent -> stage.close());
     }
 
-    public void openNewEmployee() {
+    public void openNewEmployee(String css) {
         Stage newEmployeeStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -133,10 +133,11 @@ public class ViewHandler {
         newEmployeeStage.setTitle("Add a new employee");
         newEmployeeStage.setScene(newEmployee);
         newEmployeeStage.getIcons().add(new Image("icon.png"));
+        newEmployeeStage.getScene().getStylesheets().add(css);
         newEmployeeStage.show();
     }
 
-    public void openNewGroup() {
+    public void openNewGroup(String css) {
         Stage newGroupStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -151,10 +152,11 @@ public class ViewHandler {
         newGroupStage.setTitle("Add a new project");
         newGroupStage.setScene(newGroup);
         newGroupStage.getIcons().add(new Image("icon.png"));
+        newGroupStage.getScene().getStylesheets().add(css);
         newGroupStage.show();
     }
 
-    public void openChangePassword() {
+    public void openChangePassword(String css) {
         Stage changePasswordStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -169,6 +171,7 @@ public class ViewHandler {
         changePasswordStage.setTitle("Change your password");
         changePasswordStage.setScene(changePassword);
         changePasswordStage.getIcons().add(new Image("icon.png"));
+        changePasswordStage.getScene().getStylesheets().add(css);
         changePasswordStage.show();
     }
 
