@@ -1,7 +1,9 @@
 package com.messcode.transferobjects;
 
+import com.messcode.transferobjects.messages.PublicMessage;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class
 User implements Serializable {
@@ -13,7 +15,7 @@ User implements Serializable {
     private String email;
     private byte[] hashedPassword;
     private String salt;
-
+    private ArrayList<PublicMessage> unreadMessages;
     // temporary, will remove later
     public User(String username, String password) {
         this.username = username;
@@ -35,6 +37,7 @@ User implements Serializable {
         this.email = email;
         this.salt = myAccountManager.generateSalt();
         this.hashedPassword = myAccountManager.hashPassword(password, salt);
+        this.unreadMessages = new ArrayList<>();
     }
 
     // if you took employee from database you use this constructor
@@ -45,6 +48,7 @@ User implements Serializable {
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.salt = salt;
+        this.unreadMessages = new ArrayList<>();
     }
 
     public boolean isEmployee() {
@@ -142,5 +146,30 @@ User implements Serializable {
     @Override
     public String toString() {
         return username;
+    }
+    public User(String username) {
+        this.username = username;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public ArrayList<PublicMessage> getUnreadMessages() {
+        return unreadMessages;
+    }
+
+    public void setUnreadMessages(ArrayList<PublicMessage> unreadMessages) {
+        this.unreadMessages = unreadMessages;
+    }
+    public void addUnreadMessages(PublicMessage unreadMessages) {
+        this.unreadMessages.add(unreadMessages);
+    }
+    public void removeUnreadMessages(PublicMessage unreadMessages) {
+        this.unreadMessages.remove(unreadMessages);
     }
 }
