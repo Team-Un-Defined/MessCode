@@ -57,7 +57,9 @@ public class ChatClientViewModel implements Subject {
     }
 
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
+
         User user = (User) propertyChangeEvent.getNewValue();
+
         Platform.runLater(() -> {
             usersList.add(user);
             System.out.println(usersList);

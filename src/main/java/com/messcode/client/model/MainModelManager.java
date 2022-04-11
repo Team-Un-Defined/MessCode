@@ -43,10 +43,14 @@ public class MainModelManager implements MainModel {
         ArrayList<Object> objs = (ArrayList<Object>) packet.getObject();
         ArrayList<PublicMessage> allPublicMessages = (ArrayList<PublicMessage>) objs.get(0);
         ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>) objs.get(1);
+        user = (User) objs.get(2);
         System.out.println("Everything has been casted");
         allPublicMessage.addAll(allPublicMessages);
         // user.getLastSeen.add(lastSeen);
+
         support.firePropertyChange("LoginData", null, allPublicMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
+        System.out.println(user.getEmail() + " "+ user.getName());
+        support.firePropertyChange("SetUsernameInChat", null, user);
     }
 
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
@@ -90,8 +94,7 @@ public class MainModelManager implements MainModel {
     @Override
     public void addUser(User username) {
         client.addUser(username);
-        this.user = username;
-        support.firePropertyChange("SetUsernameInChat", null, username);
+
     }
 
     @Override

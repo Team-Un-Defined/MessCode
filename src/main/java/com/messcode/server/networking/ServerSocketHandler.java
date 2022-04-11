@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ServerSocketHandler implements Runnable {
 
@@ -50,20 +51,24 @@ public class ServerSocketHandler implements Runnable {
                     }
                     case USER_JOIN: {
                         User usertemp = (User) packet.getObject();
+                        boolean isItSame =pool.userCheck(usertemp);
+                        if(isItSame) break;
                         Container packetToClient = null;
 
-                        packetToClient = dbe.checkLogin(usertemp.getUsername(), usertemp.getEmail()); /// here the username, should be email, and email should be passowrd
+                        packetToClient = dbe.checkLogin(usertemp.getEmail(), usertemp.getUsername()); /// here the username, should be email, and email should be passowrd
 
 
                         if ((boolean) (packetToClient.getObject())) {
-                            packetToClient = dbe.acceptLogin(usertemp.getUsername(), usertemp.getEmail());
+                            packetToClient = dbe.acceptLogin( usertemp.getEmail(),usertemp.getUsername());
                         } else {
                             outToClient.writeObject(packetToClient);
                             break;
                         }
                         pool.addHandler(this);
+                        user = (User)((ArrayList<Object>)packetToClient.getObject()).get(2);
+                        System.out.println("t string: "+ user.getName() + " "+ user.getSurname());
 
-                        pool.userJoin(usertemp);
+                        pool.userJoin(user);
                         updateUsersList();
                         outToClient.writeObject(packetToClient);
                         break;
@@ -118,19 +123,14 @@ public class ServerSocketHandler implements Runnable {
     public void joinChat(User user) {
         try {
             Container packet = new Container(user, ClassName.USER_JOIN);
+            System.out.println("Telling one user that new one added: "+ user.getName() + " email: "+ user.getEmail() );
             outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void sendInvite(PrivateMessage usersPM) {
-        try {
-            outToClient.writeObject(usersPM);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     public void sendMessageInPM(PrivateMessage pm) {
         try {

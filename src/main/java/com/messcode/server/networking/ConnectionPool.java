@@ -56,4 +56,20 @@ public class ConnectionPool {
             }
         }
     }
+
+    public boolean userCheck(User us) {
+        boolean ans=false;
+        for (ServerSocketHandler handler : connections) {
+
+            System.out.println("kur a bigi "+us.getEmail());
+            System.out.println(us);
+            System.out.println(handler.getUser());
+            System.out.println(handler.getUser().getEmail());
+            if (handler.getUser().equals(us) || handler.getUser().getEmail().equals(us.getEmail()) ) {
+                ans = true;
+                break;
+            }
+        }
+        return ans;
+    }
 }
