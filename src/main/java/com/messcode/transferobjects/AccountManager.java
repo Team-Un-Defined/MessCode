@@ -17,13 +17,39 @@ public class AccountManager {
         return new String(array, StandardCharsets.UTF_8);
     }
 
-    public byte[] hashPassword(String password, String salt) throws NoSuchAlgorithmException {
+    public byte[] hashPassword(String password, String salt) {
         String appendedPassword = password + salt;
-        MessageDigest digest = MessageDigest.getInstance("SHA-512");
-        return digest.digest(appendedPassword.getBytes(StandardCharsets.UTF_8));
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            return digest.digest(appendedPassword.getBytes(StandardCharsets.UTF_8));
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Hashing algorithm does not exist!");
+            return null;
+        }
     }
 
-    public boolean passwordCheck(User myUser, String password) throws NoSuchAlgorithmException {
+    public boolean passwordCheck(User myUser, String password) {
         return Arrays.equals(myUser.getHashedPassword(), hashPassword(password, myUser.getSalt()));
+    }
+
+    public User login(String email, String password, UserList userList) {
+        for (int i = 0; i < userList.getSize(); i++) {
+            User thisUser = userList.get(i);
+
+            if (thisUser.getEmail().equals(email)) {
+                if (passwordCheck(thisUser, password)) {
+                    return thisUser;
+                } else {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void register(String name, String surname, String email, String password, UserList userList) {
+        User newUser = new User(name, surname, email, password);
+        userList.addUser(newUser);
     }
 }
