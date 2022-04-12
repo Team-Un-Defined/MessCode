@@ -8,13 +8,17 @@ public class UserList implements Serializable {
 
     private ArrayList<User> users = new ArrayList<>();
 
-    public void addList(List<User> user) {
-        users.addAll(user);
-    }
+  public void addUser(User newUser) {
+    users.add(newUser);
+  }
 
-    public int getSize() {
-        return users.size();
-    }
+  public void addList(List<User> user){
+    users.addAll(user);
+  }
+
+  public int getSize(){
+    return users.size();
+  }
 
     public User get(int i) {
         return users.get(i);
