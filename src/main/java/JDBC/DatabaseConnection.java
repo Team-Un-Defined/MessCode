@@ -12,7 +12,7 @@ package JDBC;
 public class DatabaseConnection {
 private final String conn = "jdbc:postgresql://localhost:5432/MessCode";
 private final String name =  "postgres";
-private final String pass =  "ih de TRfvj85Jl 55 igh 94";
+private final String pass =  "XXXX";
 
     public String getConn() {
         return conn;
