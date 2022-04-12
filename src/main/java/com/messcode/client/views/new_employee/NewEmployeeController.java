@@ -41,8 +41,6 @@ public class NewEmployeeController {
         } else {
             errorLabel.setText("Generated password : " + password);
         }
-
-        UserList myUserList = vh.getUserList();
-        myAccountManager.register(firstName, lastName, email, password, myUserList);
+        newEmployeeVM.register(firstName, lastName, email, password);
     }
 }

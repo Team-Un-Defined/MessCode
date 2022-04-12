@@ -1,5 +1,6 @@
 package JDBC;
 
+import JDBC.DBConn.DatabaseConnection;
 import com.messcode.transferobjects.ClassName;
 import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.User;

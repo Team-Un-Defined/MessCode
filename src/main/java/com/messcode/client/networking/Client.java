@@ -18,4 +18,6 @@ public interface Client extends Subject {
     void sendPublic(PublicMessage um);
 
     void sendPM(PrivateMessage pm);
+
+    public void register(User newUser);
 }

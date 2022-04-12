@@ -129,4 +129,10 @@ public class MainModelManager implements MainModel {
         this.allMessage = allMessage;
     }
 
+    @Override
+    public void register(String firstName, String lastName, String email, String password) {
+        User newUser = new User(firstName,lastName,email,password);
+        client.register(newUser);
+    }
+
 }

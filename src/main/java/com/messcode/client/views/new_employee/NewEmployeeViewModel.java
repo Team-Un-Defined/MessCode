@@ -9,4 +9,9 @@ public class NewEmployeeViewModel {
     public NewEmployeeViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
     }
+    public void register(String firstName,String lastName,String email,String password){
+    mainModel.register(firstName, lastName, email, password);
+    }
+    
+    
 }
