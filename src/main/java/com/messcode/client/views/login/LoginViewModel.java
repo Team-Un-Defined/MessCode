@@ -60,7 +60,7 @@ public class LoginViewModel implements Subject {
 
     public void login(String email, String pass, ResourceBundle bundle) {
         if (email.length() >= 4) {
-            mainModel.addUser(new User(email, pass));
+            mainModel.addUser(email, pass);
         } else {
             Platform.runLater(() -> {
                 error.setValue("Username too short(min 4 char)");

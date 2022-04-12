@@ -6,6 +6,7 @@ import com.messcode.client.views.login.LoginController;
 import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.UserList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
