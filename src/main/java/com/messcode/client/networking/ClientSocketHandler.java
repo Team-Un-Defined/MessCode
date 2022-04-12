@@ -138,4 +138,14 @@ public class ClientSocketHandler implements Runnable {
             e.printStackTrace();
         }
     }
+    public void register(User newUser) {
+        try {
+            Container packet = new Container(newUser, ClassName.REGISTER_USER);
+
+            outToServer.writeObject(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }

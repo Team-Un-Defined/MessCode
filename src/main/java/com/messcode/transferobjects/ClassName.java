@@ -26,5 +26,10 @@ public enum ClassName {
     PUBLIC_MESSAGE,
 
     USER_LEFT, // user join
-    USER_LIST, LOGIN_DATA, USER_JOIN
+    USER_LIST, LOGIN_DATA, USER_JOIN,
+
+    /**
+     * new user registration
+     */
+    REGISTER_USER
 }

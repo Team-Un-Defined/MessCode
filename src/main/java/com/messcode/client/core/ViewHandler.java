@@ -38,20 +38,11 @@ public class ViewHandler {
     private Scene changePassword;
     private ResourceBundle bundle;
 
-    private UserList userList = new UserList();
     private User myUser = null;
 
     public ViewHandler(ViewModelFactory vmf) {
         stage = new Stage();
         this.vmf = vmf;
-
-        User employee1 = new User("jozef", "hruska", "jozef.hruska@gmail.com", "Password123");
-        User employee2 = new User("zachary", "solomon", "zachary.solomon@gmail.com", "Password123");
-        User employee3 = new User("adam", "velky", "adam.velky@gmail.com", "Password123");
-
-        userList.addUser(employee1);
-        userList.addUser(employee2);
-        userList.addUser(employee3);
     }
 
     public void start() {
@@ -200,11 +191,6 @@ public class ViewHandler {
         }
         return root;
     }
-
-    public UserList getUserList() {
-        return userList;
-    }
-
     public User getMyUser() {
         return myUser;
     }

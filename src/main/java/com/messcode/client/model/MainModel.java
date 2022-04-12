@@ -17,4 +17,6 @@ public interface MainModel extends Subject {
 
     void sendPM(PrivateMessage message);
 
+    public void register(String firstName, String lastName, String email, String password);
+
 }

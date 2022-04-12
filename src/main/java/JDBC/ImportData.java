@@ -1,5 +1,6 @@
 package JDBC;
 
+import JDBC.DBConn.DatabaseConnection;
 import java.sql.*;
 
 public class ImportData {

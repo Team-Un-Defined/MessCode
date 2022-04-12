@@ -72,10 +72,6 @@ public class AccountManager {
         return null;
     }
 
-    public void register(String name, String surname, String email, String password, UserList userList) {
-        User newUser = new User(name, surname, email, password);
-        userList.addUser(newUser);
-    }
 
     public boolean passwordRegex(String password) {
         String myRegex = "^(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)[a-zA-Z0-9~`!@#$%^&*()_\\-+={[}\\]\\|\\:;\"'<,>.?/]]{8,16}$";

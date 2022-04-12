@@ -78,6 +78,11 @@ public class SocketClient implements Client {
     public void loginData(Container packet) {
         support.firePropertyChange("LoginData", null, packet);
     }
+
+    @Override
+    public void register(User newUser) {
+        socketHandler.register(newUser);
+    }
 }
 
 
