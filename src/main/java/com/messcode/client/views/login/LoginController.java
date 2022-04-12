@@ -40,19 +40,6 @@ public class LoginController implements Subject {
         Platform.runLater(() -> vh.openChatClientView());
     }
 
-    public void loginBtn() throws NoSuchAlgorithmException {
-        AccountManager myAccountManager = new AccountManager();
-
-        String email = emailField.getText();
-        String password = passwordField.getText();
-
-        User myUser = myAccountManager.login(email, password, vh.getUserList());
-
-        if (myUser != null) {
-            loginVM.addUser(myUser);
-            vh.openChatClientView();
-        }
-
         /*
         if (usernameField.getText().length() >= 4) {
             String username = usernameField.getText();

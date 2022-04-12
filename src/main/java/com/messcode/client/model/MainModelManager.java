@@ -1,6 +1,7 @@
 package com.messcode.client.model;
 
 import com.messcode.client.networking.Client;
+import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
@@ -18,11 +19,13 @@ public class MainModelManager implements MainModel {
     private PropertyChangeSupport support;
     private User user;
     private PrivateMessage usersPM;
-    private ArrayList<PublicMessage> allPublicMessage;
+    private ArrayList<PublicMessage> allMessage;
+
+
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
-        allPublicMessage = new ArrayList<>();
+        allMessage = new ArrayList<>();
 
         this.client = client;
         try {
@@ -45,12 +48,13 @@ public class MainModelManager implements MainModel {
         ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>) objs.get(1);
         user = (User) objs.get(2);
         System.out.println("Everything has been casted");
-        allPublicMessage.addAll(allPublicMessages);
+        allMessage.addAll(allPublicMessages);
         // user.getLastSeen.add(lastSeen);
 
-        support.firePropertyChange("LoginData", null, allPublicMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
+        support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
         System.out.println(user.getEmail() + " "+ user.getName());
         support.firePropertyChange("SetUsernameInChat", null, user);
+        support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
     }
 
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
@@ -71,29 +75,30 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("UsersOnlineInPM", null, usersPM);
     }
 
-    @Override
+
     public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         System.out.println("got to model");
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
 
-    @Override
+
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
 
-    @Override
+
+
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
         support.firePropertyChange("AddNewUser", null, user);
     }
 
     @Override
-    public void addUser(User username) {
-        client.addUser(username);
+    public void addUser(String email, String pwd) {
+        client.addUser(new User(email,pwd));
 
     }
 
@@ -116,4 +121,12 @@ public class MainModelManager implements MainModel {
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
     }
+    public ArrayList<PublicMessage> getAllMessage() {
+        return allMessage;
+    }
+
+    public void setAllMessage(ArrayList<PublicMessage> allMessage) {
+        this.allMessage = allMessage;
+    }
+
 }

@@ -76,7 +76,7 @@
       </Pane>
    </top>
    <bottom>
-      <Button mnemonicParsing="false" onAction="#loginBtn" prefHeight="45.0" prefWidth="298.0" text="Sign in" BorderPane.alignment="CENTER" />
+  <!--       <Button mnemonicParsing="false" onAction="#loginBtn" prefHeight="45.0" prefWidth="298.0" text="Sign in" BorderPane.alignment="CENTER" />/>-->
       <Button mnemonicParsing="false" onAction="#enterChatBtn" prefHeight="46.0" prefWidth="330.0" text="Sign in" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
