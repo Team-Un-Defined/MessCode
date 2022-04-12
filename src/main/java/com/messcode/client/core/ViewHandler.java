@@ -5,7 +5,9 @@ import com.messcode.client.views.chat.ChatClientController;
 import com.messcode.client.views.login.LoginController;
 import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
+import com.messcode.transferobjects.User;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -34,9 +37,20 @@ public class ViewHandler {
     private Scene changePassword;
     private ResourceBundle bundle;
 
+    private UserList userList = new UserList();
+    private User myUser = null;
+
     public ViewHandler(ViewModelFactory vmf) {
         stage = new Stage();
         this.vmf = vmf;
+
+        User employee1 = new User("jozef", "hruska", "jozef.hruska@gmail.com", "Password123");
+        User employee2 = new User("zachary", "solomon", "zachary.solomon@gmail.com", "Password123");
+        User employee3 = new User("adam", "velky", "adam.velky@gmail.com", "Password123");
+
+        userList.addUser(employee1);
+        userList.addUser(employee2);
+        userList.addUser(employee3);
     }
 
     public void start() {
@@ -184,5 +198,17 @@ public class ViewHandler {
             e.printStackTrace();
         }
         return root;
+    }
+
+    public UserList getUserList() {
+        return userList;
+    }
+
+    public User getMyUser() {
+        return myUser;
+    }
+
+    public void setMyUser(User myUser) {
+        this.myUser = myUser;
     }
 }

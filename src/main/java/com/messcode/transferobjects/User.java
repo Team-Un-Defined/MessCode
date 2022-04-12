@@ -30,10 +30,11 @@ User implements Serializable {
     }
 
     // if you are creating new employee you use this constructor
-    public User(String name, String surname, String email, String password) throws NoSuchAlgorithmException {
+    public User(String name, String surname, String email, String password) {
         AccountManager myAccountManager = new AccountManager();
         this.name = name;
         this.surname = surname;
+        this.username = name + " " + surname;
         this.email = email;
         this.salt = myAccountManager.generateSalt();
         this.hashedPassword = myAccountManager.hashPassword(password, salt);
@@ -126,7 +127,7 @@ User implements Serializable {
         return hashedPassword;
     }
 
-    public void setPassword(String password) throws NoSuchAlgorithmException {
+    public void setPassword(String password) {
         AccountManager myAccountManager = new AccountManager();
         this.salt = myAccountManager.generateSalt();
         this.hashedPassword = myAccountManager.hashPassword(password, salt);
@@ -134,14 +135,6 @@ User implements Serializable {
 
     public String getSalt() {
         return salt;
-    }
-
-    // temporary, will remove later
-    public boolean equals(Object obj) {
-        if (!(obj instanceof User))
-            return false;
-        User other = (User) obj;
-        return username.equals(other.username);
     }
 
     @Override

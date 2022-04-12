@@ -3,13 +3,17 @@ package com.messcode.client.views.login;
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.util.Subject;
 import javafx.application.Platform;
+import com.messcode.transferobjects.AccountManager;
+import com.messcode.transferobjects.User;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import com.messcode.client.core.ViewHandler;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Subject {
@@ -36,6 +40,29 @@ public class LoginController implements Subject {
         Platform.runLater(() -> vh.openChatClientView());
     }
 
+    public void loginBtn() throws NoSuchAlgorithmException {
+        AccountManager myAccountManager = new AccountManager();
+
+        String email = emailField.getText();
+        String password = passwordField.getText();
+
+        User myUser = myAccountManager.login(email, password, vh.getUserList());
+
+        if (myUser != null) {
+            loginVM.addUser(myUser);
+            vh.openChatClientView();
+        }
+
+        /*
+        if (usernameField.getText().length() >= 4) {
+            String username = usernameField.getText();
+            loginVM.addUser(new User(username));
+            vh.openChatClientView();
+        } else {
+            usernameErrorLabel.setText("Username too short(min 4 char)");
+            usernameErrorLabel.setText(bundle.getString("short_login"));
+        }
+        */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         vh.openChatClientView();
     }
