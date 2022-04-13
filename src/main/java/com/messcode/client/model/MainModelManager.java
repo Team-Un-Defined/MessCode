@@ -21,8 +21,6 @@ public class MainModelManager implements MainModel {
     private PrivateMessage usersPM;
     private ArrayList<PublicMessage> allMessage;
 
-
-
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
         allMessage = new ArrayList<>();
@@ -61,7 +59,6 @@ public class MainModelManager implements MainModel {
         boolean answer = (boolean) propertyChangeEvent.getNewValue();
         System.out.println("in model: " + answer);
         support.firePropertyChange("LoginResponseToVM", null, answer);
-
     }
 
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -75,21 +72,17 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("UsersOnlineInPM", null, usersPM);
     }
 
-
     public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         System.out.println("got to model");
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
 
-
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
-
-
 
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
@@ -99,7 +92,6 @@ public class MainModelManager implements MainModel {
     @Override
     public void addUser(String email, String pwd) {
         client.addUser(new User(email,pwd));
-
     }
 
     @Override
@@ -121,6 +113,7 @@ public class MainModelManager implements MainModel {
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
     }
+
     public ArrayList<PublicMessage> getAllMessage() {
         return allMessage;
     }
@@ -128,5 +121,4 @@ public class MainModelManager implements MainModel {
     public void setAllMessage(ArrayList<PublicMessage> allMessage) {
         this.allMessage = allMessage;
     }
-
 }
