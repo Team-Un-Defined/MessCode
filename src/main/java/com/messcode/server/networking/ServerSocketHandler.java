@@ -46,6 +46,7 @@ public class ServerSocketHandler implements Runnable {
                 switch (packet.getClassName()) {
                     case PRIVATE_MESSAGE: {
                         PrivateMessage pm = (PrivateMessage) packet.getObject();
+                        System.out.println("calling the method on the PM !!!");
                         pool.sendMessageInPM(pm);
                         break;
                     }
@@ -66,9 +67,10 @@ public class ServerSocketHandler implements Runnable {
                         }
                         pool.addHandler(this);
                         user = (User)((ArrayList<Object>)packetToClient.getObject()).get(2);
-                        System.out.println("t string: "+ user.getName() + " "+ user.getSurname());
+
 
                         pool.userJoin(user);
+
                         updateUsersList();
                         outToClient.writeObject(packetToClient);
                         break;
@@ -134,8 +136,10 @@ public class ServerSocketHandler implements Runnable {
 
     public void sendMessageInPM(PrivateMessage pm) {
         try {
-            Container packet = new Container(pm, ClassName.PRIVATE_MESSAGE);
+            System.out.println("HELLO THIS SHOULD BE BLALGLA");
+            Container packet = new Container(pm,ClassName.PRIVATE_MESSAGE);
             outToClient.writeObject(packet);
+            System.out.println("server has sent the stuff "+ pm.getMsg());
         } catch (IOException e) {
             e.printStackTrace();
         }
