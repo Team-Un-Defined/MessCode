@@ -3,24 +3,22 @@ package com.messcode.client.views.login;
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.util.Subject;
 import javafx.application.Platform;
-import com.messcode.transferobjects.AccountManager;
-import com.messcode.transferobjects.User;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import com.messcode.client.core.ViewHandler;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Subject {
 
-    public TextField textField;
+    public TextField emailField;
     public Label usernameErrorLabel;
     public PasswordField passwordField;
+    public Button signInButton;
     private PropertyChangeSupport support;
     private LoginViewModel loginVM;
     private ViewHandler vh;
@@ -34,6 +32,7 @@ public class LoginController implements Subject {
         usernameErrorLabel.textProperty().bind(loginVM.errorProperty());
         loginVM.addListener("Login", this::response);
         loginVM.addListener("OpenChat", this::openChat);
+        signInButton.setDefaultButton(true);
     }
 
     private void openChat(PropertyChangeEvent propertyChangeEvent) {
@@ -55,7 +54,7 @@ public class LoginController implements Subject {
     }
 
     public void enterChatBtn() {
-        loginVM.login(textField.getText(), passwordField.getText(), bundle);
+        loginVM.login(emailField.getText(), passwordField.getText(), bundle);
     }
 
     @Override

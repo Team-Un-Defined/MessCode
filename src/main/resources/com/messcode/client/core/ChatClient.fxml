@@ -53,15 +53,26 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Pane layoutY="189.0" prefHeight="436.0" prefWidth="200.0" styleClass="pane">
-                <children>
-                    <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="Online" />
-                    <ListView fx:id="usersListFXML" layoutX="14.0" layoutY="38.0" prefHeight="302.0" prefWidth="180.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Button layoutX="14.0" layoutY="348.0" mnemonicParsing="false" onAction="#inviteToPmButton" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: f00;" text="Invite to PM" textFill="WHITE" />
-                    <Label fx:id="invitePmErrorLabel" layoutX="14.0" layoutY="382.0" text="Label" textFill="#cc0000" />
-                    <Label fx:id="userDisplayedName" layoutX="14.0" layoutY="405.0" text="Label" textFill="#cc0000" />
-                </children>
-            </Pane>
+            <StackPane layoutY="189.0">
+               <children>
+                  <Pane fx:id="userListPane" prefHeight="436.0" prefWidth="200.0" styleClass="pane">
+                      <children>
+                          <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="Online" />
+                          <ListView fx:id="usersListFXML" layoutX="14.0" layoutY="38.0" prefHeight="302.0" prefWidth="180.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
+                          <Button layoutX="14.0" layoutY="348.0" mnemonicParsing="false" onAction="#inviteToPmButton" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: f00;" text="Invite to PM" textFill="WHITE" />
+                          <Label fx:id="invitePmErrorLabel" layoutX="14.0" layoutY="382.0" text="Label" textFill="#cc0000" />
+                          <Label fx:id="userDisplayedName" layoutX="14.0" layoutY="405.0" text="Label" textFill="#cc0000" />
+                      </children>
+                  </Pane>
+                  <Pane fx:id="groupListPane" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="Groups" />
+                        <ListView layoutX="14.0" layoutY="38.0" prefHeight="302.0" prefWidth="180.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
+                        <Button layoutX="14.0" layoutY="347.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" text="Open group (temp)" />
+                     </children>
+                  </Pane>
+               </children>
+            </StackPane>
         </children>
     </Pane>
     <StackPane layoutX="199.0" layoutY="1.0" prefHeight="625.0" prefWidth="650.0">
@@ -98,21 +109,21 @@
             <Pane fx:id="panePrivate" styleClass="pane">
                 <children>
                     <ListView fx:id="messagesListPM" layoutX="14.0" layoutY="40.0" prefHeight="537.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Button layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendPM" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
+                    <Button fx:id="sendPMButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendPM" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
                     <TextField fx:id="textFieldPM" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Label fx:id="otherUserNameLabel" layoutX="14.0" layoutY="14.0" />
                 </children></Pane>
             <Pane fx:id="paneGroup" styleClass="pane">
                 <children>
                     <ListView fx:id="messagesListGroup" layoutX="14.0" layoutY="40.0" prefHeight="537.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Button layoutX="548.0" layoutY="587.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
+                    <Button fx:id="sendGroupButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
                     <TextField fx:id="textFieldGroup" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Label layoutX="14.0" layoutY="14.0" text="Group X" />
                 </children></Pane>
             <Pane fx:id="paneAll" styleClass="pane">
                 <children>
                     <ListView fx:id="messagesListAll" layoutX="14.0" layoutY="14.0" prefHeight="562.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Button layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendButton" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
+                    <Button fx:id="sendAllButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendButton" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
                     <TextField fx:id="textFieldAll" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                 </children>
             </Pane>

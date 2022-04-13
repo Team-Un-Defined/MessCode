@@ -130,7 +130,7 @@ public class ExportData {
      */
     public Container acceptLogin(String email, String password) throws SQLException {
         Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        System.out.println("db: "+ email + " "+ password);
+        System.out.println("db: " + email + " " + password);
         String query = "SELECT * from public.account as a   WHERE a.email = '" + email + "' AND a.pwd_hash= '" + password + "'  ";
 
 
@@ -141,7 +141,7 @@ public class ExportData {
         String lname = null;
         String ema = null;
         // hash = password;
-        String salt =null;
+        String salt = null;
         int id = 0;
         String type = null;
         int publicMID = 0;
@@ -191,8 +191,8 @@ public class ExportData {
 
 
         ArrayList<Object> objs = new ArrayList<>();
-        User use = new User(fname,lname,ema,password.getBytes(StandardCharsets.UTF_8),salt,type);
-        System.out.println("database: "+ use.getSurname() +" "+ use.getName());
+        User use = new User(fname, lname, ema, password.getBytes(StandardCharsets.UTF_8), salt, type);
+        System.out.println("database: " + use.getSurname() + " " + use.getName());
         objs.add(allPublicMessages);
         objs.add(lastSeen);
         objs.add(use);

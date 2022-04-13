@@ -1,4 +1,4 @@
 Logs*
 /target/
-/src/main/java/JDBC/DatabaseConnection.java
-DatabaseConnection
+*DatabaseConnection.java
+src/main/java/JDBC/DatabaseConnection.java
