@@ -47,7 +47,7 @@ public class ChatClientController {
     private User receiver;
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
-    private String cssUsed;
+    private String cssUsed = "lite.css";
 
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
         this.chatVM = chatVM;
