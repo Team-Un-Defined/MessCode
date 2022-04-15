@@ -2,6 +2,3 @@ Logs*
 /target/
 /src/main/java/JDBC/DatabaseConnection.java
 DatabaseConnection
-src/main/java/JDBC/DatabaseConnection.java
-.idea/libraries/Maven__com_dlsc_formsfx_formsfx_core_11_3_2.xml
-.idea/libraries/Maven__org_checkerframework_checker_qual_3_5_0.xml
