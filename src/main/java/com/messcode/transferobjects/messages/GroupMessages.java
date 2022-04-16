@@ -5,6 +5,7 @@
  */
 package com.messcode.transferobjects.messages;
 
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 
 import java.io.Serializable;
@@ -15,42 +16,19 @@ import java.util.ArrayList;
  */
 public class GroupMessages extends PublicMessage implements Serializable {
 
-    private User leader;
-    private ArrayList<User> members;
+    private Group group;
 
-    public GroupMessages(User username, String message, User lead) {
+    public GroupMessages(User username,String message, Group group) {
         super(username, message);
-        this.leader = lead;
-        this.members = new ArrayList<>();
+        this.group = group;
     }
 
-    public GroupMessages(User username, String message, User lead, ArrayList<User> g) {
-        super(username, message);
-        this.leader = lead;
-        this.members = g;
+    public Group getGroup() {
+        return group;
     }
 
-    public void addMember(User u) {
-        members.add(u);
+    public void setGroup(Group group) {
+        this.group = group;
     }
-
-    public void removeMember(User u) {
-        members.remove(u);
-    }
-
-    public void setLeader(User leader) {
-        this.leader = leader;
-    }
-
-    public void setMembers(ArrayList<User> members) {
-        this.members = members;
-    }
-
-    public User getLeader() {
-        return leader;
-    }
-
-    public ArrayList<User> getMembers() {
-        return members;
-    }
+    
 }
