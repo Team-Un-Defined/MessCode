@@ -6,13 +6,12 @@
 package JDBC;
 
 /**
- *
  * @author Nao
  */
 public class DatabaseConnection {
-private final String conn = "jdbc:postgresql://localhost:5432/MessCode";
-private final String name =  "postgres";
-private final String pass =  "XXXX";
+    private final String conn = "jdbc:postgresql://localhost:5432/MessCode";
+    private final String name = "postgres";
+    private final String pass = "chickenattack777";
 
     public String getConn() {
         return conn;
@@ -28,6 +27,4 @@ private final String pass =  "XXXX";
 
     public DatabaseConnection() {
     }
-
-
 }
