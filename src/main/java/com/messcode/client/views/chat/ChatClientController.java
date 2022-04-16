@@ -48,8 +48,6 @@ public class ChatClientController {
 
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
-    private User sender;
-    private User receiver;
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
     private String cssUsed = "lite.css";
@@ -100,11 +98,10 @@ public class ChatClientController {
         });
         //  chatVM.addListener("NewPM", this::openPrivateChat);
 
-        sender = chatVM.getCurrentUser();
-        userDisplayedName.setText("'" + sender.getName() + " " + sender.getSurname() + "'");
-        userNameLabel.setText(sender.getName() + " " + sender.getSurname());
-        userEmailLabel.setText(sender.getEmail());
-        userTypeLabel.setText(sender.getType());
+        userDisplayedName.setText("'" + chatVM.getCurrentUser().getSurname() + " " +chatVM.getCurrentUser().getName() + "'");
+        userNameLabel.setText(chatVM.getCurrentUser().getSurname() + " " +chatVM.getCurrentUser().getName());
+        userEmailLabel.setText(chatVM.getCurrentUser().getEmail());
+        userTypeLabel.setText(chatVM.getCurrentUser().getType());
 
         paneAll.toFront();
         userListPane.toFront();
@@ -131,7 +128,7 @@ public class ChatClientController {
 
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
         usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
-        this.receiver = usersPM.getReceiver();
+        chatVM.setReceiver(usersPM.getReceiver());
         panePrivate.toFront();
         chatVM.sendListOfPmRoomUsers(usersPM);
     }
@@ -139,14 +136,14 @@ public class ChatClientController {
     public void sendButton() {
         System.out.println("*************************************");
         String message = textFieldAll.getText();
-        chatVM.sendPublic(new PublicMessage(this.sender, message));
+        chatVM.sendPublic(new PublicMessage(chatVM.getCurrentUser(), message));
         textFieldAll.clear();
     }
 
     public void sendPM() {
         System.out.println("-------------------------------------");
         String message = textFieldPM.getText();
-        chatVM.sendPM(new PrivateMessage(this.sender, this.receiver, message));
+        chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), message));
         textFieldPM.clear();
     }
 
@@ -155,8 +152,9 @@ public class ChatClientController {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
-            if (!use.getSurname().equals(this.sender.getSurname()) && !use.getName().equals(this.sender.getName())) {
-                this.receiver = use;
+                System.out.println(use.getEmail());
+            if (!use.getSurname().equals(chatVM.getCurrentUser().getSurname()) && !use.getName().equals(chatVM.getCurrentUser().getName())) {
+                chatVM.setReceiver(use);
                 panePrivate.toFront();
                 otherUserNameLabel.setText(use.getSurname() + " " + use.getName());
             } else {

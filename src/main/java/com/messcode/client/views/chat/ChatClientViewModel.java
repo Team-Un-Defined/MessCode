@@ -23,6 +23,9 @@ public class ChatClientViewModel implements Subject {
     private MainModel mainModel;
     private StringProperty message;
     private StringProperty PMmessage;
+    private User receiver;
+
+    
 
     public ChatClientViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
@@ -105,8 +108,24 @@ public class ChatClientViewModel implements Subject {
     }
 
     private void displayPM(PropertyChangeEvent propertyChangeEvent) {
+        
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
-        PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
-        System.out.println("got to PMPM :" + PMmessage.getValue());
+        System.out.println("ennek kuldtek az uzit: "+pm.getReceiver().getEmail());
+        System.out.println("ez kuldte az uzit: "+pm.getSender().getEmail());
+        System.out.println("ezzel dumalok: " + this.receiver.getEmail());
+        System.out.println("en vaok ez "+this.currentUser.getEmail());
+        if(pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())){
+         PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+         System.out.println("got to PMPM :" + PMmessage.getValue());
+        }    
     }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+    
 }
