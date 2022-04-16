@@ -155,12 +155,16 @@ public class MainModelManager implements MainModel {
 
     @Override
     public ArrayList<PrivateMessage> loadPMs(User currentUser, User receiver) {
+
         ArrayList<PrivateMessage> pubi= new ArrayList<>();
-        for (PublicMessage p: this.allMessage){
-        
-        if (p instanceof PrivateMessage){
-            if(((PrivateMessage) p).getReceiver().equals(receiver) || ((PrivateMessage) p).getSender().equals(receiver)){
-                pubi.add(((PrivateMessage) p));
+        for (int i = 0; i< this.allMessage.size();i++){
+            System.out.println(this.allMessage.get(i).getClass());
+            System.out.println(this.allMessage.get(i) instanceof PrivateMessage);
+            System.out.println("++++++++++++++++++++++++++++++NYO NYO+++++++++++++++++++++");
+        if (this.allMessage.get(i) instanceof PrivateMessage){
+            if(((PrivateMessage) this.allMessage.get(i)).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) this.allMessage.get(i)).getSender().getEmail().equals(receiver.getEmail())){
+                System.out.println("++++++++++++++++++++++++++++++EGY MEG EGY+++++++++++++++++++++");
+                pubi.add(((PrivateMessage) this.allMessage.get(i)));
             }
         }
         
