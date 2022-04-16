@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 
 public class LoginViewModel implements Subject {
 
+    public ResourceBundle bundle;
     private MainModel mainModel;
     private PropertyChangeSupport support;
     private StringProperty error;
@@ -36,9 +37,9 @@ public class LoginViewModel implements Subject {
         String resp;
         System.out.println("in vm: " + answer);
         if (!answer) {
-            resp = "Your email or password is incorrect";
+            resp = bundle.getString("login.mail_or_pass_incorrect");
         } else {
-            resp = "Logging in...";
+            resp = bundle.getString("login.logging_in");
             support.firePropertyChange("Login", null, answer);
         }
         Platform.runLater(() -> error.setValue(resp));
@@ -58,13 +59,12 @@ public class LoginViewModel implements Subject {
         support.removePropertyChangeListener(eventName, listener);
     }
 
-    public void login(String email, String pass, ResourceBundle bundle) {
+    public void login(String email, String pass) {
         if (email.length() >= 4) {
             mainModel.addUser(email, pass);
         } else {
             Platform.runLater(() -> {
-                error.setValue("Username too short(min 4 char)");
-                error.setValue(bundle.getString("short_login"));
+                error.setValue(bundle.getString("login.short_login"));
             });
         }
     }
