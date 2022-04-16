@@ -218,7 +218,14 @@ pubm.setTime(rs.getTimestamp("date"));
             User u =new User(rs.getString("email"),"a");
             u.setName(rs.getString("fname"));
             u.setSurname(rs.getString("lname"));
-            PrivateMessage pm = new PrivateMessage(use,u,rs.getString("message"));
+            PrivateMessage pm;
+            if(rs.getInt("sender_id")==id)
+            {
+                pm= new PrivateMessage(use,u,rs.getString("message"));
+            }else {
+                pm= new PrivateMessage(u,use,rs.getString("message"));
+            }
+
             pm.setTime(rs.getTimestamp("date"));
             lastSeen.add(pm);
 
@@ -242,7 +249,15 @@ pubm.setTime(rs.getTimestamp("date"));
             User u =new User(rs.getString("email"),"a");
             u.setName(rs.getString("fname"));
             u.setSurname(rs.getString("lname"));
-            PrivateMessage pm = new PrivateMessage(use,u,rs.getString("message"));
+            PrivateMessage pm;
+            if(rs.getInt("sender_id")==id)
+            {
+                pm= new PrivateMessage(use,u,rs.getString("message"));
+            }else {
+                pm= new PrivateMessage(u,use,rs.getString("message"));
+            }
+
+
             pm.setTime(rs.getTimestamp("date"));
            allMessages.add(pm);
 
