@@ -6,6 +6,7 @@ import com.messcode.transferobjects.util.Subject;
 import com.messcode.transferobjects.messages.PublicMessage;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 
 public interface MainModel extends Subject {
 
@@ -18,5 +19,7 @@ public interface MainModel extends Subject {
     void sendPM(PrivateMessage message);
 
     public void register(String firstName, String lastName, String email, String password);
+   
+    public ArrayList<PrivateMessage> loadPMs(User currentUser,User receiver);
 
 }

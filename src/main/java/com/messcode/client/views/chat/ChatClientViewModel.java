@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 public class ChatClientViewModel implements Subject {
 
@@ -119,7 +120,9 @@ public class ChatClientViewModel implements Subject {
          System.out.println("got to PMPM :" + PMmessage.getValue());
         }    
     }
-
+    public ArrayList<PrivateMessage> loadPMs(){
+      return mainModel.loadPMs(currentUser,receiver);
+    }
     public User getReceiver() {
         return receiver;
     }
