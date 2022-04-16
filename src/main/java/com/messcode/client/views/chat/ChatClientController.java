@@ -40,6 +40,11 @@ public class ChatClientController {
     public Label userNameLabel;
     public Label userEmailLabel;
     public Label userTypeLabel;
+    public Pane groupListPane;
+    public Pane userListPane;
+    public Button sendPMButton;
+    public Button sendGroupButton;
+    public Button sendAllButton;
 
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
@@ -63,7 +68,7 @@ public class ChatClientController {
                 if (empty) {
                     setText(null);
                 } else {
-                    String text = item.getName()+" "+item.getSurname(); // get text from item
+                    String text = item.getName() + " " + item.getSurname(); // get text from item
                     setText(text);
                 }
             }
@@ -96,10 +101,14 @@ public class ChatClientController {
         //  chatVM.addListener("NewPM", this::openPrivateChat);
 
         sender = chatVM.getCurrentUser();
-        userDisplayedName.setText("'" + sender.getSurname() + " " +sender.getName() + "'");
-        userNameLabel.setText(sender.getSurname() + " " +sender.getName());
+        userDisplayedName.setText("'" + sender.getName() + " " + sender.getSurname() + "'");
+        userNameLabel.setText(sender.getName() + " " + sender.getSurname());
         userEmailLabel.setText(sender.getEmail());
         userTypeLabel.setText(sender.getType());
+
+        paneAll.toFront();
+        userListPane.toFront();
+        sendAllButton.setDefaultButton(true);
 
         Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
 
@@ -157,14 +166,28 @@ public class ChatClientController {
     }
 
     public void handleClicks(ActionEvent actionEvent) {
-        if (actionEvent.getSource() == buttonAll)
+        if (actionEvent.getSource() == buttonAll) {
             paneAll.toFront();
-        if (actionEvent.getSource() == buttonGroup)
+            userListPane.toFront();
+            sendAllButton.setDefaultButton(true);
+        }
+        if (actionEvent.getSource() == buttonGroup) {
             paneGroup.toFront();
-        if (actionEvent.getSource() == buttonPrivate)
+            groupListPane.toFront();
+            sendGroupButton.setDefaultButton(true);
+        }
+        if (actionEvent.getSource() == buttonPrivate) {
             panePrivate.toFront();
-        if (actionEvent.getSource() == buttonProfile)
+            userListPane.toFront();
+            sendPMButton.setDefaultButton(true);
+        }
+        if (actionEvent.getSource() == buttonProfile) {
             paneProfile.toFront();
+            userListPane.toFront();
+            sendGroupButton.setDefaultButton(false);
+            sendAllButton.setDefaultButton(false);
+            sendPMButton.setDefaultButton(false);
+        }
     }
 
     public void changePasswordClicked(ActionEvent actionEvent) {
