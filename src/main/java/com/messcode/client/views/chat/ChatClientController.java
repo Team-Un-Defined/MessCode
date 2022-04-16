@@ -52,7 +52,7 @@ public class ChatClientController {
     private User receiver;
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
-    private String cssUsed;
+    private String cssUsed = "lite.css";
 
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
         this.chatVM = chatVM;
@@ -113,6 +113,9 @@ public class ChatClientController {
         Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
 
         toggleSwitch.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
+            System.out.println(observableValue.toString());
+            System.out.println(aBoolean.toString());
+            System.out.println(t1.toString());
             Boolean value = observableValue.getValue();
             toggleSwitch.getScene().getStylesheets().clear();
             if (value) {
@@ -124,6 +127,7 @@ public class ChatClientController {
             }
         });
     }
+
 
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
         usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());

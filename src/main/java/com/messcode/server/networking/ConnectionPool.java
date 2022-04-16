@@ -30,8 +30,9 @@ public class ConnectionPool {
     public void sendMessageInPM(PrivateMessage pm) {
         for (ServerSocketHandler handler : connections) {
 
-            if (handler.getUser().equals(pm.getSender()) || handler.getUser().equals(pm.getReceiver()))
-                handler.sendMessageInPM(pm);
+            if (handler.getUser().getEmail().equals(pm.getSender().getEmail()) || handler.getUser().getEmail().equals(pm.getReceiver().getEmail()))
+            { handler.sendMessageInPM(pm);System.out.println("I got the user");}
+
         }
     }
 
