@@ -5,8 +5,7 @@ import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-public class
-User implements Serializable {
+public class User implements Serializable {
 
     private String type = "employee";
     private String name;
@@ -157,9 +156,11 @@ User implements Serializable {
     public void setUnreadMessages(ArrayList<PublicMessage> unreadMessages) {
         this.unreadMessages = unreadMessages;
     }
+
     public void addUnreadMessages(PublicMessage unreadMessages) {
         this.unreadMessages.add(unreadMessages);
     }
+
     public void removeUnreadMessages(PublicMessage unreadMessages) {
         this.unreadMessages.remove(unreadMessages);
     }
