@@ -155,6 +155,12 @@ public class ChatClientController {
                 System.out.println(use.getEmail());
             if (!use.getSurname().equals(chatVM.getCurrentUser().getSurname()) && !use.getName().equals(chatVM.getCurrentUser().getName())) {
                 chatVM.setReceiver(use);
+                messagesListPM.getItems().clear();
+                for(PrivateMessage pm: chatVM.loadPMs()){
+                 messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
+                }
+                
+                
                 panePrivate.toFront();
                 otherUserNameLabel.setText(use.getSurname() + " " + use.getName());
             } else {

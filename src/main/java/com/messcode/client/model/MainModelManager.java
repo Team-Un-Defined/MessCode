@@ -78,6 +78,7 @@ public class MainModelManager implements MainModel {
 
     public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
+        this.allMessage.add(publicMessage);
         System.out.println("got to model");
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
@@ -85,6 +86,7 @@ public class MainModelManager implements MainModel {
 
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
+        this.allMessage.add(pm);
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
@@ -133,6 +135,22 @@ public class MainModelManager implements MainModel {
     public void register(String firstName, String lastName, String email, String password) {
         User newUser = new User(firstName,lastName,email,password);
         client.register(newUser);
+    }
+
+    @Override
+    public ArrayList<PrivateMessage> loadPMs(User currentUser, User receiver) {
+        ArrayList<PrivateMessage> pubi= new ArrayList<>();
+        for (PublicMessage p: this.allMessage){
+        
+        if (p instanceof PrivateMessage){
+            if(((PrivateMessage) p).getReceiver().equals(receiver) || ((PrivateMessage) p).getSender().equals(receiver)){
+                pubi.add(((PrivateMessage) p));
+            }
+        }
+        
+        }
+        return pubi;
+        
     }
 
 }
