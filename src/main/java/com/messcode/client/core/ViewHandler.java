@@ -117,7 +117,7 @@ public class ViewHandler {
             login = new Scene(root);
         }
 
-        stage.setTitle(bundle.getString("username"));
+        stage.setTitle(bundle.getString("login.up"));
         stage.setScene(login);
         stage.getIcons().add(new Image("icon.png"));
         stage.show();
@@ -136,7 +136,7 @@ public class ViewHandler {
             newEmployee = new Scene(root);
         }
 
-        newEmployeeStage.setTitle("Add a new employee");
+        newEmployeeStage.setTitle(bundle.getString("new_employee.up"));
         newEmployeeStage.setScene(newEmployee);
         newEmployeeStage.getIcons().add(new Image("icon.png"));
         newEmployeeStage.getScene().getStylesheets().add(css);
@@ -155,7 +155,7 @@ public class ViewHandler {
             newGroup = new Scene(root);
         }
 
-        newGroupStage.setTitle("Add a new project");
+        newGroupStage.setTitle(bundle.getString("new_group.up"));
         newGroupStage.setScene(newGroup);
         newGroupStage.getIcons().add(new Image("icon.png"));
         newGroupStage.getScene().getStylesheets().add(css);
@@ -174,7 +174,7 @@ public class ViewHandler {
             changePassword = new Scene(root);
         }
 
-        changePasswordStage.setTitle("Change your password");
+        changePasswordStage.setTitle(bundle.getString("change_pass.up"));
         changePasswordStage.setScene(changePassword);
         changePasswordStage.getIcons().add(new Image("icon.png"));
         changePasswordStage.getScene().getStylesheets().add(css);

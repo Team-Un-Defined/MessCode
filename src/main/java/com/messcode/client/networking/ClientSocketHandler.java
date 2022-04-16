@@ -34,9 +34,11 @@ public class ClientSocketHandler implements Runnable {
         try {
             while (true) {
                 Container packet = (Container) inFromServer.readObject();
+                System.out.println("Im the client and i got the PM finally pls wtf"+ packet.getClassName());
                 switch (packet.getClassName()) {
                     case PRIVATE_MESSAGE: {
                         PrivateMessage pm = (PrivateMessage) packet.getObject();
+
                         receivePM(pm);
                         break;
                     }
@@ -107,7 +109,7 @@ public class ClientSocketHandler implements Runnable {
 
     private void receivePM(PrivateMessage message) {
         socketClient.displayPM(message);
-        System.out.println(message.getUsername() + " " + message.getMsg());
+        System.out.println("CLIENT GOT THE PM : "+message.getUsername() + " " + message.getMsg());
     }
 
     public void sendPM(PrivateMessage message) {

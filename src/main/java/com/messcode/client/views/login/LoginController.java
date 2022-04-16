@@ -24,12 +24,11 @@ public class LoginController implements Subject {
     private PropertyChangeSupport support;
     private LoginViewModel loginVM;
     private ViewHandler vh;
-    private ResourceBundle bundle;
 
     public void init(LoginViewModel loginVM, ViewHandler vh, ResourceBundle bundle) {
         this.loginVM = loginVM;
         this.vh = vh;
-        this.bundle = bundle;
+        loginVM.bundle = bundle;
         support = new PropertyChangeSupport(this);
         usernameErrorLabel.textProperty().bind(loginVM.errorProperty());
         loginVM.addListener("Login", this::response);
@@ -50,12 +49,13 @@ public class LoginController implements Subject {
             usernameErrorLabel.setText(bundle.getString("short_login"));
         }
         */
+
     private void response(PropertyChangeEvent propertyChangeEvent) {
         vh.openChatClientView();
     }
 
     public void enterChatBtn() {
-        loginVM.login(textField.getText(), passwordField.getText(), bundle);
+        loginVM.login(textField.getText(), passwordField.getText());
     }
 
     @Override
