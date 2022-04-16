@@ -4,6 +4,7 @@ import JDBC.DBConn.DatabaseConnection;
 import com.messcode.transferobjects.ClassName;
 import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 
 import java.nio.charset.StandardCharsets;
@@ -131,7 +132,7 @@ public class ExportData {
      */
     public Container acceptLogin(String email, String password) throws SQLException {
         Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        System.out.println("db: " + email + " " + password);
+        System.out.println("db: "+ email + " "+ password);
         String query = "SELECT * from public.account as a   WHERE a.email = '" + email + "' AND a.pwd_hash= '" + password + "'  ";
 
 
@@ -142,12 +143,12 @@ public class ExportData {
         String lname = null;
         String ema = null;
         // hash = password;
-        String salt = null;
+        String salt =null;
         int id = 0;
         String type = null;
         int publicMID = 0;
-        int privateMID = 0;
-        ArrayList<PublicMessage> allPublicMessages = new ArrayList<>();
+
+        ArrayList<PublicMessage> allMessages = new ArrayList<>();
         ArrayList<PublicMessage> lastSeen = new ArrayList<>();
 
 
@@ -181,20 +182,73 @@ public class ExportData {
         while (rs.next()) {
             cid = rs.getInt("id");
             User us = new User(rs.getString("fname"), rs.getString("lname"));
-
-            allPublicMessages.add(new PublicMessage(us, rs.getString("message")));
+            us.setEmail(rs.getString("email"));
+            us.setType(rs.getString("type"));
+PublicMessage pubm =new PublicMessage(us, rs.getString("message"));
+pubm.setTime(rs.getTimestamp("date"));
+            allMessages.add(pubm);
 
         }
         if (cid > publicMID) {
             lastSeen.add(new PublicMessage(null, "PublicMessageTrue"));
         }
-        //String query4= "select m.private_message_id from last_seen as m where m.user_id ="+id +"and m.public_message_id is not null";
-
-
+        String query4= "select\n" +
+                "la.user_id,\n" +
+                "la.private_message_id,\n" +
+                "p.reciever_id,\n" +
+                "p.sender_id,\n" +
+                "p.message,\n" +
+                "p.date,\n" +
+                "a.fname,\n" +
+                "a.lname,\n" +
+                "a.email\n" +
+                "from last_seen as la\n" +
+                "join private_messages as p\n" +
+                "on p.id = la.private_message_id\n" +
+                "join account as a\n" +
+                "on (a.id = p.reciever_id or a.id = p.sender_id) and a.id != "+id +
+                "where la.user_id = "+id ;
         ArrayList<Object> objs = new ArrayList<>();
-        User use = new User(fname, lname, ema, password.getBytes(StandardCharsets.UTF_8), salt, type);
-        System.out.println("database: " + use.getSurname() + " " + use.getName());
-        objs.add(allPublicMessages);
+        User use = new User(fname,lname,ema,password.getBytes(StandardCharsets.UTF_8),salt,type);
+        System.out.println("database: "+ use.getSurname() +" "+ use.getName());
+        rs = st.executeQuery(query4);
+        rs.beforeFirst();
+
+        while (rs.next()) {
+            User u =new User(rs.getString("email"),"a");
+            u.setName(rs.getString("fname"));
+            u.setSurname(rs.getString("lname"));
+            PrivateMessage pm = new PrivateMessage(use,u,rs.getString("message"));
+            pm.setTime(rs.getTimestamp("date"));
+            lastSeen.add(pm);
+
+        }
+        String query5="select\n" +
+                "m.sender_id,\n" +
+                "m.reciever_id,\n" +
+                "m.message,\n" +
+                "m.date,\n" +
+                "a.fname,\n" +
+                "a.lname,\n" +
+                "a.email\n" +
+                "from private_messages as m\n" +
+                "join account as a\n" +
+                "on (a.id = m.reciever_id or a.id = m.sender_id) and a.id != "+id+"\n" +
+                "where m.reciever_id = "+id+" or m.sender_id="+id;
+                rs = st.executeQuery(query5);
+        rs.beforeFirst();
+
+        while (rs.next()) {
+            User u =new User(rs.getString("email"),"a");
+            u.setName(rs.getString("fname"));
+            u.setSurname(rs.getString("lname"));
+            PrivateMessage pm = new PrivateMessage(use,u,rs.getString("message"));
+            pm.setTime(rs.getTimestamp("date"));
+           allMessages.add(pm);
+
+        }
+
+        objs.add(allMessages);
         objs.add(lastSeen);
         objs.add(use);
         Container dataPack = new Container(objs, ClassName.LOGIN_DATA);
