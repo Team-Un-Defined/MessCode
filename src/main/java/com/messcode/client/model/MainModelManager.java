@@ -51,6 +51,22 @@ public class MainModelManager implements MainModel {
         allMessage.addAll(allPublicMessages);
         // user.getLastSeen.add(lastSeen);
 
+
+        this.allMessage=allPublicMessages;
+        // user.getLastSeen.add(lastSeen);
+
+
+        for (int i = 0; i< this.allMessage.size();i++){
+            System.out.println(this.allMessage.get(i).getMsg());
+            System.out.println(this.allMessage.get(i).getClass());
+            System.out.println(this.allMessage.get(i) instanceof PrivateMessage);
+            System.out.println("++++++++++++++++++++++++++++++NYO NYO+++++++++++++++++++++");
+            if (this.allMessage.get(i) instanceof PrivateMessage){
+
+                System.out.println("++++++++++++++++++++++++++++++EGY MEG EGY+++++++++++++++++++++");
+
+            }
+        }
         support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
         System.out.println(user.getEmail() + " "+ user.getName());
         support.firePropertyChange("SetUsernameInChat", null, user);
