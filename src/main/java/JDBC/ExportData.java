@@ -181,8 +181,9 @@ public class ExportData {
         int cid = 0;
         while (rs.next()) {
             cid = rs.getInt("id");
-            User us = new User(rs.getString("fname"), rs.getString("lname"));
-            us.setEmail(rs.getString("email"));
+            User us = new User(rs.getString("email"),"a");
+            us.setSurname(rs.getString("lname"));
+            us.setName(rs.getString("fname"));
             us.setType(rs.getString("type"));
 PublicMessage pubm =new PublicMessage(us, rs.getString("message"));
 pubm.setTime(rs.getTimestamp("date"));

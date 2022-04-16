@@ -20,10 +20,9 @@ public class User implements Serializable {
         this.email = email;
         this.username = password;
     }
-
     // added constructor to start working on login in client -Kamilla
     public User(String username, String email, String password) throws NoSuchAlgorithmException {
-        AccountManager myAccountManager = new AccountManager();
+        AccountManager myAccountManager = new AccountManager();       
         this.email = email;
         this.hashedPassword = myAccountManager.hashPassword(password, myAccountManager.generateSalt());
     }

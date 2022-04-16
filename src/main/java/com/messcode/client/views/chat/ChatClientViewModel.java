@@ -120,6 +120,10 @@ public class ChatClientViewModel implements Subject {
          System.out.println("got to PMPM :" + PMmessage.getValue());
         }    
     }
+    
+    public ArrayList<PublicMessage>loadPublics(){
+    return mainModel.loadPublics();
+    }
     public ArrayList<PrivateMessage> loadPMs(){
       return mainModel.loadPMs(currentUser,receiver);
     }

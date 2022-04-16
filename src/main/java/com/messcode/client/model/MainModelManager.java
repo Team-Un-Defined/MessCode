@@ -20,7 +20,7 @@ public class MainModelManager implements MainModel {
     private User user;
     private PrivateMessage usersPM;
     private ArrayList<PublicMessage> allMessage;
-
+    
 
 
     public MainModelManager(Client client) {
@@ -49,24 +49,11 @@ public class MainModelManager implements MainModel {
         user = (User) objs.get(2);
         System.out.println("Everything has been casted");
         allMessage.addAll(allPublicMessages);
-        // user.getLastSeen.add(lastSeen);
+        //user.getLastSeen.add(lastSeen);
 
 
         this.allMessage=allPublicMessages;
         // user.getLastSeen.add(lastSeen);
-
-
-        for (int i = 0; i< this.allMessage.size();i++){
-            System.out.println(this.allMessage.get(i).getMsg());
-            System.out.println(this.allMessage.get(i).getClass());
-            System.out.println(this.allMessage.get(i) instanceof PrivateMessage);
-            System.out.println("++++++++++++++++++++++++++++++NYO NYO+++++++++++++++++++++");
-            if (this.allMessage.get(i) instanceof PrivateMessage){
-
-                System.out.println("++++++++++++++++++++++++++++++EGY MEG EGY+++++++++++++++++++++");
-
-            }
-        }
         support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
         System.out.println(user.getEmail() + " "+ user.getName());
         support.firePropertyChange("SetUsernameInChat", null, user);
@@ -156,21 +143,34 @@ public class MainModelManager implements MainModel {
     @Override
     public ArrayList<PrivateMessage> loadPMs(User currentUser, User receiver) {
 
-        ArrayList<PrivateMessage> pubi= new ArrayList<>();
-        for (int i = 0; i< this.allMessage.size();i++){
-            System.out.println(this.allMessage.get(i).getClass());
-            System.out.println(this.allMessage.get(i) instanceof PrivateMessage);
-            System.out.println("++++++++++++++++++++++++++++++NYO NYO+++++++++++++++++++++");
-        if (this.allMessage.get(i) instanceof PrivateMessage){
-            if(((PrivateMessage) this.allMessage.get(i)).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) this.allMessage.get(i)).getSender().getEmail().equals(receiver.getEmail())){
-                System.out.println("++++++++++++++++++++++++++++++EGY MEG EGY+++++++++++++++++++++");
-                pubi.add(((PrivateMessage) this.allMessage.get(i)));
+        ArrayList<PrivateMessage> pivi= new ArrayList<>();
+        for (PublicMessage p:this.allMessage){  
+        if (p instanceof PrivateMessage){
+            if(((PrivateMessage)p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail())){
+                pivi.add(((PrivateMessage) p));
             }
         }
         
         }
-        return pubi;
+        return pivi;
         
     }
+
+    @Override
+    public ArrayList<PublicMessage> loadPublics() {
+         ArrayList<PublicMessage> pubi= new ArrayList<>();
+         PublicMessage puu = new PublicMessage(user, "dasd");
+        for (PublicMessage p:this.allMessage){  
+        if (p.getClass().equals(puu.getClass())){
+            
+            pubi.add(p);
+        }
+        }
+        return pubi;
+    }
+
+    
+
+    
 
 }

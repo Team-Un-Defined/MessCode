@@ -57,7 +57,8 @@ public class ChatClientController {
         this.chatVM = chatVM;
         this.vh = vh;
         this.bundle = bundle;
-
+       
+       refreshPublic();
         // ONLINE LIST
         usersListFXML.setItems(chatVM.getUsersList());
         usersListFXML.setCellFactory(lv -> new ListCell<User>() {
@@ -159,7 +160,6 @@ public class ChatClientController {
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
                 for(PrivateMessage pm : priv){
-                    System.out.println("KUTYA KUTYA KUTYA" + pm.getMsg());
                  messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
                 }
                 
@@ -174,6 +174,7 @@ public class ChatClientController {
 
     public void handleClicks(ActionEvent actionEvent) {
         if (actionEvent.getSource() == buttonAll) {
+            refreshPublic();
             paneAll.toFront();
             userListPane.toFront();
             sendAllButton.setDefaultButton(true);
@@ -212,4 +213,13 @@ public class ChatClientController {
     public String getCssUsed() {
         return cssUsed;
     }
+    public void refreshPublic(){
+         messagesListAll.getItems().clear();
+    ArrayList<PublicMessage> pub =  chatVM.loadPublics();
+                for(PublicMessage pb : pub){
+                 messagesListAll.getItems().add(new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg()));
+                }
+    
+    }
+    
 }
