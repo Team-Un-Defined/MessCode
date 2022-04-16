@@ -21,7 +21,10 @@ public enum ClassName {
 
     //private message
     PRIVATE_MESSAGE,
-
+    
+    //group message
+    GROUP_MESSAGE,
+    
     //public messages
     PUBLIC_MESSAGE,
 
