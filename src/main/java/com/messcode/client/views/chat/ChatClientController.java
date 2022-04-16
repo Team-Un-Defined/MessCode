@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ChatClientController {
@@ -156,7 +157,9 @@ public class ChatClientController {
             if (!use.getSurname().equals(chatVM.getCurrentUser().getSurname()) && !use.getName().equals(chatVM.getCurrentUser().getName())) {
                 chatVM.setReceiver(use);
                 messagesListPM.getItems().clear();
-                for(PrivateMessage pm: chatVM.loadPMs()){
+                ArrayList<PrivateMessage> priv = chatVM.loadPMs();
+                for(PrivateMessage pm : priv){
+                    System.out.println("KUTYA KUTYA KUTYA" + pm.getMsg());
                  messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
                 }
                 
