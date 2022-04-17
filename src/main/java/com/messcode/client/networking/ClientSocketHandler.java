@@ -18,7 +18,6 @@ public class ClientSocketHandler implements Runnable {
 
     private SocketClient socketClient;
     private Socket socket;
-
     private ObjectOutputStream outToServer;
     private ObjectInputStream inFromServer;
 
@@ -140,6 +139,7 @@ public class ClientSocketHandler implements Runnable {
             e.printStackTrace();
         }
     }
+
     public void register(User newUser) {
         try {
             Container packet = new Container(newUser, ClassName.REGISTER_USER);
@@ -149,5 +149,4 @@ public class ClientSocketHandler implements Runnable {
             e.printStackTrace();
         }
     }
-    
 }

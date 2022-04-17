@@ -8,15 +8,14 @@ package com.messcode.transferobjects;
 import java.util.ArrayList;
 
 /**
- *
  * @author Nao
  */
 public class Group {
-    
-   private String name;
-   private String description;
-   private User leader;
-   private ArrayList<User> members;
+
+    private String name;
+    private String description;
+    private User leader;
+    private ArrayList<User> members;
 
     public Group(String name, String description, User leader) {
         this.name = name;
@@ -24,11 +23,10 @@ public class Group {
         this.leader = leader;
     }
 
-    public void addMember(){
-    
-    members.add(leader);
+    public void addMember() {
+        members.add(leader);
     }
-    
+
     public String getName() {
         return name;
     }
@@ -60,7 +58,4 @@ public class Group {
     public void setMembers(ArrayList<User> members) {
         this.members = members;
     }
-   
-   
-    
 }

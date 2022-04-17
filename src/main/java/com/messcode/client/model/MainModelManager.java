@@ -20,8 +20,6 @@ public class MainModelManager implements MainModel {
     private User user;
     private PrivateMessage usersPM;
     private ArrayList<PublicMessage> allMessage;
-    
-
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
@@ -51,11 +49,10 @@ public class MainModelManager implements MainModel {
         allMessage.addAll(allPublicMessages);
         //user.getLastSeen.add(lastSeen);
 
-
-        this.allMessage=allPublicMessages;
+        this.allMessage = allPublicMessages;
         // user.getLastSeen.add(lastSeen);
         support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
-        System.out.println(user.getEmail() + " "+ user.getName());
+        System.out.println(user.getEmail() + " " + user.getName());
         support.firePropertyChange("SetUsernameInChat", null, user);
         support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
     }
@@ -64,7 +61,6 @@ public class MainModelManager implements MainModel {
         boolean answer = (boolean) propertyChangeEvent.getNewValue();
         System.out.println("in model: " + answer);
         support.firePropertyChange("LoginResponseToVM", null, answer);
-
     }
 
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -78,14 +74,12 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("UsersOnlineInPM", null, usersPM);
     }
 
-
     public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(publicMessage);
         System.out.println("got to model");
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
-
 
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
@@ -94,8 +88,6 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("newPM", null, pm);
     }
 
-
-
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
         support.firePropertyChange("AddNewUser", null, user);
@@ -103,8 +95,7 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void addUser(String email, String pwd) {
-        client.addUser(new User(email,pwd));
-
+        client.addUser(new User(email, pwd));
     }
 
     @Override
@@ -126,6 +117,7 @@ public class MainModelManager implements MainModel {
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
     }
+
     public ArrayList<PublicMessage> getAllMessage() {
         return allMessage;
     }
@@ -136,41 +128,35 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void register(String firstName, String lastName, String email, String password) {
-        User newUser = new User(firstName,lastName,email,password);
+        User newUser = new User(firstName, lastName, email, password);
         client.register(newUser);
     }
 
     @Override
     public ArrayList<PrivateMessage> loadPMs(User currentUser, User receiver) {
 
-        ArrayList<PrivateMessage> pivi= new ArrayList<>();
-        for (PublicMessage p:this.allMessage){  
-        if (p instanceof PrivateMessage){
-            if(((PrivateMessage)p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail())){
-                pivi.add(((PrivateMessage) p));
+        ArrayList<PrivateMessage> pivi = new ArrayList<>();
+        for (PublicMessage p : this.allMessage) {
+            if (p instanceof PrivateMessage) {
+                if (((PrivateMessage) p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail())) {
+                    pivi.add(((PrivateMessage) p));
+                }
             }
-        }
-        
+
         }
         return pivi;
-        
     }
 
     @Override
     public ArrayList<PublicMessage> loadPublics() {
-         ArrayList<PublicMessage> pubi= new ArrayList<>();
-         PublicMessage puu = new PublicMessage(user, "dasd");
-        for (PublicMessage p:this.allMessage){  
-        if (p.getClass().equals(puu.getClass())){
-            
-            pubi.add(p);
-        }
+        ArrayList<PublicMessage> pubi = new ArrayList<>();
+        PublicMessage puu = new PublicMessage(user, "dasd");
+        for (PublicMessage p : this.allMessage) {
+            if (p.getClass().equals(puu.getClass())) {
+
+                pubi.add(p);
+            }
         }
         return pubi;
     }
-
-    
-
-    
-
 }

@@ -31,8 +31,6 @@ public class ViewHandler {
     private Stage stage;
     private Scene chat;
     private Scene login;
-//    private Scene chatPM;
-//    private Scene chatPM2;
     private Scene newEmployee;
     private Scene newGroup;
     private Scene changePassword;
