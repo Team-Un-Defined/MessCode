@@ -61,6 +61,7 @@ public class ServerSocketHandler implements Runnable {
 
                         if ((boolean) (packetToClient.getObject())) {
                             packetToClient = dbe.acceptLogin( usertemp.getEmail(),usertemp.getUsername());
+
                         } else {
                             outToClient.writeObject(packetToClient);
                             break;
@@ -70,9 +71,9 @@ public class ServerSocketHandler implements Runnable {
 
 
                         pool.userJoin(user);
-
-                        updateUsersList();
                         outToClient.writeObject(packetToClient);
+                        updateUsersList();
+
                         break;
                     }
                     case PUBLIC_MESSAGE: {
