@@ -39,6 +39,16 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("newPM", this::displayPM);
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
+        mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+    }
+
+    private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
+        ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
+
+        Platform.runLater(() -> {
+            usersList.addAll(users);
+            System.out.println(usersList);
+        });
     }
 
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -65,7 +75,19 @@ public class ChatClientViewModel implements Subject {
         User user = (User) propertyChangeEvent.getNewValue();
 
         Platform.runLater(() -> {
-            usersList.add(user);
+            user.setSalt(" - online");  //
+            for(int i =0; i<usersList.size();i++) {
+                if (usersList.get(i).getEmail().equals( user.getEmail()))
+                {
+                    usersList.set(i,user);              // KAMI PUT THE ONLINE DOT HERE or in the controller i dont know man, i hate my life and i hate guis,how are you btw?
+
+
+                    break;
+                }
+            }
+
+
+            System.out.println("NEW USER ADDED WHLEO");
             System.out.println(usersList);
         });
     }
@@ -81,6 +103,7 @@ public class ChatClientViewModel implements Subject {
     public StringProperty messageProperty() {
         return message;
     }
+
 
     public StringProperty PMProperty() {
         return PMmessage;
@@ -111,11 +134,9 @@ public class ChatClientViewModel implements Subject {
     private void displayPM(PropertyChangeEvent propertyChangeEvent) {
         
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
-        System.out.println("ennek kuldtek az uzit: "+pm.getReceiver().getEmail());
-        System.out.println("ez kuldte az uzit: "+pm.getSender().getEmail());
-        System.out.println("ezzel dumalok: " + this.receiver.getEmail());
-        System.out.println("en vaok ez "+this.currentUser.getEmail());
-        if(pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())){
+
+       if(this.receiver==null){
+       }else if(pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())){
          PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
          System.out.println("got to PMPM :" + PMmessage.getValue());
         }    

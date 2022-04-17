@@ -20,13 +20,15 @@ public class MainModelManager implements MainModel {
     private User user;
     private PrivateMessage usersPM;
     private ArrayList<PublicMessage> allMessage;
+    private ArrayList<User> allUsers;
+
     
 
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
         allMessage = new ArrayList<>();
-
+        allUsers=new ArrayList<>();
         this.client = client;
         try {
             client.start();
@@ -46,18 +48,21 @@ public class MainModelManager implements MainModel {
         ArrayList<Object> objs = (ArrayList<Object>) packet.getObject();
         ArrayList<PublicMessage> allPublicMessages = (ArrayList<PublicMessage>) objs.get(0);
         ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>) objs.get(1);
+
         user = (User) objs.get(2);
+        allUsers=(ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
+        support.firePropertyChange("AddOfflineUsers", null, allUsers);
         System.out.println("Everything has been casted");
-        allMessage.addAll(allPublicMessages);
+
         //user.getLastSeen.add(lastSeen);
 
 
         this.allMessage=allPublicMessages;
-        // user.getLastSeen.add(lastSeen);
+
         support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
         System.out.println(user.getEmail() + " "+ user.getName());
         support.firePropertyChange("SetUsernameInChat", null, user);
-        support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
+
     }
 
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {

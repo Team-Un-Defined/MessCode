@@ -39,6 +39,10 @@ public class User implements Serializable {
         this.unreadMessages = new ArrayList<>();
     }
 
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     // if you took employee from database you use this constructor
     public User(String name, String surname, String email, byte[] hashedPassword, String salt,String type) {
         this.name = name;

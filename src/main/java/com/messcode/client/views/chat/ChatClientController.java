@@ -68,7 +68,8 @@ public class ChatClientController {
                 if (empty) {
                     setText(null);
                 } else {
-                    String text = item.getName() + " " + item.getSurname(); // get text from item
+
+                    String text = item.getName() + " " + item.getSurname() + item.getSalt(); // get text from item
                     setText(text);
                 }
             }
@@ -143,10 +144,15 @@ public class ChatClientController {
     }
 
     public void sendPM() {
+        if (chatVM.getReceiver() == null){
+            System.out.println("FUCK YOU");
+        }else {
         System.out.println("-------------------------------------");
+
         String message = textFieldPM.getText();
+
         chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), message));
-        textFieldPM.clear();
+        textFieldPM.clear();}
     }
 
     public void inviteToPmButton() {
@@ -156,6 +162,7 @@ public class ChatClientController {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
                 System.out.println(use.getEmail());
             if (!use.getSurname().equals(chatVM.getCurrentUser().getSurname()) && !use.getName().equals(chatVM.getCurrentUser().getName())) {
+                System.out.println("WOTOTOFÖK");
                 chatVM.setReceiver(use);
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
