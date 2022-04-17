@@ -56,7 +56,7 @@ public class User implements Serializable {
     }
 
     public boolean isProjectLeader() {
-        return type.equals("projectLeader");
+        return type.equals("project_leader");
     }
 
     public boolean isSuperuser() {
@@ -72,7 +72,7 @@ public class User implements Serializable {
     }
 
     public void setProjectLeader() {
-        type = "projectLeader";
+        type = "project_leader";
     }
 
     public void setSuperuser() {

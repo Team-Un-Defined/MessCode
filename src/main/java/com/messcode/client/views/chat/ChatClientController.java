@@ -1,5 +1,6 @@
 package com.messcode.client.views.chat;
 
+import com.messcode.transferobjects.messages.GroupMessages;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -9,10 +10,13 @@ import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.beans.PropertyChangeEvent;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -46,6 +50,11 @@ public class ChatClientController {
     public Button sendPMButton;
     public Button sendGroupButton;
     public Button sendAllButton;
+    public Button newGroupButton;
+    public Button newEmployeeButton;
+    public ImageView allButtonImage;
+    public ImageView groupButtonImage;
+    public ImageView PMButtonImage;
 
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
@@ -57,10 +66,10 @@ public class ChatClientController {
         this.chatVM = chatVM;
         this.vh = vh;
         this.bundle = bundle;
-       
-       refreshPublic();
+
+        refreshPublic();
         // ONLINE LIST
-        usersListFXML.setItems(chatVM.getUsersList());
+        usersListFXML.setItems(chatVM.getActiveUsersList());
         usersListFXML.setCellFactory(lv -> new ListCell<User>() {
             @Override
             public void updateItem(User item, boolean empty) {
@@ -100,8 +109,8 @@ public class ChatClientController {
         });
         //  chatVM.addListener("NewPM", this::openPrivateChat);
 
-        userDisplayedName.setText("'" + chatVM.getCurrentUser().getSurname() + " " +chatVM.getCurrentUser().getName() + "'");
-        userNameLabel.setText(chatVM.getCurrentUser().getSurname() + " " +chatVM.getCurrentUser().getName());
+        userDisplayedName.setText("'" + chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName() + "'");
+        userNameLabel.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userEmailLabel.setText(chatVM.getCurrentUser().getEmail());
         userTypeLabel.setText(chatVM.getCurrentUser().getType());
 
@@ -125,8 +134,22 @@ public class ChatClientController {
                 toggleSwitch.getScene().getStylesheets().add(cssUsed);
             }
         });
-    }
 
+        if (chatVM.getCurrentUser().isProjectLeader() || chatVM.getCurrentUser().isEmployee()) {
+            newEmployeeButton.setVisible(false);
+            newGroupButton.setVisible(false);
+        }
+
+        InputStream in = getClass().getResourceAsStream("/reddot.png");
+//        groupButtonImage.setImage(new Image(in));
+        for (PublicMessage msg : chatVM.getCurrentUser().getUnreadMessages()) {
+            if (msg instanceof GroupMessages)
+                groupButtonImage.setImage(new Image(in));
+            else if (msg instanceof PrivateMessage)
+                PMButtonImage.setImage(new Image(in));
+            else allButtonImage.setImage(new Image(in));
+        }
+    }
 
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
         usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
@@ -154,16 +177,15 @@ public class ChatClientController {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
-                System.out.println(use.getEmail());
+            System.out.println(use.getEmail());
             if (!use.getSurname().equals(chatVM.getCurrentUser().getSurname()) && !use.getName().equals(chatVM.getCurrentUser().getName())) {
                 chatVM.setReceiver(use);
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
-                for(PrivateMessage pm : priv){
-                 messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
+                for (PrivateMessage pm : priv) {
+                    messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
                 }
-                
-                
+
                 panePrivate.toFront();
                 otherUserNameLabel.setText(use.getSurname() + " " + use.getName());
             } else {
@@ -198,28 +220,23 @@ public class ChatClientController {
         }
     }
 
-    public void changePasswordClicked(ActionEvent actionEvent) {
+    public void changePasswordClicked() {
         vh.openChangePassword(cssUsed);
     }
 
-    public void newEmployeeClicked(ActionEvent actionEvent) {
+    public void newEmployeeClicked() {
         vh.openNewEmployee(cssUsed);
     }
 
-    public void newGroupClicked(ActionEvent actionEvent) {
+    public void newGroupClicked() {
         vh.openNewGroup(cssUsed);
     }
 
-    public String getCssUsed() {
-        return cssUsed;
+    public void refreshPublic() {
+        messagesListAll.getItems().clear();
+        ArrayList<PublicMessage> pub = chatVM.loadPublics();
+        for (PublicMessage pb : pub) {
+            messagesListAll.getItems().add(new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg()));
+        }
     }
-    public void refreshPublic(){
-         messagesListAll.getItems().clear();
-    ArrayList<PublicMessage> pub =  chatVM.loadPublics();
-                for(PublicMessage pb : pub){
-                 messagesListAll.getItems().add(new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg()));
-                }
-    
-    }
-    
 }

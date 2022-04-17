@@ -20,21 +20,20 @@ public class ChatClientViewModel implements Subject {
 
     private User currentUser;
     private PropertyChangeSupport support;
-    private ObservableList<User> usersList;
+    private ObservableList<User> activeUsersList;
+    private ObservableList<User> allUsersList;
     private MainModel mainModel;
     private StringProperty message;
     private StringProperty PMmessage;
     private User receiver;
 
-    
-
     public ChatClientViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
         message = new SimpleStringProperty();
         PMmessage = new SimpleStringProperty();
-        usersList = FXCollections.observableArrayList();
+        activeUsersList = FXCollections.observableArrayList();
         this.mainModel = mainModel;
-        mainModel.addListener("AddNewUser", this::getUsersList);
+        mainModel.addListener("AddNewUser", this::getActiveUsersList);
         mainModel.addListener("MessageForEveryone", this::displayPublic);
         mainModel.addListener("newPM", this::displayPM);
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
@@ -44,8 +43,8 @@ public class ChatClientViewModel implements Subject {
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
-            usersList.remove(user);
-            System.out.println(usersList);
+            activeUsersList.remove(user);
+            System.out.println(activeUsersList);
         });
     }
 
@@ -60,13 +59,11 @@ public class ChatClientViewModel implements Subject {
         System.out.println("got to model :" + message.getValue());
     }
 
-    private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
-
+    private void getActiveUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
-
         Platform.runLater(() -> {
-            usersList.add(user);
-            System.out.println(usersList);
+            activeUsersList.add(user);
+            System.out.println(activeUsersList);
         });
     }
 
@@ -74,8 +71,8 @@ public class ChatClientViewModel implements Subject {
         mainModel.sendPublic(mess);
     }
 
-    public ObservableList<User> getUsersList() {
-        return usersList;
+    public ObservableList<User> getActiveUsersList() {
+        return activeUsersList;
     }
 
     public StringProperty messageProperty() {
@@ -124,9 +121,11 @@ public class ChatClientViewModel implements Subject {
     public ArrayList<PublicMessage>loadPublics(){
     return mainModel.loadPublics();
     }
+
     public ArrayList<PrivateMessage> loadPMs(){
       return mainModel.loadPMs(currentUser,receiver);
     }
+
     public User getReceiver() {
         return receiver;
     }
@@ -134,5 +133,4 @@ public class ChatClientViewModel implements Subject {
     public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
-    
 }

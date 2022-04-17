@@ -17,7 +17,7 @@
                            style="-fx-background-radius: 1em; -fx-border-radius: 1em;"/>
                 <PasswordField fx:id="passwordField" layoutX="79.0" layoutY="64.0" prefHeight="25.0" prefWidth="200.0"
                                style="-fx-background-radius: 1em; -fx-border-radius: 1em;"/>
-                <Label fx:id="usernameErrorLabel" layoutX="14.0" layoutY="103.0" prefHeight="17.0" prefWidth="27.0"/>
+                <Label fx:id="usernameErrorLabel" layoutX="14.0" layoutY="103.0" prefHeight="17.0"/>
             </children>
         </Pane>
     </center>
