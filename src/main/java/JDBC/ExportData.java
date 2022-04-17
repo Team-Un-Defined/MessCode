@@ -263,10 +263,24 @@ pubm.setTime(rs.getTimestamp("date"));
            allMessages.add(pm);
 
         }
+        String query6= "select* from account as a where a.id!="+id;
+        rs = st.executeQuery(query6);
+        rs.beforeFirst();
+        ArrayList<User> users=new ArrayList<>();
+        while (rs.next()) {
+            User u =new User(rs.getString("email"),"a");
+            u.setName(rs.getString("fname"));
+            u.setSurname(rs.getString("lname"));
+            u.setType(rs.getString("type"));
+            u.setSalt("");
+
+        users.add(u);
+        }
 
         objs.add(allMessages);
         objs.add(lastSeen);
         objs.add(use);
+        objs.add(users);
         Container dataPack = new Container(objs, ClassName.LOGIN_DATA);
         return dataPack;
 
