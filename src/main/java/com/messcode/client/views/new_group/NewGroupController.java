@@ -21,10 +21,26 @@ public class NewGroupController {
     private ResourceBundle bundle;
 
     public void init(NewGroupViewModel newGroupVM, ViewHandler vh, ResourceBundle bundle) {
-        this.newGroupVM = newGroupVM;
         this.vh = vh;
+        this.newGroupVM = newGroupVM;
         this.bundle = bundle;
+        this.newGroupVM.refresh();
+      
+        
         groupLeaderComboBox.setItems(newGroupVM.getUsersList());
+        groupLeaderComboBox.setCellFactory(lv -> new ListCell<User>() {
+            @Override
+            public void updateItem(User item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+
+                    String text = item.getName() + " " + item.getSurname() + item.getSalt(); // get text from item
+                    setText(text);
+                }
+            }
+        });
     }
 
     public void createClicked(ActionEvent event) {
