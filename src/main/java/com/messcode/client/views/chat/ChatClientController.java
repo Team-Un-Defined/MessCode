@@ -61,6 +61,7 @@ public class ChatClientController {
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
     private String cssUsed = "lite.css";
+    private String paneInFront = "all";
 
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
         this.chatVM = chatVM;
@@ -68,30 +69,7 @@ public class ChatClientController {
         this.bundle = bundle;
 
         refreshPublic();
-        // ONLINE LIST
-        usersListFXML.setItems(chatVM.getUsersList());
-        usersListFXML.setCellFactory(lv -> new ListCell<User>() {
-            @Override
-            public void updateItem(User item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    if (item.getSalt().equals(" - online")) {
-                        InputStream in = getClass().getResourceAsStream("/greendot.png");
-                        ImageView imageView = new ImageView(new Image(in));
-                        imageView.setFitHeight(10);
-                        imageView.setPreserveRatio(true);
-                        this.setGraphic(imageView);
-                    }
-                    else {
-                        this.setGraphic(null);
-                    }
-                    String text = item.getName() + " " + item.getSurname(); // get text from item
-                    setText(text);
-                }
-            }
-        });
+        updateUserList();
 
         //CHAT MESSAGES
         StringProperty textChat = new SimpleStringProperty();
@@ -103,6 +81,11 @@ public class ChatClientController {
                 label.setMaxWidth(messagesListAll.getWidth() - 25);
                 label.setWrapText(true);
                 messagesListAll.getItems().add(label);
+
+                if (!paneInFront.equals("all")) {
+                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+                    allButtonImage.setImage(new Image(reddot));
+                }
             });
         });
 
@@ -115,6 +98,11 @@ public class ChatClientController {
                 label.setMaxWidth(messagesListPM.getWidth() - 25);
                 label.setWrapText(true);
                 messagesListPM.getItems().add(label);
+
+                if(!paneInFront.equals("pm")) {
+                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+                    PMButtonImage.setImage(new Image(reddot));
+                }
             });
         });
         //  chatVM.addListener("NewPM", this::openPrivateChat);
@@ -123,10 +111,6 @@ public class ChatClientController {
         userNameLabel.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userEmailLabel.setText(chatVM.getCurrentUser().getEmail());
         userTypeLabel.setText(chatVM.getCurrentUser().getType());
-
-        paneAll.toFront();
-        userListPane.toFront();
-        sendAllButton.setDefaultButton(true);
 
         Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
 
@@ -150,15 +134,44 @@ public class ChatClientController {
             newGroupButton.setVisible(false);
         }
 
-        InputStream in = getClass().getResourceAsStream("/reddot.png");
-//        groupButtonImage.setImage(new Image(in));
         for (PublicMessage msg : chatVM.getCurrentUser().getUnreadMessages()) {
+            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
             if (msg instanceof GroupMessages)
-                groupButtonImage.setImage(new Image(in));
+                groupButtonImage.setImage(new Image(reddot));
             else if (msg instanceof PrivateMessage)
-                PMButtonImage.setImage(new Image(in));
-            else allButtonImage.setImage(new Image(in));
+                PMButtonImage.setImage(new Image(reddot));
+            else allButtonImage.setImage(new Image(reddot));
         }
+
+        paneAll.toFront();
+        userListPane.toFront();
+        sendAllButton.setDefaultButton(true);
+    }
+
+    private void updateUserList() {
+        usersListFXML.setItems(chatVM.getUsersList());
+        usersListFXML.setCellFactory(lv -> new ListCell<User>() {
+            @Override
+            public void updateItem(User item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    if (item.getSalt().equals(" - online")) {
+                        InputStream in = getClass().getResourceAsStream("/greendot.png");
+                        ImageView imageView = new ImageView(new Image(in));
+                        imageView.setFitHeight(10);
+                        imageView.setPreserveRatio(true);
+                        this.setGraphic(imageView);
+                    }
+                    else {
+                        this.setGraphic(null);
+                    }
+                    String text = item.getName() + " " + item.getSurname(); // get text from item
+                    setText(text);
+                }
+            }
+        });
     }
 
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
@@ -212,22 +225,35 @@ public class ChatClientController {
 
     public void handleClicks(ActionEvent actionEvent) {
         if (actionEvent.getSource() == buttonAll) {
+            paneInFront = "all";
             refreshPublic();
             paneAll.toFront();
             userListPane.toFront();
+            sendPMButton.setDefaultButton(false);
+            sendGroupButton.setDefaultButton(false);
             sendAllButton.setDefaultButton(true);
+            allButtonImage.setImage(null);
         }
         if (actionEvent.getSource() == buttonGroup) {
+            paneInFront = "group";
             paneGroup.toFront();
             groupListPane.toFront();
+            sendAllButton.setDefaultButton(false);
+            sendPMButton.setDefaultButton(false);
             sendGroupButton.setDefaultButton(true);
+            groupButtonImage.setImage(null);
         }
         if (actionEvent.getSource() == buttonPrivate) {
+            paneInFront = "pm";
             panePrivate.toFront();
             userListPane.toFront();
+            sendGroupButton.setDefaultButton(false);
+            sendAllButton.setDefaultButton(false);
             sendPMButton.setDefaultButton(true);
+            PMButtonImage.setImage(null);
         }
         if (actionEvent.getSource() == buttonProfile) {
+            paneInFront = "profile";
             paneProfile.toFront();
             userListPane.toFront();
             sendGroupButton.setDefaultButton(false);
@@ -246,6 +272,10 @@ public class ChatClientController {
 
     public void newGroupClicked() {
         vh.openNewGroup(cssUsed);
+    }
+
+    public void editMemberButton(ActionEvent actionEvent) {
+        vh.openEditMember(cssUsed);
     }
 
     public void refreshPublic() {

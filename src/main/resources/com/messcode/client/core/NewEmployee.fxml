@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="280.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.new_employee.NewEmployeeController">
+<Pane prefHeight="280.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.new_employee.NewEmployeeController">
    <children>
       <Label layoutX="20.0" layoutY="70.0" text="%new_employee.fist_name" />
       <Label layoutX="20.0" layoutY="110.0" text="%new_employee.last_name" />
@@ -17,12 +17,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="firstNameTextField" layoutX="102.0" layoutY="66.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
-      <TextField fx:id="lastNameTextField" layoutX="102.0" layoutY="106.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
-      <TextField fx:id="emailTextField" layoutX="102.0" layoutY="146.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
-      <Button fx:id="createButton" layoutX="231.0" layoutY="231.0" mnemonicParsing="false" onAction="#createClicked" prefHeight="25.0" prefWidth="88.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" text="%new_employee.button_create" />
+      <TextField fx:id="firstNameTextField" layoutX="153.0" layoutY="66.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
+      <TextField fx:id="lastNameTextField" layoutX="153.0" layoutY="106.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
+      <TextField fx:id="emailTextField" layoutX="153.0" layoutY="146.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
+      <Button fx:id="createButton" layoutX="282.0" layoutY="231.0" mnemonicParsing="false" onAction="#createClicked" prefHeight="25.0" prefWidth="88.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" text="%new_employee.button_create" />
       <Label fx:id="errorLabel" layoutX="14.0" layoutY="174.0" />
-      <ComboBox fx:id="typeComboBox" layoutX="102.0" layoutY="186.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
-      <Label layoutX="20.0" layoutY="190.0" text="Type" />
+      <ComboBox fx:id="typeComboBox" layoutX="153.0" layoutY="186.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
+      <Label layoutX="20.0" layoutY="190.0" text="%new_employee.type" />
    </children>
 </Pane>
