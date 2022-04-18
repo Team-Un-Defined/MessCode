@@ -174,10 +174,5 @@ public class MainModelManager implements MainModel {
         return pubi;
     }
     
-     @Override
-    public ArrayList<User> getAllUsers() {
-        return this.allUsers;
-    }
-    
     
 }

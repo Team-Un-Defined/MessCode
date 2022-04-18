@@ -12,6 +12,8 @@ public class NewGroupController {
 
     public Button createButton;
     public Label errorLabel;
+    public Label descriptionLabel;
+    public TextArea descriptionTextArea;
     public ComboBox<User> groupLeaderComboBox;
     public TextField groupNameTextField;
 
@@ -23,10 +25,8 @@ public class NewGroupController {
     public void init(NewGroupViewModel newGroupVM, ViewHandler vh, ResourceBundle bundle) {
         this.vh = vh;
         this.newGroupVM = newGroupVM;
-        this.bundle = bundle;
-        this.newGroupVM.refresh();
-      
-        
+        this.bundle = bundle; 
+        this.descriptionTextArea.setText("Write something nice");
         groupLeaderComboBox.setItems(newGroupVM.getUsersList());
         groupLeaderComboBox.setCellFactory(lv -> new ListCell<User>() {
             @Override
