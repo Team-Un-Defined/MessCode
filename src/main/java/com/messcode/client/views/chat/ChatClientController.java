@@ -81,6 +81,11 @@ public class ChatClientController {
                 label.setMaxWidth(messagesListAll.getWidth() - 25);
                 label.setWrapText(true);
                 messagesListAll.getItems().add(label);
+
+                if (!paneInFront.equals("all")) {
+                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+                    allButtonImage.setImage(new Image(reddot));
+                }
             });
         });
 
@@ -93,6 +98,11 @@ public class ChatClientController {
                 label.setMaxWidth(messagesListPM.getWidth() - 25);
                 label.setWrapText(true);
                 messagesListPM.getItems().add(label);
+
+                if(!paneInFront.equals("pm")) {
+                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+                    PMButtonImage.setImage(new Image(reddot));
+                }
             });
         });
         //  chatVM.addListener("NewPM", this::openPrivateChat);
@@ -124,14 +134,13 @@ public class ChatClientController {
             newGroupButton.setVisible(false);
         }
 
-        InputStream in = getClass().getResourceAsStream("/reddot.png");
-//        groupButtonImage.setImage(new Image(in));
         for (PublicMessage msg : chatVM.getCurrentUser().getUnreadMessages()) {
+            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
             if (msg instanceof GroupMessages)
-                groupButtonImage.setImage(new Image(in));
+                groupButtonImage.setImage(new Image(reddot));
             else if (msg instanceof PrivateMessage)
-                PMButtonImage.setImage(new Image(in));
-            else allButtonImage.setImage(new Image(in));
+                PMButtonImage.setImage(new Image(reddot));
+            else allButtonImage.setImage(new Image(reddot));
         }
 
         paneAll.toFront();
@@ -216,22 +225,35 @@ public class ChatClientController {
 
     public void handleClicks(ActionEvent actionEvent) {
         if (actionEvent.getSource() == buttonAll) {
+            paneInFront = "all";
             refreshPublic();
             paneAll.toFront();
             userListPane.toFront();
+            sendPMButton.setDefaultButton(false);
+            sendGroupButton.setDefaultButton(false);
             sendAllButton.setDefaultButton(true);
+            allButtonImage.setImage(null);
         }
         if (actionEvent.getSource() == buttonGroup) {
+            paneInFront = "group";
             paneGroup.toFront();
             groupListPane.toFront();
+            sendAllButton.setDefaultButton(false);
+            sendPMButton.setDefaultButton(false);
             sendGroupButton.setDefaultButton(true);
+            groupButtonImage.setImage(null);
         }
         if (actionEvent.getSource() == buttonPrivate) {
+            paneInFront = "pm";
             panePrivate.toFront();
             userListPane.toFront();
+            sendGroupButton.setDefaultButton(false);
+            sendAllButton.setDefaultButton(false);
             sendPMButton.setDefaultButton(true);
+            PMButtonImage.setImage(null);
         }
         if (actionEvent.getSource() == buttonProfile) {
+            paneInFront = "profile";
             paneProfile.toFront();
             userListPane.toFront();
             sendGroupButton.setDefaultButton(false);
