@@ -1,11 +1,16 @@
 package com.messcode.server.networking;
 
+import JDBC.ExportData;
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
+import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConnectionPool {
 
@@ -73,4 +78,19 @@ public class ConnectionPool {
         }
         return ans;
     }
+    public void updateGroup(ExportData dbe){
+     
+     for (ServerSocketHandler handler : connections) {
+         try {
+             handler.sendGroups(dbe.updateGroups(handler.getUser()));
+         } catch (SQLException ex) {
+             Logger.getLogger(ConnectionPool.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        }
+    
+    
+    }
+    
+    
+    
 }

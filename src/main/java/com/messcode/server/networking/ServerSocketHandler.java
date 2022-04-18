@@ -4,6 +4,7 @@ import JDBC.ExportData;
 import JDBC.ImportData;
 import com.messcode.transferobjects.ClassName;
 import com.messcode.transferobjects.Container;
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.messages.PrivateMessage;
@@ -44,6 +45,15 @@ public class ServerSocketHandler implements Runnable {
                 Container packet = (Container) (inFromClient.readObject());
                 System.out.println("NEW PACKET : " + packet.getClassName() + " object " + packet.getObject());
                 switch (packet.getClassName()) {
+                    case CREATING_GROUP:{
+                        System.out.println("com.messcode.server.networking.ServerSocketHandler.run()");
+                    Group g = (Group) packet.getObject();
+                    dbi.createGroup(g);
+                   
+                    pool.updateGroup(dbe);
+                   
+                    break;
+                    }
                     case PRIVATE_MESSAGE: {
                         PrivateMessage pm = (PrivateMessage) packet.getObject();
                         System.out.println("calling the method on the PM !!!");
@@ -154,6 +164,15 @@ public class ServerSocketHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    void sendGroups(Container updateGroups) {
+       try {
+            outToClient.writeObject(updateGroups);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 }
 
