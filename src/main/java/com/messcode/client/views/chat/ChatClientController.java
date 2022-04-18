@@ -61,6 +61,7 @@ public class ChatClientController {
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
     private String cssUsed = "lite.css";
+    private String paneInFront = "all";
 
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
         this.chatVM = chatVM;
@@ -68,30 +69,7 @@ public class ChatClientController {
         this.bundle = bundle;
 
         refreshPublic();
-        // ONLINE LIST
-        usersListFXML.setItems(chatVM.getUsersList());
-        usersListFXML.setCellFactory(lv -> new ListCell<User>() {
-            @Override
-            public void updateItem(User item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    if (item.getSalt().equals(" - online")) {
-                        InputStream in = getClass().getResourceAsStream("/greendot.png");
-                        ImageView imageView = new ImageView(new Image(in));
-                        imageView.setFitHeight(10);
-                        imageView.setPreserveRatio(true);
-                        this.setGraphic(imageView);
-                    }
-                    else {
-                        this.setGraphic(null);
-                    }
-                    String text = item.getName() + " " + item.getSurname(); // get text from item
-                    setText(text);
-                }
-            }
-        });
+        updateUserList();
 
         //CHAT MESSAGES
         StringProperty textChat = new SimpleStringProperty();
@@ -124,10 +102,6 @@ public class ChatClientController {
         userEmailLabel.setText(chatVM.getCurrentUser().getEmail());
         userTypeLabel.setText(chatVM.getCurrentUser().getType());
 
-        paneAll.toFront();
-        userListPane.toFront();
-        sendAllButton.setDefaultButton(true);
-
         Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
 
         toggleSwitch.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
@@ -159,6 +133,36 @@ public class ChatClientController {
                 PMButtonImage.setImage(new Image(in));
             else allButtonImage.setImage(new Image(in));
         }
+
+        paneAll.toFront();
+        userListPane.toFront();
+        sendAllButton.setDefaultButton(true);
+    }
+
+    private void updateUserList() {
+        usersListFXML.setItems(chatVM.getUsersList());
+        usersListFXML.setCellFactory(lv -> new ListCell<User>() {
+            @Override
+            public void updateItem(User item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    if (item.getSalt().equals(" - online")) {
+                        InputStream in = getClass().getResourceAsStream("/greendot.png");
+                        ImageView imageView = new ImageView(new Image(in));
+                        imageView.setFitHeight(10);
+                        imageView.setPreserveRatio(true);
+                        this.setGraphic(imageView);
+                    }
+                    else {
+                        this.setGraphic(null);
+                    }
+                    String text = item.getName() + " " + item.getSurname(); // get text from item
+                    setText(text);
+                }
+            }
+        });
     }
 
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
@@ -246,6 +250,10 @@ public class ChatClientController {
 
     public void newGroupClicked() {
         vh.openNewGroup(cssUsed);
+    }
+
+    public void editMemberButton(ActionEvent actionEvent) {
+        vh.openEditMember(cssUsed);
     }
 
     public void refreshPublic() {
