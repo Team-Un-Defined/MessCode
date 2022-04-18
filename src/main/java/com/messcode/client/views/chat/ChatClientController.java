@@ -77,8 +77,17 @@ public class ChatClientController {
                 if (empty) {
                     setText(null);
                 } else {
-
-                    String text = item.getName() + " " + item.getSurname() + item.getSalt(); // get text from item
+                    if (item.getSalt().equals(" - online")) {
+                        InputStream in = getClass().getResourceAsStream("/greendot.png");
+                        ImageView imageView = new ImageView(new Image(in));
+                        imageView.setFitHeight(10);
+                        imageView.setPreserveRatio(true);
+                        this.setGraphic(imageView);
+                    }
+                    else {
+                        this.setGraphic(null);
+                    }
+                    String text = item.getName() + " " + item.getSurname(); // get text from item
                     setText(text);
                 }
             }
