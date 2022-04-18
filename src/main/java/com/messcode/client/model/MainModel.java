@@ -1,5 +1,6 @@
 package com.messcode.client.model;
 
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.util.Subject;
@@ -23,5 +24,7 @@ public interface MainModel extends Subject {
     public ArrayList<PrivateMessage> loadPMs(User currentUser,User receiver);
     
    public ArrayList<PublicMessage> loadPublics();
+   
+   public void newGroup(Group g);
 
 }

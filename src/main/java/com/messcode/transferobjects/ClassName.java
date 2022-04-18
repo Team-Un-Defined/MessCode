@@ -24,7 +24,10 @@ public enum ClassName {
     
     //group message
     GROUP_MESSAGE,
+    //creating new group
+    CREATING_GROUP,
     
+    GROUP_UPDATE,
     //public messages
     PUBLIC_MESSAGE,
 

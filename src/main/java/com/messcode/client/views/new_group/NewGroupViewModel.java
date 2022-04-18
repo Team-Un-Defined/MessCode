@@ -1,6 +1,7 @@
 package com.messcode.client.views.new_group;
 
 import com.messcode.client.model.MainModel;
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -30,12 +31,23 @@ public class NewGroupViewModel {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
 
         Platform.runLater(() -> {
-            usersList.addAll(users);
+            
+            for (User u: users){
+            if(u.getType().equals("superuser") || u.getType().equals("employer")){
+            continue;
+            }
+            usersList.add(u);
+            }
             System.out.println(usersList);
         });
     }
 
     public ObservableList<User> getUsersList() {
         return usersList;
+    }
+    
+    public void newGroup(Group g){
+    mainModel.newGroup(g);
+    
     }
 }

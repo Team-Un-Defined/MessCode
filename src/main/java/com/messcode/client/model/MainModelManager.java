@@ -22,7 +22,7 @@ public class MainModelManager implements MainModel {
     private PrivateMessage usersPM;
     private ArrayList<PublicMessage> allMessage;
     private ArrayList<User> allUsers;
-    
+    private ArrayList<Group> allGroups;
    
 
     public MainModelManager(Client client) {
@@ -32,6 +32,7 @@ public class MainModelManager implements MainModel {
         this.client = client;
         try {
             client.start();
+            client.addListener("AddNewGroup", this::addToGroupList);
             client.addListener("AddNewUser", this::addToUsersList);
             client.addListener("MessageForEveryone", this::receivePublic);
             client.addListener("newPM", this::receivePM);
@@ -172,6 +173,15 @@ public class MainModelManager implements MainModel {
             }
         }
         return pubi;
+    }
+
+    @Override
+    public void newGroup(Group g) {
+       client.newGroup(g);
+    }
+    public void addToGroupList(PropertyChangeEvent propertyChangeEvent) {
+        Group g = (Group) propertyChangeEvent.getNewValue();
+        support.firePropertyChange("AddNewGroup", null, g);
     }
     
     

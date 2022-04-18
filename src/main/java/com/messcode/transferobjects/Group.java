@@ -5,12 +5,13 @@
  */
 package com.messcode.transferobjects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * @author Nao
  */
-public class Group {
+public class Group implements Serializable{
 
     private String name;
     private String description;
@@ -21,10 +22,12 @@ public class Group {
         this.name = name;
         this.description = description;
         this.leader = leader;
+        this.members = new ArrayList<User>();
+        members.add(leader);
     }
 
-    public void addMember() {
-        members.add(leader);
+    public void addMember(User u) {
+        members.add(u);
     }
 
     public String getName() {

@@ -13,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import static com.messcode.transferobjects.ClassName.PRIVATE_MESSAGE;
+import com.messcode.transferobjects.Group;
+import java.util.ArrayList;
 
 public class ClientSocketHandler implements Runnable {
 
@@ -35,15 +37,22 @@ public class ClientSocketHandler implements Runnable {
                 Container packet = (Container) inFromServer.readObject();
                 System.out.println("Im the client and i got the PM finally pls wtf"+ packet.getClassName());
                 switch (packet.getClassName()) {
+                    case GROUP_UPDATE:{
+                        ArrayList<Group> groups = (ArrayList<Group>)packet.getObject();
+                        receiveGroups(groups);
+                        break;
+                    
+                    }
                     case PRIVATE_MESSAGE: {
                         PrivateMessage pm = (PrivateMessage) packet.getObject();
-
                         receivePM(pm);
+                        
                         break;
                     }
                     case PUBLIC_MESSAGE: {
                         PublicMessage pub = (PublicMessage) packet.getObject();
                         receivePublic(pub);
+                        
                         break;
                     }
                     case USER_JOIN: {
@@ -149,4 +158,20 @@ public class ClientSocketHandler implements Runnable {
             e.printStackTrace();
         }
     }
+    
+    public void addGroup(Group g){
+    
+        try {
+            Container packet = new Container(g, ClassName.CREATING_GROUP);
+            outToServer.writeObject(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+    }
+
+    private void receiveGroups(ArrayList<Group> groups) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

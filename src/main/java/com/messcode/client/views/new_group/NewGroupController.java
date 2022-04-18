@@ -46,7 +46,9 @@ public class NewGroupController {
     public void createClicked(ActionEvent event) {
         String groupName = groupNameTextField.getText();
         User groupLeader = (User) groupLeaderComboBox.getValue(); // comment for kami to edit ***
-
+        System.out.println("  77777777777777777777777777777 "+groupLeader.getEmail());
+        String description = descriptionTextArea.getText();
+        newGroupVM.newGroup(new Group(groupName,description,groupLeader));
 
         // NOMMI do we need regex for project name?
     }

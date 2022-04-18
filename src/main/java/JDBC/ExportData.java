@@ -3,6 +3,7 @@ package JDBC;
 import JDBC.DBConn.DatabaseConnection;
 import com.messcode.transferobjects.ClassName;
 import com.messcode.transferobjects.Container;
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
@@ -332,12 +333,86 @@ pubm.setTime(rs.getTimestamp("date"));
         }
         return temp;
     }
-    /**
-     * Creates an SQL statement that will search for a group and return whether it exists or not.
-     * @param id int ID to search for the group
-     * @throws SQLException an exception that provides information on a database
-     *                      access error or other errors.
-     * @returns boolean stating true if the group exists, and false if otherwise.
-     */
 
+
+    public Container updateGroups(User current) throws SQLException{
+        ArrayList<Group> groups = new ArrayList<Group>();
+        ResultSet rs;
+          Statement st = c.createStatement();
+          Statement st1 = c.createStatement();
+           Statement st2 = c.createStatement();
+          ResultSet rs0=null;
+    if(current.getType().equals("employee") || current.getType().equals("project_leader")){
+    String query0 ="select \n" +
+    "p.name\n" +
+    "from projects as p \n" +
+    "join project_members as pm\n" +
+    "on pm.project_id = p.id\n" +
+    "join account as a\n" +
+    "on a.id = pm.account_id\n" +
+    "where a.email= '"+ current.getEmail() +"'";
+    rs0= st.executeQuery(query0);
+   
+    }
+    
+    do {
+    String plus =" ";
+    if(!(rs0 == null)){
+    plus = "where p.name = '"+rs0.getString("name") +"'";
+    }
+    String query ="select \n" +
+    "p.name,\n" +
+    "p.description,\n" +
+    "a.fname,\n" +
+    "a.lname,\n" +
+    "a.email,\n" +
+    "a.type\n" +
+    "from projects as p \n" +
+    "join account as a\n" +
+    "on a.id = p.leader_id" + plus;
+
+    
+    
+    rs = st1.executeQuery(query);
+    if (rs.isClosed()){
+        System.out.println("LLLLLL LLLLLL LLLLL LLLL LLL LLLLLLL");
+    }
+    
+    while(rs.next()){
+    User lead = new User(rs.getString("email"),rs.getString("fname")+rs.getString("lname"));
+    lead.setName(rs.getString("fname"));
+    lead.setSurname(rs.getString("lname"));
+    lead.setType(rs.getString("type"));
+    Group g = new Group(rs.getString("name"),rs.getString("description"),lead);
+    
+        String query2="select \n" +
+        "a.fname,\n" +
+        "a.lname,\n" +
+        "a.email,\n" +
+        "a.type\n" +
+        "from project_members as pm\n" +
+        "join account as a\n" +
+        "on a.id = pm.account_id\n" +
+        "join projects as p\n" +
+        "on p.id = pm.project_id\n" +
+        "where p.name = '"+rs.getString("name")+"'";
+      ResultSet rs2 = st2.executeQuery(query2);   
+            while(rs2.next()){
+            User u = new User (rs2.getString("email"),rs2.getString("fname")+rs2.getString("lname"));
+             u.setName(rs2.getString("fname"));
+             u.setSurname(rs2.getString("lname"));
+            u.setType(rs2.getString("type"));
+            g.addMember(u);
+        }
+        groups.add(g);
+      
+    }
+        
+    }while(!(rs0 == null) && rs0.next());
+        
+    return  new Container(groups, ClassName.GROUP_UPDATE);       
+    
+    }
+    
+    
 }
