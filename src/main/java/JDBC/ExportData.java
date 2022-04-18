@@ -1,17 +1,18 @@
 package JDBC;
 
 import JDBC.DBConn.DatabaseConnection;
-import com.messcode.transferobjects.ClassName;
-import com.messcode.transferobjects.Container;
-import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.*;
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.sql.DriverManager;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ExportData {
 
@@ -84,32 +85,50 @@ public class ExportData {
      * @throws SQLException An exception that provides information on a database
      *                      access error or other errors.
      */
-    public Container checkLogin(String email, String password) throws SQLException {
+    public Container checkLogin(String email,String password) throws SQLException {
+
         System.out.println("hello why not?");
-        boolean answer = false;
+        String answer = null;
 
         System.out.println("HELLO ");
         Statement st = c.createStatement();
         String query =
-                "SELECT * FROM Account WHERE  email = '" + email
-                        + "' AND pwd_hash ='" + password + "' ;";
+                "SELECT * FROM Account WHERE  email = '" + email+"'";
+
 
         ResultSet rs = st.executeQuery(query);
-        System.out.println("HELLO2 ");
+
         String ema = null;
-        String pass = null;
+        String salt=null;
+        String passw = null;
+        byte[] pass = null;
+
+        String hashedPassword=null;
+       byte[] finalpa=null;
 
         while (rs.next()) {
 
-            pass = rs.getString("pwd_hash");
+
             ema = rs.getString("email");
+             salt=rs.getString("pwd_salt");
+            hashedPassword= rs.getString("pwd_hash");
 
-            System.out.println("pass= " + password);
-            System.out.println("email = " + ema);
+            System.out.println("salt = " +salt);
+            System.out.println("pwd from db = " + hashedPassword);
+            AccountManager am = new AccountManager();
+            pass = am.hashPassword(password, salt);
+            System.out.println("pwd from clint = "+ Arrays.toString(pass));
+            if (email != null) {
 
-            if (email != null && password != null) {
-                answer = true;
-                System.out.println("ans1" + answer);
+
+                if (Arrays.toString(pass).equals(hashedPassword)) {
+                    System.out.println("THEY ARE THE SAME OMG");
+                    answer=hashedPassword;
+                }
+
+
+
+
                 break;
             }
 
@@ -125,13 +144,14 @@ public class ExportData {
      * the user is part of , from the database.
      *
      * @param email    String containing the username
-     * @param password String containing the password
+     *
      * @throws SQLException an exception that provides information on a database
      *                      access error or other errors.
      * @returns Container that contains a boolean true stating that the login was successfull, the account of the user and an ArrayList of groups.
      */
-    public Container acceptLogin(String email, String password) throws SQLException {
+    public Container acceptLogin(String email, String  password) throws SQLException {
         Statement st = c.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
         System.out.println("db: "+ email + " "+ password);
         String query = "SELECT * from public.account as a   WHERE a.email = '" + email + "' AND a.pwd_hash= '" + password + "'  ";
 
@@ -210,7 +230,8 @@ pubm.setTime(rs.getTimestamp("date"));
                 "on (a.id = p.reciever_id or a.id = p.sender_id) and a.id != "+id +
                 "where la.user_id = "+id ;
         ArrayList<Object> objs = new ArrayList<>();
-        User use = new User(fname,lname,ema,password.getBytes(StandardCharsets.UTF_8),salt,type);
+        User use = new User(fname,lname,ema,password.getBytes(StandardCharsets.UTF_8),salt,type);   // fix this too
+        //User use = new User(fname,lname,ema,password.getBytes(StandardCharsets.UTF_8),salt,type);
         System.out.println("database: "+ use.getSurname() +" "+ use.getName());
         rs = st.executeQuery(query4);
         rs.beforeFirst();
@@ -276,7 +297,37 @@ pubm.setTime(rs.getTimestamp("date"));
 
         users.add(u);
         }
+        /*
+        String query7="select\n" +
+                "g.sender_id,\n" +
+                "g.project_id,\n" +
+                "g.message,\n" +
+                "g.date,\n" +
+                "a.fname,\n" +
+                "a.lname,\n" +
+                "a.email,\n" +
+                "ppp.name,\n" +
+                "ppp.description\n" +
+                "from group_messages as g\n" +
+                "join project_members p\n" +
+                "on p.project_id = g.project_id\n" +
+                "join projects as ppp\n" +
+                "on p.project_id = ppp.id\n" +
+                "join account as a\n" +
+                "on a.id = g.sender_id\n" +
+                "where  p.account_id ="+id;
+        rs = st.executeQuery(query5);
+        rs.beforeFirst();
 
+        while (rs.next()) {
+            User u = new User(rs.getString("email"), "a");
+            u.setName(rs.getString("fname"));
+            u.setSurname(rs.getString("lname"));
+            Group g =new Group(rs, rs.getString("name"),rs.getString("description"),rs.getString() );
+            GroupMessages pum;
+            pum.setTime(rs.getTimestamp("date"));
+        }
+*/
         objs.add(allMessages);
         objs.add(lastSeen);
         objs.add(use);

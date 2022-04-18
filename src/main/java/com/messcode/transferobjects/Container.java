@@ -18,7 +18,7 @@ public class Container implements Serializable {
      * @return Object object
      */
     public Object getObject() {
-        return object;
+        return this.object;
     }
 
     /**

@@ -13,6 +13,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainModelManager implements MainModel {
 
@@ -109,7 +110,9 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void addUser(String email, String pwd) {
-        client.addUser(new User(email, pwd));
+        User javaIsRetarded= new  User(email, pwd);
+
+        client.addUser(javaIsRetarded);
     }
 
     @Override
@@ -141,8 +144,8 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void register(String firstName, String lastName, String email, String password) {
-        User newUser = new User(firstName, lastName, email, password);
+    public void register(String firstName, String lastName, String email, String password,String type) {
+        User newUser = new User(firstName, lastName, email, password, type);
         client.register(newUser);
     }
 

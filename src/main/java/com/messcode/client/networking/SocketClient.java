@@ -41,6 +41,7 @@ public class SocketClient implements Client {
 
     @Override
     public void addUser(User username) {
+        System.out.println("IS THIS NULL? "+ username);
         socketHandler.addUser(username);
     }
 
