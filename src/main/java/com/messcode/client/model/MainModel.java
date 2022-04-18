@@ -23,5 +23,7 @@ public interface MainModel extends Subject {
     public ArrayList<PrivateMessage> loadPMs(User currentUser,User receiver);
     
    public ArrayList<PublicMessage> loadPublics();
+   
+   public  ArrayList<User> getAllUsers();
 
 }
