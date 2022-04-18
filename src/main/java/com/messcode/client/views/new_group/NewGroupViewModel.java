@@ -8,16 +8,27 @@ import javafx.collections.ObservableList;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import javafx.beans.InvalidationListener;
+import javafx.collections.ListChangeListener;
 
 public class NewGroupViewModel {
 
     private MainModel mainModel;
     private ObservableList<User> usersList;
-
     public NewGroupViewModel(MainModel mainModel) {
+        this.usersList= FXCollections.observableArrayList() ;
         this.mainModel = mainModel;
-        usersList = FXCollections.observableArrayList();
+        this.usersList.addAll(mainModel.getAllUsers());
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+    }
+    
+    public void refresh(){
+     this.usersList.removeAll();
+     this.usersList.addAll(mainModel.getAllUsers());
     }
 
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
