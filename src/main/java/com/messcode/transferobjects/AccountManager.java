@@ -53,6 +53,8 @@ public class AccountManager {
     }
 
     public boolean passwordCheck(User myUser, String password) {
+        System.out.println(Arrays.toString(myUser.getHashedPassword()));
+        System.out.println(Arrays.toString(hashPassword(password, myUser.getSalt())));
         return Arrays.equals(myUser.getHashedPassword(), hashPassword(password, myUser.getSalt()));
     }
 

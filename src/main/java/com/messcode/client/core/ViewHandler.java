@@ -125,6 +125,7 @@ public class ViewHandler {
     }
 
     public void openNewEmployee(String css) {
+
         Stage newEmployeeStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -144,6 +145,7 @@ public class ViewHandler {
     }
 
     public void openNewGroup(String css) {
+
         Stage newGroupStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);

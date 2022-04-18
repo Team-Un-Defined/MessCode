@@ -11,24 +11,32 @@ public class User implements Serializable {
     private String name;
     private String surname;
     private String username;
+    private String strPassword;
     private String email;
     private byte[] hashedPassword;
     private String salt;
     private ArrayList<PublicMessage> unreadMessages;
-    // temporary, will remove later
+    // for login
+
     public User(String email, String password) {
+
         this.email = email;
-        this.username = password;
-    }
-    // added constructor to start working on login in client -Kamilla
-    public User(String username, String email, String password) throws NoSuchAlgorithmException {
-        AccountManager myAccountManager = new AccountManager();       
-        this.email = email;
-        this.hashedPassword = myAccountManager.hashPassword(password, myAccountManager.generateSalt());
+        this.strPassword=password;
     }
 
+
+    public User(String salt, String password,String type) {
+        AccountManager myAccountManager = new AccountManager();
+
+        this.salt =salt;
+
+        this.hashedPassword = myAccountManager.hashPassword(password, salt);
+        System.out.println("JHEÉLLO, USER TALKING pwd: "+password+" salt: "+ salt+ " pwd_hash:" + hashedPassword);
+
+        this.type=type;
+    }
     // if you are creating new employee you use this constructor
-    public User(String name, String surname, String email, String password) {
+    public User(String name, String surname, String email, String password,String type) {
         AccountManager myAccountManager = new AccountManager();
         this.name = name;
         this.surname = surname;
@@ -37,6 +45,7 @@ public class User implements Serializable {
         this.salt = myAccountManager.generateSalt();
         this.hashedPassword = myAccountManager.hashPassword(password, salt);
         this.unreadMessages = new ArrayList<>();
+        this.type=type;
     }
 
     public void setSalt(String salt) {
@@ -55,6 +64,13 @@ public class User implements Serializable {
         this.type=type;
     }
 
+    public String getStrPassword() {
+        return strPassword;
+    }
+
+    public void setStrPassword(String strPassword) {
+        this.strPassword = strPassword;
+    }
     public boolean isEmployee() {
         return type.equals("employee");
     }
@@ -128,6 +144,9 @@ public class User implements Serializable {
     public byte[] getHashedPassword() {
         return hashedPassword;
     }
+    public void setHashedPassword(byte[] h) {
+         this.hashedPassword=h;
+    }
 
     public void setPassword(String password) {
         AccountManager myAccountManager = new AccountManager();
@@ -141,11 +160,9 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return username;
+        return email;
     }
-    public User(String username) {
-        this.username = username;
-    }
+
 
 
     public void setType(String type) {

@@ -132,8 +132,12 @@ public class ClientSocketHandler implements Runnable {
 
     public void addUser(User username) {
         try {
+            System.out.println("wgatdup: "+username);
             Container packet = new Container(username, ClassName.USER_JOIN);
 
+            System.out.println("WTF IS GOING ON: : "+ username.getEmail() + " pwd "+ username.getStrPassword());
+            System.out.println("FASZOMAT A KURVA JAVAÁBA :? "+  packet.getObject());
+            System.out.println("FASZOMAT A KURVA JAVAÁBA user  :? "+  packet.getObject());
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
