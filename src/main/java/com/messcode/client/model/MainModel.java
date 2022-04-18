@@ -19,7 +19,7 @@ public interface MainModel extends Subject {
 
     void sendPM(PrivateMessage message);
 
-    public void register(String firstName, String lastName, String email, String password);
+    public void register(String firstName, String lastName, String email, String password,String type);
    
     public ArrayList<PrivateMessage> loadPMs(User currentUser,User receiver);
     

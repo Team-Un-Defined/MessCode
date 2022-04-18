@@ -52,6 +52,6 @@ public class NewEmployeeController {
         } else {
             errorLabel.setText("Generated password : " + password);
         }
-        newEmployeeVM.register(firstName, lastName, email, password);
+        newEmployeeVM.register(firstName, lastName, email, password,type);
     }
 }

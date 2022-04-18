@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -58,19 +59,23 @@ public class ServerSocketHandler implements Runnable {
                         PrivateMessage pm = (PrivateMessage) packet.getObject();
                         System.out.println("calling the method on the PM !!!");
                         pool.sendMessageInPM(pm);
+                        dbi.saveMessage(pm);
                         break;
                     }
                     case USER_JOIN: {
                         User usertemp = (User) packet.getObject();
+
                         boolean isItSame =pool.userCheck(usertemp);
                         if(isItSame) break;
                         Container packetToClient = null;
 
-                        packetToClient = dbe.checkLogin(usertemp.getEmail(), usertemp.getUsername()); /// here the username, should be email, and email should be passowrd
 
 
-                        if ((boolean) (packetToClient.getObject())) {
-                            packetToClient = dbe.acceptLogin( usertemp.getEmail(),usertemp.getUsername());
+                        packetToClient = dbe.checkLogin(usertemp.getEmail(), usertemp.getStrPassword()); /// here the username, should be email, and email should be passowrd
+
+
+                        if (packetToClient.getObject()!=null) {
+                            packetToClient = dbe.acceptLogin( usertemp.getEmail(),(String)packetToClient.getObject());
 
                         } else {
                             outToClient.writeObject(packetToClient);

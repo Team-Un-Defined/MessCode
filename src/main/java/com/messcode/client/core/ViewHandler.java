@@ -2,6 +2,7 @@ package com.messcode.client.core;
 
 import com.messcode.client.views.change_password.ChangePasswordController;
 import com.messcode.client.views.chat.ChatClientController;
+import com.messcode.client.views.edit_member.EditMemberController;
 import com.messcode.client.views.login.LoginController;
 import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
@@ -34,6 +35,7 @@ public class ViewHandler {
     private Scene newEmployee;
     private Scene newGroup;
     private Scene changePassword;
+    private Scene editMember;
     private ResourceBundle bundle;
 
     private User myUser = null;
@@ -123,6 +125,7 @@ public class ViewHandler {
     }
 
     public void openNewEmployee(String css) {
+
         Stage newEmployeeStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -142,6 +145,7 @@ public class ViewHandler {
     }
 
     public void openNewGroup(String css) {
+
         Stage newGroupStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -177,6 +181,25 @@ public class ViewHandler {
         changePasswordStage.getIcons().add(new Image("icon.png"));
         changePasswordStage.getScene().getStylesheets().add(css);
         changePasswordStage.show();
+    }
+
+    public void openEditMember(String css) {
+        Stage editMemberStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        if (editMember == null) {
+            Parent root = getRootByPath("EditMember.fxml", loader);
+            EditMemberController controller = loader.getController();
+            controller.init(vmf.getEditMemberVM(), this, bundle);
+            editMember = new Scene(root);
+        }
+
+        editMemberStage.setTitle(bundle.getString("edit_member.up"));
+        editMemberStage.setScene(editMember);
+        editMemberStage.getIcons().add(new Image("icon.png"));
+        editMemberStage.getScene().getStylesheets().add(css);
+        editMemberStage.show();
     }
 
     private Parent getRootByPath(String path, FXMLLoader loader) {
