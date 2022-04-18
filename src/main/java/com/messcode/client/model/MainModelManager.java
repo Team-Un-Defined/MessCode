@@ -3,6 +3,7 @@ package com.messcode.client.model;
 import com.messcode.client.networking.Client;
 import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Container;
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.User;

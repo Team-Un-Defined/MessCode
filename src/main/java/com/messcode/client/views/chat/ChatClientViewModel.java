@@ -21,7 +21,6 @@ public class ChatClientViewModel implements Subject {
     private User currentUser;
     private PropertyChangeSupport support;
     private ObservableList<User> usersList;
-    private ObservableList<User> allUsersList;
     private MainModel mainModel;
     private StringProperty message;
     private StringProperty PMmessage;
