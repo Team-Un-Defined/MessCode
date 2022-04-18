@@ -22,11 +22,13 @@ public class MainModelManager implements MainModel {
     private PrivateMessage usersPM;
     private ArrayList<PublicMessage> allMessage;
     private ArrayList<User> allUsers;
+    
+   
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
         allMessage = new ArrayList<>();
-        allUsers=new ArrayList<>();
+        allUsers = new ArrayList<>();
         this.client = client;
         try {
             client.start();
@@ -49,6 +51,13 @@ public class MainModelManager implements MainModel {
 
         user = (User) objs.get(2);
         allUsers=(ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
+        for (User u : allUsers) {
+        
+            System.out.println("///////////"+ u.getEmail()+"////////////");
+          
+            
+        }
+        
         support.firePropertyChange("AddOfflineUsers", null, allUsers);
         System.out.println("Everything has been casted");
 
@@ -164,4 +173,11 @@ public class MainModelManager implements MainModel {
         }
         return pubi;
     }
+    
+     @Override
+    public ArrayList<User> getAllUsers() {
+        return this.allUsers;
+    }
+    
+    
 }
