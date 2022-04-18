@@ -22,15 +22,10 @@ public class NewGroupViewModel {
     public NewGroupViewModel(MainModel mainModel) {
         this.usersList= FXCollections.observableArrayList() ;
         this.mainModel = mainModel;
-        this.usersList.addAll(mainModel.getAllUsers());
+      //  this.usersList.addAll(mainModel.getAllUsers());
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
     }
     
-    public void refresh(){
-     this.usersList.removeAll();
-     this.usersList.addAll(mainModel.getAllUsers());
-    }
-
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
 

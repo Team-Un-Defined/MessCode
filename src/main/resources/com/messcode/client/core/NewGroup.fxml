@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -7,18 +11,20 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.new_group.NewGroupController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="319.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.new_group.NewGroupController">
    <children>
       <Label layoutX="20.0" layoutY="20.0" text="%new_group.label">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="createButton" layoutX="231.0" layoutY="191.0" mnemonicParsing="false" onAction="#createClicked" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%new_group.create" />
+      <Button fx:id="createButton" layoutX="254.0" layoutY="267.0" mnemonicParsing="false" onAction="#createClicked" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%new_group.create" />
       <Label layoutX="20.0" layoutY="70.0" text="%new_group.group_name" />
       <Label layoutX="20.0" layoutY="110.0" text="%new_group.group_leader" />
       <TextField fx:id="groupNameTextField" layoutX="102.0" layoutY="66.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
       <ComboBox fx:id="groupLeaderComboBox" layoutX="102.0" layoutY="106.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
       <Label fx:id="errorLabel" layoutX="14.0" layoutY="174.0" />
+      <Label fx:id="descriptionLabel" layoutX="14.0" layoutY="158.0" text="%new_group.description" />
+      <TextArea fx:id="descriptionTextArea" layoutX="102.0" layoutY="153.0" prefHeight="76.0" prefWidth="217.0" />
    </children>
 </Pane>
