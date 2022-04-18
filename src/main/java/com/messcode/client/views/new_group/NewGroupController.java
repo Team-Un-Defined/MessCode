@@ -10,10 +10,10 @@ import java.util.ResourceBundle;
 
 public class NewGroupController {
 
-    private Button createButton;
-    private Label errorLabel;
-    private ComboBox<User> groupLeaderComboBox;
-    private TextField groupNameTextField;
+    public Button createButton;
+    public Label errorLabel;
+    public ComboBox<User> groupLeaderComboBox;
+    public TextField groupNameTextField;
 
     private NewGroupViewModel newGroupVM;
     private ViewHandler vh;
