@@ -52,7 +52,13 @@ public class ChatClientViewModel implements Subject {
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
-            usersList.remove(user);
+            user.setSalt("");
+            for (int i = 0; i < usersList.size(); i++) {
+                if (usersList.get(i).getEmail().equals(user.getEmail())) {
+                    usersList.set(i, user);
+                    break;
+                }
+            }
             System.out.println(usersList);
         });
     }
