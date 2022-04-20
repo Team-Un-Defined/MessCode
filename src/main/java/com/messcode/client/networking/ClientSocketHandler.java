@@ -82,6 +82,7 @@ public class ClientSocketHandler implements Runnable {
                     }
                     case LOGIN_DATA: {
                         System.out.println("i got the data " + packet);
+                     
                         loginData(packet);
                         break;
                     }
@@ -175,7 +176,7 @@ public class ClientSocketHandler implements Runnable {
     }
 
     private void receiveGroups(ArrayList<Group> groups) {
-        
+        socketClient.refreshGroupList(groups);
     }
     
 }

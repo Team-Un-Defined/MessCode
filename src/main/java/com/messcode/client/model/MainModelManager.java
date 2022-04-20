@@ -50,7 +50,9 @@ public class MainModelManager implements MainModel {
         ArrayList<Object> objs = (ArrayList<Object>) packet.getObject();
         ArrayList<PublicMessage> allPublicMessages = (ArrayList<PublicMessage>) objs.get(0);
         ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>) objs.get(1);
-
+        if(objs.size()>3){
+        allGroups= (ArrayList<Group>) objs.get(4);
+        }
         user = (User) objs.get(2);
         allUsers=(ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
         for (User u : allUsers) {
