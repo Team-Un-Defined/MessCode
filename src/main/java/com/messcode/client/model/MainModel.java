@@ -2,6 +2,7 @@ package com.messcode.client.model;
 
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.util.Subject;
 import com.messcode.transferobjects.messages.PublicMessage;
@@ -19,6 +20,8 @@ public interface MainModel extends Subject {
 
     void sendPM(PrivateMessage message);
 
+    void sendGroup(GroupMessages mess);
+
     public void register(String firstName, String lastName, String email, String password,String type);
    
     public ArrayList<PrivateMessage> loadPMs(User currentUser,User receiver);
@@ -26,5 +29,4 @@ public interface MainModel extends Subject {
    public ArrayList<PublicMessage> loadPublics();
    
    public void newGroup(Group g);
-
 }
