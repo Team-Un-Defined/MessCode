@@ -1,6 +1,7 @@
 package com.messcode.client.views.chat;
 
 import com.messcode.client.model.MainModel;
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
@@ -21,10 +22,12 @@ public class ChatClientViewModel implements Subject {
     private User currentUser;
     private PropertyChangeSupport support;
     private ObservableList<User> usersList;
+    private ObservableList<Group> groups;
     private MainModel mainModel;
     private StringProperty message;
     private StringProperty PMmessage;
     private User receiver;
+  
 
     public ChatClientViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
@@ -32,6 +35,7 @@ public class ChatClientViewModel implements Subject {
         PMmessage = new SimpleStringProperty();
         usersList = FXCollections.observableArrayList();
         this.mainModel = mainModel;
+        mainModel.addListener("RefresgGroups", this::refreshGroups);
         mainModel.addListener("AddNewUser", this::getUsersList);
         mainModel.addListener("MessageForEveryone", this::displayPublic);
         mainModel.addListener("newPM", this::displayPM);
@@ -40,6 +44,10 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
     }
 
+    private void refreshGroups(PropertyChangeEvent propertyChangeEvent){
+     groups = (ObservableList<Group>) (ArrayList<Group>) propertyChangeEvent.getNewValue();
+    }
+    
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
 
