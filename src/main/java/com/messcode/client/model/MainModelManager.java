@@ -24,7 +24,7 @@ public class MainModelManager implements MainModel {
     private ArrayList<PublicMessage> allMessage;
     private ArrayList<User> allUsers;
     private ArrayList<Group> allGroups;
-   
+
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
@@ -50,17 +50,20 @@ public class MainModelManager implements MainModel {
         ArrayList<Object> objs = (ArrayList<Object>) packet.getObject();
         ArrayList<PublicMessage> allPublicMessages = (ArrayList<PublicMessage>) objs.get(0);
         ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>) objs.get(1);
-
-        user = (User) objs.get(2);
-        allUsers=(ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
-        for (User u : allUsers) {
-        
-            System.out.println("///////////"+ u.getEmail()+"////////////");
-          
-            
+        if (objs.size() > 4) {
+            allGroups = (ArrayList<Group>) objs.get(4);
         }
-        
+        user = (User) objs.get(2);
+        allUsers = (ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
+        for (User u : allUsers) {
+
+            System.out.println("///////////" + u.getEmail() + "////////////");
+
+
+        }
+
         support.firePropertyChange("AddOfflineUsers", null, allUsers);
+        support.firePropertyChange("RefresgGroups", null, allGroups);
         System.out.println("Everything has been casted");
 
         //user.getLastSeen.add(lastSeen);
@@ -111,7 +114,7 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void addUser(String email, String pwd) {
-        User javaIsRetarded= new  User(email, pwd);
+        User javaIsRetarded = new User(email, pwd);
 
         client.addUser(javaIsRetarded);
     }
@@ -145,7 +148,7 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void register(String firstName, String lastName, String email, String password,String type) {
+    public void register(String firstName, String lastName, String email, String password, String type) {
         User newUser = new User(firstName, lastName, email, password, type);
         client.register(newUser);
     }
@@ -180,13 +183,14 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void newGroup(Group g) {
-       client.newGroup(g);
+        client.newGroup(g);
     }
+
     public void refreshGroupList(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
-        allGroups= g;
+        allGroups = g;
         support.firePropertyChange("RefresgGroups", null, g);
     }
-    
-    
+
+
 }
