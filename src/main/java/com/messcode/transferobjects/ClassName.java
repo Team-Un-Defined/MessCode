@@ -34,6 +34,7 @@ public enum ClassName {
     USER_LEFT, // user join
     USER_LIST, LOGIN_DATA, USER_JOIN,
 
+    PASSWORD_CHANGE,
     /**
      * new user registration
      */

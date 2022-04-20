@@ -7,6 +7,7 @@ import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.UserList;
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 
@@ -102,6 +103,27 @@ public class ServerSocketHandler implements Runnable {
                         dbi.saveMessage(message);
                         break;
                     }
+                    case GROUP_MESSAGE: {
+                        GroupMessages message = (GroupMessages) packet.getObject();
+                        pool.sendGroupMessages(message);
+                        dbi.saveMessage(message);
+                        break;
+                    }
+                    case USER_LEFT: {
+                        User use = (User)packet.getObject();
+                        dbi.saveDataOnExit(use);
+                        pool.removeHandler(this);
+                    }
+                    case CREATE_ACCOUNT:{
+                        User u = (User)packet.getObject();
+                        outToClient.writeObject(dbi.createAccount(u));
+                        // maybe add offline user so everyone gets it updated, but not that important
+                    }
+                    case PASSWORD_CHANGE: {
+                        User u = (User) packet.getObject();
+                        dbi.changePassword(u);
+
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -184,6 +206,19 @@ public class ServerSocketHandler implements Runnable {
             e.printStackTrace();
         }
         
+    }
+
+    public void sendGroupMessage(GroupMessages message) {
+        try {
+            System.out.println(
+                    "[SERVER] " + "user: " + message.getUsername() +"in group : "+message.getGroup().getName()+ " sent: "
+                            + message.getMsg());
+            Container packet = new Container(message, ClassName.GROUP_MESSAGE);
+            outToClient.writeObject(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 
