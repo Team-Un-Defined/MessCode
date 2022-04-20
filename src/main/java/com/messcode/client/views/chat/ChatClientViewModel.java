@@ -27,7 +27,6 @@ public class ChatClientViewModel implements Subject {
     private StringProperty message;
     private StringProperty PMmessage;
     private User receiver;
-  
 
     public ChatClientViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
@@ -44,10 +43,12 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
     }
 
-    private void refreshGroups(PropertyChangeEvent propertyChangeEvent){
-     groups = (ObservableList<Group>) (ArrayList<Group>) propertyChangeEvent.getNewValue();
+    private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
+        groups = FXCollections.observableArrayList();
+        groups.clear();
+        groups.addAll((ArrayList<Group>) propertyChangeEvent.getNewValue());
     }
-    
+
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
 
@@ -89,7 +90,7 @@ public class ChatClientViewModel implements Subject {
             for (int i = 0; i < usersList.size(); i++) {
                 if (usersList.get(i).getEmail().equals(user.getEmail())) {
                     usersList.set(i, user);              // KAMI PUT THE ONLINE DOT HERE or in the controller i dont know man, i hate my life and i hate guis,how are you btw?
-                                                        // heyo, im pretty okay rn, thanks for the question (and the note) wbu?
+                    // heyo, im pretty okay rn, thanks for the question (and the note) wbu?
 
                     break;
                 }
@@ -106,6 +107,10 @@ public class ChatClientViewModel implements Subject {
 
     public ObservableList<User> getUsersList() {
         return usersList;
+    }
+
+    public ObservableList<Group> getGroups() {
+        return groups;
     }
 
     public StringProperty messageProperty() {
