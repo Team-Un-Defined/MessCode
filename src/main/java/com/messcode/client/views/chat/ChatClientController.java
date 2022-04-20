@@ -50,6 +50,7 @@ public class ChatClientController {
     public Label userNameLabel;
     public Label userEmailLabel;
     public Label userTypeLabel;
+    public Label groupLabel;
     public Pane groupListPane;
     public Pane userListPane;
     public Button sendPMButton;
@@ -159,7 +160,7 @@ public class ChatClientController {
                 }
             }
         });
-        
+
         groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -273,6 +274,7 @@ public class ChatClientController {
         } else {
             Group group = (Group) groupsList.getSelectionModel().getSelectedItems().get(0);
 
+            groupLabel.setText(group.getName());
             //hele
         }
     }
