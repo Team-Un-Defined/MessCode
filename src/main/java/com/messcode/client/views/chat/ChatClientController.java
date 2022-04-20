@@ -1,5 +1,6 @@
 package com.messcode.client.views.chat;
 
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.messages.GroupMessages;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,6 +31,7 @@ public class ChatClientController {
     public TextField textFieldPM;
     public TextField textFieldGroup;
     public ListView<User> usersListFXML;
+    public ListView<Group> groupsList;
     public ListView<Label> messagesListAll;
     public ListView<Label> messagesListPM;
     public ListView<Label> messagesListGroup;
@@ -73,6 +75,7 @@ public class ChatClientController {
 
         refreshPublic();
         updateUserList();
+        updateGroupList();
 
         //CHAT MESSAGES
         StringProperty textChat = new SimpleStringProperty();
@@ -102,10 +105,10 @@ public class ChatClientController {
                 label.setWrapText(true);
                 messagesListPM.getItems().add(label);
 
-                if(!paneInFront.equals("pm")) {
-                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-                    PMButtonImage.setImage(new Image(reddot));
-                }
+//                if(!paneInFront.equals("pm")) {
+//                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+//                    PMButtonImage.setImage(new Image(reddot));
+//                }
             });
         });
         //  chatVM.addListener("NewPM", this::openPrivateChat);
@@ -160,6 +163,22 @@ public class ChatClientController {
         paneAll.toFront();
         userListPane.toFront();
         sendAllButton.setDefaultButton(true);
+    }
+
+    private void updateGroupList() {
+        groupsList.setItems(chatVM.getGroups());
+        groupsList.setCellFactory(lv -> new ListCell<Group>() {
+            @Override
+            public void updateItem(Group item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    String text = item.getName(); // get text from item
+                    setText(text);
+                }
+            }
+        });
     }
 
     private void updateUserList() {
