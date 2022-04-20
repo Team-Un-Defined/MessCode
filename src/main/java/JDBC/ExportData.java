@@ -389,7 +389,7 @@ pubm.setTime(rs.getTimestamp("date"));
     }
     /**
      * Creates an SQL statement that will search for a group and return whether it exists or not.
-     * @param id int ID to search for the group
+     * @param current int ID to search for the group
      * @throws SQLException an exception that provides information on a database
      *                      access error or other errors.
      * @returns boolean stating true if the group exists, and false if otherwise.
@@ -413,13 +413,17 @@ pubm.setTime(rs.getTimestamp("date"));
     "on a.id = pm.account_id\n" +
     "where a.email= '"+ current.getEmail() +"'";
     rs0= st.executeQuery(query0);
+        rs0.next();
+
 
     }
 
     do {
     String plus =" ";
     if(!(rs0 == null)){
-    rs0.next();
+
+
+
     plus = " where p.name = '"+rs0.getString("name") +"'";
     
     }

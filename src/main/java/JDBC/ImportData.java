@@ -5,6 +5,8 @@ import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.GroupMessages;
+import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 
 import java.sql.*;
@@ -60,23 +62,88 @@ public class ImportData {
 
 
 
-    public void addUsersToProject(Group grp)
-            throws SQLException {
-        boolean done = false;
-        Statement st = c.createStatement();
-        String query ="";
-
-        st.executeUpdate(query);
-    }
 
     public void saveMessage(PublicMessage pm)
             throws SQLException {
         boolean done = false;
+
         Statement st = c.createStatement();
-        String query ="";
+        if (pm instanceof PrivateMessage) {
+            int rid=0;
+            int sid=0;
+            PrivateMessage pm1= (PrivateMessage) pm;
+            String query1 =
+                    "select * from account where email='" + pm1.getSender().getEmail() + "' or email='" + pm1.getReceiver().getEmail() + "'";
+
+            ResultSet rs = st.executeQuery(query1);
+            while (rs.next()) {
+              if(rs.getString("email").equals(pm.getSender().getEmail())){
+                  sid=rs.getInt("id");
+              }else {
+                  rid= rs.getInt("id");
+              }
+
+            }
+
+            String query =     "INSERT INTO private_messages VALUES( default," +sid + ","
+                    +rid+ ",'"+pm1.getMsg()+"', '" + pm.getTime() + "') ";
+            st.executeUpdate(query);
 
 
-        st.executeUpdate(query);
+            }
+              else if(pm instanceof GroupMessages)
+        {       GroupMessages pm1= (GroupMessages) pm;
+            int gid=0;
+            int grid=0;
+            String query0 =
+                    "select * from account where email='" + pm1.getSender().getEmail() + "'";
+            ResultSet rs = st.executeQuery(query0);
+            while (rs.next()) {
+
+                gid= rs.getInt("id");
+
+
+
+            }
+
+            int lid=0;
+
+            String query1 =
+                    "select * from projects where name='" + pm1.getGroup().getName() +  "'";
+
+            rs = st.executeQuery(query1);
+            while (rs.next()) {
+
+                   grid= rs.getInt("id");
+                   lid=rs.getInt("leader_id");
+
+
+            }
+
+            String query =     "INSERT INTO group_messages VALUES( default," +grid + ","
+                    +gid+ ",'"+pm1.getMsg()+"', '" + pm.getTime() + "') ";
+            st.executeUpdate(query);
+        }
+              else {
+
+            int grid=0;
+            String query0 =
+                    "select * from account where email='" + pm.getSender().getEmail() + "'";
+            ResultSet rs = st.executeQuery(query0);
+            while (rs.next()) {
+
+                grid= rs.getInt("id");
+
+
+
+            }
+            String query =     "INSERT INTO public_messages VALUES( default," +grid +  ",'"+pm.getMsg()+"', '" + pm.getTime() + "') ";
+            st.executeUpdate(query);
+
+
+        }
+
+
     }
 
    public void createGroup(Group g){
