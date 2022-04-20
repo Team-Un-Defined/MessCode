@@ -230,13 +230,113 @@ public class ImportData {
 
         Statement st = c.createStatement();
         int userid =0;
+
         String query =
                 "SELECT * FROM Account WHERE  email = '" + us.getEmail() + "'";
         ResultSet rs = st.executeQuery(query);
         while (rs.next()) {
             userid=rs.getInt("id");
         }
+       for(int i=0;i<us.getUnreadMessages().size();i++)
+       {
+           if(us.getUnreadMessages().get(i) instanceof PrivateMessage)
+           {
+               int pmid=0;
+               int rid=0;
+               int lid=0;
+             String query1 = "select p.reciever_id, p.sender_id, p.date, p.id from private_messages as p join account as a on a.id = p.sender_id or a.id = p.reciever_id"+
+               " where ((p.reciever_id  = "+  userid + " and a.email = '"+((PrivateMessage)(us.getUnreadMessages().get(i))).getReceiver().getEmail()+"') or (p.sender_id =" +userid+" and a.email = '"+ ((PrivateMessage)(us.getUnreadMessages().get(i))).getReceiver().getEmail()+"'))  and date = '" +us.getUnreadMessages().get(1).getTime().toString()+"' ;";
 
+               rs = st.executeQuery(query1);
+               while (rs.next()) {
+                  pmid=rs.getInt("id");
+                   rid=rs.getInt("reciever_id");
+                    if(rid==userid)
+                    {
+                        rid=rs.getInt("sender_id");
+                    }
+
+                   }
+               String query2 = "select ls.private_message_id,pm.sender_id,pm.reciever_id,ls.id from last_seen as ls"+
+               "join private_messages as pm on pm.id = ls.private_message_id where ls.user_id ="+userid+" and (pm.sender_id="+rid+" or pm.reciever_id ="+rid+");";
+
+
+               rs = st.executeQuery(query2);
+               while (rs.next()) {
+                   lid= rs.getInt("id");
+
+               }
+
+
+               String query3 =
+                       " update public.last_seen\n" +
+                               "set  private_message_id=" +pmid   +
+                               " where id=" + lid+ " ;";
+
+               System.out.println("EXECUTED QUERY");
+               st.executeUpdate(query3);
+
+           }
+           else if(us.getUnreadMessages().get(i) instanceof GroupMessages) {
+
+               int gmid = 0;
+               int lid = 0;
+               String query1 = "select gm.id as gmid,gm.project_id,gm.sender_id,gm.message,gm,date,p.id,p.leader_id,p.name,p.description  from group_messages gm join projects as p on p.id=gm.project_id " +
+                       "where p.name= '" + ((GroupMessages) us.getUnreadMessages().get(i)).getGroup().getName() + "' and date='" + us.getUnreadMessages().get(i).getTime() + "' ;";
+
+               rs = st.executeQuery(query1);
+               while (rs.next()) {
+                   gmid = rs.getInt("gmid");
+
+
+               }
+
+               String query2 = "select ls.group_message_id,gm.sender_id,ls.id from last_seen as ls" +
+                       "join group_messages as gm on gm.id = ls.group_message_id where ls.user_id =" + userid  + " ;";
+               rs = st.executeQuery(query2);
+               while (rs.next())
+               {
+                   lid = rs.getInt("id");
+               }
+
+               String query3 =
+                       " update public.last_seen\n" +
+                               "set group_message_id=" + gmid  +
+                               " where id=" + lid+ " ;";
+
+               System.out.println("EXECUTED QUERY");
+               st.executeUpdate(query3);
+           }
+           else
+           {
+               int pmid = 0;
+               int lid = 0;
+               String query1 = "select pm.id as pmid,pm.sender_id,pm.message,pm.date from public_messages pm"+
+               "where  date='"+us.getUnreadMessages().get(i).getTime()+"' ;";
+               rs = st.executeQuery(query1);
+               while (rs.next()) {
+                   pmid = rs.getInt("gmid");
+
+
+               }
+
+               String query2 = "select ls.public_message_id,gm.sender_id,ls.id from last_seen as ls"+
+               "join public_messages as gm on gm.id = ls.public_message_id where ls.user_id ="+userid+" ;";
+               rs = st.executeQuery(query1);
+               while (rs.next()) {
+                   lid = rs.getInt("id");
+
+
+               }
+               String query3 =
+                       " update public.last_seen\n" +
+                               "set public_message_id=" + pmid  +
+                               " where id=" + lid+ " ;";
+
+               System.out.println("EXECUTED QUERY");
+               st.executeUpdate(query3);
+           }
+       }
 
 
         st.executeUpdate(query);
