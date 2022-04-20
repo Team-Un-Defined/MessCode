@@ -54,14 +54,14 @@ public class MainModelManager implements MainModel {
             allGroups = (ArrayList<Group>) objs.get(4);
         }
         user = (User) objs.get(2);
-        allUsers = (ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
+        allUsers=(ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
         for (User u : allUsers) {
-
-            System.out.println("///////////" + u.getEmail() + "////////////");
-
-
+        
+            System.out.println("///////////"+ u.getEmail()+"////////////");
+          
+            
         }
-
+        
         support.firePropertyChange("AddOfflineUsers", null, allUsers);
         support.firePropertyChange("RefresgGroups", null, allGroups);
         System.out.println("Everything has been casted");
@@ -114,7 +114,7 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void addUser(String email, String pwd) {
-        User javaIsRetarded = new User(email, pwd);
+        User javaIsRetarded= new  User(email, pwd);
 
         client.addUser(javaIsRetarded);
     }
@@ -148,7 +148,7 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void register(String firstName, String lastName, String email, String password, String type) {
+    public void register(String firstName, String lastName, String email, String password,String type) {
         User newUser = new User(firstName, lastName, email, password, type);
         client.register(newUser);
     }
@@ -183,14 +183,13 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void newGroup(Group g) {
-        client.newGroup(g);
+       client.newGroup(g);
     }
-
     public void refreshGroupList(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
-        allGroups = g;
+        allGroups= g;
         support.firePropertyChange("RefresgGroups", null, g);
     }
-
-
+    
+    
 }
