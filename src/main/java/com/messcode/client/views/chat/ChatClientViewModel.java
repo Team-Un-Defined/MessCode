@@ -45,7 +45,9 @@ public class ChatClientViewModel implements Subject {
     }
 
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent){
-     groups = (ObservableList<Group>) (ArrayList<Group>) propertyChangeEvent.getNewValue();
+        groups=  FXCollections.observableArrayList();
+        groups.clear();
+        groups.addAll((ArrayList<Group>) propertyChangeEvent.getNewValue());
     }
     
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {

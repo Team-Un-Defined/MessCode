@@ -396,7 +396,7 @@ pubm.setTime(rs.getTimestamp("date"));
      */
 
 
-    public Container updateGroups(User current) throws SQLException{
+    public ArrayList<Group> updateGroups(User current) throws SQLException{
         ArrayList<Group> groups = new ArrayList<Group>();
         ResultSet rs;
           Statement st = c.createStatement();
@@ -471,7 +471,7 @@ pubm.setTime(rs.getTimestamp("date"));
 
     }while(!(rs0 == null) && rs0.next());
 
-    return  new Container(groups, ClassName.GROUP_UPDATE);
+    return  groups;
 
     }
 
