@@ -159,6 +159,17 @@ public class ChatClientController {
                 }
             }
         });
+        
+        groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                    if(mouseEvent.getClickCount() == 2){
+                        openGroup();
+                    }
+                }
+            }
+        });
 
         paneAll.toFront();
         userListPane.toFront();
@@ -253,6 +264,16 @@ public class ChatClientController {
             } else {
                 invitePmErrorLabel.setText(bundle.getString("talk_to_yourself"));
             }
+        }
+    }
+
+    public void openGroup() {
+        if (groupsList.getSelectionModel().getSelectedItems().isEmpty()) {
+//            invitePmErrorLabel.setText(bundle.getString("select_user"));
+        } else {
+            Group group = (Group) groupsList.getSelectionModel().getSelectedItems().get(0);
+
+            //hele
         }
     }
 
