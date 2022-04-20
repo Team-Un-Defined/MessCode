@@ -5,6 +5,7 @@ import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.GroupMessages;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -64,6 +65,10 @@ public class SocketClient implements Client {
     public void displayPM(PrivateMessage pm) {
         support.firePropertyChange("newPM", null, pm);
     }
+    
+     void displayGroup(GroupMessages gm) {
+        support.firePropertyChange("newGroupMessage", null, gm);
+    }
 
     public void removeFromList(User user) {
         support.firePropertyChange("RemoveUser", null, user);
@@ -95,6 +100,13 @@ public class SocketClient implements Client {
     public void newGroup(Group g) {
         socketHandler.addGroup(g);
     }
+
+    @Override
+    public void sendGroup(GroupMessages mess) {
+        socketHandler.sendGroup(mess);
+    }
+
+   
     
     
     

@@ -24,9 +24,11 @@ public interface MainModel extends Subject {
 
     public void register(String firstName, String lastName, String email, String password,String type);
    
-    public ArrayList<PrivateMessage> loadPMs(User currentUser,User receiver);
+    public ArrayList<PrivateMessage> loadPMs(User receiver);
     
-   public ArrayList<PublicMessage> loadPublics();
+    public ArrayList<PublicMessage> loadPublics();
    
    public void newGroup(Group g);
+
+    public ArrayList<GroupMessages> loadGroup(Group selectedGroup);
 }

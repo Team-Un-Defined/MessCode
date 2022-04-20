@@ -107,12 +107,26 @@ public class ChatClientController {
                 label.setWrapText(true);
                 messagesListPM.getItems().add(label);
 
+       
+
 //                if(!paneInFront.equals("pm")) {
 //                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 //                    PMButtonImage.setImage(new Image(reddot));
 //                }
             });
         });
+        
+        StringProperty gmChat = new SimpleStringProperty();
+        gmChat.bind(chatVM.GMProperty());
+        gmChat.addListener((observableValue, s, t1) -> {
+            Platform.runLater(() -> {
+                Label label = new Label(gmChat.getValue());
+                label.setMaxWidth(messagesListGroup.getWidth() - 25);
+                label.setWrapText(true);
+                messagesListGroup.getItems().add(label);
+                });
+        });
+        
         //  chatVM.addListener("NewPM", this::openPrivateChat);
 
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
@@ -286,9 +300,16 @@ public class ChatClientController {
 //            invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
             Group group = (Group) groupsList.getSelectionModel().getSelectedItems().get(0);
+            
             chatVM.setReceiverGroup(group);
+            messagesListGroup.getItems().clear();
+            ArrayList<GroupMessages> groupMess = chatVM.loadGroup();
+            for(GroupMessages g: groupMess){
+            
+            messagesListGroup.getItems().add(new Label(g.getTime()+" "+ g.getUsername() +": "+g.getMsg()));
+            
+            }
             groupLabel.setText(group.getName());
-            //hele
         }
     }
 

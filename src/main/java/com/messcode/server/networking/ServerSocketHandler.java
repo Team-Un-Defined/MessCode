@@ -85,12 +85,7 @@ public class ServerSocketHandler implements Runnable {
                         }
                         pool.addHandler(this);
                         user = (User)((ArrayList<Object>)packetToClient.getObject()).get(2);
-                        ArrayList<Group> groups = dbe.updateGroups(user);
-                        if(groups!=null){
-                        ArrayList<Object> obi = ((ArrayList<Object>)packetToClient.getObject());
-                        obi.add(groups);
-                        packetToClient = new Container(obi, ClassName.LOGIN_DATA);
-                        }
+                        
                         pool.userJoin(user);
                         outToClient.writeObject(packetToClient);
                         updateUsersList();
