@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
@@ -12,6 +13,8 @@ import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -142,6 +145,17 @@ public class ChatClientController {
                 PMButtonImage.setImage(new Image(reddot));
             else allButtonImage.setImage(new Image(reddot));
         }
+
+        usersListFXML.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                    if(mouseEvent.getClickCount() == 2){
+                        inviteToPmButton();
+                    }
+                }
+            }
+        });
 
         paneAll.toFront();
         userListPane.toFront();
