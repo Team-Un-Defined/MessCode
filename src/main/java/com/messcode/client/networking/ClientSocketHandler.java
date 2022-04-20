@@ -86,6 +86,7 @@ public class ClientSocketHandler implements Runnable {
                         loginData(packet);
                         break;
                     }
+
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

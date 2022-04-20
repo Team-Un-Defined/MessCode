@@ -1,10 +1,8 @@
 package JDBC;
 
 import JDBC.DBConn.DatabaseConnection;
+import com.messcode.transferobjects.*;
 import com.messcode.transferobjects.Group;
-import com.messcode.transferobjects.AccountManager;
-import com.messcode.transferobjects.Group;
-import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
@@ -39,24 +37,26 @@ public class ImportData {
     /**
      * Creates an SQL statement that will create an account in the Database
      *
-     * @param fname String containing the first name
-     * @param lname String containing the last name
-     * @param pwd_hash   Byte array containing the pass hash
-     * @param pwd_salt String containing the salt
-     * @param email String containing the email
-     * @param type    String containing the user type
+     * @param  us User object containing all the account data.
      * @throws SQLException an exception that provides information on a database
      *                      access error or other errors.
      */
-    public void createAccount(String fname,String lname, Byte[] pwd_hash,String pwd_salt ,String email,String type)
+    public Container createAccount(User us)
             throws SQLException {
-        boolean done = false;
+        boolean done = true;
         Statement st = c.createStatement();
         String query =
-                "INSERT INTO  \"Users\".\"Users\" VALUES( '" +fname + "', '"
-                        +email+ "', null, '" + email + "') ";
+                "INSERT INTO account VALUES(default,'" +us.getName() + "', '"
+                        +us.getSurname()+ "', "+ Arrays.toString(us.getHashedPassword()) +", '" + us.getSalt() + "',"+us.getType()+"',"+us.getEmail()+"') " +
+                        "ON CONFLICT(email) DO nothing returning id";
+        ResultSet rs = st.executeQuery(query);
 
-        st.executeUpdate(query);
+        if(!rs.next())
+        {
+            done=false;
+        }
+        Container c = new Container(done,ClassName.CREATE_ACCOUNT);
+        return c;
     }
 
 
@@ -225,11 +225,18 @@ public class ImportData {
 
 
 
-    public void saveDataOnExit(ArrayList<PublicMessage> msgs)
+    public void saveDataOnExit(User us)
             throws SQLException {
-        boolean done = false;
+
         Statement st = c.createStatement();
-        String query ="";
+        int userid =0;
+        String query =
+                "SELECT * FROM Account WHERE  email = '" + us.getEmail() + "'";
+        ResultSet rs = st.executeQuery(query);
+        while (rs.next()) {
+            userid=rs.getInt("id");
+        }
+
 
 
         st.executeUpdate(query);
@@ -275,5 +282,19 @@ public class ImportData {
          st.executeUpdate(query2);
 
         return unique;
+    }
+
+    public void changePassword(User us)
+            throws SQLException {
+
+        Statement st = c.createStatement();
+
+        String query =
+                "UPDATE account set  pwd_hash = '" + Arrays.toString(us.getHashedPassword()) + "' where email='"+us.getEmail()+"' ;";
+        String query1 =
+                "UPDATE account set  pwd_salt = '" + us.getSalt() + "' where email='"+us.getEmail()+"' ;";
+
+        st.executeUpdate(query);
+        st.executeUpdate(query1);
     }
 }

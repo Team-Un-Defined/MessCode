@@ -341,60 +341,6 @@ pubm.setTime(rs.getTimestamp("date"));
 
     }
 
-    /**
-     * Just a parser to change sql Arrays to ArrayList of integers.
-     *
-     * @param ar String
-     * @return ArrayList<Integer>
-     */
-    public ArrayList<Integer> sqlArrayToArrayListInteger(String ar) {
-        ArrayList<Integer> temp = new ArrayList<>();
-        String[] ara = ar.split("\\{");
-        String part2 = ara[1];
-        String[] h = part2.split("}");
-        String o = h[0];
-        String[] l = o.split(",");
-
-        for (int i = 0; i < l.length; i++) {
-            if (l[i].equals("NULL")) {
-                l[i] = "0";
-            }
-            temp.add(Integer.parseInt(l[i]));
-
-        }
-        return temp;
-    }
-
-    /**
-     * Just a parser to change sql Arrays to ArrayList of Strings.
-     *
-     * @param ar String
-     * @return ArrayList<String>
-     */
-    public static ArrayList<String> sqlArrayToArrayListString(String ar) {
-        ArrayList<String> temp = new ArrayList<>();
-        System.out.println("This is the array of usernames:" + ar);
-
-        String[] ara = ar.split("\\{");
-        String part2 = ara[1];
-        String[] h = part2.split("}");
-        String o = h[0];
-        String[] l = o.split(",");
-
-        for (int i = 0; i < l.length; i++) {
-            temp.add(l[i]);
-
-        }
-        return temp;
-    }
-    /**
-     * Creates an SQL statement that will search for a group and return whether it exists or not.
-     * @param current int ID to search for the group
-     * @throws SQLException an exception that provides information on a database
-     *                      access error or other errors.
-     * @returns boolean stating true if the group exists, and false if otherwise.
-     */
-
 
     public ArrayList<Group> updateGroups(User current) throws SQLException{
         ArrayList<Group> groups = new ArrayList<Group>();

@@ -5,6 +5,7 @@ import com.messcode.transferobjects.ClassName;
 import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import java.sql.SQLException;
@@ -92,7 +93,19 @@ public class ConnectionPool {
     
     
     }
-    
-    
-    
+
+
+    public void sendGroupMessages(GroupMessages message) {
+        for (ServerSocketHandler handler : connections) {
+            for(int i=0;i<message.getGroup().getMembers().size();i++)
+            {
+                if(message.getGroup().getMembers().get(i).getEmail().equals(handler.getUser().getEmail()))
+                {
+                    handler.sendGroupMessage(message);break;
+                }
+            }
+
+
+        }
+    }
 }

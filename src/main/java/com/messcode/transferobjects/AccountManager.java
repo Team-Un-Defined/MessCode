@@ -52,27 +52,9 @@ public class AccountManager {
         }
     }
 
-    public boolean passwordCheck(User myUser, String password) {
-        System.out.println(Arrays.toString(myUser.getHashedPassword()));
-        System.out.println(Arrays.toString(hashPassword(password, myUser.getSalt())));
-        return Arrays.equals(myUser.getHashedPassword(), hashPassword(password, myUser.getSalt()));
-    }
 
-    public User login(String email, String password, UserList userList) {
-        for (int i = 0; i < userList.getSize(); i++) {
-            User thisUser = userList.get(i);
 
-            if (thisUser.getEmail().equals(email)) {
-                if (passwordCheck(thisUser, password)) {
-                    return thisUser;
-                } else {
-                    return null;
-                }
-            }
-        }
 
-        return null;
-    }
 
 
     public boolean passwordRegex(String password) {
