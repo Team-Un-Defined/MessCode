@@ -4,6 +4,7 @@ import com.messcode.client.networking.Client;
 import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.Group;
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.User;
@@ -73,7 +74,6 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
         System.out.println(user.getEmail() + " " + user.getName());
         support.firePropertyChange("SetUsernameInChat", null, user);
-
     }
 
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
@@ -137,6 +137,11 @@ public class MainModelManager implements MainModel {
     @Override
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
+    }
+
+    @Override
+    public void sendGroup(GroupMessages mess) {
+        throw new UnsupportedOperationException();
     }
 
     public ArrayList<PublicMessage> getAllMessage() {

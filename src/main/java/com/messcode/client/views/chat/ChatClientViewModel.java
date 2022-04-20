@@ -3,6 +3,7 @@ package com.messcode.client.views.chat;
 import com.messcode.client.model.MainModel;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.util.Subject;
@@ -27,6 +28,7 @@ public class ChatClientViewModel implements Subject {
     private StringProperty message;
     private StringProperty PMmessage;
     private User receiver;
+    private Group receiverGroup;
   
 
     public ChatClientViewModel(MainModel mainModel) {
@@ -34,7 +36,7 @@ public class ChatClientViewModel implements Subject {
         message = new SimpleStringProperty();
         PMmessage = new SimpleStringProperty();
         usersList = FXCollections.observableArrayList();
-        groups=  FXCollections.observableArrayList();
+        groups = FXCollections.observableArrayList();
         this.mainModel = mainModel;
         mainModel.addListener("RefresgGroups", this::refreshGroups);
         mainModel.addListener("AddNewUser", this::getUsersList);
@@ -129,6 +131,10 @@ public class ChatClientViewModel implements Subject {
         mainModel.sendPM(mess);
     }
 
+    public void sendGroup(GroupMessages mess) {
+        mainModel.sendGroup(mess);
+    }
+
     public User getCurrentUser() {
         return currentUser;
     }
@@ -172,5 +178,13 @@ public class ChatClientViewModel implements Subject {
 
     public void setReceiver(User receiver) {
         this.receiver = receiver;
+    }
+
+    public Group getReceiverGroup() {
+        return receiverGroup;
+    }
+
+    public void setReceiverGroup(Group receiverGroup) {
+        this.receiverGroup = receiverGroup;
     }
 }

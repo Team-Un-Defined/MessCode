@@ -36,7 +36,8 @@ public class ChatClientController {
     public ListView<Label> messagesListPM;
     public ListView<Label> messagesListGroup;
     public Label invitePmErrorLabel;
-    public Label userDisplayedName;
+    public Label userDisplayedName1;
+    public Label userDisplayedName2;
     public ToggleSwitch toggleSwitch;
     public Button buttonAll;
     public Button buttonGroup;
@@ -114,7 +115,8 @@ public class ChatClientController {
         });
         //  chatVM.addListener("NewPM", this::openPrivateChat);
 
-        userDisplayedName.setText("'" + chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName() + "'");
+        userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
+        userDisplayedName2.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userNameLabel.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userEmailLabel.setText(chatVM.getCurrentUser().getEmail());
         userTypeLabel.setText(chatVM.getCurrentUser().getType());
@@ -153,8 +155,8 @@ public class ChatClientController {
         usersListFXML.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
                         inviteToPmButton();
                     }
                 }
@@ -164,8 +166,8 @@ public class ChatClientController {
         groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                    if(mouseEvent.getClickCount() == 2){
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
                         openGroup();
                     }
                 }
@@ -208,8 +210,7 @@ public class ChatClientController {
                         imageView.setFitHeight(10);
                         imageView.setPreserveRatio(true);
                         this.setGraphic(imageView);
-                    }
-                    else {
+                    } else {
                         this.setGraphic(null);
                     }
                     String text = item.getName() + " " + item.getSurname(); // get text from item
@@ -234,15 +235,27 @@ public class ChatClientController {
     }
 
     public void sendPM() {
-        if (chatVM.getReceiver() == null){
+        if (chatVM.getReceiver() == null) {
             System.out.println("FUCK YOU");
-        }else {
-        System.out.println("-------------------------------------");
+        } else {
+            System.out.println("-------------------------------------");
 
-        String message = textFieldPM.getText();
+            String message = textFieldPM.getText();
 
-        chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), message));
-        textFieldPM.clear();}
+            chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), message));
+            textFieldPM.clear();
+        }
+    }
+
+    public void sendGroup(ActionEvent actionEvent) {
+        if (chatVM.getReceiverGroup() == null) {
+            System.out.println("EF YOU 2.0");
+        } else {
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            String message = textFieldGroup.getText();
+            chatVM.sendGroup(new GroupMessages(chatVM.getCurrentUser(), message, chatVM.getReceiverGroup()));
+            textFieldGroup.clear();
+        }
     }
 
     public void inviteToPmButton() {
@@ -273,7 +286,7 @@ public class ChatClientController {
 //            invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
             Group group = (Group) groupsList.getSelectionModel().getSelectedItems().get(0);
-
+            chatVM.setReceiverGroup(group);
             groupLabel.setText(group.getName());
             //hele
         }
