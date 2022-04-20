@@ -419,7 +419,10 @@ pubm.setTime(rs.getTimestamp("date"));
     do {
     String plus =" ";
     if(!(rs0 == null)){
-    plus = "where p.name = '"+rs0.getString("name") +"'";
+    rs0.next();
+    plus = " where p.name = '"+rs0.getString("name") +"'";
+        System.out.println("ssssssssssssssssssssssssssss"+plus);
+    
     }
     String query ="select \n" +
     "p.name,\n" +
