@@ -16,6 +16,11 @@ public class PublicMessage implements Serializable {
         this.user = username;
         this.msg = message;
     }
+     public PublicMessage(User username, String message, Timestamp time) {
+        this.time = time;
+        this.user = username;
+        this.msg = message;
+    }
 
     public User getSender() {
         return user;

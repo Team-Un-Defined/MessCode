@@ -27,6 +27,7 @@ public class ChatClientViewModel implements Subject {
     private MainModel mainModel;
     private StringProperty message;
     private StringProperty PMmessage;
+    private StringProperty GMmessage;
     private User receiver;
     private Group receiverGroup;
   
@@ -35,9 +36,11 @@ public class ChatClientViewModel implements Subject {
         support = new PropertyChangeSupport(this);
         message = new SimpleStringProperty();
         PMmessage = new SimpleStringProperty();
+        GMmessage = new SimpleStringProperty();
         usersList = FXCollections.observableArrayList();
         groups = FXCollections.observableArrayList();
         this.mainModel = mainModel;
+        mainModel.addListener("newGroupMessage", this::displayGroup);
         mainModel.addListener("RefresgGroups", this::refreshGroups);
         mainModel.addListener("AddNewUser", this::getUsersList);
         mainModel.addListener("MessageForEveryone", this::displayPublic);
@@ -121,7 +124,9 @@ public class ChatClientViewModel implements Subject {
     public StringProperty messageProperty() {
         return message;
     }
-
+    public StringProperty GMProperty() {
+        return GMmessage;
+    }
 
     public StringProperty PMProperty() {
         return PMmessage;
@@ -157,19 +162,33 @@ public class ChatClientViewModel implements Subject {
 
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
 
-        if (this.receiver == null) {
-        } else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
+        if (this.receiver == null) return;
+        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
             PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + PMmessage.getValue());
         }
     }
 
+    private void displayGroup(PropertyChangeEvent propertyChangeEvent) {
+       GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
+       
+       if(this.receiverGroup == null) return;
+       else if (gm.getGroup().getName().equals(this.receiverGroup.getName())){
+       GMmessage.set(gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
+       }
+        
+    }
+    
     public ArrayList<PublicMessage> loadPublics() {
         return mainModel.loadPublics();
     }
 
     public ArrayList<PrivateMessage> loadPMs() {
-        return mainModel.loadPMs(currentUser, receiver);
+        return mainModel.loadPMs(receiver);
+    }
+    
+    public ArrayList<GroupMessages> loadGroup(){
+         return mainModel.loadGroup(receiverGroup);
     }
 
     public User getReceiver() {
@@ -187,4 +206,6 @@ public class ChatClientViewModel implements Subject {
     public void setReceiverGroup(Group receiverGroup) {
         this.receiverGroup = receiverGroup;
     }
+
+    
 }

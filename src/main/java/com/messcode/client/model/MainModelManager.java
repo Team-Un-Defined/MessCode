@@ -34,6 +34,7 @@ public class MainModelManager implements MainModel {
         this.client = client;
         try {
             client.start();
+            client.addListener("newGroupMessage", this:: receiveGroup);
             client.addListener("RefresgGroups", this::refreshGroupList);
             client.addListener("AddNewUser", this::addToUsersList);
             client.addListener("MessageForEveryone", this::receivePublic);
@@ -106,6 +107,13 @@ public class MainModelManager implements MainModel {
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
+    private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
+        
+        GroupMessages gm = (GroupMessages)propertyChangeEvent.getNewValue();
+        this.allMessage.add(gm);
+        support.firePropertyChange("newGroupMessage", null, gm);
+    }
+    
 
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
@@ -141,7 +149,7 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void sendGroup(GroupMessages mess) {
-        throw new UnsupportedOperationException();
+        client.sendGroup(mess);
     }
 
     public ArrayList<PublicMessage> getAllMessage() {
@@ -159,14 +167,12 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public ArrayList<PrivateMessage> loadPMs(User currentUser, User receiver) {
+    public ArrayList<PrivateMessage> loadPMs(User receiver) {
 
         ArrayList<PrivateMessage> pivi = new ArrayList<>();
         for (PublicMessage p : this.allMessage) {
-            if (p instanceof PrivateMessage) {
-                if (((PrivateMessage) p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail())) {
+            if (p instanceof PrivateMessage && (((PrivateMessage) p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail()))) {
                     pivi.add(((PrivateMessage) p));
-                }
             }
 
         }
@@ -185,6 +191,17 @@ public class MainModelManager implements MainModel {
         }
         return pubi;
     }
+    @Override
+    public ArrayList<GroupMessages> loadGroup(Group selectedGroup) {
+        ArrayList<GroupMessages> grupi = new ArrayList<>();
+        for(PublicMessage p : this.allMessage){
+            if(p instanceof GroupMessages && (selectedGroup.getName().equals(((GroupMessages)p).getGroup().getName()))){
+            grupi.add((GroupMessages) p);
+            }
+        
+        }
+       return grupi; 
+    }
 
     @Override
     public void newGroup(Group g) {
@@ -195,6 +212,10 @@ public class MainModelManager implements MainModel {
         allGroups= g;
         support.firePropertyChange("RefresgGroups", null, g);
     }
+
+    
+
+    
     
     
 }

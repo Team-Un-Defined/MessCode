@@ -2,6 +2,7 @@ package com.messcode.client.networking;
 
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.util.Subject;
@@ -26,4 +27,6 @@ public interface Client extends Subject {
     public void newGroup(Group g);
     
     public void refreshGroupList(ArrayList<Group> g);
+    
+    public void sendGroup(GroupMessages mess);
 }

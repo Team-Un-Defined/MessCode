@@ -209,8 +209,8 @@ public class ExportData {
             us.setSurname(rs.getString("lname"));
             us.setName(rs.getString("fname"));
             us.setType(rs.getString("type"));
-PublicMessage pubm =new PublicMessage(us, rs.getString("message"));
-pubm.setTime(rs.getTimestamp("date"));
+            
+            PublicMessage pubm =new PublicMessage(us, rs.getString("message"),rs.getTimestamp("date"));
             allMessages.add(pubm);
 
         }
@@ -247,12 +247,12 @@ pubm.setTime(rs.getTimestamp("date"));
             PrivateMessage pm;
             if(rs.getInt("sender_id")==id)
             {
-                pm= new PrivateMessage(use,u,rs.getString("message"));
+                pm= new PrivateMessage(use,u,rs.getString("message"),rs.getTimestamp("date"));
             }else {
-                pm= new PrivateMessage(u,use,rs.getString("message"));
+                pm= new PrivateMessage(u,use,rs.getString("message"), rs.getTimestamp("date"));
             }
 
-            pm.setTime(rs.getTimestamp("date"));
+           
             lastSeen.add(pm);
 
         }
@@ -278,13 +278,12 @@ pubm.setTime(rs.getTimestamp("date"));
             PrivateMessage pm;
             if(rs.getInt("sender_id")==id)
             {
-                pm= new PrivateMessage(use,u,rs.getString("message"));
+                pm= new PrivateMessage(use,u,rs.getString("message"),rs.getTimestamp("date"));
             }else {
-                pm= new PrivateMessage(u,use,rs.getString("message"));
+                pm= new PrivateMessage(u,use,rs.getString("message"),rs.getTimestamp("date"));
             }
 
 
-            pm.setTime(rs.getTimestamp("date"));
            allMessages.add(pm);
 
         }
@@ -301,41 +300,44 @@ pubm.setTime(rs.getTimestamp("date"));
 
         users.add(u);
         }
-        /*
-        String query7="select\n" +
-                "g.sender_id,\n" +
-                "g.project_id,\n" +
-                "g.message,\n" +
-                "g.date,\n" +
-                "a.fname,\n" +
-                "a.lname,\n" +
-                "a.email,\n" +
-                "ppp.name,\n" +
-                "ppp.description\n" +
-                "from group_messages as g\n" +
-                "join project_members p\n" +
-                "on p.project_id = g.project_id\n" +
-                "join projects as ppp\n" +
-                "on p.project_id = ppp.id\n" +
-                "join account as a\n" +
-                "on a.id = g.sender_id\n" +
-                "where  p.account_id ="+id;
-        rs = st.executeQuery(query5);
-        rs.beforeFirst();
-
-        while (rs.next()) {
-            User u = new User(rs.getString("email"), "a");
-            u.setName(rs.getString("fname"));
-            u.setSurname(rs.getString("lname"));
-            Group g =new Group(rs, rs.getString("name"),rs.getString("description"),rs.getString() );
-            GroupMessages pum;
-            pum.setTime(rs.getTimestamp("date"));
+        
+        ArrayList <Group> groups = updateGroups(use); 
+        for(int i =0;i<groups.size();i++){
+        String query7 ="select\n" +
+        "g.message,\n" +
+        "g.date,\n" +
+        "a.fname,\n" +
+        "a.lname,\n" +
+        "a.type,\n" +
+        "a.email\n" +
+        "from group_messages as g\n" +
+        "join account as a \n" +
+        "on a.id = g.sender_id\n" +
+        "join projects as p \n" +
+        "on p.id = g.project_id\n" +
+        "where p.name = '"+groups.get(i).getName() +"'";
+        
+         rs = st.executeQuery(query7);
+         rs.beforeFirst();
+         while(rs.next()){
+         User member = new User(rs.getString("email"),"a");
+          member.setName(rs.getString("fname"));
+          member.setSurname(rs.getString("lname"));
+          member.setType(rs.getString("type"));
+          GroupMessages g = new GroupMessages(member, rs.getString("message"), groups.get(i),rs.getTimestamp("date"));
+          allMessages.add(g);
+         
+         }
+        
         }
-*/
+        
+        
         objs.add(allMessages);
         objs.add(lastSeen);
         objs.add(use);
         objs.add(users);
+        objs.add(groups);
+        
         Container dataPack = new Container(objs, ClassName.LOGIN_DATA);
         return dataPack;
 
@@ -387,9 +389,6 @@ pubm.setTime(rs.getTimestamp("date"));
 
 
     rs = st1.executeQuery(query);
-    if (rs.isClosed()){
-        System.out.println("LLLLLL LLLLLL LLLLL LLLL LLL LLLLLLL");
-    }
 
     while(rs.next()){
     User lead = new User(rs.getString("email"),rs.getString("fname")+rs.getString("lname"));

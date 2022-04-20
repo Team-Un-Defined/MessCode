@@ -14,6 +14,7 @@ import java.net.Socket;
 
 import static com.messcode.transferobjects.ClassName.PRIVATE_MESSAGE;
 import com.messcode.transferobjects.Group;
+import com.messcode.transferobjects.messages.GroupMessages;
 import java.util.ArrayList;
 
 public class ClientSocketHandler implements Runnable {
@@ -46,6 +47,12 @@ public class ClientSocketHandler implements Runnable {
                     case PRIVATE_MESSAGE: {
                         PrivateMessage pm = (PrivateMessage) packet.getObject();
                         receivePM(pm);
+                        
+                        break;
+                    }
+                    case GROUP_MESSAGE:{
+                        GroupMessages gm = (GroupMessages) packet.getObject();
+                        receiveGroup(gm);
                         
                         break;
                     }
@@ -121,7 +128,10 @@ public class ClientSocketHandler implements Runnable {
         socketClient.displayPM(message);
         System.out.println("CLIENT GOT THE PM : "+message.getUsername() + " " + message.getMsg());
     }
-
+    private void receiveGroup(GroupMessages gm) {
+        socketClient.displayGroup(gm);
+        System.out.println("CLIENT GOT THE Group message : "+gm.getUsername() + " " + gm.getMsg());
+    }
     public void sendPM(PrivateMessage message) {
         try {
             Container packet = new Container(message, PRIVATE_MESSAGE);
@@ -178,6 +188,15 @@ public class ClientSocketHandler implements Runnable {
 
     private void receiveGroups(ArrayList<Group> groups) {
         socketClient.refreshGroupList(groups);
+    }
+
+    void sendGroup(GroupMessages mess) {
+ try {
+            Container packet = new Container(mess, ClassName.GROUP_MESSAGE);
+            outToServer.writeObject(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }

@@ -9,6 +9,7 @@ import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -20,6 +21,10 @@ public class GroupMessages extends PublicMessage implements Serializable {
 
     public GroupMessages(User username,String message, Group group) {
         super(username, message);
+        this.group = group;
+    }
+     public GroupMessages(User username,String message, Group group,Timestamp time) {
+        super(username, message,time);
         this.group = group;
     }
 

@@ -3,6 +3,7 @@ package com.messcode.transferobjects.messages;
 import com.messcode.transferobjects.User;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class PrivateMessage extends PublicMessage implements Serializable {
 
@@ -12,7 +13,10 @@ public class PrivateMessage extends PublicMessage implements Serializable {
         super(user, msg);
         this.receiver = receiver;
     }
-
+    public PrivateMessage(User user, User receiver, String msg,Timestamp time) {
+        super(user, msg, time);
+        this.receiver = receiver;
+    }
     public PrivateMessage(User user, String msg) {
         super(user, msg);
     }
