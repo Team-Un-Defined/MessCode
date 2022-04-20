@@ -10,6 +10,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class SocketClient implements Client {
 
@@ -87,13 +88,15 @@ public class SocketClient implements Client {
     }
 
     @Override
-    public void addToGroupList(Group g) {
-        support.firePropertyChange("AddNewGroup", null, g);
+    public void refreshGroupList(ArrayList<Group> g) {
+        support.firePropertyChange("RefresgGroups", null, g);
     }
    @Override
     public void newGroup(Group g) {
         socketHandler.addGroup(g);
     }
+    
+    
     
 }
 

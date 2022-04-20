@@ -182,7 +182,7 @@ public class ImportData {
         byte[] pass = null;
 
         while (rs.next()) {
-
+            
             hashedPassword = rs.getString("pwd_hash");
             ema = rs.getString("email");
             salt = rs.getString("pwd_salt");
