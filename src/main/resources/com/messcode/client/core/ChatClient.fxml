@@ -127,7 +127,7 @@
                     <ListView fx:id="messagesListGroup" layoutX="14.0" layoutY="40.0" prefHeight="537.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Button fx:id="sendGroupButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
                     <TextField fx:id="textFieldGroup" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Label layoutX="14.0" layoutY="14.0" text="Group X" />
+                    <Label fx:id="groupLabel" layoutX="14.0" layoutY="14.0"/>
                   <Button layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#editMemberButton" prefHeight="17.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Add a member" />
                 </children></Pane>
         </children>
