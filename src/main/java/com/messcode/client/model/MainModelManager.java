@@ -33,7 +33,7 @@ public class MainModelManager implements MainModel {
         this.client = client;
         try {
             client.start();
-            client.addListener("AddNewGroup", this::addToGroupList);
+            client.addListener("RefresgGroups", this::refreshGroupList);
             client.addListener("AddNewUser", this::addToUsersList);
             client.addListener("MessageForEveryone", this::receivePublic);
             client.addListener("newPM", this::receivePM);
@@ -182,9 +182,10 @@ public class MainModelManager implements MainModel {
     public void newGroup(Group g) {
        client.newGroup(g);
     }
-    public void addToGroupList(PropertyChangeEvent propertyChangeEvent) {
-        Group g = (Group) propertyChangeEvent.getNewValue();
-        support.firePropertyChange("AddNewGroup", null, g);
+    public void refreshGroupList(PropertyChangeEvent propertyChangeEvent) {
+        ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
+        allGroups= g;
+        support.firePropertyChange("RefresgGroups", null, g);
     }
     
     

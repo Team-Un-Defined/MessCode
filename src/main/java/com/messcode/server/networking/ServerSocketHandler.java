@@ -69,7 +69,7 @@ public class ServerSocketHandler implements Runnable {
                         if(isItSame) break;
                         Container packetToClient = null;
 
-
+              
 
                         packetToClient = dbe.checkLogin(usertemp.getEmail(), usertemp.getStrPassword()); /// here the username, should be email, and email should be passowrd
 

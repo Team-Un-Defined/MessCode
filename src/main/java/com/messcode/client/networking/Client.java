@@ -7,6 +7,7 @@ import com.messcode.transferobjects.messages.PublicMessage;
 import com.messcode.transferobjects.util.Subject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public interface Client extends Subject {
 
@@ -24,5 +25,5 @@ public interface Client extends Subject {
     
     public void newGroup(Group g);
     
-    public void addToGroupList(Group g);
+    public void refreshGroupList(ArrayList<Group> g);
 }

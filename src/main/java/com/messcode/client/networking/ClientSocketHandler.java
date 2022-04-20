@@ -175,7 +175,7 @@ public class ClientSocketHandler implements Runnable {
     }
 
     private void receiveGroups(ArrayList<Group> groups) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
 }
