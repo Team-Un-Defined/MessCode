@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<?import org.controlsfx.control.ToggleSwitch?>
+<!--<?import org.controlsfx.control.ToggleSwitch?>-->
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="625.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.chat.ChatClientController">
 <children>
@@ -55,21 +55,20 @@
             </Button>
             <StackPane layoutY="189.0">
                <children>
-                  <Pane fx:id="userListPane" prefHeight="436.0" prefWidth="200.0" styleClass="pane">
-                      <children>
-                          <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="Online" />
-                          <ListView fx:id="usersListFXML" layoutX="14.0" layoutY="38.0" prefHeight="302.0" prefWidth="180.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                          <Button layoutX="14.0" layoutY="348.0" mnemonicParsing="false" onAction="#inviteToPmButton" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: f00;" text="%chat_client.button_invite_to_pm" textFill="WHITE" />
-                          <Label fx:id="invitePmErrorLabel" layoutX="14.0" layoutY="382.0" text="Label" textFill="#cc0000" />
-                          <Label fx:id="userDisplayedName" layoutX="14.0" layoutY="405.0" text="Label" textFill="#cc0000" />
-                      </children>
-                  </Pane>
                   <Pane fx:id="groupListPane" prefHeight="200.0" prefWidth="200.0" styleClass="pane">
                      <children>
                         <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="Groups" />
                         <ListView layoutX="14.0" layoutY="38.0" prefHeight="302.0" prefWidth="180.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
                         <Button layoutX="14.0" layoutY="347.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="150.0" text="Open group (temp)" />
                      </children>
+                  </Pane>
+                  <Pane fx:id="userListPane" prefHeight="436.0" prefWidth="200.0" styleClass="pane">
+                      <children>
+                          <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="Online" />
+                          <ListView fx:id="usersListFXML" layoutX="14.0" layoutY="38.0" prefHeight="336.0" prefWidth="180.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
+                          <Label fx:id="invitePmErrorLabel" layoutX="14.0" layoutY="382.0" text="Label" textFill="#cc0000" />
+                          <Label fx:id="userDisplayedName" layoutX="14.0" layoutY="405.0" text="Label" textFill="#cc0000" />
+                      </children>
                   </Pane>
                </children>
             </StackPane>
@@ -101,7 +100,7 @@
                     <Pane layoutX="14.0" layoutY="191.0" prefHeight="27.0" prefWidth="262.0" styleClass="pane">
                         <children>
                             <Label layoutY="5.0" text="%chat_client.dark_theme" />
-                            <ToggleSwitch fx:id="toggleSwitch" layoutX="65.0" layoutY="5.0" />
+<!--                            <ToggleSwitch fx:id="toggleSwitch" layoutX="65.0" layoutY="5.0" />-->
                         </children>
                     </Pane>
                   <Button layoutX="156.0" layoutY="74.0" mnemonicParsing="false" onAction="#changePasswordClicked" style="-fx-background-color: transparent;" styleClass="buttonPass" text="%chat_client.change_pass" />
@@ -129,7 +128,7 @@
                     <Button fx:id="sendGroupButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
                     <TextField fx:id="textFieldGroup" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Label layoutX="14.0" layoutY="14.0" text="Group X" />
-                  <Button onAction="#editMemberButton" layoutX="514.0" layoutY="10.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Add a member" />
+                  <Button layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#editMemberButton" prefHeight="17.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Add a member" />
                 </children></Pane>
         </children>
     </StackPane>
