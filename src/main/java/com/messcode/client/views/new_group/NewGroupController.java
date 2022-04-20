@@ -25,17 +25,16 @@ public class NewGroupController {
     public void init(NewGroupViewModel newGroupVM, ViewHandler vh, ResourceBundle bundle) {
         this.vh = vh;
         this.newGroupVM = newGroupVM;
-        this.bundle = bundle; 
+        this.bundle = bundle;
         this.descriptionTextArea.setText("Write something nice");
         groupLeaderComboBox.setItems(newGroupVM.getUsersList());
         groupLeaderComboBox.setCellFactory(lv -> new ListCell<User>() {
             @Override
             public void updateItem(User item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty ) {
                     setText(null);
                 } else {
-
                     String text = item.getName() + " " + item.getSurname() + item.getSalt(); // get text from item
                     setText(text);
                 }
@@ -46,9 +45,9 @@ public class NewGroupController {
     public void createClicked(ActionEvent event) {
         String groupName = groupNameTextField.getText();
         User groupLeader = (User) groupLeaderComboBox.getValue(); // comment for kami to edit ***
-        System.out.println("  77777777777777777777777777777 "+groupLeader.getEmail());
+        System.out.println("  77777777777777777777777777777 " + groupLeader.getEmail());
         String description = descriptionTextArea.getText();
-        newGroupVM.newGroup(new Group(groupName,description,groupLeader));
+        newGroupVM.newGroup(new Group(groupName, description, groupLeader));
 
         // NOMMI do we need regex for project name?
     }
