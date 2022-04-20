@@ -27,12 +27,14 @@ public class ChatClientViewModel implements Subject {
     private StringProperty message;
     private StringProperty PMmessage;
     private User receiver;
+  
 
     public ChatClientViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
         message = new SimpleStringProperty();
         PMmessage = new SimpleStringProperty();
         usersList = FXCollections.observableArrayList();
+        groups=  FXCollections.observableArrayList();
         this.mainModel = mainModel;
         mainModel.addListener("RefresgGroups", this::refreshGroups);
         mainModel.addListener("AddNewUser", this::getUsersList);
@@ -43,12 +45,12 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
     }
 
-    private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
-        groups = FXCollections.observableArrayList();
+    private void refreshGroups(PropertyChangeEvent propertyChangeEvent){
+
         groups.clear();
         groups.addAll((ArrayList<Group>) propertyChangeEvent.getNewValue());
     }
-
+    
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
 
