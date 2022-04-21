@@ -64,6 +64,7 @@ public class ServerSocketHandler implements Runnable {
                         break;
                     }
                     case USER_JOIN: {
+
                         User usertemp = (User) packet.getObject();
 
                         boolean isItSame = pool.userCheck(usertemp);

@@ -41,42 +41,6 @@ public class ExportData {
         }
     }
 
-    /**
-     * Creates an SQL statement, if the  email is found in the database
-     * the method will return a boolean false. If they are not in the database the
-     * credentials are unique and the method will return a boolean true
-     *
-     * @param email String containing the email
-     * @return boolean true if the account is unique and false if it is not
-     * @throws SQLException an exception that provides information on a database
-     *                      access error or other errors.
-     */
-    public boolean checkAccountUniqueness(String username, String email) throws SQLException {
-        boolean unique = false;
-        Statement st = c.createStatement();
-        String query =
-                "SELECT * FROM Accounts WHERE email ='" + email + "' ;";
-
-        ResultSet rs = st.executeQuery(query);
-
-        String ema = null;
-        while (rs.next()) {
-
-            ema = rs.getString("email");
-
-            System.out.println("email = " + ema);
-            if (ema != null) {
-                System.out.println(unique);
-                break;
-            }
-            System.out.println(unique);
-        }
-        if (ema == null) {
-            unique = true;
-            System.out.println(unique);
-        }
-        return unique;
-    }
 
     /**
      * Creates an SQL statement that checks if the username and password are found in
