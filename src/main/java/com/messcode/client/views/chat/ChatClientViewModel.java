@@ -88,8 +88,7 @@ public class ChatClientViewModel implements Subject {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
 
        // message.setValue(publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
-      support.firePropertyChange("MessageForAll",null,publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
-        System.out.println("got to model :" + message.getValue());
+      support.firePropertyChange("MessageForEveryone",null,publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
     }
 
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -178,8 +177,8 @@ public class ChatClientViewModel implements Subject {
        if(this.receiverGroup == null) return;
        else if (gm.getGroup().getName().equals(this.receiverGroup.getName())){
        //GMmessage.set(gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
-       
-       support.firePropertyChange("newGroupMessage",null,gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
+       String s = gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg();
+       support.firePropertyChange("newGroupMessage",null,s);
        }
         
     }
