@@ -26,7 +26,6 @@ import java.util.ResourceBundle;
 
 public class ChatClientController {
 
-    public TextArea textArea;
     public TextField textFieldAll;
     public TextField textFieldPM;
     public TextField textFieldGroup;
@@ -152,7 +151,7 @@ public class ChatClientController {
             }
         });
 
-        if (chatVM.getCurrentUser().isProjectLeader() || chatVM.getCurrentUser().isEmployee()) {
+        if (chatVM.getCurrentUser().isSuperuser() || chatVM.getCurrentUser().isEmployee()) {
             newEmployeeButton.setVisible(false);
             newGroupButton.setVisible(false);
         }
@@ -166,24 +165,18 @@ public class ChatClientController {
             else allButtonImage.setImage(new Image(reddot));
         }
 
-        usersListFXML.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
-                        inviteToPmButton();
-                    }
+        usersListFXML.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    inviteToPmButton();
                 }
             }
         });
 
-        groupsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
-                        openGroup();
-                    }
+        groupsList.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    openGroup();
                 }
             }
         });
