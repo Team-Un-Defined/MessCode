@@ -28,7 +28,7 @@ public class NewGroupController {
         this.bundle = bundle;
         this.descriptionTextArea.setText("Write something nice");
         groupLeaderComboBox.setItems(newGroupVM.getUsersList());
-        groupLeaderComboBox.setCellFactory(lv -> new ListCell<User>() {
+        groupLeaderComboBox.setCellFactory(lv -> new ListCell<>() {
             @Override
             public void updateItem(User item, boolean empty) {
                 super.updateItem(item, empty);
@@ -42,9 +42,9 @@ public class NewGroupController {
         });
     }
 
-    public void createClicked(ActionEvent event) {
+    public void createClicked() {
         String groupName = groupNameTextField.getText();
-        User groupLeader = (User) groupLeaderComboBox.getValue(); // comment for kami to edit ***
+        User groupLeader = groupLeaderComboBox.getValue();
         System.out.println("  77777777777777777777777777777 " + groupLeader.getEmail());
         String description = descriptionTextArea.getText();
         newGroupVM.newGroup(new Group(groupName, description, groupLeader));

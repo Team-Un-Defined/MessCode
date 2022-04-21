@@ -6,6 +6,9 @@ import com.messcode.client.views.edit_member.EditMemberController;
 import com.messcode.client.views.login.LoginController;
 import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
+import com.messcode.client.views.remove_group.RemoveGroupController;
+import com.messcode.client.views.remove_group.RemoveGroupViewModel;
+import com.messcode.client.views.remove_user.RemoveUserController;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.UserList;
 import javafx.application.Platform;
@@ -200,6 +203,44 @@ public class ViewHandler {
         editMemberStage.getIcons().add(new Image("icon.png"));
         editMemberStage.getScene().getStylesheets().add(css);
         editMemberStage.show();
+    }
+
+    public void openRemoveUser(String css) {
+        Stage removeUserStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        if (editMember == null) {
+            Parent root = getRootByPath("RemoveUser.fxml", loader);
+            RemoveUserController controller = loader.getController();
+            controller.init(vmf.getRemoveUserVM(), this, bundle);
+            editMember = new Scene(root);
+        }
+
+        removeUserStage.setTitle(bundle.getString("remove_user.up"));
+        removeUserStage.setScene(editMember);
+        removeUserStage.getIcons().add(new Image("icon.png"));
+        removeUserStage.getScene().getStylesheets().add(css);
+        removeUserStage.show();
+    }
+
+    public void openRemoveGroup(String css) {
+        Stage removeGroupStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        if (editMember == null) {
+            Parent root = getRootByPath("RemoveGroup.fxml", loader);
+            RemoveGroupController controller = loader.getController();
+            controller.init(vmf.getRemoveGroupVM(), this, bundle);
+            editMember = new Scene(root);
+        }
+
+        removeGroupStage.setTitle(bundle.getString("remove_group.up"));
+        removeGroupStage.setScene(editMember);
+        removeGroupStage.getIcons().add(new Image("icon.png"));
+        removeGroupStage.getScene().getStylesheets().add(css);
+        removeGroupStage.show();
     }
 
     private Parent getRootByPath(String path, FXMLLoader loader) {
