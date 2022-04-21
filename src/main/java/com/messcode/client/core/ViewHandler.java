@@ -163,8 +163,8 @@ public class ViewHandler {
 
         if (newEmployee == null) {
             Parent root = getRootByPath("NewEmployee.fxml", loader);
-            ChangePasswordController controller = loader.getController();
-            controller.init(vmf.getChangePasswordVM(), this, bundle);
+            NewEmployeeController controller = loader.getController();
+            controller.init(vmf.getNewEmployeeVM(), this, bundle);
             newEmployee = new Scene(root);
         }
 
