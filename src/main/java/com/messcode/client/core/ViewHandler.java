@@ -41,6 +41,8 @@ public class ViewHandler {
     private Scene newGroup;
     private Scene changePassword;
     private Scene editMember;
+    private Scene removeUser;
+    private Scene removeGroup;
     private ResourceBundle bundle;
 
     private User myUser = null;
@@ -116,8 +118,6 @@ public class ViewHandler {
         stage.setX(x);
         stage.setY(y);
     }
-
-
 
     public ChatClientController openChatClientView() {
         FXMLLoader loader = new FXMLLoader();
@@ -237,15 +237,15 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (editMember == null) {
+        if (removeUser == null) {
             Parent root = getRootByPath("RemoveUser.fxml", loader);
             RemoveUserController controller = loader.getController();
             controller.init(vmf.getRemoveUserVM(), this, bundle);
-            editMember = new Scene(root);
+            removeUser = new Scene(root);
         }
 
         removeUserStage.setTitle(bundle.getString("remove_user.up"));
-        removeUserStage.setScene(editMember);
+        removeUserStage.setScene(removeUser);
         removeUserStage.getIcons().add(new Image("icon.png"));
         removeUserStage.getScene().getStylesheets().add(css);
         removeUserStage.show();
@@ -256,15 +256,15 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (editMember == null) {
+        if (removeGroup == null) {
             Parent root = getRootByPath("RemoveGroup.fxml", loader);
             RemoveGroupController controller = loader.getController();
             controller.init(vmf.getRemoveGroupVM(), this, bundle);
-            editMember = new Scene(root);
+            removeGroup = new Scene(root);
         }
 
         removeGroupStage.setTitle(bundle.getString("remove_group.up"));
-        removeGroupStage.setScene(editMember);
+        removeGroupStage.setScene(removeGroup);
         removeGroupStage.getIcons().add(new Image("icon.png"));
         removeGroupStage.getScene().getStylesheets().add(css);
         removeGroupStage.show();

@@ -11,6 +11,8 @@ module com.example.messcode {
     opens com.messcode.client.views.new_group to javafx.fxml;
     opens com.messcode.client.views.change_password to javafx.fxml;
     opens com.messcode.client.views.edit_member to javafx.fxml;
+    opens com.messcode.client.views.remove_group to javafx.fxml;
+    opens com.messcode.client.views.remove_user to javafx.fxml;
     exports com.messcode.client.views.chat;
     exports com.messcode.client.core;
     exports com.messcode.client;
