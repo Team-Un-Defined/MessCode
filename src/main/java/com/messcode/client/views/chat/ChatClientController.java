@@ -381,7 +381,7 @@ public class ChatClientController {
         vh.openNewGroup(cssUsed);
     }
 
-    public void editMemberButton(ActionEvent actionEvent) {
+    public void editMemberButton() {
         vh.openEditMember(cssUsed);
     }
 
@@ -391,5 +391,13 @@ public class ChatClientController {
         for (PublicMessage pb : pub) {
             messagesListAll.getItems().add(new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg()));
         }
+    }
+
+    public void removeGroupClicked() {
+        vh.openRemoveGroup(cssUsed);
+    }
+
+    public void removeUserClicked() {
+        vh.openRemoveUser(cssUsed);
     }
 }
