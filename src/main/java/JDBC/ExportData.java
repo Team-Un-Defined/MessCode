@@ -163,7 +163,7 @@ public class ExportData {
 
         }
         String query3 = "select * from public.public_messages as s join public.account as pa\n" +
-                "on s.sender_id=pa.id";
+                "on s.sender_id=pa.id order by date";
         rs = st.executeQuery(query3);
         rs.beforeFirst();
         int cid = 0;
@@ -196,7 +196,7 @@ public class ExportData {
                 "on p.id = la.private_message_id\n" +
                 "join account as a\n" +
                 "on (a.id = p.reciever_id or a.id = p.sender_id) and a.id != "+id +
-                "where la.user_id = "+id ;
+                "where la.user_id = "+id +" order by date;";
         ArrayList<Object> objs = new ArrayList<>();
         User use = new User(fname,lname,ema,password.getBytes(StandardCharsets.UTF_8),salt,type);   // fix this too
         //User use = new User(fname,lname,ema,password.getBytes(StandardCharsets.UTF_8),salt,type);
@@ -231,7 +231,7 @@ public class ExportData {
                 "from private_messages as m\n" +
                 "join account as a\n" +
                 "on (a.id = m.reciever_id or a.id = m.sender_id) and a.id != "+id+"\n" +
-                "where m.reciever_id = "+id+" or m.sender_id="+id;
+                "where m.reciever_id = "+id+" or m.sender_id="+id+" order by date;";
                 rs = st.executeQuery(query5);
         rs.beforeFirst();
 
@@ -279,7 +279,7 @@ public class ExportData {
         "on a.id = g.sender_id\n" +
         "join projects as p \n" +
         "on p.id = g.project_id\n" +
-        "where p.name = '"+groups.get(i).getName() +"'";
+        "where p.name = '"+groups.get(i).getName() +"' order by date;";
         
          rs = st.executeQuery(query7);
          rs.beforeFirst();
@@ -332,7 +332,8 @@ public class ExportData {
 
     do {
     String plus =" ";
-    if(!(rs0 == null)){
+
+    if(!(rs0 == null) && rs0.next()){
 
 
 

@@ -22,8 +22,11 @@ import org.controlsfx.control.ToggleSwitch;
 
 import java.beans.PropertyChangeEvent;
 import java.io.InputStream;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ChatClientController {
 
@@ -76,17 +79,19 @@ public class ChatClientController {
         this.vh = vh;
         this.bundle = bundle;
         cssUsed = vh.getCssStyle();
-
         refreshPublic();
         updateUserList();
         updateGroupList();
-
+        chatVM.addListener("MessageForEveryone", this::displayPublic);
+        chatVM.addListener("newPM", this::displayPM);
+        chatVM.addListener("newGroupMessage", this::displayGroup);
         //CHAT MESSAGES
         StringProperty textChat = new SimpleStringProperty();
         textChat.bind(chatVM.messageProperty());
 
         textChat.addListener((observableValue, s, t1) -> {
-            Platform.runLater(() -> {
+             Platform.runLater(() -> {
+                System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
                 Label label = new Label(textChat.getValue());
                 label.setMaxWidth(messagesListAll.getWidth() - 25);
                 label.setWrapText(true);
@@ -102,15 +107,16 @@ public class ChatClientController {
         StringProperty pmChat = new SimpleStringProperty();
         pmChat.bind(chatVM.PMProperty());
 
-        pmChat.addListener((observableValue, s, t1) -> {
+        pmChat.addListener((observableValue, oldVal, newVal) -> {
+            System.out.println("GOT THE SHIT GOT THE SHIT IMMA BE HAPPY"); 
             Platform.runLater(() -> {
-                Label label = new Label(pmChat.getValue());
-                label.setMaxWidth(messagesListPM.getWidth() - 25);
+                   Label label = new Label(newVal);
+                label.setMaxWidth(messagesListGroup.getWidth() - 25);
                 label.setWrapText(true);
                 messagesListPM.getItems().add(label);
-
-       
-
+             
+                
+                
 //                if(!paneInFront.equals("pm")) {
 //                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 //                    PMButtonImage.setImage(new Image(reddot));
@@ -120,9 +126,9 @@ public class ChatClientController {
         
         StringProperty gmChat = new SimpleStringProperty();
         gmChat.bind(chatVM.GMProperty());
-        gmChat.addListener((observableValue, s, t1) -> {
+        gmChat.addListener((observableValue, oldVal, newVal ) -> {
             Platform.runLater(() -> {
-                Label label = new Label(gmChat.getValue());
+                Label label = new Label(newVal);
                 label.setMaxWidth(messagesListGroup.getWidth() - 25);
                 label.setWrapText(true);
                 messagesListGroup.getItems().add(label);
@@ -399,5 +405,43 @@ public class ChatClientController {
 
     public void removeUserClicked() {
         vh.openRemoveUser(cssUsed);
+    }
+
+    private void displayPublic(PropertyChangeEvent evt) {
+        String a = (String) evt.getNewValue();
+        Platform.runLater(() -> {
+                System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
+                Label label = new Label(a);
+                label.setMaxWidth(messagesListAll.getWidth() - 25);
+                label.setWrapText(true);
+                messagesListAll.getItems().add(label);
+
+                if (!paneInFront.equals("all")) {
+                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+                    allButtonImage.setImage(new Image(reddot));
+                }
+            });
+    }
+
+    private void displayPM(PropertyChangeEvent evt) {
+        String a = (String) evt.getNewValue();
+       Platform.runLater(() -> {
+                   Label label = new Label(a);
+                label.setMaxWidth(messagesListGroup.getWidth() - 25);
+                label.setWrapText(true);
+                messagesListPM.getItems().add(label);
+             
+                
+            });
+    }
+
+    private void displayGroup(PropertyChangeEvent evt) {
+        String a = (String) evt.getNewValue();
+         Platform.runLater(() -> {
+                Label label = new Label(a);
+                label.setMaxWidth(messagesListGroup.getWidth() - 25);
+                label.setWrapText(true);
+                messagesListGroup.getItems().add(label);
+                });
     }
 }
