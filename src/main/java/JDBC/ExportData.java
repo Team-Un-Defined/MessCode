@@ -332,7 +332,8 @@ public class ExportData {
 
     do {
     String plus =" ";
-    if(!(rs0 == null)){
+
+    if(!(rs0 == null) && rs0.next()){
 
 
 
