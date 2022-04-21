@@ -21,6 +21,7 @@ public class NewEmployeeViewModel  implements Subject {
     private StringProperty error;
     private String currentEmail="";
     private String password="";
+
     public NewEmployeeViewModel(MainModel mainModel)
     {
         this.mainModel = mainModel;

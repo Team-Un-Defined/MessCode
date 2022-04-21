@@ -43,9 +43,15 @@ public class MainModelManager implements MainModel {
             client.addListener("LoginResponse", this::loginResponse);
             client.addListener("LoginData", this::loginData);
             client.addListener("createUserResponse", this::createAccount);
+            client.addListener("passChangeResponse", this::passChangeResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void passChangeResponse(PropertyChangeEvent propertyChangeEvent) {
+        Container packet = ((Container) propertyChangeEvent.getNewValue());
+        support.firePropertyChange("passChangeResponse", null, ((boolean)packet.getObject()));
     }
 
     private void createAccount(PropertyChangeEvent propertyChangeEvent) {
@@ -209,8 +215,11 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void changePassword(String password, String passwordConfirmed) {
-      User u = new User(user.getEmail(),passwordConfirmed);
+    public void changePassword(String current,String password, String passwordConfirmed) {
+      User u = new User(user.getEmail(),current);
+      u.setPassword(passwordConfirmed);
+
+      client.changePassword(u);
     }
 
     @Override

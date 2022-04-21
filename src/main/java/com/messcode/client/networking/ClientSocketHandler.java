@@ -99,12 +99,21 @@ public class ClientSocketHandler implements Runnable {
                         loginData(packet);
                         break;
                     }
+                    case PASSWORD_CHANGE: {
+                        System.out.println("i got the  pass change data " + packet);
+                        passChangeResponse(packet);
+                        break;
+                    }
 
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void passChangeResponse(Container packet) {
+        socketClient.passChangeResponse(packet);
     }
 
     private void userCreateResponse(boolean acc) {
@@ -208,5 +217,13 @@ public class ClientSocketHandler implements Runnable {
             e.printStackTrace();
         }
     }
-    
+
+    public void changePassword(User u) {
+        try {
+            Container packet = new Container(u, ClassName.PASSWORD_CHANGE);
+            outToServer.writeObject(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

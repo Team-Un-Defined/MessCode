@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
 public class ChangePasswordController {
@@ -18,20 +19,23 @@ public class ChangePasswordController {
 
     private ChangePasswordViewModel changePasswordVM;
     private ViewHandler vh;
-    private User user;
+
     private ResourceBundle bundle;
 
     public void init(ChangePasswordViewModel changePasswordVM, ViewHandler vh, ResourceBundle bundle) {
         this.changePasswordVM = changePasswordVM;
         this.vh = vh;
         this.bundle = bundle;
+
+        errorLabel.textProperty().bind(changePasswordVM.errorProperty());
+
     }
 
     public void confirmClicked() {
         String currentPassword = currentPasswordTextField.getText();
         String password = passwordTextField.getText();
         String passwordConfirmed = passwordConfirmTextField.getText();
-        changePasswordVM.changePassword(password,passwordConfirmed);
+        changePasswordVM.changePassword(currentPassword,password,passwordConfirmed);
 
         // NOMMI do we need regex for passwords?
     }

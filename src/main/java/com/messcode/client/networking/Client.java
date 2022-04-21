@@ -29,4 +29,6 @@ public interface Client extends Subject {
     public void refreshGroupList(ArrayList<Group> g);
     
     public void sendGroup(GroupMessages mess);
+
+    void changePassword(User u);
 }

@@ -384,17 +384,36 @@ public class ImportData {
         return unique;
     }
 
-    public void changePassword(User us)
+    public boolean changePassword(User us)
             throws SQLException {
 
         Statement st = c.createStatement();
+          String query0= "select * from account where email=' "+us.getEmail()+"' ;";
+          String salt="";
+          String pwd="";
+          ResultSet rs = st.executeQuery(query0);
+          while(rs.next()){
+              salt=rs.getString("pwd_salt");
+                        pwd=rs.getString("pwd_hash");
+          }
+        AccountManager m = new AccountManager();
+        byte[] current = m.hashPassword(us.getStrPassword(),salt);
 
-        String query =
-                "UPDATE account set  pwd_hash = '" + Arrays.toString(us.getHashedPassword()) + "' where email='"+us.getEmail()+"' ;";
+          if(!pwd.equals(Arrays.toString(current)))
+          {
+              System.out.println("PASSWORDS DIDNT MATCH");
+              return false;
+          }
+
         String query1 =
-                "UPDATE account set  pwd_salt = '" + us.getSalt() + "' where email='"+us.getEmail()+"' ;";
+                "UPDATE account set  pwd_salt = '" + salt+ "' where pwd_hash='"+Arrays.toString(current)+"' ;";
+        String query =
+                "UPDATE account set  pwd_hash = '" + Arrays.toString(us.getHashedPassword()) + "' where pwd_hash='"+ Arrays.toString(current) +"' ;";
+
 
         st.executeUpdate(query);
         st.executeUpdate(query1);
+        System.out.println("PASSWORDS MATCHED");
+        return true;
     }
 }
