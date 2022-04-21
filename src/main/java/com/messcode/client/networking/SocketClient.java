@@ -106,9 +106,18 @@ public class SocketClient implements Client {
         socketHandler.sendGroup(mess);
     }
 
+    @Override
+    public void changePassword(User u) {
+        socketHandler.changePassword(u);
+    }
+
 
     public void userCreateResponse(boolean acc) {
         support.firePropertyChange("createUserResponse", null, acc);
+    }
+
+    public void passChangeResponse(Container packet) {
+        support.firePropertyChange("passChangeResponse", null, packet);
     }
 }
 

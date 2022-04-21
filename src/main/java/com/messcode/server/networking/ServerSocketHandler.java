@@ -116,8 +116,9 @@ public class ServerSocketHandler implements Runnable {
                     }
                     case PASSWORD_CHANGE: {
                         User u = (User) packet.getObject();
-                        dbi.changePassword(u);
-
+                       boolean answ= dbi.changePassword(u);
+                       Container pckt = new Container(answ,ClassName.PASSWORD_CHANGE);
+                    outToClient.writeObject(pckt);
                     }
                 }
             }
