@@ -13,7 +13,6 @@ public class ChangePasswordViewModel {
     private PropertyChangeSupport support;
     private StringProperty error;
 
-
     public ChangePasswordViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
         support = new PropertyChangeSupport(this);
