@@ -42,9 +42,14 @@ public class MainModelManager implements MainModel {
             client.addListener("RemoveUser", this::removeFromUsersList);
             client.addListener("LoginResponse", this::loginResponse);
             client.addListener("LoginData", this::loginData);
+            client.addListener("createUserResponse", this::createAccount);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createAccount(PropertyChangeEvent propertyChangeEvent) {
+        support.firePropertyChange("createUserResponse", null, (boolean)propertyChangeEvent.getNewValue());
     }
 
     private void loginData(PropertyChangeEvent propertyChangeEvent) {

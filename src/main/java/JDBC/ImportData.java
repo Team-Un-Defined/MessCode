@@ -47,7 +47,7 @@ public class ImportData {
         Statement st = c.createStatement();
         String query =
                 "INSERT INTO account VALUES(default,'" +us.getName() + "', '"
-                        +us.getSurname()+ "', "+ Arrays.toString(us.getHashedPassword()) +", '" + us.getSalt() + "',"+us.getType()+"',"+us.getEmail()+"') " +
+                        +us.getSurname()+ "', '"+ Arrays.toString(us.getHashedPassword()) +"', '" + us.getSalt() + "','"+us.getType()+"','"+us.getEmail()+"') " +
                         "ON CONFLICT(email) DO nothing returning id";
         ResultSet rs = st.executeQuery(query);
 
