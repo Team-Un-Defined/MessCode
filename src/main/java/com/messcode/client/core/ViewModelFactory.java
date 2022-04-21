@@ -28,6 +28,7 @@ public class ViewModelFactory {
         loginVM = new LoginViewModel(mf.getMainModel());
         newEmployeeVM = new NewEmployeeViewModel(mf.getMainModel());
         newGroupVM = new NewGroupViewModel(mf.getMainModel());
+        changePasswordVM = new ChangePasswordViewModel(mf.getMainModel());
         editMemberVM = new EditMemberViewModel(mf.getMainModel());
         removeGroupVM = new RemoveGroupViewModel(mf.getMainModel());
         removeUserVM = new RemoveUserViewModel(mf.getMainModel());
