@@ -12,6 +12,7 @@ public class ChangePasswordController {
 
     public Button confirmButton;
     public Label errorLabel;
+    public TextField currentPasswordTextField;
     public TextField passwordConfirmTextField;
     public TextField passwordTextField;
 
@@ -27,6 +28,7 @@ public class ChangePasswordController {
     }
 
     public void confirmClicked() {
+        String currentPassword = currentPasswordTextField.getText();
         String password = passwordTextField.getText();
         String passwordConfirmed = passwordConfirmTextField.getText();
         changePasswordVM.changePassword(password,passwordConfirmed);
