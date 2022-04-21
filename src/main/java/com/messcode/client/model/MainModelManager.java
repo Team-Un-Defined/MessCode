@@ -107,13 +107,13 @@ public class MainModelManager implements MainModel {
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
+
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
         
         GroupMessages gm = (GroupMessages)propertyChangeEvent.getNewValue();
         this.allMessage.add(gm);
         support.firePropertyChange("newGroupMessage", null, gm);
     }
-    
 
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();

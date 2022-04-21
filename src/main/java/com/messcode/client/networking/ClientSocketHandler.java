@@ -13,8 +13,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import static com.messcode.transferobjects.ClassName.PRIVATE_MESSAGE;
+
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.messages.GroupMessages;
+
 import java.util.ArrayList;
 
 public class ClientSocketHandler implements Runnable {
@@ -36,30 +38,30 @@ public class ClientSocketHandler implements Runnable {
         try {
             while (true) {
                 Container packet = (Container) inFromServer.readObject();
-                System.out.println("Im the client and i got the PM finally pls wtf"+ packet.getClassName());
+                System.out.println("Im the client and i got the PM finally pls wtf" + packet.getClassName());
                 switch (packet.getClassName()) {
-                    case GROUP_UPDATE:{
-                        ArrayList<Group> groups = (ArrayList<Group>)packet.getObject();
+                    case GROUP_UPDATE: {
+                        ArrayList<Group> groups = (ArrayList<Group>) packet.getObject();
                         receiveGroups(groups);
                         break;
-                    
+
                     }
                     case PRIVATE_MESSAGE: {
                         PrivateMessage pm = (PrivateMessage) packet.getObject();
                         receivePM(pm);
-                        
+
                         break;
                     }
-                    case GROUP_MESSAGE:{
+                    case GROUP_MESSAGE: {
                         GroupMessages gm = (GroupMessages) packet.getObject();
                         receiveGroup(gm);
-                        
+
                         break;
                     }
                     case PUBLIC_MESSAGE: {
                         PublicMessage pub = (PublicMessage) packet.getObject();
                         receivePublic(pub);
-                        
+
                         break;
                     }
                     case USER_JOIN: {
@@ -89,7 +91,7 @@ public class ClientSocketHandler implements Runnable {
                     }
                     case LOGIN_DATA: {
                         System.out.println("i got the data " + packet);
-                     
+
                         loginData(packet);
                         break;
                     }
@@ -126,12 +128,14 @@ public class ClientSocketHandler implements Runnable {
 
     private void receivePM(PrivateMessage message) {
         socketClient.displayPM(message);
-        System.out.println("CLIENT GOT THE PM : "+message.getUsername() + " " + message.getMsg());
+        System.out.println("CLIENT GOT THE PM : " + message.getUsername() + " " + message.getMsg());
     }
+
     private void receiveGroup(GroupMessages gm) {
         socketClient.displayGroup(gm);
-        System.out.println("CLIENT GOT THE Group message : "+gm.getUsername() + " " + gm.getMsg());
+        System.out.println("CLIENT GOT THE Group message : " + gm.getUsername() + " " + gm.getMsg());
     }
+
     public void sendPM(PrivateMessage message) {
         try {
             Container packet = new Container(message, PRIVATE_MESSAGE);
@@ -153,12 +157,12 @@ public class ClientSocketHandler implements Runnable {
 
     public void addUser(User username) {
         try {
-            System.out.println("wgatdup: "+username);
+            System.out.println("wgatdup: " + username);
             Container packet = new Container(username, ClassName.USER_JOIN);
 
-            System.out.println("WTF IS GOING ON: : "+ username.getEmail() + " pwd "+ username.getStrPassword());
-            System.out.println("FASZOMAT A KURVA JAVAÁBA :? "+  packet.getObject());
-            System.out.println("FASZOMAT A KURVA JAVAÁBA user  :? "+  packet.getObject());
+            System.out.println("WTF IS GOING ON: : " + username.getEmail() + " pwd " + username.getStrPassword());
+            System.out.println("FASZOMAT A KURVA JAVAÁBA :? " + packet.getObject());
+            System.out.println("FASZOMAT A KURVA JAVAÁBA user  :? " + packet.getObject());
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
@@ -174,16 +178,16 @@ public class ClientSocketHandler implements Runnable {
             e.printStackTrace();
         }
     }
-    
-    public void addGroup(Group g){
-    
+
+    public void addGroup(Group g) {
+
         try {
             Container packet = new Container(g, ClassName.CREATING_GROUP);
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+
     }
 
     private void receiveGroups(ArrayList<Group> groups) {
@@ -191,12 +195,12 @@ public class ClientSocketHandler implements Runnable {
     }
 
     void sendGroup(GroupMessages mess) {
- try {
+        try {
             Container packet = new Container(mess, ClassName.GROUP_MESSAGE);
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
 }

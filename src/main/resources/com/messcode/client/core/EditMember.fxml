@@ -6,27 +6,19 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0"
-      prefWidth="650.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.messcode.client.views.edit_member.EditMemberController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.edit_member.EditMemberController">
     <children>
-        <ListView fx:id="allUsersList" layoutX="20.0" layoutY="60.0" prefHeight="345.0" prefWidth="250.0"
-                  style="-fx-background-radius: 1em; -fx-border-radius: 1em;"/>
-        <ListView fx:id="inGroupUsersList" layoutX="378.0" layoutY="60.0" prefHeight="345.0" prefWidth="250.0"
-                  style="-fx-background-radius: 1em; -fx-border-radius: 1em;"/>
-        <Button fx:id="addButton" layoutX="279.0" layoutY="60.0" mnemonicParsing="false" onAction="#addMember"
-                prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;"
-                text="&gt;&gt;"/>
-        <Button fx:id="removeButton" layoutX="279.0" layoutY="97.0" mnemonicParsing="false" onAction="#removeMember"
-                prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;"
-                text="&lt;&lt;"/>
+        <ListView fx:id="allUsersList" layoutX="20.0" layoutY="89.0" prefHeight="345.0" prefWidth="250.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
+        <ListView fx:id="inGroupUsersList" layoutX="378.0" layoutY="89.0" prefHeight="345.0" prefWidth="250.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
+        <Button fx:id="addButton" layoutX="279.0" layoutY="89.0" mnemonicParsing="false" onAction="#addMember" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="&gt;&gt;" />
+        <Button fx:id="removeButton" layoutX="279.0" layoutY="126.0" mnemonicParsing="false" onAction="#removeMember" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="&lt;&lt;" />
         <Label layoutX="20.0" layoutY="20.0" text="Edit the members of the group">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Label>
-        <Button layoutX="538.0" layoutY="424.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0"
-                style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Confirm"/>
+        <Button layoutX="538.0" layoutY="453.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Confirm" />
+      <Label layoutX="20.0" layoutY="65.0" text="All users" />
+      <Label layoutX="378.0" layoutY="65.0" text="Users already in the group" />
     </children>
 </Pane>

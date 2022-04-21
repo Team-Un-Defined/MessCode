@@ -38,7 +38,7 @@ public class NewEmployeeController {
         typeComboBox.setItems(types);
     }
 
-    public void createClicked(ActionEvent event) {
+    public void createClicked() {
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
         String email = emailTextField.getText();
@@ -50,7 +50,14 @@ public class NewEmployeeController {
             errorLabel.setText("Invalid email format!");
             return;
         } else {
-            errorLabel.setText("Generated password : " + password);
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Generated password");
+            ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("Please make sure to forward the new user their\n" +
+                    "generated password: " + password);
+            dialog.getDialogPane().getButtonTypes().add(buttonType);
+            dialog.showAndWait();
+            //errorLabel.setText("Generated password : " + password);
         }
         newEmployeeVM.register(firstName, lastName, email, password,type);
     }
