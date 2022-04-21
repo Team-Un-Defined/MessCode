@@ -196,7 +196,7 @@ public class MainModelManager implements MainModel {
         PublicMessage puu = new PublicMessage(user, "dasd");
         for (PublicMessage p : this.allMessage) {
             if (p.getClass().equals(puu.getClass())) {
-
+                System.out.println("messa: time : "+ p.getTime() + "  mes: "+ p.getMsg());
                 pubi.add(p);
             }
         }
