@@ -29,6 +29,7 @@ public class ChangePasswordController {
     public void confirmClicked() {
         String password = passwordTextField.getText();
         String passwordConfirmed = passwordConfirmTextField.getText();
+        changePasswordVM.changePassword(password,passwordConfirmed);
 
         // NOMMI do we need regex for passwords?
     }

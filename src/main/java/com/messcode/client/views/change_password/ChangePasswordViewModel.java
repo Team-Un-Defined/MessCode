@@ -9,4 +9,9 @@ public class ChangePasswordViewModel {
     public ChangePasswordViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
     }
+
+    public void changePassword(String password, String passwordConfirmed) {
+
+        mainModel.changePassword(password,passwordConfirmed);
+    }
 }

@@ -209,6 +209,11 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
+    public void changePassword(String password, String passwordConfirmed) {
+      User u = new User(user.getEmail(),passwordConfirmed);
+    }
+
+    @Override
     public void newGroup(Group g) {
        client.newGroup(g);
     }
