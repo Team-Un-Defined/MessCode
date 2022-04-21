@@ -100,8 +100,16 @@
                     </Label>
                     <Pane layoutX="14.0" layoutY="191.0" prefHeight="27.0" prefWidth="262.0" styleClass="pane">
                         <children>
-                            <Label layoutY="5.0" text="%chat_client.dark_theme" />
-                            <ToggleSwitch fx:id="toggleSwitch" layoutX="65.0" layoutY="5.0" />
+                            <Label layoutY="5.0" text="Language" />
+                            <Label layoutY="5.0" layoutX="95.0" text="ENG" />
+                            <Label layoutY="5.0" layoutX="155.0" text="SK" />
+                            <ToggleSwitch fx:id="toggleSwitchLoc" layoutX="100.0" layoutY="4.5" />
+
+
+                            <Label layoutY="30.0" text="%chat_client.dark_theme" />
+                            <Label layoutY="30.0" layoutX="95.0" text="OFF" />
+                            <Label layoutY="30.0" layoutX="155.0" text="ON" />
+                            <ToggleSwitch fx:id="toggleSwitch" layoutX="100.0" layoutY="29.5" />
                         </children>
                     </Pane>
                   <Button layoutX="156.0" layoutY="74.0" mnemonicParsing="false" onAction="#changePasswordClicked" style="-fx-background-color: transparent;" styleClass="buttonPass" text="%chat_client.change_pass" />

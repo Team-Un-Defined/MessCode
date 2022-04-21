@@ -1,5 +1,6 @@
 package com.messcode.client.views.chat;
 
+import com.messcode.client.core.SettingsConfig;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.messages.GroupMessages;
 import javafx.application.Platform;
@@ -38,6 +39,7 @@ public class ChatClientController {
     public Label userDisplayedName1;
     public Label userDisplayedName2;
     public ToggleSwitch toggleSwitch;
+    public ToggleSwitch toggleSwitchLoc;
     public Button buttonAll;
     public Button buttonGroup;
     public Button buttonPrivate;
@@ -66,13 +68,14 @@ public class ChatClientController {
     private ViewHandler vh;
     private PrivateMessage usersPM;
     private ResourceBundle bundle;
-    private String cssUsed = "lite.css";
+    private String cssUsed;
     private String paneInFront = "all";
 
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
         this.chatVM = chatVM;
         this.vh = vh;
         this.bundle = bundle;
+        cssUsed = vh.getCssStyle();
 
         refreshPublic();
         updateUserList();
@@ -134,20 +137,41 @@ public class ChatClientController {
         userEmailLabel.setText(chatVM.getCurrentUser().getEmail());
         userTypeLabel.setText(chatVM.getCurrentUser().getType());
 
-        Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
+
+        if(SettingsConfig.getConfigOf("language").equals("SK")){
+            toggleSwitchLoc.setSelected(true);
+        }
+
+        if(SettingsConfig.getConfigOf("dark_theme").equals("1")){
+            toggleSwitch.setSelected(true);
+        }
+
+        //Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
 
         toggleSwitch.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
-            System.out.println(observableValue.toString());
-            System.out.println(aBoolean.toString());
-            System.out.println(t1.toString());
             Boolean value = observableValue.getValue();
             toggleSwitch.getScene().getStylesheets().clear();
             if (value) {
                 cssUsed = "dark.css";
                 toggleSwitch.getScene().getStylesheets().add(cssUsed);
+                SettingsConfig.setConfigOf("dark_theme", "1");
             } else {
                 cssUsed = "lite.css";
                 toggleSwitch.getScene().getStylesheets().add(cssUsed);
+                SettingsConfig.setConfigOf("dark_theme", "0");
+            }
+        });
+
+        toggleSwitchLoc.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
+            Boolean value = observableValue.getValue();
+            if (value) {
+                System.out.println("Language SK");
+                SettingsConfig.setConfigOf("language", "SK");
+                this.vh.changeLanguage("SK");
+            } else {
+                System.out.println("Language ENG");
+                SettingsConfig.setConfigOf("language", "ENG");
+                this.vh.changeLanguage("ENG");
             }
         });
 
