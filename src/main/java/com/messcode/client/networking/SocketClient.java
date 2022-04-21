@@ -106,10 +106,10 @@ public class SocketClient implements Client {
         socketHandler.sendGroup(mess);
     }
 
-   
-    
-    
-    
+
+    public void userCreateResponse(boolean acc) {
+        support.firePropertyChange("createUserResponse", null, acc);
+    }
 }
 
 

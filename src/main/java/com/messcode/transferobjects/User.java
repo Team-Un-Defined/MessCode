@@ -43,6 +43,7 @@ public class User implements Serializable {
         this.username = name + " " + surname;
         this.email = email;
         this.salt = myAccountManager.generateSalt();
+
         this.hashedPassword = myAccountManager.hashPassword(password, salt);
         this.unreadMessages = new ArrayList<>();
         this.type=type;

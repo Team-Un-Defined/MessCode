@@ -4,14 +4,18 @@ import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.UserList;
+import com.messcode.transferobjects.util.Subject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
-public class NewEmployeeController {
+public class NewEmployeeController implements Subject {
 
     public Button createButton;
     public TextField emailTextField;
@@ -22,9 +26,9 @@ public class NewEmployeeController {
 
     private NewEmployeeViewModel newEmployeeVM;
     private ViewHandler vh;
-    private User user;
-    private ResourceBundle bundle;
 
+    private ResourceBundle bundle;
+    private PropertyChangeSupport support;
     public void init(NewEmployeeViewModel newEmployeeVM, ViewHandler vh, ResourceBundle bundle) {
         this.newEmployeeVM = newEmployeeVM;
         this.vh = vh;
@@ -36,6 +40,19 @@ public class NewEmployeeController {
                         "superuser"
                 );
         typeComboBox.setItems(types);
+        support = new PropertyChangeSupport(this);
+        errorLabel.textProperty().bind(newEmployeeVM.errorProperty());
+       newEmployeeVM.addListener("accCreateResponse", this::evalute);
+    }
+
+    private void evalute(PropertyChangeEvent propertyChangeEvent) {
+        System.out.println("WOTÖFÖK? AGAIN");
+      errorLabel.setVisible(true);
+        System.out.println("WOTÖFÖK? AGAIN2");
+      // put here the exit
+
+
+
     }
 
     public void createClicked() {
@@ -43,22 +60,31 @@ public class NewEmployeeController {
         String lastName = lastNameTextField.getText();
         String email = emailTextField.getText();
         String type = (String) typeComboBox.getValue();
+      int resp= newEmployeeVM.createAccount(firstName,lastName,email,type);
+      if(resp==1)
+      {
+          errorLabel.setVisible(true);
 
-        AccountManager myAccountManager = new AccountManager();
-        String password = myAccountManager.generatePassword();
-        if (!myAccountManager.emailRegex(email)) {
-            errorLabel.setText("Invalid email format!");
-            return;
-        } else {
-            Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle("Generated password");
-            ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Please make sure to forward the new user their\n" +
-                    "generated password: " + password);
-            dialog.getDialogPane().getButtonTypes().add(buttonType);
-            dialog.showAndWait();
-            //errorLabel.setText("Generated password : " + password);
-        }
-        newEmployeeVM.register(firstName, lastName, email, password,type);
+      }else if(resp==2)
+      {
+          errorLabel.setVisible(false);
+      } else if(resp==3){
+          errorLabel.setVisible(true);
+      }else if(resp==0)
+      {
+          errorLabel.setVisible(true);
+      }
+
+
+    }
+
+    @Override
+    public void addListener(String eventName, PropertyChangeListener listener) {
+        support.addPropertyChangeListener(eventName, listener);
+    }
+
+    @Override
+    public void removeListener(String eventName, PropertyChangeListener listener) {
+        support.removePropertyChangeListener(eventName, listener);
     }
 }
