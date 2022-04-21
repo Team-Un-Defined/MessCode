@@ -175,7 +175,7 @@ public class ChatClientController {
             }
         });
 
-        if (chatVM.getCurrentUser().isSuperuser() || chatVM.getCurrentUser().isEmployee()) {
+        if (chatVM.getCurrentUser().isProjectLeader() || chatVM.getCurrentUser().isEmployee()) {
             newEmployeeButton.setVisible(false);
             newGroupButton.setVisible(false);
         }
