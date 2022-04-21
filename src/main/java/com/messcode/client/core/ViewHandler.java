@@ -10,6 +10,7 @@ import com.messcode.client.views.remove_group.RemoveGroupController;
 import com.messcode.client.views.remove_group.RemoveGroupViewModel;
 import com.messcode.client.views.remove_user.RemoveUserController;
 import com.messcode.transferobjects.User;
+import com.messcode.client.core.SettingsConfig;
 import com.messcode.transferobjects.UserList;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -27,6 +28,7 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ViewHandler {
@@ -49,64 +51,90 @@ public class ViewHandler {
     }
 
     public void start() {
+        SettingsConfig.readConfig();
         showConfirmation();
     }
 
     private void showConfirmation() {
-        Dialog dialog = new Dialog();
-
-        ImageView enView = new ImageView("en.gif");
-        Button enButton = new Button();
-        enButton.setGraphic(enView);
-
-        ImageView skView = new ImageView("sk.gif");
-        Button skButton = new Button();
-        skButton.setGraphic(skView);
-
-        GridPane grid = new GridPane();
-        grid.add(skButton, 0, 0);
-        grid.add(enButton, 1, 0);
-
-        dialog.getDialogPane().setContent(grid);
-        Platform.runLater(skButton::requestFocus);
-
-        enButton.setOnAction((event) -> {
+        String languageConfig = SettingsConfig.getConfigOf("language");
+        if (languageConfig.equals("ENG")) {
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("en", "EN"));
-            grid.getScene().getWindow().hide();
-        });
-
-        skButton.setOnAction((event) -> {
+        } else if (languageConfig.equals("SK")) {
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));
-            grid.getScene().getWindow().hide();
-        });
+        } else {
+            Dialog dialog = new Dialog();
+            ImageView enView = new ImageView("en.gif");
+            Button enButton = new Button();
+            enButton.setGraphic(enView);
 
-        dialog.initModality(Modality.APPLICATION_MODAL);
+            ImageView skView = new ImageView("sk.gif");
+            Button skButton = new Button();
+            skButton.setGraphic(skView);
 
-        stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("icon.png"));
-        stage.setTitle("MessCode");
-        stage.setOnCloseRequest(windowEvent -> stage.close());
-        dialog.showAndWait();
+            GridPane grid = new GridPane();
+            grid.add(skButton, 0, 0);
+            grid.add(enButton, 1, 0);
+
+            dialog.getDialogPane().setContent(grid);
+            Platform.runLater(skButton::requestFocus);
+
+            enButton.setOnAction((event) -> {
+                this.bundle = ResourceBundle.getBundle("bundle", new Locale("en", "EN"));
+                SettingsConfig.setConfigOf("language", "ENG");
+                grid.getScene().getWindow().hide();
+            });
+
+            skButton.setOnAction((event) -> {
+                this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));
+                SettingsConfig.setConfigOf("language", "SK");
+                grid.getScene().getWindow().hide();
+            });
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new Image("icon.png"));
+            stage.setTitle("MessCode");
+            stage.setOnCloseRequest(windowEvent -> stage.close());
+            dialog.showAndWait();
+        }
         if (bundle != null)
             openLogin();
     }
 
-    public void openChatClientView() {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setResources(bundle);
 
-        if (chat == null) {
-            Parent root = getRootByPath("ChatClient.fxml", loader);
-            ChatClientController controller = loader.getController();
-            controller.init(vmf.getChatVM(), this, bundle);
-            chat = new Scene(root);
+    public void changeLanguage(String language){
+        if(language.equals("SK")){
+            System.out.println("Bundle SK");
+            this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));
+        } else {
+            System.out.println("Bundle ENG");
+            this.bundle = ResourceBundle.getBundle("bundle", new Locale("en", "EN"));
         }
+        double x = stage.getX();
+        double y = stage.getY();
+        stage.close();
+        openChatClientView().paneProfile.toFront();
+        stage.setX(x);
+        stage.setY(y);
+    }
+
+
+
+    public ChatClientController openChatClientView() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(this.bundle);
+
+        Parent root = getRootByPath("ChatClient.fxml", loader);
+        ChatClientController controller = loader.getController();
+        controller.init(vmf.getChatVM(), this, bundle);
+        chat = new Scene(root);
 
         stage.setTitle("MessCode");
         stage.setScene(chat);
         stage.getIcons().add(new Image("icon.png"));
+        stage.getScene().getStylesheets().add(getCssStyle());
         stage.show();
         stage.setOnCloseRequest(windowEvent -> stage.close());
+        return controller;
     }
 
     private void openLogin() {
@@ -123,12 +151,12 @@ public class ViewHandler {
         stage.setTitle(bundle.getString("login.up"));
         stage.setScene(login);
         stage.getIcons().add(new Image("icon.png"));
+        stage.getScene().getStylesheets().add(getCssStyle());
         stage.show();
         stage.setOnCloseRequest(windowEvent -> stage.close());
     }
 
     public void openNewEmployee(String css) {
-
         Stage newEmployeeStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -148,7 +176,6 @@ public class ViewHandler {
     }
 
     public void openNewGroup(String css) {
-
         Stage newGroupStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
@@ -253,6 +280,16 @@ public class ViewHandler {
         }
         return root;
     }
+
+
+    public String getCssStyle(){
+        if(Objects.equals(SettingsConfig.getConfigOf("dark_theme"), "0")){
+            return "lite.css";
+        }
+        return  "dark.css";
+    }
+
+
     public User getMyUser() {
         return myUser;
     }
