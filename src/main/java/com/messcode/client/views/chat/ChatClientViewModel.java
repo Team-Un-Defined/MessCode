@@ -87,7 +87,8 @@ public class ChatClientViewModel implements Subject {
     private void displayPublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
 
-        message.setValue(publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
+       // message.setValue(publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
+      support.firePropertyChange("MessageForAll",null,publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
         System.out.println("got to model :" + message.getValue());
     }
 
@@ -159,13 +160,15 @@ public class ChatClientViewModel implements Subject {
     }
 
     private void displayPM(PropertyChangeEvent propertyChangeEvent) {
-
+       
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
 
         if (this.receiver == null) return;
         else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
-            PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
-            System.out.println("got to PMPM :" + PMmessage.getValue());
+           
+           // PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+           support.firePropertyChange("newPM",null,pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+            System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
         }
     }
 
@@ -174,7 +177,9 @@ public class ChatClientViewModel implements Subject {
        
        if(this.receiverGroup == null) return;
        else if (gm.getGroup().getName().equals(this.receiverGroup.getName())){
-       GMmessage.set(gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
+       //GMmessage.set(gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
+       
+       support.firePropertyChange("newGroupMessage",null,gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
        }
         
     }
