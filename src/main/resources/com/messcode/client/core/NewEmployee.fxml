@@ -21,7 +21,7 @@
       <TextField fx:id="lastNameTextField" layoutX="153.0" layoutY="106.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
       <TextField fx:id="emailTextField" layoutX="153.0" layoutY="146.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
       <Button fx:id="createButton" layoutX="282.0" layoutY="231.0" mnemonicParsing="false" onAction="#createClicked" prefHeight="25.0" prefWidth="88.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" text="%new_employee.button_create" />
-      <Label fx:id="errorLabel" layoutX="14.0" layoutY="174.0" />
+      <Label fx:id="errorLabel" layoutX="20.0" layoutY="235.0" prefHeight="17.0" />
       <ComboBox fx:id="typeComboBox" layoutX="153.0" layoutY="186.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
       <Label layoutX="20.0" layoutY="190.0" text="%new_employee.type" />
    </children>

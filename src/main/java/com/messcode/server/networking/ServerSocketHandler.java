@@ -47,14 +47,14 @@ public class ServerSocketHandler implements Runnable {
                 Container packet = (Container) (inFromClient.readObject());
                 System.out.println("NEW PACKET : " + packet.getClassName() + " object " + packet.getObject());
                 switch (packet.getClassName()) {
-                    case CREATING_GROUP:{
+                    case CREATING_GROUP: {
                         System.out.println("com.messcode.server.networking.ServerSocketHandler.run()");
-                    Group g = (Group) packet.getObject();
-                    dbi.createGroup(g);
-                   
-                    pool.updateGroup(dbe);
-                   
-                    break;
+                        Group g = (Group) packet.getObject();
+                        dbi.createGroup(g);
+
+                        pool.updateGroup(dbe);
+
+                        break;
                     }
                     case PRIVATE_MESSAGE: {
                         PrivateMessage pm = (PrivateMessage) packet.getObject();
@@ -66,26 +66,25 @@ public class ServerSocketHandler implements Runnable {
                     case USER_JOIN: {
                         User usertemp = (User) packet.getObject();
 
-                        boolean isItSame =pool.userCheck(usertemp);
-                        if(isItSame) break;
+                        boolean isItSame = pool.userCheck(usertemp);
+                        if (isItSame) break;
                         Container packetToClient = null;
 
-              
 
                         packetToClient = dbe.checkLogin(usertemp.getEmail(), usertemp.getStrPassword()); /// here the username, should be email, and email should be passowrd
 
 
-                        if (packetToClient.getObject()!=null) {
-                            packetToClient = dbe.acceptLogin( usertemp.getEmail(),(String)packetToClient.getObject());
+                        if (packetToClient.getObject() != null) {
+                            packetToClient = dbe.acceptLogin(usertemp.getEmail(), (String) packetToClient.getObject());
 
                         } else {
-                            packetToClient=new Container(false,ClassName.LOGIN_RESPONSE);
+                            packetToClient = new Container(false, ClassName.LOGIN_RESPONSE);
                             outToClient.writeObject(packetToClient);
                             break;
                         }
                         pool.addHandler(this);
-                        user = (User)((ArrayList<Object>)packetToClient.getObject()).get(2);
-                        
+                        user = (User) ((ArrayList<Object>) packetToClient.getObject()).get(2);
+
                         pool.userJoin(user);
                         outToClient.writeObject(packetToClient);
                         updateUsersList();
@@ -105,12 +104,12 @@ public class ServerSocketHandler implements Runnable {
                         break;
                     }
                     case USER_LEFT: {
-                        User use = (User)packet.getObject();
+                        User use = (User) packet.getObject();
                         dbi.saveDataOnExit(use);
                         pool.removeHandler(this);
                     }
-                    case CREATE_ACCOUNT:{
-                        User u = (User)packet.getObject();
+                    case CREATE_ACCOUNT: {
+                        User u = (User) packet.getObject();
                         outToClient.writeObject(dbi.createAccount(u));
                         // maybe add offline user so everyone gets it updated, but not that important
                     }
@@ -164,7 +163,7 @@ public class ServerSocketHandler implements Runnable {
     public void joinChat(User user) {
         try {
             Container packet = new Container(user, ClassName.USER_JOIN);
-            System.out.println("Telling one user that new one added: "+ user.getName() + " email: "+ user.getEmail() );
+            System.out.println("Telling one user that new one added: " + user.getName() + " email: " + user.getEmail());
             outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
@@ -172,13 +171,12 @@ public class ServerSocketHandler implements Runnable {
     }
 
 
-
     public void sendMessageInPM(PrivateMessage pm) {
         try {
             System.out.println("HELLO THIS SHOULD BE BLALGLA");
-            Container packet = new Container(pm,ClassName.PRIVATE_MESSAGE);
+            Container packet = new Container(pm, ClassName.PRIVATE_MESSAGE);
             outToClient.writeObject(packet);
-            System.out.println("server has sent the stuff "+ pm.getMsg());
+            System.out.println("server has sent the stuff " + pm.getMsg());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -195,18 +193,18 @@ public class ServerSocketHandler implements Runnable {
     }
 
     void sendGroups(Container updateGroups) {
-       try {
+        try {
             outToClient.writeObject(updateGroups);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }
 
     public void sendGroupMessage(GroupMessages message) {
         try {
             System.out.println(
-                    "[SERVER] " + "user: " + message.getUsername() +"in group : "+message.getGroup().getName()+ " sent: "
+                    "[SERVER] " + "user: " + message.getUsername() + "in group : " + message.getGroup().getName() + " sent: "
                             + message.getMsg());
             Container packet = new Container(message, ClassName.GROUP_MESSAGE);
             outToClient.writeObject(packet);
