@@ -28,7 +28,6 @@ public class ChangePasswordController {
         this.bundle = bundle;
 
         errorLabel.textProperty().bind(changePasswordVM.errorProperty());
-
     }
 
     public void confirmClicked() {

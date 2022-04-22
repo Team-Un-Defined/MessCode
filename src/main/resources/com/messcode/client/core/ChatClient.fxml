@@ -57,18 +57,17 @@
                <children>
                   <Pane fx:id="userListPane" prefHeight="436.0" prefWidth="200.0" styleClass="pane">
                       <children>
-                          <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="Online" />
+                          <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="%chat_client.all_users" />
                           <ListView fx:id="usersListFXML" layoutX="14.0" layoutY="38.0" prefHeight="336.0" prefWidth="180.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                          <Label fx:id="invitePmErrorLabel" layoutX="14.0" layoutY="382.0" text="Label" textFill="#cc0000" />
-                          <Label fx:id="userDisplayedName1" layoutX="14.0" layoutY="405.0" text="Label" />
+                          <Label fx:id="invitePmErrorLabel" layoutX="14.0" layoutY="382.0" textFill="#cc0000" />
+                          <Label fx:id="userDisplayedName1" layoutX="14.0" layoutY="405.0"/>
                       </children>
                   </Pane>
                   <Pane fx:id="groupListPane" prefHeight="200.0" prefWidth="200.0" styleClass="pane">
                      <children>
-                        <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="Groups" />
-                        <ListView fx:id="groupsList" layoutX="14.0" layoutY="38.0" prefHeight="302.0" prefWidth="180.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
-                        <Button layoutX="14.0" layoutY="347.0" mnemonicParsing="false" onAction="#openGroup" prefHeight="27.0" prefWidth="150.0" text="Open group (temp)" />
-                        <Label fx:id="userDisplayedName2" layoutX="14.0" layoutY="405.0" text="Label" />
+                        <Label layoutX="12.0" prefHeight="38.0" prefWidth="176.0" style="-fx-label-padding: 8.0;" text="%chat_client.groups" />
+                        <ListView fx:id="groupsList" layoutX="14.0" layoutY="38.0" prefHeight="336.0" prefWidth="180.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
+                        <Label fx:id="userDisplayedName2" layoutX="14.0" layoutY="405.0"/>
                      </children>
                   </Pane>
                </children>
@@ -83,7 +82,7 @@
             <Pane fx:id="panePrivate" styleClass="pane">
                 <children>
                     <ListView fx:id="messagesListPM" layoutX="14.0" layoutY="40.0" prefHeight="537.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Button fx:id="sendPMButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendPM" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
+                    <Button fx:id="sendPMButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendPM" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.send_button" />
                     <TextField fx:id="textFieldPM" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Label fx:id="otherUserNameLabel" layoutX="14.0" layoutY="14.0" />
                 </children></Pane>
@@ -97,7 +96,7 @@
             <Pane fx:id="paneGroup" styleClass="pane">
                 <children>
                     <ListView fx:id="messagesListGroup" layoutX="14.0" layoutY="40.0" prefHeight="537.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Button fx:id="sendGroupButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendGroup" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Send" />
+                    <Button fx:id="sendGroupButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendGroup" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.send_button" />
                     <TextField fx:id="textFieldGroup" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Label fx:id="groupLabel" layoutX="14.0" layoutY="14.0" />
                     <Button layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#editMemberButton" prefHeight="17.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Add a member" />
@@ -120,25 +119,25 @@
                             <Font size="18.0" />
                         </font>
                     </Label>
-                    <Pane layoutX="14.0" layoutY="191.0" prefHeight="27.0" prefWidth="262.0" styleClass="pane">
+                    <Pane layoutX="14.0" layoutY="205.0" prefHeight="59.0" prefWidth="262.0" styleClass="pane">
                         <children>
-                            <Label layoutY="5.0" text="Language" />
-                            <Label layoutX="95.0" layoutY="5.0" text="ENG" />
-                            <Label layoutX="155.0" layoutY="5.0" text="SK" />
-                            <ToggleSwitch fx:id="toggleSwitchLoc" layoutX="100.0" layoutY="4.5" />
+                            <Label text="Language" />
+                            <Label layoutX="95.0" text="ENG" />
+                            <Label layoutX="165.0" text="SK" />
+                            <ToggleSwitch fx:id="toggleSwitchLoc" layoutX="105.0" />
 
 
-                            <Label layoutY="30.0" text="%chat_client.dark_theme" />
-                            <Label layoutX="95.0" layoutY="30.0" text="OFF" />
-                            <Label layoutX="155.0" layoutY="30.0" text="ON" />
-                            <ToggleSwitch fx:id="toggleSwitch" layoutX="100.0" layoutY="29.5" />
+                            <Label layoutY="33.0" text="%chat_client.dark_theme" />
+                            <Label layoutX="95.0" layoutY="33.0" text="OFF" />
+                            <Label layoutX="165.0" layoutY="33.0" text="ON" />
+                            <ToggleSwitch fx:id="toggleSwitch" layoutX="105.0" layoutY="33.0" />
                         </children>
                     </Pane>
-                  <Button layoutX="156.0" layoutY="74.0" mnemonicParsing="false" onAction="#changePasswordClicked" style="-fx-background-color: transparent;" styleClass="buttonPass" text="%chat_client.change_pass" />
-                  <Button fx:id="newGroupButton" layoutX="14.0" layoutY="248.0" mnemonicParsing="false" onAction="#newGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_group" />
-                  <Button fx:id="newEmployeeButton" layoutX="14.0" layoutY="288.0" mnemonicParsing="false" onAction="#newEmployeeClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_employee" />
-                  <Button layoutX="250.0" layoutY="248.0" mnemonicParsing="false" onAction="#removeGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Remove group" />
-                  <Button layoutX="250.0" layoutY="288.0" mnemonicParsing="false" onAction="#removeUserClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Remove user" />
+                  <Button layoutX="200.0" layoutY="74.0" mnemonicParsing="false" onAction="#changePasswordClicked" style="-fx-background-color: transparent;" styleClass="buttonPass" text="%chat_client.change_pass" />
+                  <Button fx:id="newGroupButton" layoutX="14.0" layoutY="280.0" mnemonicParsing="false" onAction="#newGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_group" />
+                  <Button fx:id="newEmployeeButton" layoutX="14.0" layoutY="320.0" mnemonicParsing="false" onAction="#newEmployeeClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_employee" />
+                  <Button layoutX="250.0" layoutY="280.0" mnemonicParsing="false" onAction="#removeGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_group" />
+                  <Button layoutX="250.0" layoutY="320.0" mnemonicParsing="false" onAction="#removeUserClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_user" />
                 </children>
             </Pane>
         </children>
