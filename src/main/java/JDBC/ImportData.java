@@ -88,7 +88,7 @@ public class ImportData {
             String query = "INSERT INTO private_messages VALUES(default, ?, ?, ?, ?)";
             myPreparedStatement = c.prepareStatement(query);
             myPreparedStatement.setInt(1, sid);
-            myPreparedStatement.setInt(2, sid);
+            myPreparedStatement.setInt(2, rid);
             myPreparedStatement.setString(3, pm1.getMsg());
             myPreparedStatement.setTimestamp(4, pm.getTime());
             myPreparedStatement.executeUpdate();
