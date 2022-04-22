@@ -22,10 +22,10 @@ public class ChangePasswordViewModel {
     }
 
     private void response(PropertyChangeEvent propertyChangeEvent) {
-        if (((boolean) propertyChangeEvent.getNewValue()))
-        {
-                                                        // write exit here.
-        }else {
+        if (((boolean) propertyChangeEvent.getNewValue())) {
+            //TODO
+            // write exit here.
+        } else {
             error.setValue("Your current password is incorrect.");
         }
     }
@@ -34,21 +34,14 @@ public class ChangePasswordViewModel {
         return error;
     }
 
-    public void changePassword(String current,String password, String passwordConfirmed) {
-        if(passwordConfirmed.equals("") || password.equals("") || current.equals(""))
-        {
+    public void changePassword(String current, String password, String passwordConfirmed) {
+        if (passwordConfirmed.equals("") || password.equals("") || current.equals("")) {
             error.setValue("Fill in all the fields");
-
         }
-        if(password.equals(passwordConfirmed))
-        {
-            mainModel.changePassword(current,password,passwordConfirmed);
-
-        }
-        else{
+        if (password.equals(passwordConfirmed)) {
+            mainModel.changePassword(current, password, passwordConfirmed);
+        } else {
             error.setValue("The new passwords do not match");
-
         }
-
     }
 }
