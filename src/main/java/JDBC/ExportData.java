@@ -279,9 +279,6 @@ public class ExportData {
 
     public ArrayList<Group> updateGroups(User current) throws SQLException {
         ArrayList<Group> groups = new ArrayList<Group>();
-        //Statement st = c.createStatement();
-        //Statement st1 = c.createStatement();
-        //Statement st2 = c.createStatement();
         PreparedStatement myPreparedStatement;
         PreparedStatement myPreparedStatement1;
         PreparedStatement myPreparedStatement2;
