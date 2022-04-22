@@ -241,9 +241,9 @@ public class ImportData {
                int rid = 0;
                int lid = 0;
 
-               String query1 = "SELECT p.reciever_id, p.sender_id, p.date, p.id FROM private_messages AS p " +
-                       "JOIN account AS a ON a.id = p.sender_id OR a.id = p.reciever_id " +
-                       "WHERE ((p.reciever_id = ? AND a.email = ?) OR (p.sender_id = ? AND a.email = ?)) AND date = ?";
+               String query1 = "SELECT p.receiver_id, p.sender_id, p.date, p.id FROM private_messages AS p " +
+                       "JOIN account AS a ON a.id = p.sender_id OR a.id = p.receiver_id " +
+                       "WHERE ((p.receiver_id = ? AND a.email = ?) OR (p.sender_id = ? AND a.email = ?)) AND date = ?";
                myPreparedStatement = c.prepareStatement(query1);
                myPreparedStatement.setInt(1, userid);
                myPreparedStatement.setString(2, ((PrivateMessage)(us.getUnreadMessages().get(i))).getReceiver().getEmail());
@@ -254,16 +254,16 @@ public class ImportData {
 
                while (rs.next()) {
                    pmid = rs.getInt("id");
-                   rid = rs.getInt("reciever_id");
+                   rid = rs.getInt("receiver_id");
 
                    if (rid == userid) {
                        rid = rs.getInt("sender_id");
                    }
                }
 
-               String query2 = "SELECT ls.private_message_id, pm.sender_id, pm.reciever_id, ls.id FROM last_seen AS ls " +
+               String query2 = "SELECT ls.private_message_id, pm.sender_id, pm.receiver_id, ls.id FROM last_seen AS ls " +
                        "JOIN private_messages AS pm ON pm.id = ls.private_message_id " +
-                       "WHERE ls.user_id = ? AND (pm.sender_id = ? OR pm.reciever_id = ?)";
+                       "WHERE ls.user_id = ? AND (pm.sender_id = ? OR pm.receiver_id = ?)";
                myPreparedStatement = c.prepareStatement(query2);
                myPreparedStatement.setInt(1, userid);
                myPreparedStatement.setInt(2, rid);

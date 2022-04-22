@@ -59,7 +59,7 @@ public class ExportData {
 
         System.out.println("HELLO ");
 
-        String query = "SELECT * FROM Account WHERE email = ?";
+        String query = "SELECT * FROM account WHERE email = ?";
         PreparedStatement myPreparedStatement = c.prepareStatement(query);
         myPreparedStatement.setString(1, email);
 
@@ -93,12 +93,11 @@ public class ExportData {
 
                 break;
             }
-
         }
+
         System.out.println("ans3" + answer);
 
-        Container datapack = new Container(answer, ClassName.LOGIN_RESPONSE);
-        return datapack;
+        return new Container(answer, ClassName.LOGIN_RESPONSE);
     }
 
     /**
@@ -156,7 +155,7 @@ public class ExportData {
         }
 
         String query3 = "SELECT * FROM public.public_messages AS s " +
-                "JOIN public.account AS pa ON s.sender_id = pa.id ORDER BY DATE";
+                "JOIN public.account AS pa ON s.sender_id = pa.id ORDER BY date";
         myPreparedStatement = c.prepareStatement(query3, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
         rs = myPreparedStatement.executeQuery();
 
@@ -177,9 +176,9 @@ public class ExportData {
             lastSeen.add(new PublicMessage(null, "PublicMessageTrue"));
         }
 
-        String query4 = "SELECT la.user_id, la.private_message_id, p.reciever_id, p.message, p.date, a.fname, " +
+        String query4 = "SELECT la.user_id, la.private_message_id, p.receiver_id, p.message, p.date, a.fname, " +
                 "a.lname, a.email FROM last_seen AS la JOIN private_messages as p ON p.id = la.private_message_id " +
-                "JOIN account AS a ON (a.id = p.reciever_id OR a.id = p.sender_id) AND a.id != ? WHERE la.user_id = ? " +
+                "JOIN account AS a ON (a.id = p.receiver_id OR a.id = p.sender_id) AND a.id != ? WHERE la.user_id = ? " +
                 "ORDER BY DATE";
         myPreparedStatement = c.prepareStatement(query4, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
         myPreparedStatement.setInt(1, id);
@@ -205,9 +204,9 @@ public class ExportData {
             lastSeen.add(pm);
         }
 
-        String query5 = "SELECT m.sender_id, m.reciever_id, m.message, m.date, a.fname, a.lname, a.email " +
-                "FROM private_messages AS m JOIN account AS a ON (a.id = m.reciever_id OR a.id = m.sender_id) " +
-                "AND a.id != ? WHERE m.reciever_id = ? OR m.sender_id = ? ORDER BY DATE";
+        String query5 = "SELECT m.sender_id, m.receiver_id, m.message, m.date, a.fname, a.lname, a.email " +
+                "FROM private_messages AS m JOIN account AS a ON (a.id = m.receiver_id OR a.id = m.sender_id) " +
+                "AND a.id != ? WHERE m.receiver_id = ? OR m.sender_id = ? ORDER BY DATE";
         myPreparedStatement = c.prepareStatement(query5, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
         myPreparedStatement.setInt(1, id);
         myPreparedStatement.setInt(2, id);
