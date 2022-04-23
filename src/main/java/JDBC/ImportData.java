@@ -411,7 +411,7 @@ public class ImportData {
 
        String query1 = "UPDATE account SET pwd_salt = ? WHERE pwd_hash = ?";
        myPreparedStatement = c.prepareStatement(query1);
-       myPreparedStatement.setString(1, salt);
+       myPreparedStatement.setString(1, us.getSalt());
        myPreparedStatement.setString(2, Arrays.toString(current));
        myPreparedStatement.executeUpdate();
 
@@ -421,8 +421,27 @@ public class ImportData {
        myPreparedStatement.setString(2, Arrays.toString(current));
        myPreparedStatement.executeUpdate();
 
-       System.out.println("PASSWORDS MATCHED");
+        System.out.println("PASSWORDS MATCHED");
+        return true;
+    }
 
-       return true;
-   }
+    public boolean deleteUser(User u) throws SQLException {
+
+        Statement st = c.createStatement();
+
+        String query0=    "UPDATE account set  pwd_hash = 'deleted' where email='"+u.getEmail()+"' ;";
+        st.executeUpdate(query0);
+
+        String query1= "select * from account where email='"+u.getEmail()+"' ;";
+
+        ResultSet rs =    st.executeQuery(query1);
+        while(rs.next())
+        {
+            if(rs.getString("pwd_hash").equals("deleted"))
+            {
+                return true;
+            }
+        }
+return false;
+    }
 }
