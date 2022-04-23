@@ -11,11 +11,13 @@ import javafx.scene.image.ImageView;
 
 import java.io.InputStream;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
+import javafx.scene.control.SelectionMode;
 
 public class EditMemberController {
 
-    public ListView allUsersList;
-    public ListView inGroupUsersList;
+    public ListView<User> allUsersList;
+    public ListView<User> inGroupUsersList;
     public Button addButton;
     public Button removeButton;
     private EditMemberViewModel editMemberVM;
@@ -28,10 +30,12 @@ public class EditMemberController {
         this.bundle = bundle;
         updateUserList();
         updateUsersInGroupList();
+        allUsersList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     public void addMember(ActionEvent actionEvent) {
-        
+        ObservableList<User> u = allUsersList.getSelectionModel().getSelectedItems();
+      editMemberVM.addMember(u);
         
         
         

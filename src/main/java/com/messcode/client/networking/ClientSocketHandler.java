@@ -273,4 +273,14 @@ public class ClientSocketHandler implements Runnable {
             e.printStackTrace();
         }
     }
+
+    void addMember(Group selectedGroup) {
+        try{
+        Container packet = new Container(selectedGroup,ClassName.ADD_GROUPMEMBER);
+        outToServer.writeObject(packet);
+        }catch(IOException e){
+          e.printStackTrace();
+        }
+        
+    }
 }

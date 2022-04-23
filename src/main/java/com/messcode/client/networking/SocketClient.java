@@ -129,6 +129,11 @@ public class SocketClient implements Client {
         support.firePropertyChange("userDeleted", null, packet);
     }
 
+    @Override
+    public void addMember(Group selectedGroup) {
+       socketHandler.addMember(selectedGroup);
+    }
+
 }
 
 

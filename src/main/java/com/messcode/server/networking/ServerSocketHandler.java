@@ -47,6 +47,15 @@ public class ServerSocketHandler implements Runnable {
                 Container packet = (Container) (inFromClient.readObject());
                 System.out.println("NEW PACKET : " + packet.getClassName() + " object " + packet.getObject());
                 switch (packet.getClassName()) {
+                    case ADD_GROUPMEMBER:{
+                        Group g = (Group) packet.getObject();
+                        dbi.addGroupMembers(g);
+                        pool.updateGroup(dbe);
+                        
+                        break;
+                    }
+                    
+                    
                     case CREATING_GROUP: {
                         System.out.println("com.messcode.server.networking.ServerSocketHandler.run()");
                         Group g = (Group) packet.getObject();

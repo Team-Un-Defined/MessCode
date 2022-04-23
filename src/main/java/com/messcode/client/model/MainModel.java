@@ -39,4 +39,6 @@ public interface MainModel extends Subject {
     User getCurrentUser();
 
     void deleteUser(User use);
+    
+    void addMember(ArrayList<User> u);
 }

@@ -28,6 +28,8 @@ public enum ClassName {
     CREATING_GROUP,
     
     GROUP_UPDATE,
+
+    ADD_GROUPMEMBER,
     //public messages
     PUBLIC_MESSAGE,
 
