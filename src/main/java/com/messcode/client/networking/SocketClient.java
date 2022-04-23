@@ -117,7 +117,8 @@ public class SocketClient implements Client {
     }
 
 
-    public void userCreateResponse(boolean acc) {
+    public void userCreateResponse(Container acc) {
+
         support.firePropertyChange("createUserResponse", null, acc);
     }
 

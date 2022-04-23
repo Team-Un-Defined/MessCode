@@ -50,8 +50,8 @@ public class ClientSocketHandler implements Runnable {
                         break;
                     }
                     case CREATE_ACCOUNT: {
-                        boolean acc = (boolean) packet.getObject();
-                        userCreateResponse(acc);
+
+                        userCreateResponse(packet);
                         break;
                     }
                     case PRIVATE_MESSAGE: {
@@ -124,6 +124,13 @@ public class ClientSocketHandler implements Runnable {
                         removedUser(packet);
                         break;
                     }
+                    case KICK_USER: {
+                        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                                "i got banned " + packet);
+                        System.out.println("i got banned " + packet);
+                        System.exit(1);
+                        break;
+                    }
 
                 }
             }
@@ -140,8 +147,8 @@ public class ClientSocketHandler implements Runnable {
         socketClient.passChangeResponse(packet);
     }
 
-    private void userCreateResponse(boolean acc) {
-        socketClient.userCreateResponse(acc);
+    private void userCreateResponse(Container cont) {
+        socketClient.userCreateResponse(cont);
     }
 
     private void loginData(Container packet) {
