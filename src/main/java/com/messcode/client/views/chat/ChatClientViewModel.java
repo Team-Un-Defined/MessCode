@@ -101,7 +101,7 @@ public class ChatClientViewModel implements Subject {
                         usersList.set(i, user);              // KAMI PUT THE ONLINE DOT HERE or in the controller i dont know man, i hate my life and i hate guis,how are you btw?
                                                             // heyo, im pretty okay rn, thanks for the question (and the note) wbu?
                                                             // im good, i just hate lings' merge conflicts, btw i added the - deleted user tag, it is added in the salt from server.
-                        break;
+                        break;                              // fug dat bitch ass lings man
                     }
                 }
             }else {

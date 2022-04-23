@@ -3,24 +3,31 @@ package com.messcode.client.views.remove_group;
 import com.messcode.client.model.MainModel;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.util.Subject;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 public class RemoveGroupViewModel implements Subject {
     private MainModel mainModel;
     private PropertyChangeSupport support;
-    private ObservableList<Group> groupsList;
+    private ObservableList<Group> groups;
     public RemoveGroupViewModel(MainModel mainModel) {
-        this.groupsList= FXCollections.observableArrayList() ;
+        this.groups= FXCollections.observableArrayList() ;
         this.mainModel = mainModel;
         support = new PropertyChangeSupport(this);
+        mainModel.addListener("RefresgGroups", this::refreshGroups);
     }
 
-    public ObservableList<Group> getGroupsList() {
-        return groupsList;
+    private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
+        Platform.runLater(() -> {
+            groups.clear();
+            groups.addAll((ArrayList<Group>) propertyChangeEvent.getNewValue());
+        });
     }
 
     @Override
@@ -31,5 +38,9 @@ public class RemoveGroupViewModel implements Subject {
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
+    }
+
+    public ObservableList<Group> getGroups() {
+        return groups;
     }
 }

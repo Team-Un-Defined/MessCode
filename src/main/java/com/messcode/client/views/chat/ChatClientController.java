@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.beans.PropertyChangeEvent;
@@ -263,6 +264,9 @@ public class ChatClientController {
                         imageView.setFitHeight(10);
                         imageView.setPreserveRatio(true);
                         this.setGraphic(imageView);
+                    } else if (item.getSalt().equals(" - deleted")) {
+                        this.setGraphic(null);
+                        this.setTextFill(new Color(0,0,0,50));
                     } else {
                         this.setGraphic(null);
                     }
@@ -273,7 +277,7 @@ public class ChatClientController {
         });
     }
 
-    // TODO
+    // TODO as in do we still need this? i dont think so
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
         usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         chatVM.setReceiver(usersPM.getReceiver());
