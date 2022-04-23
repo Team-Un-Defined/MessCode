@@ -44,29 +44,23 @@ public class ServerSocketHandler implements Runnable {
                 Container packet = (Container) (inFromClient.readObject());
                 System.out.println("NEW PACKET : " + packet.getClassName() + " object " + packet.getObject());
                 switch (packet.getClassName()) {
-                    case REMOVE_GROUPMEMBER:{
-                          Group g = (Group) packet.getObject();
+                    case REMOVE_GROUPMEMBER: {
+                        Group g = (Group) packet.getObject();
                         dbi.removeGroupMembers(g);
                         pool.updateGroup(dbe);
-                            
                         break;
-                     }
-                    case ADD_GROUPMEMBER:{
+                    }
+                    case ADD_GROUPMEMBER: {
                         Group g = (Group) packet.getObject();
                         dbi.addGroupMembers(g);
                         pool.updateGroup(dbe);
-                        
                         break;
                     }
-                    
-                    
                     case CREATING_GROUP: {
                         System.out.println("com.messcode.server.networking.ServerSocketHandler.run()");
                         Group g = (Group) packet.getObject();
                         dbi.createGroup(g);
-
                         pool.updateGroup(dbe);
-
                         break;
                     }
                     case PRIVATE_MESSAGE: {
@@ -77,17 +71,14 @@ public class ServerSocketHandler implements Runnable {
                         break;
                     }
                     case USER_JOIN: {
-
                         User usertemp = (User) packet.getObject();
 
                         boolean isItSame = pool.userCheck(usertemp);
                         if (isItSame) break;
                         Container packetToClient = null;
 
-
                         packetToClient = dbe.checkLogin(usertemp.getEmail(), usertemp.getStrPassword()); /// here the username, should be email, and email should be passowrd
-
-
+                        
                         if (packetToClient.getObject() != null) {
                             packetToClient = dbe.acceptLogin(usertemp.getEmail(), (String) packetToClient.getObject());
 
@@ -126,29 +117,24 @@ public class ServerSocketHandler implements Runnable {
                     case CREATE_ACCOUNT: {
                         User u = (User) packet.getObject();
                         Container c = dbi.createAccount(u);
-
                         outToClient.writeObject(c);
-
                         break;
                     }
                     case PASSWORD_CHANGE: {
                         User u = (User) packet.getObject();
-                       boolean answ= dbi.changePassword(u);
-                       Container pckt = new Container(answ,ClassName.PASSWORD_CHANGE);
-                    outToClient.writeObject(pckt);
+                        boolean answ = dbi.changePassword(u);
+                        Container pckt = new Container(answ, ClassName.PASSWORD_CHANGE);
+                        outToClient.writeObject(pckt);
                         break;
                     }
                     case REMOVE_USER: {
                         User u = (User) packet.getObject();
                         u.setSalt(" - deleted");
-                      boolean result= dbi.deleteUser(u);
-                     if(result)
-                     {
-                         Container pckt = new Container(u,ClassName.REMOVE_USER);
-                         pool.kickUser(u);
-
-
-                     }
+                        boolean result = dbi.deleteUser(u);
+                        if (result) {
+                            Container pckt = new Container(u, ClassName.REMOVE_USER);
+                            pool.kickUser(u);
+                        }
                         break;
                     }
                 }
@@ -222,7 +208,6 @@ public class ServerSocketHandler implements Runnable {
     }
 
     public void userLeft(User user) {
-
         Container packet = new Container(user, ClassName.USER_LEFT);
         try {
             outToClient.writeObject(packet);
@@ -239,7 +224,6 @@ public class ServerSocketHandler implements Runnable {
             e.printStackTrace();
             java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
-
     }
 
     public void sendGroupMessage(GroupMessages message) {
@@ -258,9 +242,7 @@ public class ServerSocketHandler implements Runnable {
 
     public void removeUser() {
         try {
-            Container b = new Container("byebye",ClassName.KICK_USER);
-
-
+            Container b = new Container("byebye", ClassName.KICK_USER);
             outToClient.writeObject(b);
         } catch (IOException e) {
             e.printStackTrace();

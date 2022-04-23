@@ -20,5 +20,6 @@
         <Button layoutX="538.0" layoutY="453.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Confirm" />
       <Label layoutX="20.0" layoutY="65.0" text="All users" />
       <Label layoutX="378.0" layoutY="65.0" text="Users already in the group" />
+      <Label fx:id="errorLabel" layoutX="20.0" layoutY="457.0" />
     </children>
 </Pane>

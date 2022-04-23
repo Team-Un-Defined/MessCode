@@ -461,8 +461,6 @@ public class ChatClientController {
             label.setMaxWidth(messagesListGroup.getWidth() - 25);
             label.setWrapText(true);
             messagesListPM.getItems().add(label);
-
-
         });
     }
 
