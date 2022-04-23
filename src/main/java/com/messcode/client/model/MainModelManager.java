@@ -32,7 +32,7 @@ public class MainModelManager implements MainModel {
     public Group getSelectedGroup() {
         return selectedGroup;
     }
-
+    @Override
     public void setSelectedGroup(Group selectedGroup) {
         support.firePropertyChange("changeSelectedGroup",null,selectedGroup);
         this.selectedGroup = selectedGroup;
@@ -43,7 +43,6 @@ public class MainModelManager implements MainModel {
         support = new PropertyChangeSupport(this);
         allMessage = new ArrayList<>();
         allUsers = new ArrayList<>();
-
         this.client = client;
         try {
             client.start();
@@ -251,6 +250,5 @@ public class MainModelManager implements MainModel {
         allGroups = g;
         support.firePropertyChange("RefresgGroups", null, g);
     }
-
 
 }
