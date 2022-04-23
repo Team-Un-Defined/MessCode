@@ -299,4 +299,13 @@ public class ClientSocketHandler implements Runnable {
           e.printStackTrace();
         }
     }
+
+    void deleteGroup(Group g) {
+         try{
+        Container packet = new Container(g,ClassName.DELETE_GROUP);
+        outToServer.writeObject(packet);
+        }catch(IOException e){
+          e.printStackTrace();
+        }
+    }
 }
