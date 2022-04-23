@@ -78,7 +78,7 @@ public class ServerSocketHandler implements Runnable {
                         Container packetToClient = null;
 
                         packetToClient = dbe.checkLogin(usertemp.getEmail(), usertemp.getStrPassword()); /// here the username, should be email, and email should be passowrd
-                        
+
                         if (packetToClient.getObject() != null) {
                             packetToClient = dbe.acceptLogin(usertemp.getEmail(), (String) packetToClient.getObject());
 
@@ -133,6 +133,7 @@ public class ServerSocketHandler implements Runnable {
                         boolean result = dbi.deleteUser(u);
                         if (result) {
                             Container pckt = new Container(u, ClassName.REMOVE_USER);
+                            outToClient.writeObject(pckt);
                             pool.kickUser(u);
                         }
                         break;
