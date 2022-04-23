@@ -1,8 +1,14 @@
 package com.messcode.transferobjects;
 
 import com.messcode.transferobjects.messages.PublicMessage;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class User implements Serializable {
@@ -15,6 +21,8 @@ public class User implements Serializable {
     private String email;
     private byte[] hashedPassword;
     private String salt;
+    private PublicKey myPublicKey;
+    private PrivateKey myPrivateKey;
     private ArrayList<PublicMessage> unreadMessages;
     // for login
 
@@ -163,8 +171,6 @@ public class User implements Serializable {
     public String toString() {
         return email;
     }
-
-
 
     public void setType(String type) {
         this.type = type;

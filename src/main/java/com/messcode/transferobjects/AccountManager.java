@@ -1,9 +1,7 @@
 package com.messcode.transferobjects;
 
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.security.*;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.regex.Matcher;
