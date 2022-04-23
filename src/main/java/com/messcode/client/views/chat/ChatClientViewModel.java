@@ -94,6 +94,7 @@ public class ChatClientViewModel implements Subject {
 
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
+        System.out.println("USER SALT: "+ user.getSalt());
         Platform.runLater(() -> {
             if(user.getSalt().equals(" - deleted")){
                 for (int i = 0; i < usersList.size(); i++) {

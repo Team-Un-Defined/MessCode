@@ -73,7 +73,7 @@ public class MainModelManager implements MainModel {
     }
 
     private void userDeleted(PropertyChangeEvent propertyChangeEvent) {
-        User u =(User )propertyChangeEvent.getNewValue();
+        User u =(User )((Container)propertyChangeEvent.getNewValue()).getObject();
         support.firePropertyChange("AddNewUser", null,u);
     }
 
