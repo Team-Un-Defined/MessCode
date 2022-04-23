@@ -70,10 +70,11 @@ public class ChatClientController {
     public Button editMemberButton;
     public Button removeGroupButton;
     public Button removeUserButton;
+    public Button editProjectLeaderButton;
+
     public ImageView allButtonImage;
     public ImageView groupButtonImage;
     public ImageView PMButtonImage;
-
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
     private PrivateMessage usersPM;
@@ -431,6 +432,10 @@ public class ChatClientController {
 
     public void removeUserClicked() {
         vh.openRemoveUser(cssUsed);
+    }
+
+    public void editProjectLeaderClicked() {
+        vh.openEditProjectLeader(cssUsed);
     }
 
     private void displayPublic(PropertyChangeEvent evt) {

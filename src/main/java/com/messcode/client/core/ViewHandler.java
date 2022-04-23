@@ -246,7 +246,7 @@ public class ViewHandler {
             editProjectLeader = new Scene(root);
         }
 
-        editProjectLeaderStage.setTitle(bundle.getString(""));
+        editProjectLeaderStage.setTitle(bundle.getString("edit_project_leader.up"));
         editProjectLeaderStage.setScene(editProjectLeader);
         editProjectLeaderStage.getIcons().add(new Image("icon.png"));
         editProjectLeaderStage.getScene().getStylesheets().add(css);
