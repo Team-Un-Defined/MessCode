@@ -16,6 +16,8 @@ public class RemoveGroupViewModel implements Subject {
     private MainModel mainModel;
     private PropertyChangeSupport support;
     private ObservableList<Group> groups;
+    
+    
     public RemoveGroupViewModel(MainModel mainModel) {
         this.groups= FXCollections.observableArrayList() ;
         this.mainModel = mainModel;
@@ -42,5 +44,9 @@ public class RemoveGroupViewModel implements Subject {
 
     public ObservableList<Group> getGroups() {
         return groups;
+    }
+
+    void deleteGroup(Group g) {
+        mainModel.deleteGroup(g);
     }
 }

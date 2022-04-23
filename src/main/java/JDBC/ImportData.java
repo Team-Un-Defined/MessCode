@@ -11,6 +11,8 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ImportData {
 
@@ -244,6 +246,34 @@ public class ImportData {
             }
         }
     }
+   
+
+   public void deleteGroup(Group g){
+    PreparedStatement myPreparedStatement;
+    ResultSet rs;
+    int i =0;
+        try {
+            do{
+                String query ="Update projects \n" +
+                        "SET \n" +
+                        "leader_id = null,\n" +
+                        "name = ? \n" +
+                        "   where name = ? RETURNING name";
+                myPreparedStatement = c.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                String name = g.getName()+"(DELETED"+i+")";
+                myPreparedStatement.setString(1,name);
+                myPreparedStatement.setString(2, g.getName());
+                rs = myPreparedStatement.executeQuery();
+                i++;
+            }while(!rs.next());
+        } catch (SQLException ex) {
+            Logger.getLogger(ImportData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+   }
+
+
 
     public void saveDataOnExit(User us) throws SQLException {
         PreparedStatement myPreparedStatement;

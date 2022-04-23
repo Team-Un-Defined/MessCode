@@ -140,6 +140,11 @@ public class SocketClient implements Client {
          socketHandler.removeMember(selectedGroup);
     }
 
+    @Override
+    public void deleteGroup(Group g) {
+        socketHandler.deleteGroup(g);
+    }
+
 }
 
 

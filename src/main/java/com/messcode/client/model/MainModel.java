@@ -43,4 +43,6 @@ public interface MainModel extends Subject {
     void addMember(ArrayList<User> u);
 
     public void removeMember(ArrayList<User> u);
+
+    public void deleteGroup(Group g);
 }
