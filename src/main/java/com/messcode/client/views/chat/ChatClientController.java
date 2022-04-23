@@ -267,7 +267,7 @@ public class ChatClientController {
                         this.setGraphic(imageView);
                     } else if (item.getSalt().equals(" - deleted")) {
                         this.setGraphic(null);
-                        this.setTextFill(new Color(0,0,0,50));
+                        this.setTextFill(Color.GRAY);
                     } else {
                         this.setGraphic(null);
                     }
