@@ -209,6 +209,7 @@ public class ChatClientViewModel implements Subject {
 
     public void setReceiverGroup(Group receiverGroup) {
         this.receiverGroup = receiverGroup;
+        mainModel.setSelectedGroup(receiverGroup);
     }
 
     
