@@ -3,6 +3,7 @@ package com.messcode.client.core;
 import com.messcode.client.views.change_password.ChangePasswordController;
 import com.messcode.client.views.chat.ChatClientController;
 import com.messcode.client.views.edit_member.EditMemberController;
+import com.messcode.client.views.edit_project_leader.EditProjectLeaderController;
 import com.messcode.client.views.login.LoginController;
 import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
@@ -43,6 +44,7 @@ public class ViewHandler {
     private Scene editMember;
     private Scene removeUser;
     private Scene removeGroup;
+    private Scene editProjectLeader;
     private ResourceBundle bundle;
 
     private User myUser = null;
@@ -230,6 +232,25 @@ public class ViewHandler {
         editMemberStage.getIcons().add(new Image("icon.png"));
         editMemberStage.getScene().getStylesheets().add(css);
         editMemberStage.show();
+    }
+
+    public void openEditProjectLeader(String css) {
+        Stage editProjectLeaderStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        if (editProjectLeader == null) {
+            Parent root = getRootByPath("EditProjectLeader.fxml", loader);
+            EditProjectLeaderController controller = loader.getController();
+            controller.init(vmf.getEditProjectLeaderVM(), this, bundle);
+            editProjectLeader = new Scene(root);
+        }
+
+        editProjectLeaderStage.setTitle(bundle.getString(""));
+        editProjectLeaderStage.setScene(editProjectLeader);
+        editProjectLeaderStage.getIcons().add(new Image("icon.png"));
+        editProjectLeaderStage.getScene().getStylesheets().add(css);
+        editProjectLeaderStage.show();
     }
 
     public void openRemoveUser(String css) {

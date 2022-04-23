@@ -4,6 +4,7 @@ import com.messcode.client.views.change_password.ChangePasswordViewModel;
 import com.messcode.client.views.chat.ChatClientViewModel;
 import com.messcode.client.views.edit_member.EditMemberController;
 import com.messcode.client.views.edit_member.EditMemberViewModel;
+import com.messcode.client.views.edit_project_leader.EditProjectLeaderViewModel;
 import com.messcode.client.views.login.LoginViewModel;
 import com.messcode.client.views.new_employee.NewEmployeeViewModel;
 import com.messcode.client.views.new_group.NewGroupViewModel;
@@ -21,6 +22,7 @@ public class ViewModelFactory {
     private EditMemberViewModel editMemberVM;
     private RemoveGroupViewModel removeGroupVM;
     private RemoveUserViewModel removeUserVM;
+    private EditProjectLeaderViewModel editProjectLeaderVM;
 
     public ViewModelFactory(ModelFactory mf) {
         this.mf = mf;
@@ -32,6 +34,7 @@ public class ViewModelFactory {
         editMemberVM = new EditMemberViewModel(mf.getMainModel());
         removeGroupVM = new RemoveGroupViewModel(mf.getMainModel());
         removeUserVM = new RemoveUserViewModel(mf.getMainModel());
+        editProjectLeaderVM = new EditProjectLeaderViewModel(mf.getMainModel());
     }
 
     public ChatClientViewModel getChatVM() {
@@ -64,5 +67,9 @@ public class ViewModelFactory {
 
     public RemoveUserViewModel getRemoveUserVM() {
         return removeUserVM;
+    }
+
+    public EditProjectLeaderViewModel getEditProjectLeaderVM() {
+        return editProjectLeaderVM;
     }
 }

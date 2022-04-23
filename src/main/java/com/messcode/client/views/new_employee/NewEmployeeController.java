@@ -42,6 +42,7 @@ public class NewEmployeeController implements Subject {
         );
         typeComboBox.setItems(types);
         support = new PropertyChangeSupport(this);
+        errorLabel.setText("");
         errorLabel.textProperty().bind(newEmployeeVM.errorProperty());
         newEmployeeVM.addListener("accCreateResponse", this::evalute);
     }
@@ -51,7 +52,6 @@ public class NewEmployeeController implements Subject {
         errorLabel.setVisible(true);
         System.out.println("WOTÖFÖK? AGAIN2");
         // put here the exit
-
 
     }
 
@@ -70,7 +70,6 @@ public class NewEmployeeController implements Subject {
         } else if (resp == 0) {
             errorLabel.setVisible(true);
         }
-
 
     }
 
