@@ -26,7 +26,7 @@ public enum ClassName {
     GROUP_MESSAGE,
     //creating new group
     CREATING_GROUP,
-    
+    DELETE_GROUP,
     GROUP_UPDATE,
     REMOVE_GROUPMEMBER,
     ADD_GROUPMEMBER,

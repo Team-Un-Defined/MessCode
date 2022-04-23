@@ -43,5 +43,7 @@ public class RemoveGroupController {
     }
 
     public void removeButton() {
+        Group g = groupsList.getSelectionModel().getSelectedItem();
+        removeGroupVM.deleteGroup(g);
     }
 }
