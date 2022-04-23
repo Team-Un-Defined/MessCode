@@ -63,4 +63,18 @@ public class Group implements Serializable{
     public void setMembers(ArrayList<User> members) {
         this.members = members;
     }
+    
+    public void removeMembers(ArrayList<User> members){
+    ArrayList<User> help = new ArrayList<User>();
+    help.addAll(this.members);
+    
+    help.forEach(u -> {
+        members.stream().filter(us -> (u.getEmail().equals(us.getEmail()))).forEachOrdered(_item -> {
+            this.members.remove(u);
+        });
+        });
+            
+    
+    }
+    
 }
