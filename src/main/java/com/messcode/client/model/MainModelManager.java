@@ -1,22 +1,18 @@
 package com.messcode.client.model;
 
-import com.messcode.client.Start;
 import com.messcode.client.networking.Client;
-import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.Group;
+import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
-import com.messcode.transferobjects.User;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
 
 public class MainModelManager implements MainModel {
 
@@ -111,14 +107,11 @@ public class MainModelManager implements MainModel {
         user = (User) objs.get(2);
         allUsers = (ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
         for (User u : allUsers) {
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                    "///////////" + u.getEmail() + "////////////");
             System.out.println("///////////" + u.getEmail() + "////////////");
         }
 
         support.firePropertyChange("AddOfflineUsers", null, allUsers);
         support.firePropertyChange("RefresgGroups", null, allGroups);
-        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "Everything has been casted");
         System.out.println("Everything has been casted");
 
         //user.getLastSeen.add(lastSeen);
@@ -126,15 +119,12 @@ public class MainModelManager implements MainModel {
         this.allMessage = allPublicMessages;
 
         support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
-        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                user.getEmail() + " " + user.getName());
         System.out.println(user.getEmail() + " " + user.getName());
         support.firePropertyChange("SetUsernameInChat", null, user);
     }
 
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
         boolean answer = (boolean) propertyChangeEvent.getNewValue();
-        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "in model: " + answer);
         System.out.println("in model: " + answer);
         support.firePropertyChange("LoginResponseToVM", null, answer);
     }
@@ -153,7 +143,6 @@ public class MainModelManager implements MainModel {
     public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(publicMessage);
-        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "got to model");
         System.out.println("got to model");
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
@@ -161,8 +150,6 @@ public class MainModelManager implements MainModel {
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(pm);
-        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                "//////////////////////////PMPM//////////////////////////////");
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
@@ -243,8 +230,6 @@ public class MainModelManager implements MainModel {
         PublicMessage puu = new PublicMessage(user, "dasd");
         for (PublicMessage p : this.allMessage) {
             if (p.getClass().equals(puu.getClass())) {
-                java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                        "messa: time : " + p.getTime() + "  mes: " + p.getMsg());
                 System.out.println("messa: time : " + p.getTime() + "  mes: " + p.getMsg());
                 pubi.add(p);
             }

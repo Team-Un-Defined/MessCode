@@ -56,7 +56,6 @@ public class SettingsConfig {
             Element myelement = (Element) mynode;
 
             result = myelement.getElementsByTagName(stuff).item(0).getTextContent();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "Get config of " + stuff + ": " + result);
             System.out.println("Get config of " + stuff + ": " + result);
         }
         return result;
@@ -69,21 +68,17 @@ public class SettingsConfig {
         if (mynode.getNodeType() == Node.ELEMENT_NODE) {
             Element myelement = (Element) mynode;
 
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                    "Set config of " + stuff + ": " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
             System.out.println("Set config of " + stuff + ": " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
 
             myelement.getElementsByTagName(stuff).item(0).setTextContent(value);
 
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                    "Updated " + stuff + " to " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
             System.out.println("Updated " + stuff + " to " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
         }
-        SaveConfig();
+        saveConfig();
     }
 
 
-    public static void SaveConfig() {
+    public static void saveConfig() {
         // write DOM back to the file
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer xtransform;

@@ -2,7 +2,6 @@ package com.messcode.server.networking;
 
 import JDBC.ExportData;
 import JDBC.ImportData;
-import com.messcode.client.Start;
 import com.messcode.transferobjects.ClassName;
 import com.messcode.transferobjects.Container;
 import com.messcode.transferobjects.Group;
@@ -11,6 +10,8 @@ import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,10 +20,10 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 public class ServerSocketHandler implements Runnable {
 
+    private static final Logger log4j = LogManager.getLogger(ServerSocketHandler.class);
     private ConnectionPool pool;
     private Socket socket;
     private ImportData dbi;
@@ -166,11 +167,11 @@ public class ServerSocketHandler implements Runnable {
                 socket.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                log4j.error(ex.getMessage(), ex);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -183,7 +184,7 @@ public class ServerSocketHandler implements Runnable {
             outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -196,7 +197,7 @@ public class ServerSocketHandler implements Runnable {
             outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -211,7 +212,7 @@ public class ServerSocketHandler implements Runnable {
             outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -224,7 +225,7 @@ public class ServerSocketHandler implements Runnable {
             System.out.println("server has sent the stuff " + pm.getMsg());
         } catch (IOException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -234,7 +235,7 @@ public class ServerSocketHandler implements Runnable {
             outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -243,7 +244,7 @@ public class ServerSocketHandler implements Runnable {
             outToClient.writeObject(updateGroups);
         } catch (IOException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -256,7 +257,7 @@ public class ServerSocketHandler implements Runnable {
             outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
 
     }
@@ -267,7 +268,7 @@ public class ServerSocketHandler implements Runnable {
             outToClient.writeObject(b);
         } catch (IOException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
 
     }
