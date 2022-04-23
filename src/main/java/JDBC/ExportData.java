@@ -297,24 +297,33 @@ public class ExportData {
 
         do {
             if (!(rs0 == null)) {
-                String query = "SELECT p.name, p.description, a.fname, a.lname, a.email, a.type FROM projects AS p " +
-                        "JOIN account AS a ON a.id = p.leader_id WHERE p.name = ?";
+                String query = "SELECT p.name, p.description,p.leader_id, a.fname, a.lname, a.email, a.type FROM projects AS p " +
+                        " JOIN account AS a ON a.id = p.leader_id WHERE p.name = ?";
                 myPreparedStatement1 = c.prepareStatement(query);
                 myPreparedStatement1.setString(1, rs0.getString("name"));
             } else {
-                String query = "SELECT p.name, p.description, a.fname, a.lname, a.email, a.type FROM projects AS p " +
-                        "JOIN account AS a ON a.id = p.leader_id";
-                myPreparedStatement1 = c.prepareStatement(query);
+                String query = "SELECT p.name, p.description, p.leader_id, a.fname, a.lname, a.email, a.type FROM projects AS p " +
+                        "LEFT JOIN account AS a ON a.id = p.leader_id";
+                myPreparedStatement1 = c.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             }
             rs = myPreparedStatement1.executeQuery();
-
+            
+               
             while (rs.next()) {
+               Group g;
+               if(rs.getObject("leader_id")!=null){ 
                 User lead = new User(rs.getString("email"),rs.getString("fname")+rs.getString("lname"));
                 lead.setName(rs.getString("fname"));
                 lead.setSurname(rs.getString("lname"));
                 lead.setType(rs.getString("type"));
-                Group g = new Group(rs.getString("name"),rs.getString("description"),lead);
-
+                g = new Group(rs.getString("name"),rs.getString("description"),lead);
+               }
+               else {
+                   System.out.println("jjjjjjjjjjjjjjjjjjj"+rs.getString("name")+"ppppppppppppppppppppppp");
+                   g = new Group(rs.getString("name"),rs.getString("description"),null);
+                
+               }
+               
                 String query2 = "SELECT a.fname, a.lname, a.email, a.type FROM project_members AS pm " +
                         "JOIN account AS a ON a.id = pm.account_id JOIN projects AS p ON p.id = pm.project_id " +
                         "WHERE p.name = ?";

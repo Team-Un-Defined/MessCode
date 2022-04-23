@@ -37,4 +37,6 @@ public interface Client extends Subject {
     public void addMember(Group selectedGroup);
 
     public void removeMember(Group selectedGroup);
+
+    public void deleteGroup(Group g);
 }

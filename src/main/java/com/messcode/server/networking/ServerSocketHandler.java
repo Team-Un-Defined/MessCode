@@ -3,7 +3,11 @@ package com.messcode.server.networking;
 import JDBC.ExportData;
 import JDBC.ImportData;
 import com.messcode.client.Start;
-import com.messcode.transferobjects.*;
+import com.messcode.transferobjects.ClassName;
+import com.messcode.transferobjects.Container;
+import com.messcode.transferobjects.Group;
+import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
@@ -12,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -44,10 +49,20 @@ public class ServerSocketHandler implements Runnable {
                 Container packet = (Container) (inFromClient.readObject());
                 System.out.println("NEW PACKET : " + packet.getClassName() + " object " + packet.getObject());
                 switch (packet.getClassName()) {
-                    case REMOVE_GROUPMEMBER: {
-                        Group g = (Group) packet.getObject();
+
+                    case DELETE_GROUP:{
+                    Group g = (Group) packet.getObject();
+                    dbi.removeGroupMembers(g);
+                    dbi.deleteGroup(g);
+                    pool.updateGroup(dbe);
+
+                    break;
+                    }
+                    case REMOVE_GROUPMEMBER:{
+                          Group g = (Group) packet.getObject();
                         dbi.removeGroupMembers(g);
                         pool.updateGroup(dbe);
+                            
                         break;
                     }
                     case ADD_GROUPMEMBER: {
@@ -71,13 +86,16 @@ public class ServerSocketHandler implements Runnable {
                         break;
                     }
                     case USER_JOIN: {
+
                         User usertemp = (User) packet.getObject();
 
                         boolean isItSame = pool.userCheck(usertemp);
                         if (isItSame) break;
                         Container packetToClient = null;
 
+
                         packetToClient = dbe.checkLogin(usertemp.getEmail(), usertemp.getStrPassword()); /// here the username, should be email, and email should be passowrd
+
 
                         if (packetToClient.getObject() != null) {
                             packetToClient = dbe.acceptLogin(usertemp.getEmail(), (String) packetToClient.getObject());
@@ -117,7 +135,9 @@ public class ServerSocketHandler implements Runnable {
                     case CREATE_ACCOUNT: {
                         User u = (User) packet.getObject();
                         Container c = dbi.createAccount(u);
+
                         outToClient.writeObject(c);
+
                         break;
                     }
                     case PASSWORD_CHANGE: {
@@ -249,6 +269,7 @@ public class ServerSocketHandler implements Runnable {
             e.printStackTrace();
             java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
+
     }
 }
 

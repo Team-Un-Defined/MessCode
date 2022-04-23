@@ -304,4 +304,10 @@ public class MainModelManager implements MainModel {
        client.removeMember(updatedGroup);
     }
 
+    @Override
+    public void deleteGroup(Group g) {
+      
+        client.deleteGroup(g);
+    }
+
 }
