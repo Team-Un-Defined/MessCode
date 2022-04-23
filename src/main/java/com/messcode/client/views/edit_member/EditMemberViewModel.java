@@ -19,6 +19,10 @@ public class EditMemberViewModel implements Subject {
     private MainModel mainModel;
     private ObservableList<User> users ;
     private Group selectedGroup;
+
+    public Group getSelectedGroup() {
+        return selectedGroup;
+    }
     private ObservableList<User> allUsers;
     private ObservableList<User> usersNotInGroup;
 
@@ -45,8 +49,11 @@ public class EditMemberViewModel implements Subject {
           Platform.runLater(() -> {
         ObservableList<User> newusers=FXCollections.observableArrayList();
         users.clear();
+         if(selectedGroup.getLeader() == null){
+        return;
+        }
         newusers.addAll(    selectedGroup .getMembers());
-        users.addAll(newusers.filtered(i->!(i.getEmail().equals(   selectedGroup.getLeader().getEmail()))));
+        users.addAll(newusers.filtered(i->!(i.getEmail().equals(selectedGroup.getLeader().getEmail()))));
         setUsers();
           });
     }
@@ -88,15 +95,18 @@ public class EditMemberViewModel implements Subject {
         return usersNotInGroup;
     }
 
-    void addMember(ObservableList<User> u) {
+    public void addMember(ObservableList<User> u) {
         ArrayList<User> usi = new ArrayList<>();
         usi.addAll(u);
         mainModel.addMember(usi);
     }
 
-    void removeMember(ObservableList<User> u) {
+    public void removeMember(ObservableList<User> u) {
        ArrayList<User> usi = new ArrayList<>();
         usi.addAll(u);
         mainModel.removeMember(usi);
     }
+    
+    
+    
 }

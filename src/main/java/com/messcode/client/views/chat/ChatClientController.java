@@ -93,6 +93,9 @@ public class ChatClientController {
         chatVM.addListener("MessageForEveryone", this::displayPublic);
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
+        
+        
+        
         //CHAT MESSAGES
 //        StringProperty textChat = new SimpleStringProperty();
 //        textChat.bind(chatVM.messageProperty());
@@ -200,7 +203,8 @@ public class ChatClientController {
             removeUserButton.setVisible(false);
             removeGroupButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
-            newEmployeeButton.setVisible(false);
+            sendGroupButton.setVisible(false);
+            //newEmployeeButton.setVisible(false); HOYA, I THINK WE SHOULD LEAVE THIS IN SO HE COULD ADD EMPLOYEE
             removeUserButton.setVisible(false);
         }
 
@@ -242,7 +246,14 @@ public class ChatClientController {
                 super.updateItem(item, empty);
                 if (empty) {
                     setText(null);
-                } else {
+                } 
+                else if(item.getLeader()==null){
+                
+                String text = item.getName();
+                setText(text);
+                this.setTextFill(Color.RED);
+                }
+                else {
                     String text = item.getName(); // get text from item
                     setText(text);
                 }
