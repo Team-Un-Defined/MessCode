@@ -20,11 +20,13 @@ public class EditMemberViewModel implements Subject {
     private ObservableList<User> users ;
     private Group selectedGroup;
     private ObservableList<User> allUsers;
+    private ObservableList<User> usersNotInGroup;
 
 
     public EditMemberViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
         allUsers= FXCollections.observableArrayList();
+        usersNotInGroup = FXCollections.observableArrayList();
         users= FXCollections.observableArrayList();
         mainModel.addListener("changeSelectedGroup",this::updateUsers);
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
@@ -40,11 +42,13 @@ public class EditMemberViewModel implements Subject {
     }
     private void updateUsers(PropertyChangeEvent propertyChangeEvent) {
          selectedGroup = (Group)propertyChangeEvent.getNewValue();
+          Platform.runLater(() -> {
         ObservableList<User> newusers=FXCollections.observableArrayList();
         users.clear();
         newusers.addAll(    selectedGroup .getMembers());
         users.addAll(newusers.filtered(i->!(i.getEmail().equals(   selectedGroup.getLeader().getEmail()))));
-
+        setUsers();
+          });
     }
 
 
@@ -62,9 +66,9 @@ public class EditMemberViewModel implements Subject {
         support.removePropertyChangeListener(eventName, listener);
     }
 
-    public ObservableList<User> getUsers() {
-       ObservableList<User> usersNotInGroup = FXCollections.observableArrayList();
-        ObservableList<User> help = FXCollections.observableArrayList();
+    public void setUsers(){
+      usersNotInGroup.clear();
+      ObservableList<User> help = FXCollections.observableArrayList();
         help.addAll(allUsers);
        for(User u: allUsers){
        for(User c: selectedGroup.getMembers()){
@@ -75,6 +79,12 @@ public class EditMemberViewModel implements Subject {
        }
         
         usersNotInGroup.addAll(help);
+    
+    }
+    
+    public ObservableList<User> getUsers() {
+       
+      
         return usersNotInGroup;
     }
 

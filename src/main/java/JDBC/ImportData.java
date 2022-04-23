@@ -210,9 +210,9 @@ public class ImportData {
             rs.beforeFirst();
             while (rs.next()) {
 
-                String query2 = "INSERT INTO public.projects_members (id, project_id, account_id) " +
+                String query2 = "INSERT INTO public.project_members (id, project_id, account_id) " +
                         "VALUES (default, ?, ?) ON CONFLICT DO NOTHING";
-                myPreparedStatement = c.prepareStatement(query);
+                myPreparedStatement = c.prepareStatement(query2);
                 myPreparedStatement.setInt(1, rs.getInt("project_id"));
                 myPreparedStatement.setInt(2, rs.getInt("account_id"));
                 myPreparedStatement.executeUpdate();
