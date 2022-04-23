@@ -24,19 +24,6 @@ public class RemoveGroupController {
         this.vh = vh;
         this.bundle = bundle;
         updateGroupList();
-        groupsList.setItems(removeGroupVM.getGroups());
-        groupsList.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            public void updateItem(Group item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    String text = item.getName();
-                    setText(text);
-                }
-            }
-        });
     }
 
     private void updateGroupList() {

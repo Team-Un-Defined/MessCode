@@ -1,22 +1,17 @@
 package JDBC;
 
 import JDBC.DBConn.DatabaseConnection;
+import com.messcode.client.Start;
 import com.messcode.transferobjects.*;
 import com.messcode.transferobjects.messages.GroupMessages;
-import com.messcode.transferobjects.ClassName;
-import com.messcode.transferobjects.Container;
-import com.messcode.transferobjects.Group;
-import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-import java.sql.DriverManager;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 public class ExportData {
 
@@ -38,6 +33,7 @@ public class ExportData {
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
+            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
