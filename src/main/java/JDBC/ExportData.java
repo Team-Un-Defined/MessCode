@@ -295,12 +295,12 @@ public class ExportData {
             if(!rs0.next()){
             return null;
             }
-            rs0.beforeFirst();
+            //rs0.beforeFirst();
       
         }
 
         do {
-            if (!(rs0 == null) && rs0.next()) {
+            if (!(rs0 == null)) {
                 String query = "SELECT p.name, p.description, a.fname, a.lname, a.email, a.type FROM projects AS p " +
                         "JOIN account AS a ON a.id = p.leader_id WHERE p.name = ?";
                 myPreparedStatement1 = c.prepareStatement(query);

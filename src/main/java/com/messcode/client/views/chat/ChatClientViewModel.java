@@ -95,16 +95,24 @@ public class ChatClientViewModel implements Subject {
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
-            user.setSalt(" - online");  //
-            for (int i = 0; i < usersList.size(); i++) {
-                if (usersList.get(i).getEmail().equals(user.getEmail())) {
-                    usersList.set(i, user);              // KAMI PUT THE ONLINE DOT HERE or in the controller i dont know man, i hate my life and i hate guis,how are you btw?
-                    // heyo, im pretty okay rn, thanks for the question (and the note) wbu?
-
-                    break;
+            if(user.getSalt().equals(" - deleted")){
+                for (int i = 0; i < usersList.size(); i++) {
+                    if (usersList.get(i).getEmail().equals(user.getEmail())) {
+                        usersList.set(i, user);              // KAMI PUT THE ONLINE DOT HERE or in the controller i dont know man, i hate my life and i hate guis,how are you btw?
+                                                            // heyo, im pretty okay rn, thanks for the question (and the note) wbu?
+                                                            // im good, i just hate lings' merge conflicts, btw i added the - deleted user tag, it is added in the salt from server.
+                        break;
+                    }
+                }
+            }else {
+                user.setSalt(" - online");  //
+                for (int i = 0; i < usersList.size(); i++) {
+                    if (usersList.get(i).getEmail().equals(user.getEmail())) {
+                        usersList.set(i, user);
+                        break;
+                    }
                 }
             }
-
             System.out.println("NEW USER ADDED WHLEO");
             System.out.println(usersList);
         });

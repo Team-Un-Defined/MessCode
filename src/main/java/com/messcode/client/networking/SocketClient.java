@@ -117,7 +117,8 @@ public class SocketClient implements Client {
     }
 
 
-    public void userCreateResponse(boolean acc) {
+    public void userCreateResponse(Container acc) {
+
         support.firePropertyChange("createUserResponse", null, acc);
     }
 
@@ -127,6 +128,11 @@ public class SocketClient implements Client {
 
     public void removeUser(Container packet) {
         support.firePropertyChange("userDeleted", null, packet);
+    }
+
+    @Override
+    public void addMember(Group selectedGroup) {
+       socketHandler.addMember(selectedGroup);
     }
 
 }

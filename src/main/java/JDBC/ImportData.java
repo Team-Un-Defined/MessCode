@@ -42,7 +42,7 @@ public class ImportData {
      *                      access error or other errors.
      */
     public Container createAccount(User us) throws SQLException {
-        boolean done = true;
+        User done = null;
 
         String query = "INSERT INTO account VALUES(default, ?, ?, ?, ?, ?, ?) ON CONFLICT(email) DO NOTHING RETURNING id";
         PreparedStatement myPreparedStatement = c.prepareStatement(query);
@@ -54,8 +54,8 @@ public class ImportData {
         myPreparedStatement.setString(6, us.getEmail());
         ResultSet rs = myPreparedStatement.executeQuery();
 
-        if(!rs.next()) {
-            done = false;
+        if(rs.next()) {
+            done = us;
         }
 
         return new Container(done,ClassName.CREATE_ACCOUNT);
@@ -200,9 +200,9 @@ public class ImportData {
         ResultSet rs;
 
         for (int i = 0; i < g.getMembers().size(); i++) {
-            String query = "SELECT a.id, p.id AS project FROM account AS a LEFT JOIN projects AS p ON p.name = ? " +
+            String query = "SELECT a.id as account_id, p.id AS project_id FROM account AS a LEFT JOIN projects AS p ON p.name = ? " +
                     "WHERE a.email = ?";
-            myPreparedStatement = c.prepareStatement(query);
+            myPreparedStatement = c.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             myPreparedStatement.setString(1, g.getName());
             myPreparedStatement.setString(2, g.getMembers().get(i).getEmail());
             rs = myPreparedStatement.executeQuery();
@@ -226,7 +226,7 @@ public class ImportData {
         int userid = 0;
 
        String query = "SELECT * FROM account WHERE email = ?";
-       myPreparedStatement = c.prepareStatement(query);
+       myPreparedStatement = c.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
        myPreparedStatement.setString(1, us.getEmail());
        rs = myPreparedStatement.executeQuery();
 

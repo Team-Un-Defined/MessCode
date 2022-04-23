@@ -47,6 +47,15 @@ public class ServerSocketHandler implements Runnable {
                 Container packet = (Container) (inFromClient.readObject());
                 System.out.println("NEW PACKET : " + packet.getClassName() + " object " + packet.getObject());
                 switch (packet.getClassName()) {
+                    case ADD_GROUPMEMBER:{
+                        Group g = (Group) packet.getObject();
+                        dbi.addGroupMembers(g);
+                        pool.updateGroup(dbe);
+                        
+                        break;
+                    }
+                    
+                    
                     case CREATING_GROUP: {
                         System.out.println("com.messcode.server.networking.ServerSocketHandler.run()");
                         Group g = (Group) packet.getObject();
@@ -112,8 +121,10 @@ public class ServerSocketHandler implements Runnable {
                     }
                     case CREATE_ACCOUNT: {
                         User u = (User) packet.getObject();
-                        outToClient.writeObject(dbi.createAccount(u));
-                        // maybe add offline user so everyone gets it updated, but not that important
+                        Container c = dbi.createAccount(u);
+
+                        outToClient.writeObject(c);
+
                         break;
                     }
                     case PASSWORD_CHANGE: {
@@ -125,11 +136,13 @@ public class ServerSocketHandler implements Runnable {
                     }
                     case REMOVE_USER: {
                         User u = (User) packet.getObject();
-                        u.setSalt("- deleted");
+                        u.setSalt(" - deleted");
                       boolean result= dbi.deleteUser(u);
                      if(result)
                      {
                          Container pckt = new Container(u,ClassName.REMOVE_USER);
+                         pool.kickUser(u);
+
 
                      }
                         break;
@@ -224,6 +237,18 @@ public class ServerSocketHandler implements Runnable {
                             + message.getMsg());
             Container packet = new Container(message, ClassName.GROUP_MESSAGE);
             outToClient.writeObject(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void removeUser() {
+        try {
+            Container b = new Container("byebye",ClassName.KICK_USER);
+
+
+            outToClient.writeObject(b);
         } catch (IOException e) {
             e.printStackTrace();
         }

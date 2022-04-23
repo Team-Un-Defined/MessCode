@@ -32,9 +32,8 @@ public class EditMemberViewModel implements Subject {
 
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> use = (ArrayList<User>) propertyChangeEvent.getNewValue();
-
+        
         Platform.runLater(() -> {
-            System.out.println("TÖFÖFÖGK");
             allUsers.addAll(use);
             System.out.println(allUsers);
         });
@@ -64,6 +63,24 @@ public class EditMemberViewModel implements Subject {
     }
 
     public ObservableList<User> getUsers() {
-        return allUsers;
+       ObservableList<User> usersNotInGroup = FXCollections.observableArrayList();
+        ObservableList<User> help = FXCollections.observableArrayList();
+        help.addAll(allUsers);
+       for(User u: allUsers){
+       for(User c: selectedGroup.getMembers()){
+       
+       if(u.getEmail().equals(c.getEmail()))
+         help.remove(u);
+       }
+       }
+        
+        usersNotInGroup.addAll(help);
+        return usersNotInGroup;
+    }
+
+    void addMember(ObservableList<User> u) {
+        ArrayList<User> usi = new ArrayList<>();
+        usi.addAll(u);
+        mainModel.addMember(usi);
     }
 }
