@@ -288,10 +288,13 @@ public class ExportData {
         if (current.getType().equals("employee") || current.getType().equals("project_leader")) {
             String query0 = "SELECT p.name FROM projects AS p JOIN project_members as pm ON pm.project_id = p.id " +
                     "JOIN account AS a ON a.id = pm.account_id WHERE a.email = ?";
-            myPreparedStatement = c.prepareStatement(query0);
+            myPreparedStatement = c.prepareStatement(query0, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             myPreparedStatement.setString(1, current.getEmail());
             rs0 = myPreparedStatement.executeQuery();
-            System.out.println("***************"+rs0+"****************");
+            if(!rs0.next()){
+            return null;
+            }
+            
       
         }
 
