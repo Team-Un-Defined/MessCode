@@ -145,6 +145,7 @@ public class ServerSocketHandler implements Runnable {
                      if(result)
                      {
                          Container pckt = new Container(u,ClassName.REMOVE_USER);
+                         outToClient.writeObject(pckt);
                          pool.kickUser(u);
 
 
