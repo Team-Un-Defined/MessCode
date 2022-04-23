@@ -2,10 +2,12 @@ package com.messcode.client.views.remove_user;
 
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.PrivateMessage;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RemoveUserController {
@@ -22,15 +24,21 @@ public class RemoveUserController {
         this.removeUserVM = removeUserVM;
         this.vh = vh;
         this.bundle = bundle;
-        usersList.setItems(removeUserVM.getUsersList());
-        usersList.setCellFactory(lv -> new ListCell<>() {
+        updateUserList();
+
+    }
+
+    private void updateUserList() {
+        usersList.setItems(removeUserVM.getUsers());
+        usersList.setCellFactory(lv -> new ListCell<User>() {
             @Override
             public void updateItem(User item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
                     setText(null);
                 } else {
-                    String text = item.getName() + " " + item.getSurname();
+
+                    String text = item.getName() + " " + item.getSurname(); // get text from item
                     setText(text);
                 }
             }
@@ -38,5 +46,17 @@ public class RemoveUserController {
     }
 
     public void removeButton() {
+        if (usersList.getSelectionModel().getSelectedItems().isEmpty()) {
+            errorLabel.setText(bundle.getString("select_user"));
+        } else {
+            User use = (User) usersList.getSelectionModel().getSelectedItems().get(0);
+            System.out.println(use.getEmail());
+            if (!use.getEmail().equals(removeUserVM.getCurrentUser().getEmail())) {
+               removeUserVM.deleteUser(use);
+
+            } else {
+               errorLabel.setText(bundle.getString("talk_to_yourself"));
+            }
+        }
     }
 }
