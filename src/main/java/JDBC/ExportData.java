@@ -291,8 +291,8 @@ public class ExportData {
             myPreparedStatement = c.prepareStatement(query0);
             myPreparedStatement.setString(1, current.getEmail());
             rs0 = myPreparedStatement.executeQuery();
-
-            rs0.next();
+            System.out.println("***************"+rs0+"****************");
+      
         }
 
         do {
