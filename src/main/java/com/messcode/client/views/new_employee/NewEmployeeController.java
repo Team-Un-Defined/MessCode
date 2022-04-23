@@ -63,7 +63,6 @@ public class NewEmployeeController implements Subject {
         int resp = newEmployeeVM.createAccount(firstName, lastName, email, type);
         if (resp == 1) {
             errorLabel.setVisible(true);
-
         } else if (resp == 2) {
             errorLabel.setVisible(false);
         } else if (resp == 3) {
