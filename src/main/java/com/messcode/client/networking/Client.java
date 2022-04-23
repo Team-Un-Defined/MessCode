@@ -31,4 +31,6 @@ public interface Client extends Subject {
     public void sendGroup(GroupMessages mess);
 
     void changePassword(User u);
+
+    void deleteUser(User use);
 }
