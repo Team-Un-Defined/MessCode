@@ -17,7 +17,6 @@ public class RemoveGroupController {
 
     private RemoveGroupViewModel removeGroupVM;
     private ViewHandler vh;
-    private User user;
     private ResourceBundle bundle;
 
     public void init(RemoveGroupViewModel removeGroupVM, ViewHandler vh, ResourceBundle bundle) {
@@ -29,7 +28,7 @@ public class RemoveGroupController {
             @Override
             public void updateItem(Group item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty ) {
+                if (empty) {
                     setText(null);
                 } else {
                     String text = item.getName();
