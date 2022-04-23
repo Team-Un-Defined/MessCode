@@ -31,6 +31,7 @@ public class EditMemberController {
         updateUserList();
         updateUsersInGroupList();
         allUsersList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        inGroupUsersList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     public void addMember(ActionEvent actionEvent) {
@@ -74,6 +75,9 @@ public class EditMemberController {
         });
     }
     public void removeMember(ActionEvent actionEvent) {
-        System.out.println("removeMember fired");
+        ObservableList<User> u = inGroupUsersList.getSelectionModel().getSelectedItems();
+      editMemberVM.removeMember(u);
+        
+        
     }
 }
