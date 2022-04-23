@@ -247,6 +247,7 @@ public class ExportData {
         }
         
         ArrayList <Group> groups = updateGroups(use);
+        if(groups!=null){
         for (Group group : groups) {
             String query7 = "SELECT g.message, g.date, a.fname, a.lname, a.type, a.email FROM group_messages AS g " +
                     "JOIN account AS a ON a.id = g.sender_id JOIN projects AS p ON p.id = g.project_id " +
@@ -265,7 +266,7 @@ public class ExportData {
                 allMessages.add(g);
             }
         }
-
+        }
         ArrayList<Object> objs = new ArrayList<>();
         objs.add(allMessages);
         objs.add(lastSeen);
@@ -294,7 +295,7 @@ public class ExportData {
             if(!rs0.next()){
             return null;
             }
-            
+            rs0.beforeFirst();
       
         }
 
