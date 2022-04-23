@@ -48,6 +48,7 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+
     }
 
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent){

@@ -117,12 +117,23 @@ public class ClientSocketHandler implements Runnable {
                         passChangeResponse(packet);
                         break;
                     }
+                    case REMOVE_USER: {
+                        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                                "i got the  remove user data " + packet);
+                        System.out.println("i got the  remove user data " + packet);
+                        removedUser(packet);
+                        break;
+                    }
 
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void removedUser(Container packet) {
+        socketClient.removeUser(packet);
     }
 
     private void passChangeResponse(Container packet) {
@@ -247,6 +258,16 @@ public class ClientSocketHandler implements Runnable {
     public void changePassword(User u) {
         try {
             Container packet = new Container(u, ClassName.PASSWORD_CHANGE);
+            outToServer.writeObject(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(User use) {
+
+        try {
+            Container packet = new Container(use, ClassName.REMOVE_USER);
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();

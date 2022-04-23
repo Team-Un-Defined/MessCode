@@ -108,17 +108,31 @@ public class ServerSocketHandler implements Runnable {
                         User use = (User) packet.getObject();
                         dbi.saveDataOnExit(use);
                         pool.removeHandler(this);
+                        break;
                     }
                     case CREATE_ACCOUNT: {
                         User u = (User) packet.getObject();
                         outToClient.writeObject(dbi.createAccount(u));
                         // maybe add offline user so everyone gets it updated, but not that important
+                        break;
                     }
                     case PASSWORD_CHANGE: {
                         User u = (User) packet.getObject();
                        boolean answ= dbi.changePassword(u);
                        Container pckt = new Container(answ,ClassName.PASSWORD_CHANGE);
                     outToClient.writeObject(pckt);
+                        break;
+                    }
+                    case REMOVE_USER: {
+                        User u = (User) packet.getObject();
+                        u.setSalt("- deleted");
+                      boolean result= dbi.deleteUser(u);
+                     if(result)
+                     {
+                         Container pckt = new Container(u,ClassName.REMOVE_USER);
+
+                     }
+                        break;
                     }
                 }
             }
