@@ -47,6 +47,7 @@ public class NewEmployeeViewModel implements Subject {
         } else {
             support.firePropertyChange("accCreateResponse", null, "not successfull");
             Platform.runLater(() -> {
+                System.out.println("ThIsEMailISNalradyiNUSER");
                 error.setValue("This email is already in use");
             });
 
@@ -100,6 +101,7 @@ public class NewEmployeeViewModel implements Subject {
                 return 2;
             }
             error.setValue("This email is already in use");
+
         }
         return 3;
     }

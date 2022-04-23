@@ -83,7 +83,21 @@ public class MainModelManager implements MainModel {
     }
 
     private void createAccount(PropertyChangeEvent propertyChangeEvent) {
-        support.firePropertyChange("createUserResponse", null, (boolean) propertyChangeEvent.getNewValue());
+        if(((User) ((Container) propertyChangeEvent.getNewValue()).getObject()) == null)
+        {
+            System.out.println("THE OBJECT IS NULL, NICCEEE");
+            support.firePropertyChange("createUserResponse", null, false);
+        }
+        else {
+            System.out.println("THE OBJECT IS NOT NULL, NICEE");
+            User u =((User)((Container)propertyChangeEvent.getNewValue()).getObject());
+            support.firePropertyChange("createUserResponse", null, true);
+            allUsers.add(u);
+            support.firePropertyChange("AddOfflineUsers", null, allUsers);
+        }
+
+
+
     }
 
     private void loginData(PropertyChangeEvent propertyChangeEvent) {

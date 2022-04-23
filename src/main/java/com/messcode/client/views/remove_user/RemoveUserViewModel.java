@@ -39,6 +39,7 @@ public class RemoveUserViewModel {
 
         Platform.runLater(() -> {
             System.out.println("TÖFÖFÖGK");
+            use.removeIf(user -> user.getSalt().equals(" - deleted") );
             usersList.addAll(use);
             System.out.println(usersList);
         });

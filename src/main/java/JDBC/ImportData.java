@@ -42,7 +42,7 @@ public class ImportData {
      *                      access error or other errors.
      */
     public Container createAccount(User us) throws SQLException {
-        boolean done = true;
+        User done = null;
 
         String query = "INSERT INTO account VALUES(default, ?, ?, ?, ?, ?, ?) ON CONFLICT(email) DO NOTHING RETURNING id";
         PreparedStatement myPreparedStatement = c.prepareStatement(query);
@@ -54,8 +54,8 @@ public class ImportData {
         myPreparedStatement.setString(6, us.getEmail());
         ResultSet rs = myPreparedStatement.executeQuery();
 
-        if(!rs.next()) {
-            done = false;
+        if(rs.next()) {
+            done = us;
         }
 
         return new Container(done,ClassName.CREATE_ACCOUNT);
