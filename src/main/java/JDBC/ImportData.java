@@ -1,21 +1,19 @@
 package JDBC;
 
 import JDBC.DBConn.DatabaseConnection;
-import com.messcode.client.Start;
 import com.messcode.transferobjects.*;
 import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ImportData {
 
+    private static final Logger log4j = LogManager.getLogger(ImportData.class);
     private Character character;
     private Connection c;
     private DatabaseConnection conn;
@@ -33,7 +31,7 @@ public class ImportData {
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -195,7 +193,7 @@ public class ImportData {
             myPreparedStatement.executeQuery();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            Logger.getLogger(ImportData.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            log4j.error(ex.getMessage(), ex);
         }
     }
 
@@ -246,34 +244,29 @@ public class ImportData {
             }
         }
     }
-   
 
-   public void deleteGroup(Group g){
-    PreparedStatement myPreparedStatement;
-    ResultSet rs;
-    int i =0;
+    public void deleteGroup(Group g) {
+        PreparedStatement myPreparedStatement;
+        ResultSet rs;
+        int i = 0;
         try {
-            do{
-                String query ="Update projects \n" +
+            do {
+                String query = "Update projects \n" +
                         "SET \n" +
                         "leader_id = null,\n" +
                         "name = ? \n" +
                         "   where name = ? RETURNING name";
-                myPreparedStatement = c.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                String name = g.getName()+"(DELETED"+i+")";
-                myPreparedStatement.setString(1,name);
+                myPreparedStatement = c.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                String name = g.getName() + "(DELETED" + i + ")";
+                myPreparedStatement.setString(1, name);
                 myPreparedStatement.setString(2, g.getName());
                 rs = myPreparedStatement.executeQuery();
                 i++;
-            }while(!rs.next());
+            } while (!rs.next());
         } catch (SQLException ex) {
-            Logger.getLogger(ImportData.class.getName()).log(Level.SEVERE, null, ex);
+            log4j.error(ex.getMessage(), ex);
         }
-
-
-   }
-
-
+    }
 
     public void saveDataOnExit(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
