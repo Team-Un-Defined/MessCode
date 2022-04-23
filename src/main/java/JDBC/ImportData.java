@@ -156,6 +156,7 @@ public class ImportData {
 
            String query1 = "SELECT a.id, a.type FROM account AS a WHERE a.email = ?";
            myPreparedStatement = c.prepareStatement(query1, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+           myPreparedStatement.setString(1, g.getLeader().getEmail());
            rs = myPreparedStatement.executeQuery();
 
            rs.beforeFirst();
@@ -180,7 +181,6 @@ public class ImportData {
            myPreparedStatement.setString(4, g.getDescription());
            myPreparedStatement.setInt(5, userId);
            rs = myPreparedStatement.executeQuery();
-           rs.beforeFirst();
 
            rs.next();
            int projectId = rs.getInt("id");
@@ -189,7 +189,7 @@ public class ImportData {
            myPreparedStatement = c.prepareStatement(query3);
            myPreparedStatement.setInt(1, projectId);
            myPreparedStatement.setInt(2, userId);
-           myPreparedStatement.executeUpdate();
+           myPreparedStatement.executeQuery();
        } catch (SQLException ex) {
            Logger.getLogger(ImportData.class.getName()).log(Level.SEVERE, null, ex);
        }
