@@ -27,12 +27,23 @@ public class MainModelManager implements MainModel {
     private ArrayList<PublicMessage> allMessage;
     private ArrayList<User> allUsers;
     private ArrayList<Group> allGroups;
+    private Group selectedGroup;
 
+    public Group getSelectedGroup() {
+        return selectedGroup;
+    }
+
+    public void setSelectedGroup(Group selectedGroup) {
+        support.firePropertyChange("changeSelectedGroup",null,selectedGroup);
+        this.selectedGroup = selectedGroup;
+
+    }
 
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
         allMessage = new ArrayList<>();
         allUsers = new ArrayList<>();
+
         this.client = client;
         try {
             client.start();
