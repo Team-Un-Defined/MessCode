@@ -2,17 +2,10 @@ package com.messcode.client.views.edit_member;
 
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.io.InputStream;
-import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.control.*;
+
+import java.util.ResourceBundle;
 
 public class EditMemberController {
 
@@ -20,6 +13,7 @@ public class EditMemberController {
     public ListView<User> inGroupUsersList;
     public Button addButton;
     public Button removeButton;
+    public Label errorLabel;
     private EditMemberViewModel editMemberVM;
     private ViewHandler vh;
     private ResourceBundle bundle;
@@ -34,13 +28,15 @@ public class EditMemberController {
         inGroupUsersList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
-    public void addMember(ActionEvent actionEvent) {
-        ObservableList<User> u = allUsersList.getSelectionModel().getSelectedItems();
-      editMemberVM.addMember(u);
-        
-        
-        
+    public void addMember() {
+        if (allUsersList.getSelectionModel().getSelectedItems().isEmpty()) {
+            errorLabel.setText(bundle.getString("select_user"));
+        } else {
+            ObservableList<User> u = allUsersList.getSelectionModel().getSelectedItems();
+            editMemberVM.addMember(u);
+        }
     }
+
     private void updateUserList() {
         allUsersList.setItems(editMemberVM.getUsers());
         allUsersList.setCellFactory(lv -> new ListCell<User>() {
@@ -74,10 +70,13 @@ public class EditMemberController {
             }
         });
     }
-    public void removeMember(ActionEvent actionEvent) {
-        ObservableList<User> u = inGroupUsersList.getSelectionModel().getSelectedItems();
-      editMemberVM.removeMember(u);
-        
-        
+
+    public void removeMember() {
+        if (allUsersList.getSelectionModel().getSelectedItems().isEmpty()) {
+            errorLabel.setText(bundle.getString("select_user"));
+        } else {
+            ObservableList<User> u = inGroupUsersList.getSelectionModel().getSelectedItems();
+            editMemberVM.removeMember(u);
+        }
     }
 }
