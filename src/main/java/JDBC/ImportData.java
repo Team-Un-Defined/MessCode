@@ -167,7 +167,7 @@ public class ImportData {
 
             System.out.println("WTFFFFFFFFFFF"+ userId);
 
-            if(rs.getString("type").equals("emplyee")){
+            if(rs.getString("type").equals("employee")){
             String query ="update public.account\n" +
             "set type = 'project_leader'\n" +
             "where id ="+userId ;
