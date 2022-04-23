@@ -268,4 +268,12 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("RefresgGroups", null, g);
     }
 
+    @Override
+    public void addMember(ArrayList<User> u) {
+       Group updatedGroup = new Group(selectedGroup.getName(), selectedGroup.getDescription(), selectedGroup.getLeader());
+       updatedGroup.setMembers(selectedGroup.getMembers());
+       updatedGroup.addMembers(u);
+       client.addMember(selectedGroup);
+    }
+
 }
