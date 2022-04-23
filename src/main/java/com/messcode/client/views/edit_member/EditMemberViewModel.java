@@ -93,4 +93,10 @@ public class EditMemberViewModel implements Subject {
         usi.addAll(u);
         mainModel.addMember(usi);
     }
+
+    void removeMember(ObservableList<User> u) {
+       ArrayList<User> usi = new ArrayList<>();
+        usi.addAll(u);
+        mainModel.removeMember(usi);
+    }
 }

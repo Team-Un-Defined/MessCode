@@ -135,6 +135,11 @@ public class SocketClient implements Client {
        socketHandler.addMember(selectedGroup);
     }
 
+    @Override
+    public void removeMember(Group selectedGroup) {
+         socketHandler.removeMember(selectedGroup);
+    }
+
 }
 
 
