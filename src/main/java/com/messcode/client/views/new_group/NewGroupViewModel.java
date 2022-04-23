@@ -3,28 +3,26 @@ package com.messcode.client.views.new_group;
 import com.messcode.client.model.MainModel;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.util.Subject;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
-import javafx.beans.InvalidationListener;
-import javafx.collections.ListChangeListener;
-
-public class NewGroupViewModel {
+public class NewGroupViewModel implements Subject {
 
     private MainModel mainModel;
+    private PropertyChangeSupport support;
     private ObservableList<User> usersList;
 
     public NewGroupViewModel(MainModel mainModel) {
         this.usersList = FXCollections.observableArrayList();
         this.mainModel = mainModel;
+        support = new PropertyChangeSupport(this);
         //  this.usersList.addAll(mainModel.getAllUsers());
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
     }
@@ -49,5 +47,15 @@ public class NewGroupViewModel {
 
     public void newGroup(Group g) {
         mainModel.newGroup(g);
+    }
+
+    @Override
+    public void addListener(String eventName, PropertyChangeListener listener) {
+        support.addPropertyChangeListener(eventName, listener);
+    }
+
+    @Override
+    public void removeListener(String eventName, PropertyChangeListener listener) {
+        support.removePropertyChangeListener(eventName, listener);
     }
 }

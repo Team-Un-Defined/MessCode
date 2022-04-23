@@ -29,28 +29,28 @@ public class NewEmployeeController implements Subject {
 
     private ResourceBundle bundle;
     private PropertyChangeSupport support;
+
     public void init(NewEmployeeViewModel newEmployeeVM, ViewHandler vh, ResourceBundle bundle) {
         this.newEmployeeVM = newEmployeeVM;
         this.vh = vh;
         this.bundle = bundle;
         ObservableList<String> types = FXCollections.observableArrayList(
-                        "employee",
-                        "projectLeader",
-                        "employer",
-                        "superuser"
-                );
+                "employee",
+                "projectLeader",
+                "employer",
+                "superuser"
+        );
         typeComboBox.setItems(types);
         support = new PropertyChangeSupport(this);
         errorLabel.textProperty().bind(newEmployeeVM.errorProperty());
-       newEmployeeVM.addListener("accCreateResponse", this::evalute);
+        newEmployeeVM.addListener("accCreateResponse", this::evalute);
     }
 
     private void evalute(PropertyChangeEvent propertyChangeEvent) {
         System.out.println("WOTÖFÖK? AGAIN");
-      errorLabel.setVisible(true);
+        errorLabel.setVisible(true);
         System.out.println("WOTÖFÖK? AGAIN2");
-      // put here the exit
-
+        // put here the exit
 
 
     }
@@ -60,20 +60,17 @@ public class NewEmployeeController implements Subject {
         String lastName = lastNameTextField.getText();
         String email = emailTextField.getText();
         String type = (String) typeComboBox.getValue();
-      int resp= newEmployeeVM.createAccount(firstName,lastName,email,type);
-      if(resp==1)
-      {
-          errorLabel.setVisible(true);
+        int resp = newEmployeeVM.createAccount(firstName, lastName, email, type);
+        if (resp == 1) {
+            errorLabel.setVisible(true);
 
-      }else if(resp==2)
-      {
-          errorLabel.setVisible(false);
-      } else if(resp==3){
-          errorLabel.setVisible(true);
-      }else if(resp==0)
-      {
-          errorLabel.setVisible(true);
-      }
+        } else if (resp == 2) {
+            errorLabel.setVisible(false);
+        } else if (resp == 3) {
+            errorLabel.setVisible(true);
+        } else if (resp == 0) {
+            errorLabel.setVisible(true);
+        }
 
 
     }
