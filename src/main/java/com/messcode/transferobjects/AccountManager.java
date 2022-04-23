@@ -52,10 +52,23 @@ public class AccountManager {
         }
     }
 
+    public boolean groupNameRegex(String groupName) {
+        String myRegex = "^.{4,}$";
 
+        Pattern myPattern = Pattern.compile(myRegex);
+        Matcher myMatcher = myPattern.matcher(groupName);
 
+        return myMatcher.find();
+    }
 
+    public boolean nameRegex(String name) {
+        String myRegex = "^[A-ZŠĽČŤŽŇÝÁÉÚÍÄÔ]{1}[a-zšľčťžňýáíéúäô]{1,}$";
 
+        Pattern myPattern = Pattern.compile(myRegex);
+        Matcher myMatcher = myPattern.matcher(name);
+
+        return myMatcher.find();
+    }
 
     public boolean passwordRegex(String password) {
         String myRegex = "^(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)[a-zA-Z0-9~`!@#$%^&*()_\\-+={[}\\]\\|\\:;\"'<,>.?/]]{8,16}$";
