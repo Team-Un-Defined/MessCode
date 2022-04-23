@@ -1,19 +1,19 @@
 package JDBC;
 
 import JDBC.DBConn.DatabaseConnection;
-import com.messcode.client.Start;
 import com.messcode.transferobjects.*;
 import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ImportData {
 
+    private static final Logger log4j = LogManager.getLogger(ImportData.class);
     private Character character;
     private Connection c;
     private DatabaseConnection conn;
@@ -31,7 +31,7 @@ public class ImportData {
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, e.getMessage(), e);
+            log4j.error(e.getMessage(), e);
         }
     }
 
@@ -193,7 +193,7 @@ public class ImportData {
             myPreparedStatement.executeQuery();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            Logger.getLogger(ImportData.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            log4j.error(ex.getMessage(), ex);
         }
     }
 
