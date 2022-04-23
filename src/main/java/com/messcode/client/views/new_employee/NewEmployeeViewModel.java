@@ -77,6 +77,14 @@ public class NewEmployeeViewModel implements Subject {
             error.setValue("Some fields are empty");
             return 0;
         }
+        if (!myAccountManager.nameRegex(firstName)) {
+            error.setValue("Invalid first name format!");
+            return 1;
+        }
+        if (!myAccountManager.nameRegex(lastName)) {
+            error.setValue("Invalid last name format!");
+            return 1;
+        }
         if (!myAccountManager.emailRegex(email)) {
             error.setValue("Invalid email format!");
             return 1;
