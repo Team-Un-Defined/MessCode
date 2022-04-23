@@ -2,6 +2,7 @@ package com.messcode.client.core;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,6 +13,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.messcode.client.Start;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -45,7 +47,7 @@ public class SettingsConfig {
         doc.getDocumentElement().normalize();
     }
 
-    public static String getConfigOf(String stuff){
+    public static String getConfigOf(String stuff) {
         String result = null;
         NodeList nodes = doc.getElementsByTagName("config");
         Node mynode = nodes.item(0);
@@ -54,26 +56,34 @@ public class SettingsConfig {
             Element myelement = (Element) mynode;
 
             result = myelement.getElementsByTagName(stuff).item(0).getTextContent();
-            System.out.println("Get config of "+ stuff + ": " + result);
+            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "Get config of " + stuff + ": " + result);
+            System.out.println("Get config of " + stuff + ": " + result);
         }
         return result;
     }
 
 
-    public static void setConfigOf(String stuff, String value){
+    public static void setConfigOf(String stuff, String value) {
         NodeList nodes = doc.getElementsByTagName("config");
         Node mynode = nodes.item(0);
         if (mynode.getNodeType() == Node.ELEMENT_NODE) {
             Element myelement = (Element) mynode;
-            System.out.println("Set config of "+ stuff + ": " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
+
+            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                    "Set config of " + stuff + ": " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
+            System.out.println("Set config of " + stuff + ": " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
+
             myelement.getElementsByTagName(stuff).item(0).setTextContent(value);
+
+            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                    "Updated " + stuff + " to " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
             System.out.println("Updated " + stuff + " to " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
         }
         SaveConfig();
     }
 
 
-    public static void SaveConfig(){
+    public static void SaveConfig() {
         // write DOM back to the file
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer xtransform;

@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import com.messcode.client.core.ViewHandler;
@@ -22,7 +23,9 @@ import org.controlsfx.control.ToggleSwitch;
 
 import java.beans.PropertyChangeEvent;
 import java.io.InputStream;
+
 import static java.lang.Thread.sleep;
+
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -90,7 +93,7 @@ public class ChatClientController {
         textChat.bind(chatVM.messageProperty());
 
         textChat.addListener((observableValue, s, t1) -> {
-             Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
                 Label label = new Label(textChat.getValue());
                 label.setMaxWidth(messagesListAll.getWidth() - 25);
@@ -108,33 +111,32 @@ public class ChatClientController {
         pmChat.bind(chatVM.PMProperty());
 
         pmChat.addListener((observableValue, oldVal, newVal) -> {
-            System.out.println("GOT THE SHIT GOT THE SHIT IMMA BE HAPPY"); 
+            System.out.println("GOT THE SHIT GOT THE SHIT IMMA BE HAPPY");
             Platform.runLater(() -> {
-                   Label label = new Label(newVal);
+                Label label = new Label(newVal);
                 label.setMaxWidth(messagesListGroup.getWidth() - 25);
                 label.setWrapText(true);
                 messagesListPM.getItems().add(label);
-             
-                
-                
+
+// TODO
 //                if(!paneInFront.equals("pm")) {
 //                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 //                    PMButtonImage.setImage(new Image(reddot));
 //                }
             });
         });
-        
+
         StringProperty gmChat = new SimpleStringProperty();
         gmChat.bind(chatVM.GMProperty());
-        gmChat.addListener((observableValue, oldVal, newVal ) -> {
+        gmChat.addListener((observableValue, oldVal, newVal) -> {
             Platform.runLater(() -> {
                 Label label = new Label(newVal);
                 label.setMaxWidth(messagesListGroup.getWidth() - 25);
                 label.setWrapText(true);
                 messagesListGroup.getItems().add(label);
-                });
+            });
         });
-        
+
         //  chatVM.addListener("NewPM", this::openPrivateChat);
 
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
@@ -144,11 +146,11 @@ public class ChatClientController {
         userTypeLabel.setText(chatVM.getCurrentUser().getType());
 
 
-        if(SettingsConfig.getConfigOf("language").equals("SK")){
+        if (SettingsConfig.getConfigOf("language").equals("SK")) {
             toggleSwitchLoc.setSelected(true);
         }
 
-        if(SettingsConfig.getConfigOf("dark_theme").equals("1")){
+        if (SettingsConfig.getConfigOf("dark_theme").equals("1")) {
             toggleSwitch.setSelected(true);
         }
 
@@ -257,6 +259,7 @@ public class ChatClientController {
         });
     }
 
+    // TODO
     private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
         usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
         chatVM.setReceiver(usersPM.getReceiver());
@@ -284,7 +287,7 @@ public class ChatClientController {
         }
     }
 
-    public void sendGroup(ActionEvent actionEvent) {
+    public void sendGroup() {
         if (chatVM.getReceiverGroup() == null) {
             System.out.println("EF YOU 2.0");
         } else {
@@ -310,7 +313,12 @@ public class ChatClientController {
                     messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
                 }
 
+                paneInFront = "pm";
                 panePrivate.toFront();
+                userListPane.toFront();
+                sendGroupButton.setDefaultButton(false);
+                sendAllButton.setDefaultButton(false);
+                sendPMButton.setDefaultButton(true);
                 otherUserNameLabel.setText(use.getSurname() + " " + use.getName());
             } else {
                 invitePmErrorLabel.setText(bundle.getString("talk_to_yourself"));
@@ -322,15 +330,15 @@ public class ChatClientController {
         if (groupsList.getSelectionModel().getSelectedItems().isEmpty()) {
 //            invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
-            Group group = (Group) groupsList.getSelectionModel().getSelectedItems().get(0);
-            
+            Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
+
             chatVM.setReceiverGroup(group);
             messagesListGroup.getItems().clear();
             ArrayList<GroupMessages> groupMess = chatVM.loadGroup();
-            for(GroupMessages g: groupMess){
-            
-            messagesListGroup.getItems().add(new Label(g.getTime()+" "+ g.getUsername() +": "+g.getMsg()));
-            
+            for (GroupMessages g : groupMess) {
+
+                messagesListGroup.getItems().add(new Label(g.getTime() + " " + g.getUsername() + ": " + g.getMsg()));
+
             }
             groupLabel.setText(group.getName());
         }
@@ -410,38 +418,38 @@ public class ChatClientController {
     private void displayPublic(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
         Platform.runLater(() -> {
-                System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
-                Label label = new Label(a);
-                label.setMaxWidth(messagesListAll.getWidth() - 25);
-                label.setWrapText(true);
-                messagesListAll.getItems().add(label);
+            System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
+            Label label = new Label(a);
+            label.setMaxWidth(messagesListAll.getWidth() - 25);
+            label.setWrapText(true);
+            messagesListAll.getItems().add(label);
 
-                if (!paneInFront.equals("all")) {
-                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-                    allButtonImage.setImage(new Image(reddot));
-                }
-            });
+            if (!paneInFront.equals("all")) {
+                InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+                allButtonImage.setImage(new Image(reddot));
+            }
+        });
     }
 
     private void displayPM(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
-       Platform.runLater(() -> {
-                   Label label = new Label(a);
-                label.setMaxWidth(messagesListGroup.getWidth() - 25);
-                label.setWrapText(true);
-                messagesListPM.getItems().add(label);
-             
-                
-            });
+        Platform.runLater(() -> {
+            Label label = new Label(a);
+            label.setMaxWidth(messagesListGroup.getWidth() - 25);
+            label.setWrapText(true);
+            messagesListPM.getItems().add(label);
+
+
+        });
     }
 
     private void displayGroup(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
-         Platform.runLater(() -> {
-                Label label = new Label(a);
-                label.setMaxWidth(messagesListGroup.getWidth() - 25);
-                label.setWrapText(true);
-                messagesListGroup.getItems().add(label);
-                });
+        Platform.runLater(() -> {
+            Label label = new Label(a);
+            label.setMaxWidth(messagesListGroup.getWidth() - 25);
+            label.setWrapText(true);
+            messagesListGroup.getItems().add(label);
+        });
     }
 }
