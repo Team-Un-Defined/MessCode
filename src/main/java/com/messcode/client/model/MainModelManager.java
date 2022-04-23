@@ -294,7 +294,14 @@ public class MainModelManager implements MainModel {
        Group updatedGroup = new Group(selectedGroup.getName(), selectedGroup.getDescription(), selectedGroup.getLeader());
        updatedGroup.setMembers(selectedGroup.getMembers());
        updatedGroup.addMembers(u);
-       client.addMember(selectedGroup);
+       client.addMember(updatedGroup);
+    }
+
+    @Override
+    public void removeMember(ArrayList<User> u) {
+       Group updatedGroup = new Group(selectedGroup.getName(), selectedGroup.getDescription(), selectedGroup.getLeader());
+       updatedGroup.addMembers(u);
+       client.removeMember(updatedGroup);
     }
 
 }

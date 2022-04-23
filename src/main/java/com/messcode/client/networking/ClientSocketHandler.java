@@ -290,4 +290,13 @@ public class ClientSocketHandler implements Runnable {
         }
         
     }
+
+    void removeMember(Group selectedGroup) {
+        try{
+        Container packet = new Container(selectedGroup,ClassName.REMOVE_GROUPMEMBER);
+        outToServer.writeObject(packet);
+        }catch(IOException e){
+          e.printStackTrace();
+        }
+    }
 }

@@ -219,6 +219,33 @@ public class ImportData {
             }
         }
    }
+   
+   public void removeGroupMembers(Group g) throws SQLException {
+         PreparedStatement myPreparedStatement;
+         ResultSet rs; 
+       for (int i = 0; i < g.getMembers().size(); i++) {
+            String query = "SELECT a.id as account_id, p.id AS project_id FROM account AS a LEFT JOIN projects AS p ON p.name = ? " +
+                    "WHERE a.email = ?";
+            myPreparedStatement = c.prepareStatement(query,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            myPreparedStatement.setString(1, g.getName());
+            myPreparedStatement.setString(2, g.getMembers().get(i).getEmail());
+            rs = myPreparedStatement.executeQuery();
+
+            rs.beforeFirst();
+            while (rs.next()) {
+                String query2 = "DELETE from project_members\n" +
+                "where account_id = ? and project_id = ?";
+                 myPreparedStatement = c.prepareStatement(query2);
+                 myPreparedStatement.setInt(1, rs.getInt("account_id"));
+                 myPreparedStatement.setInt(2, rs.getInt("project_id"));
+                 myPreparedStatement.executeUpdate();
+            }}
+       
+       
+      
+    }
+   
+   
 
    public void saveDataOnExit(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
@@ -384,6 +411,8 @@ public class ImportData {
        return unique;
    }
 
+   
+   
    public boolean changePassword(User us) throws SQLException {
        PreparedStatement myPreparedStatement;
        ResultSet rs;
@@ -425,6 +454,10 @@ public class ImportData {
         return true;
     }
 
+   
+   
+   
+   
     public boolean deleteUser(User u) throws SQLException {
 
         Statement st = c.createStatement();
@@ -444,4 +477,6 @@ public class ImportData {
         }
 return false;
     }
+
+    
 }
