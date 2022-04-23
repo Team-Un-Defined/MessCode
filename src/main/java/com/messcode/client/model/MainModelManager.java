@@ -32,11 +32,21 @@ public class MainModelManager implements MainModel {
     public Group getSelectedGroup() {
         return selectedGroup;
     }
-    @Override
+
     public void setSelectedGroup(Group selectedGroup) {
         support.firePropertyChange("changeSelectedGroup",null,selectedGroup);
         this.selectedGroup = selectedGroup;
 
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return user;
+    }
+
+    @Override
+    public void deleteUser(User use) {
+        client.deleteUser(use);
     }
 
     public MainModelManager(Client client) {
@@ -56,9 +66,15 @@ public class MainModelManager implements MainModel {
             client.addListener("LoginData", this::loginData);
             client.addListener("createUserResponse", this::createAccount);
             client.addListener("passChangeResponse", this::passChangeResponse);
+            client.addListener("userDeleted",this::userDeleted);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void userDeleted(PropertyChangeEvent propertyChangeEvent) {
+        User u =(User )propertyChangeEvent.getNewValue();
+        support.firePropertyChange("AddNewUser", null,u);
     }
 
     private void passChangeResponse(PropertyChangeEvent propertyChangeEvent) {
@@ -237,6 +253,7 @@ public class MainModelManager implements MainModel {
     public void changePassword(String current, String password, String passwordConfirmed) {
         User u = new User(user.getEmail(), current);
         u.setPassword(passwordConfirmed);
+        System.out.println("salty: "+ u.getSalt());
         client.changePassword(u);
     }
 

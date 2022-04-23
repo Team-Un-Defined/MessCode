@@ -31,7 +31,10 @@ public class EditMemberController {
     }
 
     public void addMember(ActionEvent actionEvent) {
-        System.out.println("addMember fired");
+        
+        
+        
+        
     }
     private void updateUserList() {
         allUsersList.setItems(editMemberVM.getUsers());

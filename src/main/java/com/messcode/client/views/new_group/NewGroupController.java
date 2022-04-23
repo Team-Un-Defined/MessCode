@@ -1,6 +1,7 @@
 package com.messcode.client.views.new_group;
 
 import com.messcode.client.core.ViewHandler;
+import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import javafx.event.ActionEvent;
@@ -47,8 +48,14 @@ public class NewGroupController {
         User groupLeader = groupLeaderComboBox.getValue();
         System.out.println("  77777777777777777777777777777 " + groupLeader.getEmail());
         String description = descriptionTextArea.getText();
-        newGroupVM.newGroup(new Group(groupName, description, groupLeader));
 
-        // NOMMI do we need regex for project name?
+        AccountManager myAccountManager = new AccountManager();
+        if (myAccountManager.groupNameRegex(groupName)) {
+            errorLabel.setVisible(false);
+            newGroupVM.newGroup(new Group(groupName, description, groupLeader));
+        } else {
+            errorLabel.setText("Incorrect group name format!");
+            errorLabel.setVisible(true);
+        }
     }
 }

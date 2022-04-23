@@ -35,4 +35,8 @@ public interface MainModel extends Subject {
     void changePassword(String current,String password, String passwordConfirmed);
   
     public void setSelectedGroup(Group selectedGroup);
+
+    User getCurrentUser();
+
+    void deleteUser(User use);
 }

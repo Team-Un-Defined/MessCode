@@ -111,6 +111,11 @@ public class SocketClient implements Client {
         socketHandler.changePassword(u);
     }
 
+    @Override
+    public void deleteUser(User use) {
+        socketHandler.deleteUser(use);
+    }
+
 
     public void userCreateResponse(boolean acc) {
         support.firePropertyChange("createUserResponse", null, acc);
@@ -119,6 +124,11 @@ public class SocketClient implements Client {
     public void passChangeResponse(Container packet) {
         support.firePropertyChange("passChangeResponse", null, packet);
     }
+
+    public void removeUser(Container packet) {
+        support.firePropertyChange("userDeleted", null, packet);
+    }
+
 }
 
 
