@@ -99,7 +99,7 @@
                     <Button fx:id="sendGroupButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendGroup" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.send_button" />
                     <TextField fx:id="textFieldGroup" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
                     <Label fx:id="groupLabel" layoutX="14.0" layoutY="14.0" />
-                    <Button layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#editMemberButton" prefHeight="17.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Add a member" />
+                    <Button fx:id="editMemberButton" layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#editMemberClicked" prefHeight="17.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Add a member" />
                 </children></Pane>
             <Pane fx:id="paneProfile" prefHeight="625.0" prefWidth="650.0" styleClass="pane">
                 <children>
@@ -136,8 +136,8 @@
                   <Button layoutX="200.0" layoutY="74.0" mnemonicParsing="false" onAction="#changePasswordClicked" style="-fx-background-color: transparent;" styleClass="buttonPass" text="%chat_client.change_pass" />
                   <Button fx:id="newGroupButton" layoutX="14.0" layoutY="280.0" mnemonicParsing="false" onAction="#newGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_group" />
                   <Button fx:id="newEmployeeButton" layoutX="14.0" layoutY="320.0" mnemonicParsing="false" onAction="#newEmployeeClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_employee" />
-                  <Button layoutX="250.0" layoutY="280.0" mnemonicParsing="false" onAction="#removeGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_group" />
-                  <Button layoutX="250.0" layoutY="320.0" mnemonicParsing="false" onAction="#removeUserClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_user" />
+                  <Button fx:id="removeGroupButton" layoutX="250.0" layoutY="280.0" mnemonicParsing="false" onAction="#removeGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_group" />
+                  <Button fx:id="removeUserButton" layoutX="250.0" layoutY="320.0" mnemonicParsing="false" onAction="#removeUserClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_user" />
                 </children>
             </Pane>
         </children>

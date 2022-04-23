@@ -66,6 +66,9 @@ public class ChatClientController {
     public Button sendAllButton;
     public Button newGroupButton;
     public Button newEmployeeButton;
+    public Button editMemberButton;
+    public Button removeGroupButton;
+    public Button removeUserButton;
     public ImageView allButtonImage;
     public ImageView groupButtonImage;
     public ImageView PMButtonImage;
@@ -183,13 +186,21 @@ public class ChatClientController {
             }
         });
 
-        if (chatVM.getCurrentUser().isProjectLeader() || chatVM.getCurrentUser().isEmployee()) {
+        if (chatVM.getCurrentUser().isEmployee()) {
             newEmployeeButton.setVisible(false);
             newGroupButton.setVisible(false);
+            removeUserButton.setVisible(false);
+            removeGroupButton.setVisible(false);
+            editMemberButton.setVisible(false);
+        } else if (chatVM.getCurrentUser().isProjectLeader()) {
+            newEmployeeButton.setVisible(false);
+            newGroupButton.setVisible(false);
+            removeUserButton.setVisible(false);
+            removeGroupButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
             newEmployeeButton.setVisible(false);
+            removeUserButton.setVisible(false);
         }
-
 
         for (PublicMessage msg : chatVM.getCurrentUser().getUnreadMessages()) {
             InputStream reddot = getClass().getResourceAsStream("/reddot.png");
@@ -398,7 +409,7 @@ public class ChatClientController {
         vh.openNewGroup(cssUsed);
     }
 
-    public void editMemberButton() {
+    public void editMemberClicked() {
         vh.openEditMember(cssUsed);
     }
 
