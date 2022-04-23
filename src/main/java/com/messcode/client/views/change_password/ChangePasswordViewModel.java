@@ -1,13 +1,15 @@
 package com.messcode.client.views.change_password;
 
 import com.messcode.client.model.MainModel;
+import com.messcode.transferobjects.util.Subject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class ChangePasswordViewModel {
+public class ChangePasswordViewModel implements Subject {
 
     private MainModel mainModel;
     private PropertyChangeSupport support;
@@ -43,5 +45,15 @@ public class ChangePasswordViewModel {
         } else {
             error.setValue("The new passwords do not match");
         }
+    }
+
+    @Override
+    public void addListener(String eventName, PropertyChangeListener listener) {
+        support.addPropertyChangeListener(eventName, listener);
+    }
+
+    @Override
+    public void removeListener(String eventName, PropertyChangeListener listener) {
+        support.removePropertyChangeListener(eventName, listener);
     }
 }
