@@ -162,10 +162,9 @@ public class ImportData {
 
            rs.next();
            userId = rs.getInt("id");
-
            System.out.println("WTFFFFFFFFFFF"+ userId);
 
-           if (rs.getString("type").equals("emplyee")) {
+           if (rs.getString("type").equals("employee")) {
                String query = "UPDATE public.account SET type = 'project_leader' WHERE id = ?";
                myPreparedStatement = c.prepareStatement(query);
                myPreparedStatement.setInt(1, userId);

@@ -33,4 +33,5 @@ public interface MainModel extends Subject {
     public ArrayList<GroupMessages> loadGroup(Group selectedGroup);
 
     void changePassword(String current,String password, String passwordConfirmed);
+    public void setSelectedGroup(Group selectedGroup);
 }
