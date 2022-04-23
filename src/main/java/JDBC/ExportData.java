@@ -176,7 +176,7 @@ public class ExportData {
             lastSeen.add(new PublicMessage(null, "PublicMessageTrue"));
         }
 
-        String query4 = "SELECT la.user_id, la.private_message_id, p.receiver_id, p.message, p.date, a.fname, " +
+        String query4 = "SELECT la.user_id, la.private_message_id, p.receiver_id,p.sender_id, p.message, p.date, a.fname, " +
                 "a.lname, a.email FROM last_seen AS la JOIN private_messages as p ON p.id = la.private_message_id " +
                 "JOIN account AS a ON (a.id = p.receiver_id OR a.id = p.sender_id) AND a.id != ? WHERE la.user_id = ? " +
                 "ORDER BY DATE";
