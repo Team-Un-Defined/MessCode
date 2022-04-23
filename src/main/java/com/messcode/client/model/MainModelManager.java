@@ -1,5 +1,6 @@
 package com.messcode.client.model;
 
+import com.messcode.client.Start;
 import com.messcode.client.networking.Client;
 import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Container;
@@ -15,6 +16,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 public class MainModelManager implements MainModel {
 
@@ -34,7 +36,7 @@ public class MainModelManager implements MainModel {
         this.client = client;
         try {
             client.start();
-            client.addListener("newGroupMessage", this:: receiveGroup);
+            client.addListener("newGroupMessage", this::receiveGroup);
             client.addListener("RefresgGroups", this::refreshGroupList);
             client.addListener("AddNewUser", this::addToUsersList);
             client.addListener("MessageForEveryone", this::receivePublic);
@@ -51,11 +53,11 @@ public class MainModelManager implements MainModel {
 
     private void passChangeResponse(PropertyChangeEvent propertyChangeEvent) {
         Container packet = ((Container) propertyChangeEvent.getNewValue());
-        support.firePropertyChange("passChangeResponse", null, ((boolean)packet.getObject()));
+        support.firePropertyChange("passChangeResponse", null, ((boolean) packet.getObject()));
     }
 
     private void createAccount(PropertyChangeEvent propertyChangeEvent) {
-        support.firePropertyChange("createUserResponse", null, (boolean)propertyChangeEvent.getNewValue());
+        support.firePropertyChange("createUserResponse", null, (boolean) propertyChangeEvent.getNewValue());
     }
 
     private void loginData(PropertyChangeEvent propertyChangeEvent) {
@@ -67,16 +69,16 @@ public class MainModelManager implements MainModel {
             allGroups = (ArrayList<Group>) objs.get(4);
         }
         user = (User) objs.get(2);
-        allUsers=(ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
+        allUsers = (ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
         for (User u : allUsers) {
-        
-            System.out.println("///////////"+ u.getEmail()+"////////////");
-          
-            
+            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                    "///////////" + u.getEmail() + "////////////");
+            System.out.println("///////////" + u.getEmail() + "////////////");
         }
-        
+
         support.firePropertyChange("AddOfflineUsers", null, allUsers);
         support.firePropertyChange("RefresgGroups", null, allGroups);
+        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "Everything has been casted");
         System.out.println("Everything has been casted");
 
         //user.getLastSeen.add(lastSeen);
@@ -84,12 +86,15 @@ public class MainModelManager implements MainModel {
         this.allMessage = allPublicMessages;
 
         support.firePropertyChange("LoginData", null, allMessage);  // probably lot more stuff should happen here and vm, but rn this is okay.
+        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                user.getEmail() + " " + user.getName());
         System.out.println(user.getEmail() + " " + user.getName());
         support.firePropertyChange("SetUsernameInChat", null, user);
     }
 
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
         boolean answer = (boolean) propertyChangeEvent.getNewValue();
+        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "in model: " + answer);
         System.out.println("in model: " + answer);
         support.firePropertyChange("LoginResponseToVM", null, answer);
     }
@@ -108,6 +113,7 @@ public class MainModelManager implements MainModel {
     public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(publicMessage);
+        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "got to model");
         System.out.println("got to model");
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
@@ -115,13 +121,15 @@ public class MainModelManager implements MainModel {
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(pm);
+        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                "//////////////////////////PMPM//////////////////////////////");
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
 
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
-        
-        GroupMessages gm = (GroupMessages)propertyChangeEvent.getNewValue();
+
+        GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
         this.allMessage.add(gm);
         support.firePropertyChange("newGroupMessage", null, gm);
     }
@@ -133,7 +141,7 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void addUser(String email, String pwd) {
-        User javaIsRetarded= new  User(email, pwd);
+        User javaIsRetarded = new User(email, pwd);
 
         client.addUser(javaIsRetarded);
     }
@@ -172,7 +180,7 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void register(String firstName, String lastName, String email, String password,String type) {
+    public void register(String firstName, String lastName, String email, String password, String type) {
         User newUser = new User(firstName, lastName, email, password, type);
         client.register(newUser);
     }
@@ -183,9 +191,8 @@ public class MainModelManager implements MainModel {
         ArrayList<PrivateMessage> pivi = new ArrayList<>();
         for (PublicMessage p : this.allMessage) {
             if (p instanceof PrivateMessage && (((PrivateMessage) p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail()))) {
-                    pivi.add(((PrivateMessage) p));
+                pivi.add(((PrivateMessage) p));
             }
-
         }
         return pivi;
     }
@@ -196,45 +203,43 @@ public class MainModelManager implements MainModel {
         PublicMessage puu = new PublicMessage(user, "dasd");
         for (PublicMessage p : this.allMessage) {
             if (p.getClass().equals(puu.getClass())) {
-                System.out.println("messa: time : "+ p.getTime() + "  mes: "+ p.getMsg());
+                java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                        "messa: time : " + p.getTime() + "  mes: " + p.getMsg());
+                System.out.println("messa: time : " + p.getTime() + "  mes: " + p.getMsg());
                 pubi.add(p);
             }
         }
         return pubi;
     }
+
     @Override
     public ArrayList<GroupMessages> loadGroup(Group selectedGroup) {
         ArrayList<GroupMessages> grupi = new ArrayList<>();
-        for(PublicMessage p : this.allMessage){
-            if(p instanceof GroupMessages && (selectedGroup.getName().equals(((GroupMessages)p).getGroup().getName()))){
-            grupi.add((GroupMessages) p);
+        for (PublicMessage p : this.allMessage) {
+            if (p instanceof GroupMessages && (selectedGroup.getName().equals(((GroupMessages) p).getGroup().getName()))) {
+                grupi.add((GroupMessages) p);
             }
-        
         }
-       return grupi; 
+        return grupi;
     }
 
     @Override
-    public void changePassword(String current,String password, String passwordConfirmed) {
-      User u = new User(user.getEmail(),current);
-      u.setPassword(passwordConfirmed);
-
-      client.changePassword(u);
+    public void changePassword(String current, String password, String passwordConfirmed) {
+        User u = new User(user.getEmail(), current);
+        u.setPassword(passwordConfirmed);
+        client.changePassword(u);
     }
 
     @Override
     public void newGroup(Group g) {
-       client.newGroup(g);
+        client.newGroup(g);
     }
+
     public void refreshGroupList(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
-        allGroups= g;
+        allGroups = g;
         support.firePropertyChange("RefresgGroups", null, g);
     }
 
-    
 
-    
-    
-    
 }
