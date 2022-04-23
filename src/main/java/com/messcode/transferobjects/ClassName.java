@@ -28,6 +28,8 @@ public enum ClassName {
     CREATING_GROUP,
     
     GROUP_UPDATE,
+
+    ADD_GROUPMEMBER,
     //public messages
     PUBLIC_MESSAGE,
 
@@ -35,6 +37,7 @@ public enum ClassName {
     USER_LIST, LOGIN_DATA, USER_JOIN,
 
     PASSWORD_CHANGE,
+    KICK_USER,
     /**
      * new user registration
      */

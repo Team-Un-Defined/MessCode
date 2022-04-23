@@ -29,7 +29,9 @@ public class Group implements Serializable{
     public void addMember(User u) {
         members.add(u);
     }
-
+ public void addMembers(ArrayList<User> u) {
+        members.addAll(u);
+    }
     public String getName() {
         return name;
     }
