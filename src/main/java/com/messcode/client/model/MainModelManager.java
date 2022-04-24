@@ -56,7 +56,7 @@ public class MainModelManager implements MainModel {
         try {
             client.start();
             client.addListener("newGroupMessage", this::receiveGroup);
-            client.addListener("RefresgGroups", this::refreshGroupList);
+            client.addListener("RefreshGroups", this::refreshGroupList);
             client.addListener("AddNewUser", this::addToUsersList);
             client.addListener("MessageForEveryone", this::receivePublic);
             client.addListener("newPM", this::receivePM);
@@ -109,7 +109,7 @@ public class MainModelManager implements MainModel {
         }
 
         support.firePropertyChange("AddOfflineUsers", null, allUsers);
-        support.firePropertyChange("RefresgGroups", null, allGroups);
+        support.firePropertyChange("RefreshGroups", null, allGroups);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "Everything has been casted");
         System.out.println("Everything has been casted");
 

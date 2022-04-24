@@ -94,7 +94,7 @@ public class SocketClient implements Client {
 
     @Override
     public void refreshGroupList(ArrayList<Group> g) {
-        support.firePropertyChange("RefresgGroups", null, g);
+        support.firePropertyChange("RefreshGroups", null, g);
     }
    @Override
     public void newGroup(Group g) {

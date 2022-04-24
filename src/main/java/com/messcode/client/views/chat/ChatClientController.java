@@ -319,7 +319,6 @@ public class ChatClientController {
                 System.out.println("Sending message to " + groupMember.getEmail());
 
                 if (groupMember.getMyPublicKey() == null) {
-                    for (gr)
                     System.out.println("Group member " + groupMember.getEmail() + "doesnt have public key!");
                     break;
                 }

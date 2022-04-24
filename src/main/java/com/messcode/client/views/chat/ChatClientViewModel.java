@@ -41,7 +41,7 @@ public class ChatClientViewModel implements Subject {
         groups = FXCollections.observableArrayList();
         this.mainModel = mainModel;
         mainModel.addListener("newGroupMessage", this::displayGroup);
-        mainModel.addListener("RefresgGroups", this::refreshGroups);
+        mainModel.addListener("RefreshGroups", this::refreshGroups);
         mainModel.addListener("AddNewUser", this::getUsersList);
         mainModel.addListener("MessageForEveryone", this::displayPublic);
         mainModel.addListener("newPM", this::displayPM);
