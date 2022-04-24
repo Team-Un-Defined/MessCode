@@ -15,12 +15,20 @@ public class ViewProfileController {
 
     private ViewProfileViewModel viewProfileVM;
     private ViewHandler vh;
-    private User user;
     private ResourceBundle bundle;
 
-    public void init(ViewProfileViewModel removeUserVM, ViewHandler vh, ResourceBundle bundle) {
-        this.viewProfileVM = removeUserVM;
+    public void init(ViewProfileViewModel viewProfileVM, ViewHandler vh, ResourceBundle bundle) {
+        this.viewProfileVM = viewProfileVM;
         this.vh = vh;
         this.bundle = bundle;
+
+        this.viewProfileVM.setUser();
+
+        User user = viewProfileVM.getUser();
+        nameLabel.setText(user.getName() + " " + user.getSurname());
+        firstNameLabel.setText(user.getName());
+        lastNameLabel.setText(user.getSurname());
+        emailLabel.setText(user.getEmail());
+        roleLabel.setText(user.getType());
     }
 }

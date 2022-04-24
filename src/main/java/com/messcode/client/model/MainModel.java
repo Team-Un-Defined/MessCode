@@ -54,5 +54,7 @@ public interface MainModel extends Subject {
 
     public void setSelectedUser(User u);
 
+    User getSelectedUser();
+
     public boolean unredgGMs(Group g);
 }
