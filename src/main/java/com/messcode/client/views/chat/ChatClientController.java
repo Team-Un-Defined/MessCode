@@ -165,7 +165,7 @@ public class ChatClientController {
             resetPasswordButton.setVisible(false);
             editProjectLeaderButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
-            sendGroupButton.setVisible(false);
+//            sendGroupButton.setVisible(false);
             removeUserButton.setVisible(false);
             resetPasswordButton.setVisible(false);
         }
@@ -182,10 +182,6 @@ public class ChatClientController {
         usersListFXML.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                    if (chatVM.getCurrentUser().getType().equals("superuser")) {
-                        resetPasswordButton.setVisible(true);
-                    }
-
                     inviteToPmButton();
                 }
             }
@@ -194,15 +190,6 @@ public class ChatClientController {
         groupsList.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                    if (chatVM.getCurrentUser().getType().equals("superuser") || chatVM.getCurrentUser().getType().equals("employer")) {
-                        editProjectLeaderButton.setVisible(true);
-                        editMemberButton.setVisible(true);
-                    }
-                    if (chatVM.getCurrentUser().getType().equals("project_leader")) {
-                        editMemberButton.setVisible(true);
-                    }
-
-
                     openGroup();
                 }
             }
@@ -249,14 +236,19 @@ public class ChatClientController {
                         imageView.setFitHeight(10);
                         imageView.setPreserveRatio(true);
                         this.setGraphic(imageView);
+                        String text = item.getName() + " " + item.getSurname(); // get text from item
+                        setText(text);
                     } else if (item.getSalt().equals(" - deleted")) {
                         this.setGraphic(null);
+                        String text = item.getName() + " " + item.getSurname(); // get text from item
+                        setText(text);
                         this.setTextFill(Color.GRAY);
                     } else {
                         this.setGraphic(null);
+                        String text = item.getName() + " " + item.getSurname(); // get text from item
+                        setText(text);
                     }
-                    String text = item.getName() + " " + item.getSurname(); // get text from item
-                    setText(text);
+
                 }
             }
         });
@@ -305,7 +297,13 @@ public class ChatClientController {
         if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
-            User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
+            if (chatVM.getCurrentUser().getType().equals("superuser")) {
+                resetPasswordButton.setVisible(true);
+            }
+            if (usersListFXML.getSelectionModel().getSelectedItems().get(0).getSalt().equals(" - deleted")) {
+                sendPMButton.setDisable(true);
+            }
+            User use = usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
                 System.out.println("WOTOTOFÖK");
@@ -340,9 +338,25 @@ public class ChatClientController {
 
     public void openGroup() {
         if (groupsList.getSelectionModel().getSelectedItems().isEmpty()) {
-//            invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
+            if (chatVM.getCurrentUser().getType().equals("superuser") || chatVM.getCurrentUser().getType().equals("employer")) {
+                editProjectLeaderButton.setVisible(true);
+                editMemberButton.setVisible(true);
+            }
+
+            if (chatVM.getCurrentUser().getType().equals("project_leader")) {
+                editMemberButton.setVisible(true);
+            }
+
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
+
+            if (groupsList.getSelectionModel().getSelectedItems().get(0).getLeader() == null
+                    || group.isMember(chatVM.getCurrentUser())) {
+                sendGroupButton.setDisable(true);
+            } else {
+                sendGroupButton.setDisable(false);
+            }
+            
             System.out.println(group.getName());
             chatVM.setReceiverGroup(group);
             messagesListGroup.getItems().clear();
