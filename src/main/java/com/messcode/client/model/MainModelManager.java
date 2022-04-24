@@ -275,13 +275,14 @@ public class MainModelManager implements MainModel {
 
     public void refreshGroupList(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
-        
-        for(Group grup: g){
-            System.out.println("group : "+ grup.getName());
-            System.out.println(" actual group: "+ selectedGroup.getName());
-        if(grup.getName().equals(selectedGroup.getName())){
-            setSelectedGroup(grup);
-        }
+        if(selectedGroup!=null) {
+            for (Group grup : g) {
+                System.out.println("group : " + grup.getName());
+                System.out.println(" actual group: " + selectedGroup.getName());
+                if (grup.getName().equals(selectedGroup.getName())) {
+                    setSelectedGroup(grup);
+                }
+            }
         }
         allGroups = g;
         support.firePropertyChange("RefresgGroups", null, g);
