@@ -145,6 +145,11 @@ public class SocketClient implements Client {
         socketHandler.deleteGroup(g);
     }
 
+    @Override
+    public void resetPassword(User use) {
+        socketHandler.resetPassword(use);
+    }
+
     public void getAllGroupMessages(Container pckt) {
         support.firePropertyChange("AddAllGroupMessages",null,pckt);
     }

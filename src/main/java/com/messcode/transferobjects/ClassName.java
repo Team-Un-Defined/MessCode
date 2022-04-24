@@ -39,6 +39,7 @@ public enum ClassName {
     PASSWORD_CHANGE,
     KICK_USER,
     ALL_GROUP_MESSAGES,
+    RESET_PASSWORD,
     /**
      * new user registration
      */

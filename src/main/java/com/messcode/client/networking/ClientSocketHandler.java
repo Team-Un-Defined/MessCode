@@ -319,4 +319,13 @@ public class ClientSocketHandler implements Runnable {
           e.printStackTrace();
         }
     }
+
+    public void resetPassword(User use) {
+        try{
+            Container packet = new Container(use,ClassName.RESET_PASSWORD);
+            outToServer.writeObject(packet);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 }
