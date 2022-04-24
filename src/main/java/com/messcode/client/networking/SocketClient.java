@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class SocketClient implements Client {
 
-    private static final String SERVER_IP = "127.0.0.1";
+    private static final String SERVER_IP = "192.168.0.105";
     private static final int SERVER_PORT = 9090;
 
     private ClientSocketHandler socketHandler;
@@ -26,6 +26,8 @@ public class SocketClient implements Client {
     public void start() throws IOException {
         support = new PropertyChangeSupport(this);
         socket = new Socket(SERVER_IP, SERVER_PORT);
+
+        System.out.println("ip " +socket.getInetAddress());
         socketHandler = new ClientSocketHandler(socket, this);
         Thread thread = new Thread(socketHandler);
         thread.setDaemon(true);

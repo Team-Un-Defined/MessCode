@@ -4,6 +4,7 @@ import JDBC.ExportData;
 import JDBC.ImportData;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,7 +19,8 @@ public class Server {
      */
     public void start() {
         try {
-            ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
+            InetAddress ip = InetAddress.getByName("192.168.0.105");
+            ServerSocket serverSocket = new ServerSocket(SERVER_PORT,50,ip);
             ConnectionPool pool = new ConnectionPool();
             ImportData dbi = new ImportData();
             ExportData dbe = new ExportData();

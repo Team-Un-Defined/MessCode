@@ -112,12 +112,12 @@ public class MainModelManager implements MainModel {
         Container packet = ((Container) propertyChangeEvent.getNewValue());
         ArrayList<Object> objs = (ArrayList<Object>) packet.getObject();
         ArrayList<PublicMessage> allPublicMessages = (ArrayList<PublicMessage>) objs.get(0);
-        ArrayList<PublicMessage> lastSeen = (ArrayList<PublicMessage>) objs.get(1);
-        if (objs.size() > 4) {
-            allGroups = (ArrayList<Group>) objs.get(4);
+
+        if (objs.size() > 3) {
+            allGroups = (ArrayList<Group>) objs.get(3);
         }
-        user = (User) objs.get(2);
-        allUsers = (ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
+        user = (User) objs.get(1);
+        allUsers = (ArrayList<User>) objs.get(2); //ALL USERS ADDED TO THE ALLUSER LIST.
         for (User u : allUsers) {
             System.out.println("///////////" + u.getSalt() + "////////////");
 
