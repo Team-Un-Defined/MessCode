@@ -239,7 +239,15 @@ public class ExportData {
             u.setName(rs.getString("fname"));
             u.setSurname(rs.getString("lname"));
             u.setType(rs.getString("type"));
-            u.setSalt("");
+            if(rs.getString("pwd_hash").equals("deleted"))
+            {
+
+                u.setSalt(" - deleted");
+                System.out.println("this guy should be delted: "+ u.getEmail() +" : "+ u.getSalt());
+            }else {
+                u.setSalt("");
+            }
+
 
             users.add(u);
         }
@@ -346,5 +354,34 @@ public class ExportData {
         } while(!(rs0 == null) && rs0.next());
 
         return groups;
+    }
+
+    public ArrayList<PublicMessage> getGroupMessages(Group g) throws SQLException {
+        PreparedStatement myPreparedStatement;
+        ResultSet rs = null;
+
+
+
+
+        ArrayList<PublicMessage> groupMessages = new ArrayList<>();
+
+        String query7 = "SELECT g.message, g.date, a.fname, a.lname, a.type, a.email FROM group_messages AS g " +
+                        "JOIN account AS a ON a.id = g.sender_id JOIN projects AS p ON p.id = g.project_id " +
+                        "WHERE p.name = ? ORDER BY DATE";
+                myPreparedStatement = c.prepareStatement(query7, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                myPreparedStatement.setString(1, g.getName());
+                rs = myPreparedStatement.executeQuery();
+
+                rs.beforeFirst();
+                while (rs.next()) {
+                    User member = new User(rs.getString("email"), "a");
+                    member.setName(rs.getString("fname"));
+                    member.setSurname(rs.getString("lname"));
+                    member.setType(rs.getString("type"));
+                    GroupMessages gg = new GroupMessages(member, rs.getString("message"), g, rs.getTimestamp("date"));
+                    groupMessages.add(gg);
+                }
+
+       return groupMessages;
     }
 }

@@ -1,24 +1,28 @@
-[ERROR] 2022-04-10 09:44:29.572 [main] RunApp - Error Message Logged !!!
-java.lang.NullPointerException: NullError
-	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
-[INFO ] 2022-04-10 09:44:29.590 [main] RunApp - INFO INFO !!!
-java.lang.NullPointerException: NullError
-	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
-[ERROR] 2022-04-10 09:44:47.558 [main] RunApp - Error Message Logged !!!
-java.lang.NullPointerException: NullError
-	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
-[INFO ] 2022-04-10 09:44:47.569 [main] RunApp - INFO INFO !!!
-java.lang.NullPointerException: NullError
-	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
-[ERROR] 2022-04-10 09:47:46.758 [main] RunApp - Error Message Logged !!!
-java.lang.NullPointerException: NullError
-	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
-[INFO ] 2022-04-10 09:47:46.770 [main] RunApp - INFO INFO !!!
-java.lang.NullPointerException: NullError
-	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
-[ERROR] 2022-04-10 09:48:11.697 [main] RunApp - Error Message Logged !!!
-java.lang.NullPointerException: NullError
-	at com.messcode.client.Start.main(Start.java:11) [classes/:?]
-[INFO ] 2022-04-10 09:48:11.711 [main] RunApp - INFO INFO !!!
-java.lang.NullPointerException: NullError
-	at com.messcode.client.Start.main(Start.java:12) [classes/:?]
+[ERROR] 2022-04-24 12:31:03.208 [Thread-0] ImportData - ERROR: null value in column "leader_id" of relation "projects" violates not-null constraint
+  Detail: Failing row contains (6, null, 5dFF(DELETED0), I hyh this shit).
+org.postgresql.util.PSQLException: ERROR: null value in column "leader_id" of relation "projects" violates not-null constraint
+  Detail: Failing row contains (6, null, 5dFF(DELETED0), I hyh this shit).
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2675) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2365) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:355) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:490) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:408) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:166) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:118) ~[postgresql-42.3.3.jar:?]
+	at JDBC.ImportData.deleteGroup(ImportData.java:263) [classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:57) [classes/:?]
+	at java.lang.Thread.run(Thread.java:829) [?:?]
+[ERROR] 2022-04-24 12:31:07.776 [Thread-0] ImportData - ERROR: null value in column "leader_id" of relation "projects" violates not-null constraint
+  Detail: Failing row contains (6, null, 5dFF(DELETED0), I hyh this shit).
+org.postgresql.util.PSQLException: ERROR: null value in column "leader_id" of relation "projects" violates not-null constraint
+  Detail: Failing row contains (6, null, 5dFF(DELETED0), I hyh this shit).
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2675) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2365) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:355) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:490) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:408) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:166) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:118) ~[postgresql-42.3.3.jar:?]
+	at JDBC.ImportData.deleteGroup(ImportData.java:263) [classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:57) [classes/:?]
+	at java.lang.Thread.run(Thread.java:829) [?:?]
