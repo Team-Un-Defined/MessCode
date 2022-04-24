@@ -13,14 +13,16 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-public class RemoveUserViewModel {
+public class RemoveUserViewModel implements Subject {
     private MainModel mainModel;
+    private PropertyChangeSupport support;
 
     private ObservableList<User> usersList;
 
     public RemoveUserViewModel(MainModel mainModel) {
 
         this.mainModel = mainModel;
+        support = new PropertyChangeSupport(this);
         usersList= FXCollections.observableArrayList();
 
 
@@ -62,5 +64,15 @@ public class RemoveUserViewModel {
         Platform.runLater(() -> {
             usersList.remove(use);
         });
+    }
+
+    @Override
+    public void addListener(String eventName, PropertyChangeListener listener) {
+        support.addPropertyChangeListener(eventName, listener);
+    }
+
+    @Override
+    public void removeListener(String eventName, PropertyChangeListener listener) {
+        support.removePropertyChangeListener(eventName, listener);
     }
 }

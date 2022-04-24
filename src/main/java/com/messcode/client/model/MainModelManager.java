@@ -168,7 +168,6 @@ public class MainModelManager implements MainModel {
     }
 
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
-
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
         this.allMessage.add(gm);
         support.firePropertyChange("newGroupMessage", null, gm);
@@ -181,9 +180,8 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void addUser(String email, String pwd) {
-        User javaIsRetarded = new User(email, pwd);
-
-        client.addUser(javaIsRetarded);
+        User user = new User(email, pwd);
+        client.addUser(user);
     }
 
     @Override
@@ -306,15 +304,12 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void deleteGroup(Group g) {
-      
         client.deleteGroup(g);
     }
 
     @Override
     public void resetPassword(User use) {
-
         client.resetPassword(use);
-
     }
 
     @Override

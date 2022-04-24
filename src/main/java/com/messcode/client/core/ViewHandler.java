@@ -9,6 +9,7 @@ import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
 import com.messcode.client.views.remove_group.RemoveGroupController;
 import com.messcode.client.views.remove_user.RemoveUserController;
+import com.messcode.client.views.view_profile.ViewProfileController;
 import com.messcode.transferobjects.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -40,6 +41,7 @@ public class ViewHandler {
     private Scene removeUser;
     private Scene removeGroup;
     private Scene editProjectLeader;
+    private Scene viewProfile;
     private ResourceBundle bundle;
 
     private User myUser = null;
@@ -294,6 +296,26 @@ public class ViewHandler {
         removeGroupStage.getScene().getStylesheets().add(css);
         removeGroupStage.setResizable(false);
         removeGroupStage.show();
+    }
+
+    public void openViewProfile(String css) {
+        Stage viewProfileStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        if (viewProfile == null) {
+            Parent root = getRootByPath("ViewProfile.fxml", loader);
+            ViewProfileController controller = loader.getController();
+            controller.init(vmf.getViewProfileVM(), this, bundle);
+            viewProfile = new Scene(root);
+        }
+
+        viewProfileStage.setTitle(bundle.getString("view_profile.up"));
+        viewProfileStage.setScene(viewProfile);
+        viewProfileStage.getIcons().add(new Image("icon.png"));
+        viewProfileStage.getScene().getStylesheets().add(css);
+        viewProfileStage.setResizable(false);
+        viewProfileStage.show();
     }
 
     private Parent getRootByPath(String path, FXMLLoader loader) {
