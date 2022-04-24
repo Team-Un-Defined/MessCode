@@ -40,5 +40,7 @@ public interface Client extends Subject {
 
     public void deleteGroup(Group g);
 
+    public void changeLeader(Group g);
+
     void resetPassword(User use);
 }

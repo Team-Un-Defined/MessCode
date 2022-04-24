@@ -153,6 +153,11 @@ public class SocketClient implements Client {
     public void getAllGroupMessages(Container pckt) {
         support.firePropertyChange("AddAllGroupMessages",null,pckt);
     }
+
+    @Override
+    public void changeLeader(Group g) {
+        socketHandler.changeLeader(g);
+    }
 }
 
 

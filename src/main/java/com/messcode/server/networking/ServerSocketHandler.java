@@ -50,11 +50,17 @@ public class ServerSocketHandler implements Runnable {
                 Container packet = (Container) (inFromClient.readObject());
                 System.out.println("NEW PACKET : " + packet.getClassName() + " object " + packet.getObject());
                 switch (packet.getClassName()) {
-
+                    case CHANGE_GROUP_LEADER:{
+                     Group g = (Group) packet.getObject();
+                     dbi.updateLeader(g);
+                      pool.updateGroup(dbe);
+                    break;
+                    }
                     case DELETE_GROUP:{
                     Group g = (Group) packet.getObject();
                     dbi.removeGroupMembers(g);
-                    dbi.deleteGroup(g);
+                    g.setLeader(null);
+                    dbi.updateLeader(g);
                     pool.updateGroup(dbe);
 
                     break;

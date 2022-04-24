@@ -1,28 +1,23 @@
-[ERROR] 2022-04-24 12:31:03.208 [Thread-0] ImportData - ERROR: null value in column "leader_id" of relation "projects" violates not-null constraint
-  Detail: Failing row contains (6, null, 5dFF(DELETED0), I hyh this shit).
-org.postgresql.util.PSQLException: ERROR: null value in column "leader_id" of relation "projects" violates not-null constraint
-  Detail: Failing row contains (6, null, 5dFF(DELETED0), I hyh this shit).
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2675) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2365) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:355) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:490) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:408) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:166) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:118) ~[postgresql-42.3.3.jar:?]
-	at JDBC.ImportData.deleteGroup(ImportData.java:263) [classes/:?]
-	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:57) [classes/:?]
-	at java.lang.Thread.run(Thread.java:829) [?:?]
-[ERROR] 2022-04-24 12:31:07.776 [Thread-0] ImportData - ERROR: null value in column "leader_id" of relation "projects" violates not-null constraint
-  Detail: Failing row contains (6, null, 5dFF(DELETED0), I hyh this shit).
-org.postgresql.util.PSQLException: ERROR: null value in column "leader_id" of relation "projects" violates not-null constraint
-  Detail: Failing row contains (6, null, 5dFF(DELETED0), I hyh this shit).
-	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2675) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2365) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:355) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:490) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:408) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:166) ~[postgresql-42.3.3.jar:?]
-	at org.postgresql.jdbc.PgPreparedStatement.executeQuery(PgPreparedStatement.java:118) ~[postgresql-42.3.3.jar:?]
-	at JDBC.ImportData.deleteGroup(ImportData.java:263) [classes/:?]
-	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:57) [classes/:?]
-	at java.lang.Thread.run(Thread.java:829) [?:?]
+[ERROR] 2022-04-24 15:08:27.587 [Thread-0] ImportData - ResultSet not positioned properly, perhaps you need to call next.
+org.postgresql.util.PSQLException: ResultSet not positioned properly, perhaps you need to call next.
+	at org.postgresql.jdbc.PgResultSet.getRawValue(PgResultSet.java:3092) ~[postgresql-42.3.3.jar:42.3.3]
+	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2330) ~[postgresql-42.3.3.jar:42.3.3]
+	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2779) ~[postgresql-42.3.3.jar:42.3.3]
+	at JDBC.ImportData.updateLeader(ImportData.java:285) [classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:55) [classes/:?]
+	at java.lang.Thread.run(Thread.java:832) [?:?]
+[ERROR] 2022-04-24 15:09:33.178 [Thread-0] ImportData - ResultSet not positioned properly, perhaps you need to call next.
+org.postgresql.util.PSQLException: ResultSet not positioned properly, perhaps you need to call next.
+	at org.postgresql.jdbc.PgResultSet.getRawValue(PgResultSet.java:3092) ~[postgresql-42.3.3.jar:42.3.3]
+	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2330) ~[postgresql-42.3.3.jar:42.3.3]
+	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2779) ~[postgresql-42.3.3.jar:42.3.3]
+	at JDBC.ImportData.updateLeader(ImportData.java:285) [classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:55) [classes/:?]
+	at java.lang.Thread.run(Thread.java:832) [?:?]
+[ERROR] 2022-04-24 15:17:03.541 [Thread-0] ImportData - The column name account_id was not found in this ResultSet.
+org.postgresql.util.PSQLException: The column name account_id was not found in this ResultSet.
+	at org.postgresql.jdbc.PgResultSet.findColumn(PgResultSet.java:2901) ~[postgresql-42.3.3.jar:42.3.3]
+	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2779) ~[postgresql-42.3.3.jar:42.3.3]
+	at JDBC.ImportData.updateLeader(ImportData.java:319) [classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:63) [classes/:?]
+	at java.lang.Thread.run(Thread.java:832) [?:?]

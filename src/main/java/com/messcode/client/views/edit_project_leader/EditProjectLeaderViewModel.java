@@ -72,6 +72,15 @@ public class EditProjectLeaderViewModel implements Subject {
   return selectedGroup.getLeader();
           
    }
+
+    void changeLeader(User u) {
+        if(u.getEmail().equals(selectedGroup.getLeader().getEmail())){
+        return;
+        }
+        Group g = new Group(selectedGroup.getName(),selectedGroup.getDescription(),u);
+        mainModel.changeLeader(g);
+        
+    }
     
     
 }
