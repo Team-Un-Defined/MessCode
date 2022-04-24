@@ -241,6 +241,7 @@ public class ChatClientViewModel implements Subject {
     }
 
     public void setReceiver(User receiver) {
+        mainModel.setSelectedUser(receiver);
         this.receiver = receiver;
     }
 
@@ -281,4 +282,12 @@ public class ChatClientViewModel implements Subject {
         clpbrd.setContents(stringSelection, null);
         return null;
     }
+    public boolean getUnredPMs (User u){
+    
+     return   mainModel.unredPMs ( u);
+    
+    }
+    
+    
+    
 }

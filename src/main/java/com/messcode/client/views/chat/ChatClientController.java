@@ -243,6 +243,24 @@ public class ChatClientController {
                 if (empty) {
                     setText(null);
                 } else {
+                    if (chatVM.getUnredPMs(item)){
+                    if (item.getSalt().equals(" - online")) {
+                        InputStream in = getClass().getResourceAsStream("/orange-green.png");
+                        ImageView imageView = new ImageView(new Image(in));
+                        imageView.setFitHeight(10);
+                        imageView.setPreserveRatio(true);
+                        this.setGraphic(imageView);
+                    } else {
+                     InputStream in = getClass().getResourceAsStream("/orangedotm.png");
+                        ImageView imageView = new ImageView(new Image(in));
+                        imageView.setFitHeight(10);
+                        imageView.setPreserveRatio(true);
+                        this.setGraphic(imageView);
+                   
+                    }
+                    
+                    }
+                    else{
                     if (item.getSalt().equals(" - online")) {
                         InputStream in = getClass().getResourceAsStream("/greendot.png");
                         ImageView imageView = new ImageView(new Image(in));
@@ -254,6 +272,7 @@ public class ChatClientController {
                         this.setTextFill(Color.GRAY);
                     } else {
                         this.setGraphic(null);
+                    }
                     }
                     String text = item.getName() + " " + item.getSurname(); // get text from item
                     setText(text);
@@ -308,7 +327,7 @@ public class ChatClientController {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
-                System.out.println("WOTOTOFÖK");
+               
                 chatVM.setReceiver(use);
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();

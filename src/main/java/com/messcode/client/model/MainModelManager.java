@@ -24,6 +24,7 @@ public class MainModelManager implements MainModel {
     private ArrayList<User> allUsers;
     private ArrayList<Group> allGroups;
     private Group selectedGroup;
+    private User selectedUser;
 
     public Group getSelectedGroup() {
         return selectedGroup;
@@ -163,6 +164,18 @@ public class MainModelManager implements MainModel {
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(pm);
+         for(PublicMessage u : user.getUnreadMessages()){
+        if(u instanceof PrivateMessage){
+            if(selectedUser!=null){
+            if(!(pm.getSender().getEmail().equals(user.getEmail())) && (((PrivateMessage)u).getSender().getEmail().equals(selectedUser.getEmail())) && ((((PrivateMessage)u).getReceiver().getEmail().equals(pm.getSender().getEmail())) || (((PrivateMessage)u).getSender().getEmail().equals(pm.getSender().getEmail()))) )
+            {
+                user.getUnreadMessages().remove(u);
+                user.getUnreadMessages().add(pm);
+            }
+            }
+        }
+            
+        }
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
     }
@@ -204,6 +217,14 @@ public class MainModelManager implements MainModel {
     @Override
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
+       
+        for(PublicMessage u : user.getUnreadMessages() ){
+        if(u instanceof PrivateMessage){
+            if(u.getSender().getEmail().equals(message.getReceiver().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(message.getReceiver().getEmail()) )
+                user.getUnreadMessages().remove(u);
+                user.getUnreadMessages().add(message);
+                }
+        }
     }
 
     @Override
@@ -320,6 +341,29 @@ public class MainModelManager implements MainModel {
     @Override
     public void changeLeader(Group g) {
        client.changeLeader(g);
+    }
+
+    @Override
+    public boolean unredPMs(User u) {
+      ArrayList<PrivateMessage> pivi = loadPMs(u);
+        
+        for (PublicMessage p: user.getUnreadMessages()){
+         if(p instanceof PrivateMessage){
+             for(PrivateMessage piv :pivi){
+             if(p.getTime().before(piv.getTime())&&(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail()) || p.getSender().getEmail().equals(u.getEmail()))){
+                 return true;
+             }
+             
+             }
+         }
+        
+        }
+        return false;
+    }
+
+    @Override
+    public void setSelectedUser(User u) {
+        selectedUser = u;
     }
 
 }
