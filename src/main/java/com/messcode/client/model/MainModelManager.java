@@ -63,9 +63,21 @@ public class MainModelManager implements MainModel {
             client.addListener("createUserResponse", this::createAccount);
             client.addListener("passChangeResponse", this::passChangeResponse);
             client.addListener("userDeleted",this::userDeleted);
+            client.addListener("AddAllGroupMessages",this::addAllGroupMessages);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addAllGroupMessages(PropertyChangeEvent propertyChangeEvent) {
+        ArrayList<GroupMessages> msgs = (ArrayList<GroupMessages>) ((Container) propertyChangeEvent.getNewValue()).getObject();
+        for(PublicMessage pu: allMessage) {
+            if(pu instanceof GroupMessages) {
+                msgs.removeIf(p -> p.getTime().equals(pu.getTime()) && p.getMsg().equals(pu.getMsg()) && p.getGroup().getName().equals(((GroupMessages)pu).getGroup().getName()) && p.getSender().getEmail().equals(pu.getSender().getEmail()));
+            }
+        }
+        allMessage.addAll(msgs);
+        support.firePropertyChange("newGroupMessagesAdded",null,true);
     }
 
     private void userDeleted(PropertyChangeEvent propertyChangeEvent) {
@@ -265,7 +277,8 @@ public class MainModelManager implements MainModel {
         ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
         
         for(Group grup: g){
-        
+            System.out.println("group : "+ grup.getName());
+            System.out.println(" actual group: "+ selectedGroup.getName());
         if(grup.getName().equals(selectedGroup.getName())){
             setSelectedGroup(grup);
         }
