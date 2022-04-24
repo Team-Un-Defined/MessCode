@@ -135,6 +135,17 @@ public class ImportData {
                 gid = rs.getInt("id");
             }
 
+            int rid = 0;
+
+            query0 = "SELECT * FROM account WHERE email = ?";
+            myPreparedStatement = c.prepareStatement(query0);
+            myPreparedStatement.setString(1, pm1.getEncryptedFor().getEmail());
+            rs = myPreparedStatement.executeQuery();
+
+            while (rs.next()) {
+                rid = rs.getInt("id");
+            }
+
             int lid = 0;
 
             String query1 = "SELECT * FROM projects WHERE name = ?";
@@ -147,12 +158,31 @@ public class ImportData {
                    lid = rs.getInt("leader_id");
             }
 
-            String query = "INSERT INTO group_messages VALUES (default, ?, ?, ?, ?)";
+            String query = "INSERT INTO group_messages (id, project_id, sender_id, date) VALUES (default, ?, ?, ?)";
             myPreparedStatement = c.prepareStatement(query);
             myPreparedStatement.setInt(1, grid);
             myPreparedStatement.setInt(2, gid);
-            myPreparedStatement.setString(3, pm1.getMsg());
-            myPreparedStatement.setTimestamp(4, pm.getTime());
+            myPreparedStatement.setTimestamp(3, pm.getTime());
+            myPreparedStatement.executeUpdate();
+
+            query = "SELECT id FROM group_messages WHERE project_id = ? AND sender_id = ? AND date = ?";
+            myPreparedStatement = c.prepareStatement(query);
+            myPreparedStatement.setInt(1, grid);
+            myPreparedStatement.setInt(2, gid);
+            myPreparedStatement.setTimestamp(3, pm.getTime());
+            rs = myPreparedStatement.executeQuery();
+
+            int gmid = 0;
+            if (rs.next()) {
+                gmid = rs.getInt("id");
+            }
+
+            String query2 = "INSERT INTO encrypted_group_messages (id, user_id, group_message_id, encrypted_message) " +
+                    "VALUES (default, ?, ?, ?)";
+            myPreparedStatement = c.prepareStatement(query2);
+            myPreparedStatement.setInt(1, rid);
+            myPreparedStatement.setInt(2, gmid);
+            myPreparedStatement.setBytes(3, ((GroupMessages) pm).getEncryptedMessage());
             myPreparedStatement.executeUpdate();
         } else {
             int grid = 0;

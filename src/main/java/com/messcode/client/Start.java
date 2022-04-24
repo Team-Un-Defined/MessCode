@@ -88,10 +88,11 @@ public class Start {
             Class.forName("org.postgresql.Driver");
             c = DriverManager.getConnection(conn.getConn(), conn.getName(), conn.getPass());
 
-            /*
-            User newUser = new User("Martin", "Svab", "xsvab@stuba.sk", encryptedPassword, salt, "employee", myPrivateKey.getEncoded(), myPublicKey.getEncoded());
+            //User newUser = new User("Martin", "Svab", "xsvab@stuba.sk", encryptedPassword, salt, "employee", myPrivateKey.getEncoded(), myPublicKey.getEncoded());
             //User newUser = new User("Peter", "Petruch", "peterpetruch@gmail.com", encryptedPassword, salt, "employee", myPrivateKey.getEncoded(), myPublicKey.getEncoded());
+            //User newUser = new User("Jozef", "Mrkvicka", "jozefmrkvicka@gmail.com", encryptedPassword, salt, "employee", myPrivateKey.getEncoded(), myPublicKey.getEncoded());
 
+            /*
             String query = "INSERT INTO account (id, fname, lname, pwd_hash, pwd_salt, type, email, private_key, public_key) " +
                     "VALUES(default, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement myPreparedStatement = c.prepareStatement(query);
@@ -101,10 +102,17 @@ public class Start {
             myPreparedStatement.setString(4, newUser.getSalt());
             myPreparedStatement.setString(5, newUser.getType());
             myPreparedStatement.setString(6, newUser.getEmail());
-            myPreparedStatement.setBytes(7, newUser.getMyPrivateKey());
+            myPreparedStatement.setBytes(7, myMessageEncryptionManager.symmetricDataEncryption(newUser.getMyPrivateKey(), "heslo".getBytes()));
             myPreparedStatement.setBytes(8, newUser.getMyPublicKey());
             myPreparedStatement.executeUpdate();
              */
+
+            String query = "INSERT INTO projects (id, leader_id, name, description) VALUES (default, ?, ?, ?)";
+            PreparedStatement myPreparedStatement = c.prepareStatement(query);
+            myPreparedStatement.setInt(1, 22);
+            myPreparedStatement.setString(2, "encryptedGroup");
+            myPreparedStatement.setString(3, "testing group message encryption");
+            myPreparedStatement.executeUpdate();
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();

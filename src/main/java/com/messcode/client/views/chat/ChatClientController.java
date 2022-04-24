@@ -314,7 +314,20 @@ public class ChatClientController {
         } else {
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             String message = textFieldGroup.getText();
-            chatVM.sendGroup(new GroupMessages(chatVM.getCurrentUser(), message, chatVM.getReceiverGroup()));
+            MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
+            for (User groupMember : chatVM.getReceiverGroup().getMembers()) {
+                System.out.println("Sending message to " + groupMember.getEmail());
+
+                if (groupMember.getMyPublicKey() == null) {
+                    for (gr)
+                    System.out.println("Group member " + groupMember.getEmail() + "doesnt have public key!");
+                    break;
+                }
+
+                byte[] encrypted_message = myMessageEncryptionManager.asymmetricDataEncryption(message.getBytes(), groupMember.getMyPublicKey());
+                chatVM.sendGroup(new GroupMessages(chatVM.getCurrentUser(), groupMember, encrypted_message, chatVM.getReceiverGroup()));
+                break;
+            }
             textFieldGroup.clear();
         }
     }

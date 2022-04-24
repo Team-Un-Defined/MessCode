@@ -153,9 +153,6 @@ public class MainModelManager implements MainModel {
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
 
-        System.out.println("private key of receiver: " + Arrays.toString(user.getMyPrivateKey()));
-        System.out.println("message received: " + Arrays.toString(pm.getEncryptedMessage()));
-
         pm.decryptMessage(user.getMyPrivateKey());
         this.allMessage.add(pm);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
@@ -165,8 +162,8 @@ public class MainModelManager implements MainModel {
     }
 
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
-
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
+        gm.decryptMessage(user.getMyPrivateKey());
         this.allMessage.add(gm);
         support.firePropertyChange("newGroupMessage", null, gm);
     }
@@ -261,8 +258,12 @@ public class MainModelManager implements MainModel {
     public ArrayList<GroupMessages> loadGroup(Group selectedGroup) {
         ArrayList<GroupMessages> grupi = new ArrayList<>();
         for (PublicMessage p : this.allMessage) {
-            if (p instanceof GroupMessages && (selectedGroup.getName().equals(((GroupMessages) p).getGroup().getName()))) {
-                grupi.add((GroupMessages) p);
+            if (p instanceof GroupMessages) {
+                if (((GroupMessages) p).getEncryptedFor().getEmail().equals(getCurrentUser().getEmail())) {
+                    if (selectedGroup.getName().equals(((GroupMessages) p).getGroup().getName())) {
+                        grupi.add((GroupMessages) p);
+                    }
+                }
             }
         }
         return grupi;
@@ -284,7 +285,7 @@ public class MainModelManager implements MainModel {
     public void refreshGroupList(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
         allGroups = g;
-        support.firePropertyChange("RefresgGroups", null, g);
+        support.firePropertyChange("RefreshGroups", null, g);
     }
 
 }

@@ -256,11 +256,13 @@ public class ExportData {
         ArrayList <Group> groups = updateGroups(use);
         if(groups!=null){
         for (Group group : groups) {
-            String query7 = "SELECT g.message, g.date, a.fname, a.lname, a.type, a.email FROM group_messages AS g " +
+            String query7 = "SELECT eg.encrypted_message, g.date, a.fname, a.lname, a.type, a.email FROM group_messages AS g " +
                     "JOIN account AS a ON a.id = g.sender_id JOIN projects AS p ON p.id = g.project_id " +
-                    "WHERE p.name = ? ORDER BY DATE";
+                    "JOIN encrypted_group_messages AS eg ON eg.group_message_id = g.id WHERE p.name = ? AND eg.user_id = ? " +
+                    "ORDER BY DATE";
             myPreparedStatement = c.prepareStatement(query7, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             myPreparedStatement.setString(1, group.getName());
+            myPreparedStatement.setInt(2, id);
             rs = myPreparedStatement.executeQuery();
 
             rs.beforeFirst();
@@ -269,7 +271,7 @@ public class ExportData {
                 member.setName(rs.getString("fname"));
                 member.setSurname(rs.getString("lname"));
                 member.setType(rs.getString("type"));
-                GroupMessages g = new GroupMessages(member, rs.getString("message"), group, rs.getTimestamp("date"));
+                GroupMessages g = new GroupMessages(member, use, rs.getBytes("encrypted_message"), group, rs.getTimestamp("date"));
                 allMessages.add(g);
             }
         }
@@ -326,19 +328,20 @@ public class ExportData {
                 lead.setType(rs.getString("type"));
                 Group g = new Group(rs.getString("name"),rs.getString("description"),lead);
 
-                String query2 = "SELECT a.fname, a.lname, a.email, a.type FROM project_members AS pm " +
+                String query2 = "SELECT a.fname, a.lname, a.email, a.type, a.public_key FROM project_members AS pm " +
                         "JOIN account AS a ON a.id = pm.account_id JOIN projects AS p ON p.id = pm.project_id " +
                         "WHERE p.name = ?";
                 myPreparedStatement2 = c.prepareStatement(query2);
                 myPreparedStatement2.setString(1, rs.getString("name"));
                 ResultSet rs2 = myPreparedStatement2.executeQuery();
 
-                while(rs2.next()) {
+                while (rs2.next()) {
                     User u = new User (rs2.getString("email"),rs2.getString("fname")+rs2.getString("lname"));
                     u.setName(rs2.getString("fname"));
                     u.setSurname(rs2.getString("lname"));
                     u.setType(rs2.getString("type"));
-                    g.addMember(u);
+                    u.setMyPublicKey(rs2.getBytes("public_key"));
+                    g.addMember(u);;
                 }
 
                 groups.add(g);
