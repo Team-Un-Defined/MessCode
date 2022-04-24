@@ -24,6 +24,7 @@ public class EditMemberController {
         this.bundle = bundle;
         updateUserList();
         updateUsersInGroupList();
+       
         allUsersList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         inGroupUsersList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
