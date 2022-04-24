@@ -36,7 +36,6 @@ public class NewEmployeeController implements Subject {
         this.bundle = bundle;
         ObservableList<String> types = FXCollections.observableArrayList(
                 "employee",
-                "projectLeader",
                 "employer",
                 "superuser"
         );

@@ -83,6 +83,7 @@ public class NewEmployeeViewModel implements Subject {
         support.removePropertyChangeListener(eventName, listener);
     }
 
+    
     public int createAccount(String firstName, String lastName, String email, String type) {
         System.out.println("CREATE ACC 1");
         AccountManager myAccountManager = new AccountManager();
