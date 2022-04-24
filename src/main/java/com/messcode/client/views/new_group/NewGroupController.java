@@ -6,6 +6,7 @@ import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.util.StringConverter;
 
 import java.util.ResourceBundle;
 
@@ -29,7 +30,7 @@ public class NewGroupController {
         this.bundle = bundle;
         this.descriptionTextArea.setText("Write something nice");
         groupLeaderComboBox.setItems(newGroupVM.getUsersList());
-        groupLeaderComboBox.setCellFactory(lv -> new ListCell<>() {
+        groupLeaderComboBox.setCellFactory(lv -> new ListCell<User>() {
             @Override
             public void updateItem(User item, boolean empty) {
                 super.updateItem(item, empty);
