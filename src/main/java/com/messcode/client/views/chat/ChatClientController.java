@@ -146,15 +146,16 @@ public class ChatClientController {
             removeGroupButton.setVisible(false);
             editMemberButton.setVisible(false);
             resetPasswordButton.setVisible(false);
+            editProjectLeaderButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isProjectLeader()) {
             newEmployeeButton.setVisible(false);
             newGroupButton.setVisible(false);
             removeUserButton.setVisible(false);
             removeGroupButton.setVisible(false);
             resetPasswordButton.setVisible(false);
+            editProjectLeaderButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
             sendGroupButton.setVisible(false);
-            //newEmployeeButton.setVisible(false); HOYA, I THINK WE SHOULD LEAVE THIS IN SO HE COULD ADD EMPLOYEE
             removeUserButton.setVisible(false);
             resetPasswordButton.setVisible(false);
         }
