@@ -7,6 +7,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 import java.util.ResourceBundle;
+import javafx.scene.control.ListCell;
 
 public class EditProjectLeaderController {
 
@@ -20,8 +21,37 @@ public class EditProjectLeaderController {
         this.editProjectLeaderVM = editProjectLeaderVM;
         this.vh = vh;
         this.bundle = bundle;
+        setGroupLeaderComboBox();
     }
 
     public void confirmButton() {
     }
+
+
+    private void setGroupLeaderComboBox(){
+       groupLeaderComboBox.setItems(editProjectLeaderVM.getUsers());
+       groupLeaderComboBox.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            public void updateItem(User item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty ) {
+                    setText(null);
+                } else {
+                    String text = item.getName() + " " + item.getSurname() + item.getSalt(); // get text from item
+                    setText(text);
+                }
+            }
+
+            
+        });
+    
+    groupLeaderComboBox.getItems().add(editProjectLeaderVM.getLeader());
+    groupLeaderComboBox.getSelectionModel().select(editProjectLeaderVM.getLeader());
+    
+    
+    }
+    
+
+
+
 }
