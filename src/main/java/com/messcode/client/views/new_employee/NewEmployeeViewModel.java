@@ -48,6 +48,7 @@ public class NewEmployeeViewModel implements Subject {
                 dialog.getDialogPane().getButtonTypes().add(buttonType);
                 dialog.setOnCloseRequest(actionEvent(password));
                 dialog.showAndWait();
+
             });
             System.out.println("HELLO I SHOULD RET REPSONSE 2 pass : " + password);
         } else {
