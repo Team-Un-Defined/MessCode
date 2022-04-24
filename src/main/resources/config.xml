@@ -2,5 +2,11 @@
   <config>
     <dark_theme>0</dark_theme>
     <language>not_yet_selected</language>
+    <message_color>derive(-fx-base, 15%)</message_color>
+    <text_color>black</text_color>
+    <message_color_r>n</message_color_r>
+    <message_color_g>n</message_color_g>
+    <message_color_b>n</message_color_b>
+    <message_color_a>n</message_color_a>
   </config>
 </xml>

@@ -142,12 +142,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (login == null) {
             Parent root = getRootByPath("login.fxml", loader);
             LoginController controller = loader.getController();
             controller.init(vmf.getLoginVM(), this, bundle);
             login = new Scene(root);
-        }
 
         stage.setTitle(bundle.getString("login.up"));
         stage.setScene(login);
@@ -163,12 +161,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (newEmployee == null) {
             Parent root = getRootByPath("NewEmployee.fxml", loader);
             NewEmployeeController controller = loader.getController();
             controller.init(vmf.getNewEmployeeVM(), this, bundle);
             newEmployee = new Scene(root);
-        }
 
         newEmployeeStage.setTitle(bundle.getString("new_employee.up"));
         newEmployeeStage.setScene(newEmployee);
@@ -183,12 +179,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (newGroup == null) {
             Parent root = getRootByPath("NewGroup.fxml", loader);
             NewGroupController controller = loader.getController();
             controller.init(vmf.getNewGroupVM(), this, bundle);
             newGroup = new Scene(root);
-        }
 
         newGroupStage.setTitle(bundle.getString("new_group.up"));
         newGroupStage.setScene(newGroup);
@@ -203,12 +197,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if(changePassword == null) {
             Parent root = getRootByPath("ChangePassword.fxml", loader);
             ChangePasswordController controller = loader.getController();
             controller.init(vmf.getChangePasswordVM(), this, bundle);
             changePassword = new Scene(root);
-        }
 
         changePasswordStage.setTitle(bundle.getString("change_pass.up"));
         changePasswordStage.setScene(changePassword);
@@ -223,12 +215,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (editMember == null) {
             Parent root = getRootByPath("EditMember.fxml", loader);
             EditMemberController controller = loader.getController();
             controller.init(vmf.getEditMemberVM(), this, bundle);
             editMember = new Scene(root);
-        }
 
         editMemberStage.setTitle(bundle.getString("edit_member.up"));
         editMemberStage.setScene(editMember);
@@ -243,12 +233,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (editProjectLeader == null) {
             Parent root = getRootByPath("EditProjectLeader.fxml", loader);
             EditProjectLeaderController controller = loader.getController();
             controller.init(vmf.getEditProjectLeaderVM(), this, bundle);
             editProjectLeader = new Scene(root);
-        }
 
         editProjectLeaderStage.setTitle(bundle.getString("edit_project_leader.up"));
         editProjectLeaderStage.setScene(editProjectLeader);
@@ -263,12 +251,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (removeUser == null) {
             Parent root = getRootByPath("RemoveUser.fxml", loader);
             RemoveUserController controller = loader.getController();
             controller.init(vmf.getRemoveUserVM(), this, bundle);
             removeUser = new Scene(root);
-        }
 
         removeUserStage.setTitle(bundle.getString("remove_user.up"));
         removeUserStage.setScene(removeUser);
@@ -283,12 +269,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (removeGroup == null) {
             Parent root = getRootByPath("RemoveGroup.fxml", loader);
             RemoveGroupController controller = loader.getController();
             controller.init(vmf.getRemoveGroupVM(), this, bundle);
             removeGroup = new Scene(root);
-        }
 
         removeGroupStage.setTitle(bundle.getString("remove_group.up"));
         removeGroupStage.setScene(removeGroup);
@@ -303,12 +287,10 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-        if (viewProfile == null) {
             Parent root = getRootByPath("ViewProfile.fxml", loader);
             ViewProfileController controller = loader.getController();
             controller.init(vmf.getViewProfileVM(), this, bundle);
             viewProfile = new Scene(root);
-        }
 
         viewProfileStage.setTitle(bundle.getString("view_profile.up"));
         viewProfileStage.setScene(viewProfile);
