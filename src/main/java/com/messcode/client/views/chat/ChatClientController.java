@@ -96,6 +96,58 @@ public class ChatClientController {
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
 
+
+        
+        
+        //CHAT MESSAGES
+//        StringProperty textChat = new SimpleStringProperty();
+//        textChat.bind(chatVM.messageProperty());
+//
+//        textChat.addListener((observableValue, s, t1) -> {
+//            Platform.runLater(() -> {
+//                System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
+//                Label label = new Label(textChat.getValue());
+//                label.setMaxWidth(messagesListAll.getWidth() - 25);
+//                label.setWrapText(true);
+//                messagesListAll.getItems().add(label);
+//
+//                if (!paneInFront.equals("all")) {
+//                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+//                    allButtonImage.setImage(new Image(reddot));
+//                }
+//            });
+//        });
+//
+//        StringProperty pmChat = new SimpleStringProperty();
+//        pmChat.bind(chatVM.PMProperty());
+//
+//        pmChat.addListener((observableValue, oldVal, newVal) -> {
+//            System.out.println("GOT THE SHIT GOT THE SHIT IMMA BE HAPPY");
+//            Platform.runLater(() -> {
+//                Label label = new Label(newVal);
+//                label.setMaxWidth(messagesListGroup.getWidth() - 25);
+//                label.setWrapText(true);
+//                messagesListPM.getItems().add(label);
+//
+//// TODO
+////                if(!paneInFront.equals("pm")) {
+////                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+////                    PMButtonImage.setImage(new Image(reddot));
+////                }
+//            });
+//        });
+//
+//        StringProperty gmChat = new SimpleStringProperty();
+//        gmChat.bind(chatVM.GMProperty());
+//        gmChat.addListener((observableValue, oldVal, newVal) -> {
+//            Platform.runLater(() -> {
+//                Label label = new Label(newVal);
+//                label.setMaxWidth(messagesListGroup.getWidth() - 25);
+//                label.setWrapText(true);
+//                messagesListGroup.getItems().add(label);
+//            });
+//        });
+
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userDisplayedName2.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userNameLabel.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
@@ -284,7 +336,7 @@ public class ChatClientController {
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
-            if (!use.getSurname().equals(chatVM.getCurrentUser().getSurname()) && !use.getName().equals(chatVM.getCurrentUser().getName())) {
+            if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
                 System.out.println("WOTOTOFÖK");
                 chatVM.setReceiver(use);
                 messagesListPM.getItems().clear();
@@ -440,5 +492,13 @@ public class ChatClientController {
     }
 
     public void resetPassword() {
+        if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
+            invitePmErrorLabel.setText(bundle.getString("select_user"));
+        } else {
+            User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
+
+                chatVM.resetPassword(use);
+            }
+
     }
 }

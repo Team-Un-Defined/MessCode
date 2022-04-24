@@ -1,6 +1,7 @@
 package com.messcode.client.views.chat;
 
 import com.messcode.client.model.MainModel;
+import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.GroupMessages;
@@ -12,6 +13,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -49,7 +53,12 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
 
+
+
     }
+
+
+
 
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
         Platform.runLater(() -> {
@@ -103,13 +112,28 @@ public class ChatClientViewModel implements Subject {
                                                             // heyo, im pretty okay rn, thanks for the question (and the note) wbu?
                                                             // im good, i just hate lings' merge conflicts, btw i added the - deleted user tag, it is added in the salt from server.
                         break;                              // fug dat bitch ass lings man
+                                                            //we should delete this tho, he might be able to see it, and he is gonna be sad that we dont like his merge conflicts
                     }
                 }
             }else {
                 user.setSalt(" - online");  //
                 for (int i = 0; i < usersList.size(); i++) {
                     if (usersList.get(i).getEmail().equals(user.getEmail())) {
-                        usersList.set(i, user);
+                        usersList.remove(i);
+                        for (int j = 0; j < usersList.size(); j++)
+                        {
+                            if((!usersList.get(j).getSalt().equals(" - online")))
+                            {
+                                User temp = usersList.get(j);
+                                usersList.set(j,user);
+                                if(!temp.getEmail().equals(user.getEmail())) {
+                                    usersList.add(temp);
+                                }
+                                break;
+                            }
+                        }
+
+
                         break;
                     }
                 }
@@ -203,6 +227,7 @@ public class ChatClientViewModel implements Subject {
     }
 
     public ArrayList<GroupMessages> loadGroup() {
+
         return mainModel.loadGroup(receiverGroup);
     }
 
@@ -224,4 +249,21 @@ public class ChatClientViewModel implements Subject {
     }
 
 
+    public void resetPassword(User use) {
+        AccountManager m = new AccountManager();
+        String password= m.generatePassword();
+        User user = new User(use.getName(),use.getSurname(),use.getEmail(),password,use.getType());
+
+        Platform.runLater(() -> {
+            Dialog<String> dialog = new Dialog<>();
+            dialog.setTitle("Generated password");
+            ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("Please make sure to forward the new user their\n" +
+                    "generated password: " + password);
+            System.out.println("ppass: "+ password);
+            dialog.getDialogPane().getButtonTypes().add(buttonType);
+            dialog.showAndWait();
+        });
+        mainModel.resetPassword(user);
+    }
 }

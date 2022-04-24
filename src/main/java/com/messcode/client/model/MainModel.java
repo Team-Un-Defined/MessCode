@@ -45,4 +45,6 @@ public interface MainModel extends Subject {
     public void removeMember(ArrayList<User> u);
 
     public void deleteGroup(Group g);
+
+    void resetPassword(User use);
 }

@@ -86,6 +86,7 @@ public class ConnectionPool {
      for (ServerSocketHandler handler : connections) {
          try {
              handler.sendGroups(new Container(dbe.updateGroups(handler.getUser()),ClassName.GROUP_UPDATE));
+
          } catch (SQLException ex) {
              Logger.getLogger(ConnectionPool.class.getName()).log(Level.SEVERE, null, ex);
          }
@@ -116,6 +117,23 @@ public class ConnectionPool {
                 handler.removeUser();
                 removeHandler(handler);
                 break;
+            }
+        }
+    }
+
+    public void sendAllGroupMessages(ArrayList<PublicMessage> groupMessages) {
+        if(groupMessages!=null)
+        { Group g = ((GroupMessages)groupMessages.get(0)).getGroup();
+            for (ServerSocketHandler handler : connections) {
+                for(int i=0;i<g.getMembers().size();i++)
+                {
+                    if(g.getMembers().get(i).getEmail().equals(handler.getUser().getEmail()))
+                    {
+                        handler.sendAllGroupMessage(groupMessages);break;
+                    }
+                }
+
+
             }
         }
     }

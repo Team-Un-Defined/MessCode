@@ -131,12 +131,23 @@ public class ClientSocketHandler implements Runnable {
                         System.exit(1);
                         break;
                     }
+                    case ALL_GROUP_MESSAGES: {
+                        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                                "i got ALL THE group messages " + packet);
+                        getALlGroupMessages(packet);
+
+                        break;
+                    }
 
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void getALlGroupMessages(Container pckt) {
+        socketClient.getAllGroupMessages(pckt);
     }
 
     private void removedUser(Container packet) {
@@ -306,6 +317,15 @@ public class ClientSocketHandler implements Runnable {
         outToServer.writeObject(packet);
         }catch(IOException e){
           e.printStackTrace();
+        }
+    }
+
+    public void resetPassword(User use) {
+        try{
+            Container packet = new Container(use,ClassName.RESET_PASSWORD);
+            outToServer.writeObject(packet);
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
 }
