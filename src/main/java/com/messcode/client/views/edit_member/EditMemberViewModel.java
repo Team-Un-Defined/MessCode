@@ -37,10 +37,15 @@ public class EditMemberViewModel implements Subject {
     }
 
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
-        ArrayList<User> use = (ArrayList<User>) propertyChangeEvent.getNewValue();
-        
+        ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
+
         Platform.runLater(() -> {
-            allUsers.addAll(use);
+            for (User u : users) {
+                if (u.getType().equals("superuser") || u.getType().equals("employer")) {
+                    continue;
+                }
+                allUsers.add(u);
+            }
             System.out.println(allUsers);
         });
     }
