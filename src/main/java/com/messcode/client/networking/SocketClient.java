@@ -145,6 +145,9 @@ public class SocketClient implements Client {
         socketHandler.deleteGroup(g);
     }
 
+    public void getAllGroupMessages(Container pckt) {
+        support.firePropertyChange("AddAllGroupMessages",null,pckt);
+    }
 }
 
 

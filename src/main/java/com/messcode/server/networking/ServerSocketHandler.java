@@ -70,6 +70,7 @@ public class ServerSocketHandler implements Runnable {
                         Group g = (Group) packet.getObject();
                         dbi.addGroupMembers(g);
                         pool.updateGroup(dbe);
+                        pool.sendAllGroupMessages(dbe.getGroupMessages(g));
                         break;
                     }
                     case CREATING_GROUP: {
@@ -271,6 +272,16 @@ public class ServerSocketHandler implements Runnable {
             log4j.error(e.getMessage(), e);
         }
 
+    }
+
+    public void sendAllGroupMessage(ArrayList<PublicMessage> groupMessages) {
+        try {
+            Container b = new Container(groupMessages, ClassName.ALL_GROUP_MESSAGES);
+            outToClient.writeObject(b);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log4j.error(e.getMessage(), e);
+        }
     }
 }
 

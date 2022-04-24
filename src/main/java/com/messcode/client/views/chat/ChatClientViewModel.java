@@ -49,7 +49,10 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
 
+
     }
+
+
 
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
         Platform.runLater(() -> {
@@ -203,6 +206,7 @@ public class ChatClientViewModel implements Subject {
     }
 
     public ArrayList<GroupMessages> loadGroup() {
+
         return mainModel.loadGroup(receiverGroup);
     }
 
