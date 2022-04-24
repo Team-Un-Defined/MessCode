@@ -83,17 +83,14 @@ public class ConnectionPool {
     }
     public void updateGroup(ExportData dbe){
      
-     for (ServerSocketHandler handler : connections) {
-         try {
-             handler.sendGroups(new Container(dbe.updateGroups(handler.getUser()),ClassName.GROUP_UPDATE));
-         } catch (SQLException ex) {
-             Logger.getLogger(ConnectionPool.class.getName()).log(Level.SEVERE, null, ex);
-         }
+        for (ServerSocketHandler handler : connections) {
+            try {
+                handler.sendGroups(new Container(dbe.updateGroups(handler.getUser()),ClassName.GROUP_UPDATE));
+            } catch (SQLException ex) {
+                Logger.getLogger(ConnectionPool.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    
-    
     }
-
 
     public void sendGroupMessages(GroupMessages message) {
         for (ServerSocketHandler handler : connections) {

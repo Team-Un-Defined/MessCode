@@ -217,6 +217,7 @@ public class MainModelManager implements MainModel {
         ArrayList<PrivateMessage> pivi = new ArrayList<>();
         for (PublicMessage p : this.allMessage) {
             if (p instanceof PrivateMessage && (((PrivateMessage) p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail()))) {
+                ((PrivateMessage) p).decryptMessage(receiver.getMyPrivateKey());
                 pivi.add(((PrivateMessage) p));
             }
         }

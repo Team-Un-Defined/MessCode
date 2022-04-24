@@ -29,15 +29,22 @@ public class MessageEncryptionManager {
         }
     }
 
-    public byte[] generateIV() {
-        try {
-            Cipher cipher = Cipher.getInstance(symmetricCryptographyAlgorithm);
-            return cipher.getIV();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+    private byte[] generateCorrectSymmetricKey(byte[] key) {
+        int correct_key_size = 16;
+        byte[] correct_key = new byte[16];
+
+        int j = 0;
+        int j_max = key.length - 1;
+        for (int i = 0; i < correct_key_size; i++) {
+            correct_key[i] = key[j];
+            if (j == j_max) {
+                j = j;
+            } else {
+                j++;
+            }
         }
 
+        return correct_key;
     }
 
     public byte[] asymmetricDataEncryption(byte[] data, byte[] encryptionKey) {
@@ -64,24 +71,6 @@ public class MessageEncryptionManager {
             e.printStackTrace();
             return null;
         }
-    }
-
-    private byte[] generateCorrectSymmetricKey(byte[] key) {
-        int correct_key_size = 16;
-        byte[] correct_key = new byte[16];
-
-        int j = 0;
-        int j_max = key.length - 1;
-        for (int i = 0; i < correct_key_size; i++) {
-            correct_key[i] = key[j];
-            if (j == j_max) {
-                j = j;
-            } else {
-                j++;
-            }
-        }
-
-        return correct_key;
     }
 
     public byte[] symmetricDataEncryption(byte[] data, byte[] key) {

@@ -38,6 +38,8 @@ public class PublicMessage implements Serializable {
         return msg;
     }
 
+    public void setMsg(String msg) { this.msg = msg; }
+
     public Timestamp getTime() {
         return time;
     }

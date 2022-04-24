@@ -5,10 +5,7 @@ import com.messcode.transferobjects.messages.PublicMessage;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 import java.util.ArrayList;
 
 public class User implements Serializable {
@@ -21,13 +18,12 @@ public class User implements Serializable {
     private String email;
     private byte[] hashedPassword;
     private String salt;
-    private PublicKey myPublicKey;
-    private PrivateKey myPrivateKey;
+    private byte[] myPublicKey;
+    private byte[] myPrivateKey;
     private ArrayList<PublicMessage> unreadMessages;
     // for login
 
     public User(String email, String password) {
-
         this.email = email;
         this.strPassword=password;
     }
@@ -36,7 +32,7 @@ public class User implements Serializable {
     public User(String salt, String password,String type) {
         AccountManager myAccountManager = new AccountManager();
 
-        this.salt =salt;
+        this.salt = salt;
 
         this.hashedPassword = myAccountManager.hashPassword(password, salt);
         System.out.println("JHEÉLLO, USER TALKING pwd: "+password+" salt: "+ salt+ " pwd_hash:" + hashedPassword);
@@ -44,25 +40,30 @@ public class User implements Serializable {
         this.type=type;
     }
     // if you are creating new employee you use this constructor
-    public User(String name, String surname, String email, String password,String type) {
+    public User(String name, String surname, String email, String password, String type) {
         AccountManager myAccountManager = new AccountManager();
+        MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
+
+        KeyPair myKeyPair = myMessageEncryptionManager.generateKeyPair();
+        PrivateKey myPrivateKey = myKeyPair.getPrivate();
+        PublicKey myPublicKey = myKeyPair.getPublic();
+
         this.name = name;
         this.surname = surname;
         this.username = name + " " + surname;
         this.email = email;
         this.salt = myAccountManager.generateSalt();
 
+        this.myPublicKey = myPublicKey.getEncoded();
+        this.myPrivateKey = myPrivateKey.getEncoded();
+
         this.hashedPassword = myAccountManager.hashPassword(password, salt);
         this.unreadMessages = new ArrayList<>();
         this.type=type;
     }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
     // if you took employee from database you use this constructor
-    public User(String name, String surname, String email, byte[] hashedPassword, String salt,String type) {
+    public User(String name, String surname, String email, byte[] hashedPassword, String salt, String type, byte[] myPrivateKey, byte[] myPublicKey) {
         this.name = name;
         this.surname = surname;
         this.username = name + " " + surname;
@@ -70,7 +71,35 @@ public class User implements Serializable {
         this.hashedPassword = hashedPassword;
         this.salt = salt;
         this.unreadMessages = new ArrayList<>();
-        this.type=type;
+        this.type = type;
+        this.myPrivateKey = myPrivateKey;
+        this.myPublicKey = myPublicKey;
+    }
+
+    public byte[] getMyPrivateKey() {
+        return myPrivateKey;
+    }
+
+    public byte[] getMyPublicKey() {
+        return myPublicKey;
+    }
+
+    public void setMyPublicKey(byte[] myPublicKey) {
+        this.myPublicKey = myPublicKey;
+    }
+
+    public void setMyPrivateKey(byte[] myPrivateKey) {
+        this.myPrivateKey = myPrivateKey;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public void decryptMyPrivateKey(byte[] key) {
+        MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
+
+        this.myPrivateKey = myMessageEncryptionManager.asymmetricDataDecryption(myPrivateKey, key);
     }
 
     public String getStrPassword() {

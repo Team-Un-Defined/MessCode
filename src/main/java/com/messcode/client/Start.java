@@ -1,6 +1,7 @@
 package com.messcode.client;
 
 import JDBC.ImportData;
+import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.MessageEncryptionManager;
 import javafx.application.Application;
 
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 public class Start {
 
     public static void main(String[] args) {
+        /*
         MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
 
         KeyPair myKeypair = myMessageEncryptionManager.generateKeyPair();
@@ -55,10 +57,26 @@ public class Start {
         System.out.println("Original message: " + myMessage);
         //System.out.println("Message was encrypted with public key: " + sent_message_str);
         System.out.println("Message was decrypted with private key: " + received_message_str);
+         */
 
         /*
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, "sadsd");
         Application.launch(RunApp.class);
          */
+
+        MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
+        KeyPair myKeyPair = myMessageEncryptionManager.generateKeyPair();
+        PrivateKey myPrivateKey = myKeyPair.getPrivate();
+        PublicKey myPublicKey = myKeyPair.getPublic();
+
+        AccountManager myAccountManager = new AccountManager();
+        String password = "heslo";
+        String salt = myAccountManager.generateSalt();
+        byte[] encryptedPassword = myAccountManager.hashPassword(password, salt);
+
+        System.out.println("password: " + new String(encryptedPassword));
+        System.out.println("salt: " + salt);
+        System.out.println("public key: " + new String(myPublicKey.getEncoded()));
+        System.out.println("private key: " + new String(myPrivateKey.getEncoded()));
     }
 }

@@ -2,6 +2,7 @@ package com.messcode.client.views.chat;
 
 import com.messcode.client.core.SettingsConfig;
 import com.messcode.transferobjects.Group;
+import com.messcode.transferobjects.MessageEncryptionManager;
 import com.messcode.transferobjects.messages.GroupMessages;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,7 +27,9 @@ import java.io.InputStream;
 
 import static java.lang.Thread.sleep;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -282,7 +285,13 @@ public class ChatClientController {
 
             String message = textFieldPM.getText();
 
-            chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), message));
+            MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
+
+            String message1 = Arrays.toString(myMessageEncryptionManager.asymmetricDataEncryption(message.getBytes(), chatVM.getCurrentUser().getMyPublicKey()));
+            String message2 = Arrays.toString(myMessageEncryptionManager.asymmetricDataEncryption(message.getBytes(), chatVM.getReceiver().getMyPublicKey()));
+
+            chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), chatVM.getCurrentUser(), message1));
+            chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), chatVM.getReceiver(), message2));
             textFieldPM.clear();
         }
     }
