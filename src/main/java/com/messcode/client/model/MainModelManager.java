@@ -167,7 +167,7 @@ public class MainModelManager implements MainModel {
          for(PublicMessage u : user.getUnreadMessages()){
         if(u instanceof PrivateMessage){
             if(selectedUser!=null){
-            if( (((PrivateMessage)u).getSender().getEmail().equals(selectedUser.getEmail())) && ((((PrivateMessage)u).getReceiver().getEmail().equals(pm.getSender().getEmail())) || (((PrivateMessage)u).getSender().getEmail().equals(pm.getSender().getEmail()))) )
+            if(!(pm.getSender().getEmail().equals(user.getEmail())) && (((PrivateMessage)u).getSender().getEmail().equals(selectedUser.getEmail())) && ((((PrivateMessage)u).getReceiver().getEmail().equals(pm.getSender().getEmail())) || (((PrivateMessage)u).getSender().getEmail().equals(pm.getSender().getEmail()))) )
             {
                 user.getUnreadMessages().remove(u);
                 user.getUnreadMessages().add(pm);
@@ -360,7 +360,10 @@ public class MainModelManager implements MainModel {
         for (PublicMessage p: user.getUnreadMessages()){
          if(p instanceof PrivateMessage){
              for(PrivateMessage piv :pivi){
-             if((p.getTime().getNanos()<=(piv.getTime().getNanos())) &&(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail()) || p.getSender().getEmail().equals(u.getEmail()))){
+                 System.out.println("--------------------"+p.getMsg()+"----------------"+p.getTime().before(piv.getTime()));
+             if((p.getTime().before(piv.getTime())) &&(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail())  ||  p.getSender().getEmail().equals(u.getEmail()))){
+
+                  System.out.println("---------***********-----------"+p.getMsg()+"------**********----------"+p.getTime().before(piv.getTime()));
                  return true;
              }
              
@@ -382,6 +385,7 @@ public class MainModelManager implements MainModel {
             if(lastMessage!=null){
                 if(lastMessage.getTime().before(pub.getTime())){
                 lastMessage = (PrivateMessage)pub;
+
                 }
             
             }
@@ -392,8 +396,9 @@ public class MainModelManager implements MainModel {
         if(lastMessage != null){
         for(PublicMessage u : user.getUnreadMessages()){
         if(u instanceof PrivateMessage){
-            if((u.getTime().getNanos()<=(lastMessage.getTime().getNanos())) && (u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail())) )
+            if((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) && (u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail())) )
                 user.getUnreadMessages().remove(u);
+
                 user.getUnreadMessages().add(lastMessage);
                 return;
                 }
