@@ -185,6 +185,18 @@ public class MainModelManager implements MainModel {
 
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
         this.allMessage.add(gm);
+        for(PublicMessage g : user.getUnreadMessages()){
+            if(g instanceof GroupMessages){
+                if(selectedGroup!=null){
+                    if(((GroupMessages) g).getGroup().getName().equals(gm.getGroup().getName()))
+                    {
+                        user.getUnreadMessages().remove(g);
+                        user.getUnreadMessages().add(gm);
+                    }
+                }
+            }
+
+        }
         support.firePropertyChange("newGroupMessage", null, gm);
     }
 
@@ -224,7 +236,7 @@ public class MainModelManager implements MainModel {
             if(u.getSender().getEmail().equals(message.getReceiver().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(message.getReceiver().getEmail()) )
                 user.getUnreadMessages().remove(u);
                 user.getUnreadMessages().add(message);
-                return;
+                return ;
                 }
         }
     }
@@ -232,6 +244,7 @@ public class MainModelManager implements MainModel {
     @Override
     public void sendGroup(GroupMessages mess) {
         client.sendGroup(mess);
+
     }
 
     public ArrayList<PublicMessage> getAllMessage() {
@@ -354,7 +367,7 @@ public class MainModelManager implements MainModel {
              for(PrivateMessage piv :pivi){
                  System.out.println("--------------------"+p.getMsg()+"----------------"+p.getTime().before(piv.getTime()));
              if((p.getTime().before(piv.getTime())) &&(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail())  ||  p.getSender().getEmail().equals(u.getEmail()))){
-                 
+
                   System.out.println("---------***********-----------"+p.getMsg()+"------**********----------"+p.getTime().before(piv.getTime()));
                  return true;
              }
@@ -377,7 +390,7 @@ public class MainModelManager implements MainModel {
             if(lastMessage!=null){
                 if(lastMessage.getTime().before(pub.getTime())){
                 lastMessage = (PrivateMessage)pub;
-               
+
                 }
             
             }
@@ -390,7 +403,7 @@ public class MainModelManager implements MainModel {
         if(u instanceof PrivateMessage){
             if((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) && (u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail())) )
                 user.getUnreadMessages().remove(u);
-             
+
                 user.getUnreadMessages().add(lastMessage);
                 return;
                 }
@@ -399,5 +412,23 @@ public class MainModelManager implements MainModel {
         
         
         }
+
+    @Override
+    public boolean unredgGMs(Group g) {
+        ArrayList<GroupMessages> pivi = loadGroup(g);
+
+        for (PublicMessage p: user.getUnreadMessages()){
+            if(p instanceof GroupMessages){
+                for(GroupMessages piv :pivi){
+                    if(p.getTime().before(piv.getTime())&&(((GroupMessages) p).getGroup().getName().equals(g.getName()))){
+                        return true;
+                    }
+
+                }
+            }
+
+        }
+        return false;
+    }
 
 }
