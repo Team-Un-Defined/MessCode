@@ -9,14 +9,14 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.edit_project_leader.EditProjectLeaderController">
    <children>
-      <Label layoutX="20.0" layoutY="20.0" text="Edit the project leader">
+      <Label layoutX="20.0" layoutY="20.0" text="%edit_project_leader.edit_leader">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="70.0" text="Project leader" />
+      <Label layoutX="20.0" layoutY="70.0" text="%edit_project_leader.pm" />
       <ComboBox fx:id="groupLeaderComboBox" layoutX="155.0" layoutY="66.0" prefHeight="25.0" prefWidth="217.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
-      <Button layoutX="284.0" layoutY="146.0" mnemonicParsing="false" onAction="#confirmButton" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Confirm" />
+      <Button layoutX="284.0" layoutY="146.0" mnemonicParsing="false" onAction="#confirmButton" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%edit_project_leader.confirm" />
       <Label fx:id="errorLabel" layoutX="20.0" layoutY="150.0" />
    </children>
 </Pane>
