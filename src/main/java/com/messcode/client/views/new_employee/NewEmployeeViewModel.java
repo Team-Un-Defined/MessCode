@@ -6,10 +6,15 @@ import com.messcode.transferobjects.util.Subject;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.EventHandler;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogEvent;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -37,10 +42,11 @@ public class NewEmployeeViewModel implements Subject {
             Platform.runLater(() -> {
                 Dialog<String> dialog = new Dialog<>();
                 dialog.setTitle("Generated password");
-                ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+                ButtonType buttonType = new ButtonType("Copy password", ButtonBar.ButtonData.OK_DONE);
                 dialog.setContentText("Please make sure to forward the new user their\n" +
                         "generated password: " + password);
                 dialog.getDialogPane().getButtonTypes().add(buttonType);
+                dialog.setOnCloseRequest(actionEvent(password));
                 dialog.showAndWait();
             });
             System.out.println("HELLO I SHOULD RET REPSONSE 2 pass : " + password);
@@ -54,7 +60,13 @@ public class NewEmployeeViewModel implements Subject {
             System.out.println("HELLO I SHOULD RET REPSONSE 3");
         }
     }
-
+    private EventHandler<DialogEvent> actionEvent(String password) {
+        String ctc = password;
+        StringSelection stringSelection = new StringSelection(ctc);
+        Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clpbrd.setContents(stringSelection, null);
+        return null;
+    }
     public StringProperty errorProperty() {
         return error;
     }

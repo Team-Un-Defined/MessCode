@@ -13,10 +13,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogEvent;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -257,13 +262,23 @@ public class ChatClientViewModel implements Subject {
         Platform.runLater(() -> {
             Dialog<String> dialog = new Dialog<>();
             dialog.setTitle("Generated password");
-            ButtonType buttonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+            ButtonType buttonType = new ButtonType("Copy password", ButtonBar.ButtonData.OK_DONE);
             dialog.setContentText("Please make sure to forward the new user their\n" +
                     "generated password: " + password);
             System.out.println("ppass: "+ password);
             dialog.getDialogPane().getButtonTypes().add(buttonType);
+            dialog.setOnCloseRequest(actionEvent(password));
+
             dialog.showAndWait();
         });
         mainModel.resetPassword(user);
+    }
+
+    private EventHandler<DialogEvent> actionEvent(String password) {
+        String ctc = password;
+        StringSelection stringSelection = new StringSelection(ctc);
+        Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clpbrd.setContents(stringSelection, null);
+        return null;
     }
 }
