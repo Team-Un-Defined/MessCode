@@ -615,15 +615,10 @@ public class ChatClientController {
                 (int) (255 * color.getRed()),
                 (int) (255 * color.getGreen()),
                 (int) (255 * color.getBlue()));
-        int r = (int) (255 * color.getRed());
-        int g = (int) (255 * color.getRed());
-        int b = (int) (255 * color.getRed());
         SettingsConfig.setConfigOf("message_color_r", String.valueOf(color.getRed()));
         SettingsConfig.setConfigOf("message_color_g", String.valueOf(color.getGreen()));
         SettingsConfig.setConfigOf("message_color_b", String.valueOf(color.getBlue()));
         SettingsConfig.setConfigOf("message_color_a", "1");
-        System.out.println((int) (255 * color.getRed()));
-        System.out.println("result" + (int) (255 * color.getRed())*0.299 + (int) (255 * color.getGreen())*0.587 + (int) (255 * color.getBlue())*0.114);
         SettingsConfig.setConfigOf("message_color", webFormat);
         if ((int) (255 * color.getRed())*0.299 + (int) (255 * color.getGreen())*0.587 + (int) (255 * color.getBlue())*0.114 > 140){
             SettingsConfig.setConfigOf("text_color", "black");
