@@ -153,7 +153,8 @@ public class ChatClientController {
             removeGroupButton.setVisible(false);
             resetPasswordButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
-            newEmployeeButton.setVisible(false);
+            sendGroupButton.setVisible(false);
+            //newEmployeeButton.setVisible(false); HOYA, I THINK WE SHOULD LEAVE THIS IN SO HE COULD ADD EMPLOYEE
             removeUserButton.setVisible(false);
             resetPasswordButton.setVisible(false);
         }
@@ -196,7 +197,14 @@ public class ChatClientController {
                 super.updateItem(item, empty);
                 if (empty) {
                     setText(null);
-                } else {
+                } 
+                else if(item.getLeader()==null){
+                
+                String text = item.getName();
+                setText(text);
+                this.setTextFill(Color.RED);
+                }
+                else {
                     String text = item.getName(); // get text from item
                     setText(text);
                 }
