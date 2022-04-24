@@ -95,63 +95,12 @@ public class ChatClientController {
         chatVM.addListener("MessageForEveryone", this::displayPublic);
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
-        //CHAT MESSAGES
-//        StringProperty textChat = new SimpleStringProperty();
-//        textChat.bind(chatVM.messageProperty());
-//
-//        textChat.addListener((observableValue, s, t1) -> {
-//            Platform.runLater(() -> {
-//                System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
-//                Label label = new Label(textChat.getValue());
-//                label.setMaxWidth(messagesListAll.getWidth() - 25);
-//                label.setWrapText(true);
-//                messagesListAll.getItems().add(label);
-//
-//                if (!paneInFront.equals("all")) {
-//                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-//                    allButtonImage.setImage(new Image(reddot));
-//                }
-//            });
-//        });
-//
-//        StringProperty pmChat = new SimpleStringProperty();
-//        pmChat.bind(chatVM.PMProperty());
-//
-//        pmChat.addListener((observableValue, oldVal, newVal) -> {
-//            System.out.println("GOT THE SHIT GOT THE SHIT IMMA BE HAPPY");
-//            Platform.runLater(() -> {
-//                Label label = new Label(newVal);
-//                label.setMaxWidth(messagesListGroup.getWidth() - 25);
-//                label.setWrapText(true);
-//                messagesListPM.getItems().add(label);
-//
-//// TODO
-////                if(!paneInFront.equals("pm")) {
-////                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-////                    PMButtonImage.setImage(new Image(reddot));
-////                }
-//            });
-//        });
-//
-//        StringProperty gmChat = new SimpleStringProperty();
-//        gmChat.bind(chatVM.GMProperty());
-//        gmChat.addListener((observableValue, oldVal, newVal) -> {
-//            Platform.runLater(() -> {
-//                Label label = new Label(newVal);
-//                label.setMaxWidth(messagesListGroup.getWidth() - 25);
-//                label.setWrapText(true);
-//                messagesListGroup.getItems().add(label);
-//            });
-//        });
-
-        //  chatVM.addListener("NewPM", this::openPrivateChat);
 
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userDisplayedName2.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userNameLabel.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userEmailLabel.setText(chatVM.getCurrentUser().getEmail());
         userTypeLabel.setText(chatVM.getCurrentUser().getType());
-
 
         if (SettingsConfig.getConfigOf("language").equals("SK")) {
             toggleSwitchLoc.setSelected(true);
@@ -196,14 +145,17 @@ public class ChatClientController {
             removeUserButton.setVisible(false);
             removeGroupButton.setVisible(false);
             editMemberButton.setVisible(false);
+            resetPasswordButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isProjectLeader()) {
             newEmployeeButton.setVisible(false);
             newGroupButton.setVisible(false);
             removeUserButton.setVisible(false);
             removeGroupButton.setVisible(false);
+            resetPasswordButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
             newEmployeeButton.setVisible(false);
             removeUserButton.setVisible(false);
+            resetPasswordButton.setVisible(false);
         }
 
         for (PublicMessage msg : chatVM.getCurrentUser().getUnreadMessages()) {
