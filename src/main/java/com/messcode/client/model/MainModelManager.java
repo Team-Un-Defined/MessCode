@@ -2,18 +2,16 @@ package com.messcode.client.model;
 
 import com.messcode.client.Start;
 import com.messcode.client.networking.Client;
-import com.messcode.transferobjects.AccountManager;
-import com.messcode.transferobjects.Container;
-import com.messcode.transferobjects.Group;
+import com.messcode.transferobjects.*;
 import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
-import com.messcode.transferobjects.User;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -22,6 +20,7 @@ public class MainModelManager implements MainModel {
 
     private Client client;
     private PropertyChangeSupport support;
+    private String privateKeyPass;
     private User user;
     private PrivateMessage usersPM;
     private ArrayList<PublicMessage> allMessage;
@@ -72,6 +71,10 @@ public class MainModelManager implements MainModel {
         }
     }
 
+    public void storePrivateKeyPass(String privateKeyPass) {
+        this.privateKeyPass = privateKeyPass;
+    }
+
     private void userDeleted(PropertyChangeEvent propertyChangeEvent) {
         User u =(User )propertyChangeEvent.getNewValue();
         support.firePropertyChange("AddNewUser", null,u);
@@ -95,6 +98,9 @@ public class MainModelManager implements MainModel {
             allGroups = (ArrayList<Group>) objs.get(4);
         }
         user = (User) objs.get(2);
+        MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
+        byte[] decryptedPrivateKey = myMessageEncryptionManager.symmetricDataDecryption(user.getMyPrivateKey(), privateKeyPass.getBytes());
+        user.setMyPrivateKey(decryptedPrivateKey);
         allUsers = (ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
         for (User u : allUsers) {
             java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,

@@ -5,6 +5,7 @@ import com.messcode.transferobjects.messages.PublicMessage;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public class User implements Serializable {
         this.email = email;
         this.salt = myAccountManager.generateSalt();
 
-        this.myPublicKey = myPublicKey.getEncoded();
+        this.myPublicKey = myMessageEncryptionManager.symmetricDataEncryption(myPublicKey.getEncoded(), password.getBytes());
         this.myPrivateKey = myPrivateKey.getEncoded();
 
         this.hashedPassword = myAccountManager.hashPassword(password, salt);

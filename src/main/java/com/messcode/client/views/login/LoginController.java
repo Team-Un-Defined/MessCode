@@ -54,6 +54,7 @@ public class LoginController implements Subject {
     }
 
     public void enterChatBtn() {
+        loginVM.storePrivateKeyPass(passwordField.getText());
         loginVM.login(emailField.getText(), passwordField.getText());
     }
 

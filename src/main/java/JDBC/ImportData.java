@@ -44,7 +44,9 @@ public class ImportData {
     public Container createAccount(User us) throws SQLException {
         boolean done = true;
 
-        String query = "INSERT INTO account VALUES(default, ?, ?, ?, ?, ?, ?) ON CONFLICT(email) DO NOTHING RETURNING id";
+        String query = "INSERT INTO account (id, fname, lname, pwd_hash, pwd_salt, type, email, private_key, public_key) " +
+                "VALUES(default, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                "ON CONFLICT(email) DO NOTHING RETURNING id";
         PreparedStatement myPreparedStatement = c.prepareStatement(query);
         myPreparedStatement.setString(1, us.getName());
         myPreparedStatement.setString(2, us.getSurname());
@@ -52,6 +54,8 @@ public class ImportData {
         myPreparedStatement.setString(4, us.getSalt());
         myPreparedStatement.setString(5, us.getType());
         myPreparedStatement.setString(6, us.getEmail());
+        myPreparedStatement.setBytes(7, us.getMyPrivateKey());
+        myPreparedStatement.setBytes(8, us.getMyPublicKey());
         ResultSet rs = myPreparedStatement.executeQuery();
 
         if(!rs.next()) {

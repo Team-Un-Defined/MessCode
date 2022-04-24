@@ -28,6 +28,10 @@ public class LoginViewModel implements Subject {
         mainModel.addListener("LoginData", this::openChatClient);
     }
 
+    public void storePrivateKeyPass(String privateKeyPass) {
+        mainModel.storePrivateKeyPass(privateKeyPass);
+    }
+
     private void openChatClient(PropertyChangeEvent propertyChangeEvent) {
         support.firePropertyChange("OpenChat", null, true);
     }
