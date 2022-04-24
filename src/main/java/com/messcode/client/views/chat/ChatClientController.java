@@ -110,8 +110,6 @@ public class ChatClientController {
             toggleSwitch.setSelected(true);
         }
 
-        //Platform.runLater(() -> toggleSwitch.getScene().getStylesheets().add("lite.css"));
-
         toggleSwitch.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
             Boolean value = observableValue.getValue();
             toggleSwitch.getScene().getStylesheets().clear();
@@ -294,6 +292,7 @@ public class ChatClientController {
                 for (PrivateMessage pm : priv) {
                     messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
                 }
+                messagesListPM.scrollTo(messagesListPM.getItems().size());
 
                 paneInFront = "pm";
                 panePrivate.toFront();
@@ -318,10 +317,9 @@ public class ChatClientController {
             messagesListGroup.getItems().clear();
             ArrayList<GroupMessages> groupMess = chatVM.loadGroup();
             for (GroupMessages g : groupMess) {
-
                 messagesListGroup.getItems().add(new Label(g.getTime() + " " + g.getUsername() + ": " + g.getMsg()));
-
             }
+            messagesListGroup.scrollTo(messagesListGroup.getItems().size());
             groupLabel.setText(group.getName());
         }
     }
@@ -387,6 +385,7 @@ public class ChatClientController {
         for (PublicMessage pb : pub) {
             messagesListAll.getItems().add(new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg()));
         }
+        messagesListAll.scrollTo(messagesListAll.getItems().size());
     }
 
     public void removeGroupClicked() {
@@ -409,6 +408,7 @@ public class ChatClientController {
             label.setMaxWidth(messagesListAll.getWidth() - 25);
             label.setWrapText(true);
             messagesListAll.getItems().add(label);
+            messagesListAll.scrollTo(messagesListAll.getItems().size());
 
             if (!paneInFront.equals("all")) {
                 InputStream reddot = getClass().getResourceAsStream("/reddot.png");
@@ -424,6 +424,7 @@ public class ChatClientController {
             label.setMaxWidth(messagesListGroup.getWidth() - 25);
             label.setWrapText(true);
             messagesListPM.getItems().add(label);
+            messagesListPM.scrollTo(messagesListPM.getItems().size());
         });
     }
 
@@ -434,6 +435,7 @@ public class ChatClientController {
             label.setMaxWidth(messagesListGroup.getWidth() - 25);
             label.setWrapText(true);
             messagesListGroup.getItems().add(label);
+            messagesListGroup.scrollTo(messagesListGroup.getItems().size());
         });
     }
 
