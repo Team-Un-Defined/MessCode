@@ -97,6 +97,7 @@ public class ViewHandler {
             stage = (Stage) dialog.getDialogPane().getScene().getWindow();
             stage.getIcons().add(new Image("icon.png"));
             stage.setTitle("MessCode");
+            stage.setResizable(false);
             stage.setOnCloseRequest(windowEvent -> stage.close());
             dialog.showAndWait();
         }
@@ -117,6 +118,7 @@ public class ViewHandler {
         double y = stage.getY();
         stage.close();
         openChatClientView().paneProfile.toFront();
+        stage.setResizable(false);
         stage.setX(x);
         stage.setY(y);
     }
@@ -134,8 +136,9 @@ public class ViewHandler {
         stage.setScene(chat);
         stage.getIcons().add(new Image("icon.png"));
         stage.getScene().getStylesheets().add(getCssStyle());
-        stage.show();
         stage.setOnCloseRequest(windowEvent -> stage.close());
+        stage.setResizable(false);
+        stage.show();
         return controller;
     }
 
@@ -154,8 +157,9 @@ public class ViewHandler {
         stage.setScene(login);
         stage.getIcons().add(new Image("icon.png"));
         stage.getScene().getStylesheets().add(getCssStyle());
-        stage.show();
         stage.setOnCloseRequest(windowEvent -> stage.close());
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void openNewEmployee(String css) {
@@ -174,6 +178,7 @@ public class ViewHandler {
         newEmployeeStage.setScene(newEmployee);
         newEmployeeStage.getIcons().add(new Image("icon.png"));
         newEmployeeStage.getScene().getStylesheets().add(css);
+        newEmployeeStage.setResizable(false);
         newEmployeeStage.show();
     }
 
@@ -193,6 +198,7 @@ public class ViewHandler {
         newGroupStage.setScene(newGroup);
         newGroupStage.getIcons().add(new Image("icon.png"));
         newGroupStage.getScene().getStylesheets().add(css);
+        newGroupStage.setResizable(false);
         newGroupStage.show();
     }
 
@@ -212,6 +218,7 @@ public class ViewHandler {
         changePasswordStage.setScene(changePassword);
         changePasswordStage.getIcons().add(new Image("icon.png"));
         changePasswordStage.getScene().getStylesheets().add(css);
+        changePasswordStage.setResizable(false);
         changePasswordStage.show();
     }
 
@@ -231,6 +238,7 @@ public class ViewHandler {
         editMemberStage.setScene(editMember);
         editMemberStage.getIcons().add(new Image("icon.png"));
         editMemberStage.getScene().getStylesheets().add(css);
+        editMemberStage.setResizable(false);
         editMemberStage.show();
     }
 
@@ -250,6 +258,7 @@ public class ViewHandler {
         editProjectLeaderStage.setScene(editProjectLeader);
         editProjectLeaderStage.getIcons().add(new Image("icon.png"));
         editProjectLeaderStage.getScene().getStylesheets().add(css);
+        editProjectLeaderStage.setResizable(false);
         editProjectLeaderStage.show();
     }
 
@@ -269,6 +278,7 @@ public class ViewHandler {
         removeUserStage.setScene(removeUser);
         removeUserStage.getIcons().add(new Image("icon.png"));
         removeUserStage.getScene().getStylesheets().add(css);
+        removeUserStage.setResizable(false);
         removeUserStage.show();
     }
 
@@ -288,6 +298,7 @@ public class ViewHandler {
         removeGroupStage.setScene(removeGroup);
         removeGroupStage.getIcons().add(new Image("icon.png"));
         removeGroupStage.getScene().getStylesheets().add(css);
+        removeGroupStage.setResizable(false);
         removeGroupStage.show();
     }
 
