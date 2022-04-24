@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 public class ImportData {
 
@@ -244,29 +245,99 @@ public class ImportData {
             }
         }
     }
-
-    public void deleteGroup(Group g) {
-        PreparedStatement myPreparedStatement;
-        ResultSet rs;
-        int i = 0;
+    public void updateLeader(Group g) {
         try {
-            do {
-                String query = "Update projects \n" +
+            PreparedStatement myPreparedStatement0;
+            PreparedStatement myPreparedStatement;
+            PreparedStatement myPreparedStatement2;
+            PreparedStatement myPreparedStatementt;
+            ResultSet rs0=null;
+            ResultSet rs;
+            ResultSet rs2;
+            int delete = 0;
+          
+            if(g.getLeader()!=null){
+            String query0 ="Select a.id \n" +
+                     "from account as a\n" +
+                     "where a.email = ?";
+            myPreparedStatement0 = c.prepareStatement(query0, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            myPreparedStatement0.setString(1, g.getLeader().getEmail());
+            rs0 = myPreparedStatement0.executeQuery();
+                System.out.println("IDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+            rs0.next();
+            }
+            else{
+                delete = 1;
+            }
+            
+            String query = "SELECT a.id as account_id, p.id AS project_id FROM account AS a LEFT JOIN projects AS p ON p.leader_id = a.id " +
+                    "WHERE p.name = ?";
+            myPreparedStatement = c.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            myPreparedStatement.setString(1, g.getName());
+          
+            rs = myPreparedStatement.executeQuery();
+            rs.next();
+            
+         if(delete==0){   String query4 = "Update projects\n" +
+            "SET\n" +
+            "leader_id = ?\n" +
+            "where id = ?";
+            myPreparedStatement2 = c.prepareStatement(query4, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            myPreparedStatement2.setInt(1, rs0.getInt("id"));
+            myPreparedStatement2.setInt(2, rs.getInt("project_id"));
+            myPreparedStatement2.executeUpdate();
+         }
+         else{
+         int i =0;
+          do {
+                String queryy = "Update projects \n" +
                         "SET \n" +
                         "leader_id = null,\n" +
                         "name = ? \n" +
                         "   where name = ? RETURNING name";
-                myPreparedStatement = c.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                myPreparedStatementt = c.prepareStatement(queryy, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 String name = g.getName() + "(DELETED" + i + ")";
-                myPreparedStatement.setString(1, name);
-                myPreparedStatement.setString(2, g.getName());
-                rs = myPreparedStatement.executeQuery();
+                myPreparedStatementt.setString(1, name);
+                myPreparedStatementt.setString(2, g.getName());
+                rs = myPreparedStatementt.executeQuery();
                 i++;
             } while (!rs.next());
+         
+         
+         
+         }
+         
+            String query2 ="SELECT \n" +
+            "a.id as account_id,\n" +
+            "a.type\n" +
+            "from account as a\n" +
+            "join projects as p\n" +
+            "on p.leader_id = a.id\n" +
+            "where a.id=?";
+                    
+            myPreparedStatement2 = c.prepareStatement(query2, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            myPreparedStatement2.setInt(1, rs.getInt("account_id"));
+           
+            rs2 = myPreparedStatement2.executeQuery();
+            
+            
+            if(!rs2.next()){
+            String query3 ="Update account\n" +
+            "SET\n" +
+            "type ='employee'\n" +
+            "where id =?";
+            myPreparedStatement2 = c.prepareStatement(query3, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            myPreparedStatement2.setInt(1, rs.getInt("account_id"));
+            myPreparedStatement2.executeUpdate();
+            }
+
+            
         } catch (SQLException ex) {
-            log4j.error(ex.getMessage(), ex);
+           log4j.error(ex.getMessage(), ex);
         }
+    
     }
+   
 
     public void saveDataOnExit(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
@@ -510,4 +581,6 @@ public class ImportData {
         myPreparedStatement.executeUpdate();
 
     }
+
+    
 }

@@ -328,4 +328,13 @@ public class ClientSocketHandler implements Runnable {
             e.printStackTrace();
         }
     }
+
+    void changeLeader(Group g) {
+        try{
+        Container packet = new Container(g,ClassName.CHANGE_GROUP_LEADER);
+        outToServer.writeObject(packet);
+        }catch(IOException e){
+          e.printStackTrace();
+        }
+    }
 }

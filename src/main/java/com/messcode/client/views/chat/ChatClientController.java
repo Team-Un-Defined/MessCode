@@ -380,7 +380,7 @@ public class ChatClientController {
 //            invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
-
+            System.out.println(group.getName());
             chatVM.setReceiverGroup(group);
             messagesListGroup.getItems().clear();
             ArrayList<GroupMessages> groupMess = chatVM.loadGroup();

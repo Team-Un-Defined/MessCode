@@ -317,4 +317,9 @@ public class MainModelManager implements MainModel {
 
     }
 
+    @Override
+    public void changeLeader(Group g) {
+       client.changeLeader(g);
+    }
+
 }

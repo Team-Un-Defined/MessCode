@@ -25,6 +25,8 @@ public class EditProjectLeaderController {
     }
 
     public void confirmButton() {
+        User u = groupLeaderComboBox.getSelectionModel().getSelectedItem();
+        editProjectLeaderVM.changeLeader(u);
     }
 
 

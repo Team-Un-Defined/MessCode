@@ -39,7 +39,7 @@ public interface MainModel extends Subject {
     User getCurrentUser();
 
     void deleteUser(User use);
-    
+
     void addMember(ArrayList<User> u);
 
     public void removeMember(ArrayList<User> u);
@@ -47,4 +47,6 @@ public interface MainModel extends Subject {
     public void deleteGroup(Group g);
 
     void resetPassword(User use);
+
+    public void changeLeader(Group g);
 }
