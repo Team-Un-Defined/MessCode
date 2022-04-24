@@ -95,7 +95,9 @@ public class ChatClientController {
         chatVM.addListener("MessageForEveryone", this::displayPublic);
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
-
+        editProjectLeaderButton.setVisible(false);
+        editMemberButton.setVisible(false);
+        resetPasswordButton.setVisible(false);
 
         
         
@@ -222,6 +224,10 @@ public class ChatClientController {
         usersListFXML.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
+                 if( chatVM.getCurrentUser().getType().equals("superuser"))  {
+                     resetPasswordButton.setVisible(true);
+                 }
+
                     inviteToPmButton();
                 }
             }
@@ -230,6 +236,16 @@ public class ChatClientController {
         groupsList.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
+                    if( chatVM.getCurrentUser().getType().equals("superuser") ||  chatVM.getCurrentUser().getType().equals("employer"))  {
+                        editProjectLeaderButton.setVisible(true);
+                        editMemberButton.setVisible(true);
+                    }
+                    if( chatVM.getCurrentUser().getType().equals("project_leader"))
+                    {
+                        editMemberButton.setVisible(true);
+                    }
+
+
                     openGroup();
                 }
             }

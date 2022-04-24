@@ -11,6 +11,11 @@ public class Server {
 
     private static final int SERVER_PORT = 9090;
 
+    /**
+     * This is where the server is started.
+     * Serversocket is created,a connection pool which will contain the users who join, all the jdbc import and export classes.
+     * It will start a new thread for each client who joins.
+     */
     public void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
