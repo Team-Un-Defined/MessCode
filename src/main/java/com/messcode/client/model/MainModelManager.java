@@ -350,7 +350,7 @@ public class MainModelManager implements MainModel {
         for (PublicMessage p: user.getUnreadMessages()){
          if(p instanceof PrivateMessage){
              for(PrivateMessage piv :pivi){
-             if(p.getTime().before(piv.getTime())&&(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail()) || p.getSender().getEmail().equals(u.getEmail()))){
+             if((p.getTime().before(piv.getTime()) || p.getTime().equals(piv.getTime())) &&(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail()) || p.getSender().getEmail().equals(u.getEmail()))){
                  return true;
              }
              
@@ -363,13 +363,14 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void setSelectedUser(User us) {
+        
         selectedUser = us;
         PrivateMessage lastMessage= null;
         for(PublicMessage pub : allMessage){
-        if(pub instanceof PrivateMessage && pub.getSender().getEmail().equals(us.getEmail()))
+        if(pub instanceof PrivateMessage && (pub.getSender().getEmail().equals(us.getEmail()) || ((PrivateMessage)pub).getReceiver().getEmail().equals(us.getEmail())) )
         {
             if(lastMessage!=null){
-                if(lastMessage.getTime().after(pub.getTime())){
+                if(lastMessage.getTime().before(pub.getTime())){
                 lastMessage = (PrivateMessage)pub;
                 }
             
@@ -379,10 +380,9 @@ public class MainModelManager implements MainModel {
         
         }
         if(lastMessage != null){
-            
         for(PublicMessage u : user.getUnreadMessages()){
         if(u instanceof PrivateMessage){
-            if(u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail()) )
+            if((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) && (u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail())) )
                 user.getUnreadMessages().remove(u);
                 user.getUnreadMessages().add(lastMessage);
                 }
