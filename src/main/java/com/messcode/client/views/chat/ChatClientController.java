@@ -327,8 +327,9 @@ public class ChatClientController {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
-               
+                updateUserList();
                 chatVM.setReceiver(use);
+                
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
                 for (PrivateMessage pm : priv) {
