@@ -8,13 +8,9 @@ import com.messcode.client.views.login.LoginController;
 import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
 import com.messcode.client.views.remove_group.RemoveGroupController;
-import com.messcode.client.views.remove_group.RemoveGroupViewModel;
 import com.messcode.client.views.remove_user.RemoveUserController;
 import com.messcode.transferobjects.User;
-import com.messcode.client.core.SettingsConfig;
-import com.messcode.transferobjects.UserList;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,7 +21,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -104,7 +99,6 @@ public class ViewHandler {
         if (bundle != null)
             openLogin();
     }
-
 
     public void changeLanguage(String language){
         if(language.equals("SK")){
@@ -313,14 +307,12 @@ public class ViewHandler {
         return root;
     }
 
-
     public String getCssStyle(){
         if(Objects.equals(SettingsConfig.getConfigOf("dark_theme"), "0")){
             return "lite.css";
         }
         return  "dark.css";
     }
-
 
     public User getMyUser() {
         return myUser;

@@ -14,6 +14,9 @@ import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -22,6 +25,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.io.InputStream;
 
@@ -89,66 +95,18 @@ public class ChatClientController {
         this.vh = vh;
         this.bundle = bundle;
         cssUsed = vh.getCssStyle();
+
         refreshPublic();
         updateUserList();
         updateGroupList();
+
         chatVM.addListener("MessageForEveryone", this::displayPublic);
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
+
         editProjectLeaderButton.setVisible(false);
         editMemberButton.setVisible(false);
         resetPasswordButton.setVisible(false);
-
-        
-        
-        //CHAT MESSAGES
-//        StringProperty textChat = new SimpleStringProperty();
-//        textChat.bind(chatVM.messageProperty());
-//
-//        textChat.addListener((observableValue, s, t1) -> {
-//            Platform.runLater(() -> {
-//                System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
-//                Label label = new Label(textChat.getValue());
-//                label.setMaxWidth(messagesListAll.getWidth() - 25);
-//                label.setWrapText(true);
-//                messagesListAll.getItems().add(label);
-//
-//                if (!paneInFront.equals("all")) {
-//                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-//                    allButtonImage.setImage(new Image(reddot));
-//                }
-//            });
-//        });
-//
-//        StringProperty pmChat = new SimpleStringProperty();
-//        pmChat.bind(chatVM.PMProperty());
-//
-//        pmChat.addListener((observableValue, oldVal, newVal) -> {
-//            System.out.println("GOT THE SHIT GOT THE SHIT IMMA BE HAPPY");
-//            Platform.runLater(() -> {
-//                Label label = new Label(newVal);
-//                label.setMaxWidth(messagesListGroup.getWidth() - 25);
-//                label.setWrapText(true);
-//                messagesListPM.getItems().add(label);
-//
-//// TODO
-////                if(!paneInFront.equals("pm")) {
-////                    InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-////                    PMButtonImage.setImage(new Image(reddot));
-////                }
-//            });
-//        });
-//
-//        StringProperty gmChat = new SimpleStringProperty();
-//        gmChat.bind(chatVM.GMProperty());
-//        gmChat.addListener((observableValue, oldVal, newVal) -> {
-//            Platform.runLater(() -> {
-//                Label label = new Label(newVal);
-//                label.setMaxWidth(messagesListGroup.getWidth() - 25);
-//                label.setWrapText(true);
-//                messagesListGroup.getItems().add(label);
-//            });
-//        });
 
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userDisplayedName2.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
@@ -224,9 +182,9 @@ public class ChatClientController {
         usersListFXML.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                 if( chatVM.getCurrentUser().getType().equals("superuser"))  {
-                     resetPasswordButton.setVisible(true);
-                 }
+                    if (chatVM.getCurrentUser().getType().equals("superuser")) {
+                        resetPasswordButton.setVisible(true);
+                    }
 
                     inviteToPmButton();
                 }
@@ -236,12 +194,11 @@ public class ChatClientController {
         groupsList.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                    if( chatVM.getCurrentUser().getType().equals("superuser") ||  chatVM.getCurrentUser().getType().equals("employer"))  {
+                    if (chatVM.getCurrentUser().getType().equals("superuser") || chatVM.getCurrentUser().getType().equals("employer")) {
                         editProjectLeaderButton.setVisible(true);
                         editMemberButton.setVisible(true);
                     }
-                    if( chatVM.getCurrentUser().getType().equals("project_leader"))
-                    {
+                    if (chatVM.getCurrentUser().getType().equals("project_leader")) {
                         editMemberButton.setVisible(true);
                     }
 
@@ -264,14 +221,12 @@ public class ChatClientController {
                 super.updateItem(item, empty);
                 if (empty) {
                     setText(null);
-                } 
-                else if(item.getLeader()==null){
-                
-                String text = item.getName();
-                setText(text);
-                this.setTextFill(Color.RED);
-                }
-                else {
+                } else if (item.getLeader() == null) {
+
+                    String text = item.getName();
+                    setText(text);
+                    this.setTextFill(Color.RED);
+                } else {
                     String text = item.getName(); // get text from item
                     setText(text);
                 }
@@ -307,13 +262,13 @@ public class ChatClientController {
         });
     }
 
-    // TODO as in do we still need this? i dont think so
-    private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
-        usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
-        chatVM.setReceiver(usersPM.getReceiver());
-        panePrivate.toFront();
-        chatVM.sendListOfPmRoomUsers(usersPM);
-    }
+//    // TODO as in do we still need this? i dont think so
+//    private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
+//        usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
+//        chatVM.setReceiver(usersPM.getReceiver());
+//        panePrivate.toFront();
+//        chatVM.sendListOfPmRoomUsers(usersPM);
+//    }
 
     public void sendButton() {
         System.out.println("*************************************");
@@ -358,7 +313,9 @@ public class ChatClientController {
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
                 for (PrivateMessage pm : priv) {
-                    messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
+                    Label label = new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+                    label.setOnMouseClicked((evt) -> this.copyMessage(label.getText()));
+                    messagesListPM.getItems().add(label);
                 }
                 messagesListPM.scrollTo(messagesListPM.getItems().size());
 
@@ -375,6 +332,12 @@ public class ChatClientController {
         }
     }
 
+    private void copyMessage(String str) {
+        StringSelection stringSelection = new StringSelection(str);
+        Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clpbrd.setContents(stringSelection, null);
+    }
+
     public void openGroup() {
         if (groupsList.getSelectionModel().getSelectedItems().isEmpty()) {
 //            invitePmErrorLabel.setText(bundle.getString("select_user"));
@@ -385,7 +348,9 @@ public class ChatClientController {
             messagesListGroup.getItems().clear();
             ArrayList<GroupMessages> groupMess = chatVM.loadGroup();
             for (GroupMessages g : groupMess) {
-                messagesListGroup.getItems().add(new Label(g.getTime() + " " + g.getUsername() + ": " + g.getMsg()));
+                Label label = new Label(g.getTime() + " " + g.getUsername() + ": " + g.getMsg());
+                label.setOnMouseClicked((evt) -> this.copyMessage(label.getText()));
+                messagesListGroup.getItems().add(label);
             }
             messagesListGroup.scrollTo(messagesListGroup.getItems().size());
             groupLabel.setText(group.getName());
@@ -451,7 +416,9 @@ public class ChatClientController {
         messagesListAll.getItems().clear();
         ArrayList<PublicMessage> pub = chatVM.loadPublics();
         for (PublicMessage pb : pub) {
-            messagesListAll.getItems().add(new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg()));
+            Label label = new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg());
+            label.setOnMouseClicked((evt) -> this.copyMessage(label.getText()));
+            messagesListAll.getItems().add(label);
         }
         messagesListAll.scrollTo(messagesListAll.getItems().size());
     }
@@ -475,6 +442,7 @@ public class ChatClientController {
             Label label = new Label(a);
             label.setMaxWidth(messagesListAll.getWidth() - 25);
             label.setWrapText(true);
+            label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
             messagesListAll.getItems().add(label);
             messagesListAll.scrollTo(messagesListAll.getItems().size());
 
@@ -491,6 +459,7 @@ public class ChatClientController {
             Label label = new Label(a);
             label.setMaxWidth(messagesListGroup.getWidth() - 25);
             label.setWrapText(true);
+            label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
             messagesListPM.getItems().add(label);
             messagesListPM.scrollTo(messagesListPM.getItems().size());
         });
@@ -502,6 +471,7 @@ public class ChatClientController {
             Label label = new Label(a);
             label.setMaxWidth(messagesListGroup.getWidth() - 25);
             label.setWrapText(true);
+            label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
             messagesListGroup.getItems().add(label);
             messagesListGroup.scrollTo(messagesListGroup.getItems().size());
         });
@@ -512,9 +482,7 @@ public class ChatClientController {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
-
-                chatVM.resetPassword(use);
-            }
-
+            chatVM.resetPassword(use);
+        }
     }
 }
