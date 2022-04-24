@@ -209,7 +209,6 @@ public class ChatClientController {
                 if (empty) {
                     setText(null);
                 } else if (item.getLeader() == null) {
-
                     String text = item.getName();
                     setText(text);
                     this.setTextFill(Color.RED);
@@ -356,7 +355,7 @@ public class ChatClientController {
             } else {
                 sendGroupButton.setDisable(false);
             }
-            
+
             System.out.println(group.getName());
             chatVM.setReceiverGroup(group);
             messagesListGroup.getItems().clear();

@@ -17,7 +17,6 @@ public class RemoveGroupViewModel implements Subject {
     private PropertyChangeSupport support;
     private ObservableList<Group> groups;
     
-    
     public RemoveGroupViewModel(MainModel mainModel) {
         this.groups= FXCollections.observableArrayList() ;
         this.mainModel = mainModel;
