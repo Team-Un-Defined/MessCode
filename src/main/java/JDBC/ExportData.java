@@ -329,7 +329,7 @@ public class ExportData {
                 g = new Group(rs.getString("name"),rs.getString("description"),lead);
                }
                else {
-                   System.out.println("jjjjjjjjjjjjjjjjjjj"+rs.getString("name")+"ppppppppppppppppppppppp");
+                 
                    g = new Group(rs.getString("name"),rs.getString("description"),null);
                 
                }
