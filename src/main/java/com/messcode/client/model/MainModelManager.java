@@ -362,8 +362,34 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public void setSelectedUser(User u) {
-        selectedUser = u;
+    public void setSelectedUser(User us) {
+        selectedUser = us;
+        PrivateMessage lastMessage= null;
+        for(PublicMessage pub : allMessage){
+        if(pub instanceof PrivateMessage && pub.getSender().getEmail().equals(us.getEmail()))
+        {
+            if(lastMessage!=null){
+                if(lastMessage.getTime().after(pub.getTime())){
+                lastMessage = (PrivateMessage)pub;
+                }
+            
+            }
+            else lastMessage = (PrivateMessage)pub;
+        }
+        
+        }
+        if(lastMessage != null){
+            
+        for(PublicMessage u : user.getUnreadMessages()){
+        if(u instanceof PrivateMessage){
+            if(u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail()) )
+                user.getUnreadMessages().remove(u);
+                user.getUnreadMessages().add(lastMessage);
+                }
+        }
     }
+        
+        
+        }
 
 }
