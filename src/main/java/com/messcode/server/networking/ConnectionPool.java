@@ -99,13 +99,12 @@ public class ConnectionPool {
         for (ServerSocketHandler handler : connections) {
             for(int i=0;i<message.getGroup().getMembers().size();i++)
             {
-                if(message.getGroup().getMembers().get(i).getEmail().equals(handler.getUser().getEmail()))
-                {
-                    handler.sendGroupMessage(message);break;
+                if(message.getGroup().getMembers().get(i).getEmail().equals(handler.getUser().getEmail())) {
+                    if (handler.getUser().getEmail().equals(message.getEncryptedFor().getEmail())) {
+                        handler.sendGroupMessage(message);
+                    }
                 }
             }
-
-
         }
     }
 }

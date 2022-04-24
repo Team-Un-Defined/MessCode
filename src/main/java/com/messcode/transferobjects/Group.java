@@ -23,7 +23,6 @@ public class Group implements Serializable{
         this.description = description;
         this.leader = leader;
         this.members = new ArrayList<User>();
-        members.add(leader);
     }
 
     public void addMember(User u) {

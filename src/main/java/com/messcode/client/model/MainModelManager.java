@@ -97,6 +97,17 @@ public class MainModelManager implements MainModel {
         if (objs.size() > 4) {
             allGroups = (ArrayList<Group>) objs.get(4);
         }
+
+        for (Group myGroup : allGroups) {
+            for (User groupMember : myGroup.getMembers()) {
+                if (groupMember.getMyPublicKey() == null) {
+                    System.out.println("User " + groupMember.getEmail() + " in group " + myGroup.getName() + " does not have public key!");
+                } else {
+                    System.out.println("User " + groupMember.getEmail() + " in group " + myGroup.getName() + " has public key.");
+                }
+            }
+        }
+
         user = (User) objs.get(2);
         MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
         byte[] decryptedPrivateKey = myMessageEncryptionManager.symmetricDataDecryption(user.getMyPrivateKey(), privateKeyPass.getBytes());
@@ -155,6 +166,7 @@ public class MainModelManager implements MainModel {
 
         pm.decryptMessage(user.getMyPrivateKey());
         this.allMessage.add(pm);
+
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                 "//////////////////////////PMPM//////////////////////////////");
         System.out.println("//////////////////////////PMPM//////////////////////////////");
@@ -163,8 +175,12 @@ public class MainModelManager implements MainModel {
 
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
-        gm.decryptMessage(user.getMyPrivateKey());
-        this.allMessage.add(gm);
+
+        if (gm.getEncryptedFor().getEmail().equals(getCurrentUser().getEmail())) {
+            gm.decryptMessage(getCurrentUser().getMyPrivateKey());
+            this.allMessage.add(gm);
+        }
+
         support.firePropertyChange("newGroupMessage", null, gm);
     }
 

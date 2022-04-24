@@ -22,16 +22,18 @@ public class GroupMessages extends PublicMessage implements Serializable {
     private User encryptedFor;
     private byte[] encryptedMessage;
 
-    public GroupMessages(User username, User encryptedFor, byte[] encryptedMsg, Group group) {
+    public GroupMessages(User username, User encryptedFor, byte[] encryptedMessage, Group group) {
         super(username, null);
         this.group = group;
         this.encryptedFor = encryptedFor;
+        this.encryptedMessage = encryptedMessage;
     }
 
-    public GroupMessages(User username, User encryptedFor, byte[] encryptedMsg, Group group,Timestamp time) {
+    public GroupMessages(User username, User encryptedFor, byte[] encryptedMessage, Group group,Timestamp time) {
         super(username, null, time);
         this.group = group;
         this.encryptedFor = encryptedFor;
+        this.encryptedMessage = encryptedMessage;
     }
 
     public void decryptMessage(byte[] key) {

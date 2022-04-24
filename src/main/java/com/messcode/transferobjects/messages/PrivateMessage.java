@@ -14,17 +14,17 @@ public class PrivateMessage extends PublicMessage implements Serializable {
     private User encryptedFor;
     private byte[] encryptedMessage;
 
-    public PrivateMessage(User user, User receiver, User encrypted_for, byte[] encryptedMsg) {
+    public PrivateMessage(User user, User receiver, User encrypted_for, byte[] encryptedMessage) {
         super(user, null);
         this.receiver = receiver;
         this.encryptedFor = encrypted_for;
-        this.encryptedMessage = encryptedMsg;
+        this.encryptedMessage = encryptedMessage;
     }
-    public PrivateMessage(User user, User receiver, User encryptedFor, byte[] encryptedMsg, Timestamp time) {
+    public PrivateMessage(User user, User receiver, User encryptedFor, byte[] encryptedMessage, Timestamp time) {
         super(user, null, time);
         this.receiver = receiver;
         this.encryptedFor = encryptedFor;
-        this.encryptedMessage = encryptedMsg;
+        this.encryptedMessage = encryptedMessage;
     }
 
     public void decryptMessage(byte[] key) {
