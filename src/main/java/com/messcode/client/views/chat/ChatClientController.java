@@ -477,6 +477,10 @@ public class ChatClientController {
         vh.openEditProjectLeader(cssUsed);
     }
 
+    public void viewProfileClicked(ActionEvent actionEvent) {
+        vh.openViewProfile(cssUsed);
+    }
+
     private void displayPublic(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
         Platform.runLater(() -> {
