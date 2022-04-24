@@ -8,14 +8,14 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.remove_group.RemoveGroupController">
    <children>
-      <Label layoutX="20.0" layoutY="20.0" text="Remove a group">
+      <Label layoutX="20.0" layoutY="20.0" text="%remove_group.up">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="70.0" text="List of all groups" />
+      <Label layoutX="20.0" layoutY="70.0" text="%remove_group.list_of_groups" />
       <Label fx:id="errorLabel" layoutX="20.0" layoutY="459.0" />
       <ListView fx:id="groupsList" layoutX="20.0" layoutY="100.0" prefHeight="340.0" prefWidth="360.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
-      <Button layoutX="285.0" layoutY="455.0" mnemonicParsing="false" onAction="#removeButton" prefHeight="25.0" prefWidth="95.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Remove" />
+      <Button layoutX="285.0" layoutY="455.0" mnemonicParsing="false" onAction="#removeButton" prefHeight="25.0" prefWidth="95.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%remove_group.remove" />
    </children>
 </Pane>

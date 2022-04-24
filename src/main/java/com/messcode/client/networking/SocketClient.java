@@ -26,6 +26,8 @@ public class SocketClient implements Client {
     public void start() throws IOException {
         support = new PropertyChangeSupport(this);
         socket = new Socket(SERVER_IP, SERVER_PORT);
+
+        System.out.println("ip " +socket.getInetAddress());
         socketHandler = new ClientSocketHandler(socket, this);
         Thread thread = new Thread(socketHandler);
         thread.setDaemon(true);

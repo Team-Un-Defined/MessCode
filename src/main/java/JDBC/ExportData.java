@@ -275,7 +275,7 @@ public class ExportData {
         }
         ArrayList<Object> objs = new ArrayList<>();
         objs.add(allMessages);
-        objs.add(lastSeen);
+        use.setUnreadMessages(lastSeen);
         objs.add(use);
         objs.add(users);
         objs.add(groups);

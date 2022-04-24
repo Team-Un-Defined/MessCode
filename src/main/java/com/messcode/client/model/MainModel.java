@@ -49,4 +49,10 @@ public interface MainModel extends Subject {
     void resetPassword(User use);
 
     public void changeLeader(Group g);
+
+    public boolean unredPMs(User u);
+
+    public void setSelectedUser(User u);
+
+    public boolean unredgGMs(Group g);
 }

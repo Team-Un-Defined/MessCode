@@ -39,6 +39,6 @@
     </top>
     <bottom>
         <Button fx:id="signInButton" mnemonicParsing="false" onAction="#enterChatBtn" prefHeight="46.0"
-                prefWidth="330.0" text="Sign in" BorderPane.alignment="CENTER"/>
+                prefWidth="330.0" text="%login.login_button" BorderPane.alignment="CENTER"/>
     </bottom>
 </BorderPane>

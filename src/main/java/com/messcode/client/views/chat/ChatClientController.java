@@ -213,8 +213,19 @@ public class ChatClientController {
                     setText(text);
                     this.setTextFill(Color.RED);
                 } else {
-                    String text = item.getName(); // get text from item
-                    setText(text);
+                    if (chatVM.getUnredGMs(item)) {
+
+                        InputStream in = getClass().getResourceAsStream("/orangedotm.png");
+                        ImageView imageView = new ImageView(new Image(in));
+                        imageView.setFitHeight(10);
+                        imageView.setPreserveRatio(true);
+                        this.setGraphic(imageView);
+
+
+                    } else {
+                        String text = item.getName(); // get text from item
+                        setText(text);
+                    }
                 }
             }
         });
@@ -229,25 +240,42 @@ public class ChatClientController {
                 if (empty) {
                     setText(null);
                 } else {
-                    if (item.getSalt().equals(" - online")) {
-                        InputStream in = getClass().getResourceAsStream("/greendot.png");
-                        ImageView imageView = new ImageView(new Image(in));
-                        imageView.setFitHeight(10);
-                        imageView.setPreserveRatio(true);
-                        this.setGraphic(imageView);
-                        String text = item.getName() + " " + item.getSurname(); // get text from item
-                        setText(text);
-                    } else if (item.getSalt().equals(" - deleted")) {
-                        this.setGraphic(null);
-                        String text = item.getName() + " " + item.getSurname(); // get text from item
-                        setText(text);
-                        this.setTextFill(Color.GRAY);
+                    if (chatVM.getUnredPMs(item)) {
+                        if (item.getSalt().equals(" - online")) {
+                            InputStream in = getClass().getResourceAsStream("/orange-green.png");
+                            ImageView imageView = new ImageView(new Image(in));
+                            imageView.setFitHeight(10);
+                            imageView.setPreserveRatio(true);
+                            this.setGraphic(imageView);
+                        } else {
+                            InputStream in = getClass().getResourceAsStream("/orangedotm.png");
+                            ImageView imageView = new ImageView(new Image(in));
+                            imageView.setFitHeight(10);
+                            imageView.setPreserveRatio(true);
+                            this.setGraphic(imageView);
+                        }
                     } else {
-                        this.setGraphic(null);
-                        String text = item.getName() + " " + item.getSurname(); // get text from item
-                        setText(text);
+                        if (item.getSalt().equals(" - online")) {
+                            InputStream in = getClass().getResourceAsStream("/greendot.png");
+                            ImageView imageView = new ImageView(new Image(in));
+                            imageView.setFitHeight(10);
+                            imageView.setPreserveRatio(true);
+                            this.setGraphic(imageView);
+                            String text = item.getName() + " " + item.getSurname(); // get text from item
+                            setText(text);
+                        } else if (item.getSalt().equals(" - deleted")) {
+                            this.setGraphic(null);
+                            String text = item.getName() + " " + item.getSurname(); // get text from item
+                            setText(text);
+                            this.setTextFill(Color.GRAY);
+                        } else {
+                            this.setGraphic(null);
+                            String text = item.getName() + " " + item.getSurname(); // get text from item
+                            setText(text);
+                        }
                     }
-
+                    String text = item.getName() + " " + item.getSurname(); // get text from item
+                    setText(text);
                 }
             }
         });
@@ -305,7 +333,7 @@ public class ChatClientController {
             User use = usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
-                System.out.println("WOTOTOFÖK");
+
                 chatVM.setReceiver(use);
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
