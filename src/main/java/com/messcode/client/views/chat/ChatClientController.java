@@ -227,8 +227,20 @@ public class ChatClientController {
                     setText(text);
                     this.setTextFill(Color.RED);
                 } else {
+                    if (chatVM.getUnredGMs(item)){
+
+                        InputStream in = getClass().getResourceAsStream("/orangedotm.png");
+                        ImageView imageView = new ImageView(new Image(in));
+                        imageView.setFitHeight(10);
+                        imageView.setPreserveRatio(true);
+                        this.setGraphic(imageView);
+
+
+
+                    }
+                    else{
                     String text = item.getName(); // get text from item
-                    setText(text);
+                    setText(text); }
                 }
             }
         });

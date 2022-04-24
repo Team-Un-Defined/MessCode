@@ -287,6 +287,11 @@ public class ChatClientViewModel implements Subject {
      return   mainModel.unredPMs ( u);
     
     }
+    public boolean getUnredGMs (Group g){
+
+        return   mainModel.unredgGMs (g);
+
+    }
     
     
     
