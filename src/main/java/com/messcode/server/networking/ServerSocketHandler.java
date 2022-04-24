@@ -114,7 +114,7 @@ public class ServerSocketHandler implements Runnable {
                             break;
                         }
                         pool.addHandler(this);
-                        user = (User) ((ArrayList<Object>) packetToClient.getObject()).get(2);
+                        user = (User) ((ArrayList<Object>) packetToClient.getObject()).get(1);
 
                         pool.userJoin(user);
                         outToClient.writeObject(packetToClient);

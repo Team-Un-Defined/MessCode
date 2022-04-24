@@ -10,7 +10,6 @@ import java.util.logging.Level;
 public class Start {
 
     public static void main(String[] args) {
-        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.SEVERE, "sadsd");
         Application.launch(RunApp.class);
     }
 }

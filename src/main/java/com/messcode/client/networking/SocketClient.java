@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class SocketClient implements Client {
 
-    private static final String SERVER_IP = "192.168.0.105";
+    private static final String SERVER_IP = "127.0.0.1";
     private static final int SERVER_PORT = 9090;
 
     private ClientSocketHandler socketHandler;

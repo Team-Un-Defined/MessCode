@@ -20,7 +20,7 @@ public class Server {
     public void start() {
         try {
             InetAddress ip = InetAddress.getByName("192.168.0.105");
-            ServerSocket serverSocket = new ServerSocket(SERVER_PORT,50,ip);
+            ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
             ConnectionPool pool = new ConnectionPool();
             ImportData dbi = new ImportData();
             ExportData dbe = new ExportData();
