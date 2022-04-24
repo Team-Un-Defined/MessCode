@@ -12,14 +12,14 @@
         <ListView fx:id="inGroupUsersList" layoutX="378.0" layoutY="89.0" prefHeight="345.0" prefWidth="250.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
         <Button fx:id="addButton" layoutX="279.0" layoutY="89.0" mnemonicParsing="false" onAction="#addMember" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="&gt;&gt;" />
         <Button fx:id="removeButton" layoutX="279.0" layoutY="126.0" mnemonicParsing="false" onAction="#removeMember" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="&lt;&lt;" />
-        <Label layoutX="20.0" layoutY="20.0" text="Edit the members of the group">
+        <Label layoutX="20.0" layoutY="20.0" text="%edit_member.edit_member">
             <font>
                 <Font size="18.0" />
             </font>
         </Label>
-        <Button layoutX="538.0" layoutY="453.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Confirm" />
-      <Label layoutX="20.0" layoutY="65.0" text="All users" />
-      <Label layoutX="378.0" layoutY="65.0" text="Users already in the group" />
+        <Button layoutX="538.0" layoutY="453.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%edit_member.confirm" />
+      <Label layoutX="20.0" layoutY="65.0" text="%edit_member.all_users" />
+      <Label layoutX="378.0" layoutY="65.0" text="%edit_member.users_in_group" />
       <Label fx:id="errorLabel" layoutX="20.0" layoutY="457.0" />
     </children>
 </Pane>
