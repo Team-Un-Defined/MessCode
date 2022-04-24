@@ -60,6 +60,7 @@ public class ChatClientController {
     public Label userEmailLabel;
     public Label userTypeLabel;
     public Label groupLabel;
+    public Label newPasswordLabel;
     public Pane groupListPane;
     public Pane userListPane;
     public Button sendPMButton;
@@ -71,6 +72,7 @@ public class ChatClientController {
     public Button removeGroupButton;
     public Button removeUserButton;
     public Button editProjectLeaderButton;
+    public Button resetPasswordButton;
 
     public ImageView allButtonImage;
     public ImageView groupButtonImage;
@@ -472,5 +474,8 @@ public class ChatClientController {
             label.setWrapText(true);
             messagesListGroup.getItems().add(label);
         });
+    }
+
+    public void resetPassword() {
     }
 }

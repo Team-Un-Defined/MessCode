@@ -79,13 +79,6 @@
     </Pane>
     <StackPane layoutX="199.0" layoutY="1.0" prefHeight="625.0" prefWidth="650.0">
         <children>
-            <Pane fx:id="panePrivate" styleClass="pane">
-                <children>
-                    <ListView fx:id="messagesListPM" layoutX="14.0" layoutY="40.0" prefHeight="537.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Button fx:id="sendPMButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendPM" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.send_button" />
-                    <TextField fx:id="textFieldPM" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
-                    <Label fx:id="otherUserNameLabel" layoutX="14.0" layoutY="14.0" />
-                </children></Pane>
             <Pane fx:id="paneAll" styleClass="pane">
                 <children>
                     <ListView fx:id="messagesListAll" layoutX="14.0" layoutY="14.0" prefHeight="562.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
@@ -140,6 +133,15 @@
                     <Label fx:id="groupLabel" layoutX="14.0" layoutY="14.0" />
                     <Button fx:id="editMemberButton" layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#editMemberClicked" prefHeight="17.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Add a member" />
                   <Button fx:id="editProjectLeaderButton" layoutX="377.0" layoutY="10.0" mnemonicParsing="false" onAction="#editProjectLeaderClicked" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Edit project leader" />
+                </children></Pane>
+            <Pane fx:id="panePrivate" styleClass="pane">
+                <children>
+                    <ListView fx:id="messagesListPM" layoutX="14.0" layoutY="40.0" prefHeight="537.0" prefWidth="623.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
+                    <Button fx:id="sendPMButton" layoutX="548.0" layoutY="587.0" mnemonicParsing="false" onAction="#sendPM" prefHeight="25.0" prefWidth="88.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.send_button" />
+                    <TextField fx:id="textFieldPM" layoutX="14.0" layoutY="586.0" prefHeight="27.0" prefWidth="523.0" style="-fx-border-radius: 1em; -fx-background-radius: 1em;" />
+                    <Label fx:id="otherUserNameLabel" layoutX="14.0" layoutY="14.0" />
+                  <Button fx:id="resetPasswordButton" layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#resetPassword" prefHeight="25.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Reset password" />
+                  <Label fx:id="newPasswordLabel" layoutX="377.0" layoutY="14.0" />
                 </children></Pane>
         </children>
     </StackPane>
