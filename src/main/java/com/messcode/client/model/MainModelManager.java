@@ -119,7 +119,8 @@ public class MainModelManager implements MainModel {
         user = (User) objs.get(2);
         allUsers = (ArrayList<User>) objs.get(3); //ALL USERS ADDED TO THE ALLUSER LIST.
         for (User u : allUsers) {
-            System.out.println("///////////" + u.getEmail() + "////////////");
+            System.out.println("///////////" + u.getSalt() + "////////////");
+
         }
 
         support.firePropertyChange("AddOfflineUsers", null, allUsers);
@@ -307,6 +308,13 @@ public class MainModelManager implements MainModel {
     public void deleteGroup(Group g) {
       
         client.deleteGroup(g);
+    }
+
+    @Override
+    public void resetPassword(User use) {
+
+        client.resetPassword(use);
+
     }
 
 }

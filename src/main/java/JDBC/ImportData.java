@@ -490,4 +490,24 @@ public class ImportData {
         }
         return false;
     }
+
+    public void resetPassword(User u) throws SQLException {
+        PreparedStatement myPreparedStatement;
+        ResultSet rs;
+
+
+
+        String query1 = "UPDATE account SET pwd_salt = ? WHERE email = ?";
+        myPreparedStatement = c.prepareStatement(query1);
+        myPreparedStatement.setString(1, u.getSalt());
+        myPreparedStatement.setString(2, u.getEmail());
+        myPreparedStatement.executeUpdate();
+
+        String query = "UPDATE account SET pwd_hash = ? WHERE email = ?";
+        myPreparedStatement = c.prepareStatement(query);
+        myPreparedStatement.setString(1,  Arrays.toString(u.getHashedPassword()));
+        myPreparedStatement.setString(2,u.getEmail());
+        myPreparedStatement.executeUpdate();
+
+    }
 }

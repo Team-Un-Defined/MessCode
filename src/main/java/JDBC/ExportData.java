@@ -239,7 +239,15 @@ public class ExportData {
             u.setName(rs.getString("fname"));
             u.setSurname(rs.getString("lname"));
             u.setType(rs.getString("type"));
-            u.setSalt("");
+            if(rs.getString("pwd_hash").equals("deleted"))
+            {
+
+                u.setSalt(" - deleted");
+                System.out.println("this guy should be delted: "+ u.getEmail() +" : "+ u.getSalt());
+            }else {
+                u.setSalt("");
+            }
+
 
             users.add(u);
         }

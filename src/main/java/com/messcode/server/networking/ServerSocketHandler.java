@@ -160,6 +160,13 @@ public class ServerSocketHandler implements Runnable {
                         }
                         break;
                     }
+                    case RESET_PASSWORD: {
+                        User u = (User) packet.getObject();
+
+                         dbi.resetPassword(u);
+
+                        break;
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

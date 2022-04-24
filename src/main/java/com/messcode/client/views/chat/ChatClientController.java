@@ -338,7 +338,7 @@ public class ChatClientController {
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
-            if (!use.getSurname().equals(chatVM.getCurrentUser().getSurname()) && !use.getName().equals(chatVM.getCurrentUser().getName())) {
+            if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
                 System.out.println("WOTOTOFÖK");
                 chatVM.setReceiver(use);
                 messagesListPM.getItems().clear();
@@ -494,26 +494,9 @@ public class ChatClientController {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
-            System.out.println(use.getEmail());
-            if (!use.getSurname().equals(chatVM.getCurrentUser().getSurname()) && !use.getName().equals(chatVM.getCurrentUser().getName())) {
-                System.out.println("WOTOTOFÖK");
-                chatVM.setReceiver(use);
-                messagesListPM.getItems().clear();
-                ArrayList<PrivateMessage> priv = chatVM.loadPMs();
-                for (PrivateMessage pm : priv) {
-                    messagesListPM.getItems().add(new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg()));
-                }
 
-                paneInFront = "pm";
-                panePrivate.toFront();
-                userListPane.toFront();
-                sendGroupButton.setDefaultButton(false);
-                sendAllButton.setDefaultButton(false);
-                sendPMButton.setDefaultButton(true);
-                otherUserNameLabel.setText(use.getSurname() + " " + use.getName());
-            } else {
-                invitePmErrorLabel.setText(bundle.getString("talk_to_yourself"));
+                chatVM.resetPassword(use);
             }
-        }
+
     }
 }
