@@ -11,35 +11,27 @@ import java.util.Arrays;
 
 public class PrivateMessage extends PublicMessage implements Serializable {
     private User receiver;
-    private User encrypted_for;
+    private User encryptedFor;
+    private byte[] encryptedMessage;
 
-    public PrivateMessage(User user, User receiver, User encrypted_for, String msg) {
-        super(user, msg);
+    public PrivateMessage(User user, User receiver, User encrypted_for, byte[] encryptedMsg) {
+        super(user, null);
         this.receiver = receiver;
-        this.encrypted_for = encrypted_for;
+        this.encryptedFor = encrypted_for;
+        this.encryptedMessage = encryptedMsg;
     }
-    public PrivateMessage(User user, User receiver, User encrypted_for, String msg, Timestamp time) {
-        super(user, msg, time);
+    public PrivateMessage(User user, User receiver, User encryptedFor, byte[] encryptedMsg, Timestamp time) {
+        super(user, null, time);
         this.receiver = receiver;
-        this.encrypted_for = encrypted_for;
-    }
-
-    public void encryptMessage(byte[] key) {
-        String originalMessage = super.getMsg();
-
-        MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
-        byte[] encryptedMessage = myMessageEncryptionManager.asymmetricDataEncryption(originalMessage.getBytes(), key);
-
-        super.setMsg(Arrays.toString(encryptedMessage));
+        this.encryptedFor = encryptedFor;
+        this.encryptedMessage = encryptedMsg;
     }
 
     public void decryptMessage(byte[] key) {
-        String encryptedMessage = super.getMsg();
-
         MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
-        byte[] decryptedMessage = myMessageEncryptionManager.asymmetricDataEncryption(encryptedMessage.getBytes(), key);
+        byte[] decryptedMessage = myMessageEncryptionManager.asymmetricDataDecryption(encryptedMessage, key);
 
-        super.setMsg(Arrays.toString(decryptedMessage));
+        super.setMsg(new String(decryptedMessage));
     }
 
     public User getReceiver() {
@@ -50,5 +42,7 @@ public class PrivateMessage extends PublicMessage implements Serializable {
         return this.receiver;
     }
 
-    public User getEncrypted_for() { return  this.encrypted_for; }
+    public User getEncryptedFor() { return  this.encryptedFor; }
+
+    public byte[] getEncryptedMessage() { return this.encryptedMessage; }
 }

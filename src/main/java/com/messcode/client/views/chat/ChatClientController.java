@@ -287,11 +287,23 @@ public class ChatClientController {
 
             MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
 
-            String message1 = Arrays.toString(myMessageEncryptionManager.asymmetricDataEncryption(message.getBytes(), chatVM.getCurrentUser().getMyPublicKey()));
-            String message2 = Arrays.toString(myMessageEncryptionManager.asymmetricDataEncryption(message.getBytes(), chatVM.getReceiver().getMyPublicKey()));
+            //System.out.println("public key of sender : " + Arrays.toString(chatVM.getCurrentUser().getMyPublicKey()));
+            //System.out.println("public key of receiver : " + Arrays.toString(chatVM.getReceiver().getMyPublicKey()));
 
-            chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), chatVM.getCurrentUser(), message1));
-            chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), chatVM.getReceiver(), message2));
+            //System.out.println("Message to be sent: " + message);
+
+            byte[] encrypted_message1 = myMessageEncryptionManager.asymmetricDataEncryption(message.getBytes(), chatVM.getCurrentUser().getMyPublicKey());
+            byte[] encrypted_message2 = myMessageEncryptionManager.asymmetricDataEncryption(message.getBytes(), chatVM.getReceiver().getMyPublicKey());
+
+            //System.out.println("Encrypted message sent to sender: " + Arrays.toString(encrypted_message1));
+            //System.out.println("encrypted message sent to receiver: " + Arrays.toString(encrypted_message2));
+
+            //byte[] decrypted_message1 = myMessageEncryptionManager.asymmetricDataDecryption(encrypted_message1, chatVM.getCurrentUser().getMyPrivateKey());
+            //System.out.println("decrypted message that receiver will receive: " + new String(decrypted_message1));
+
+            chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), chatVM.getCurrentUser(), encrypted_message1));
+            chatVM.sendPM(new PrivateMessage(chatVM.getCurrentUser(), chatVM.getReceiver(), chatVM.getReceiver(), encrypted_message2));
+
             textFieldPM.clear();
         }
     }

@@ -146,6 +146,11 @@ public class MainModelManager implements MainModel {
 
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
+
+        System.out.println("private key of receiver: " + Arrays.toString(user.getMyPrivateKey()));
+        System.out.println("message received: " + Arrays.toString(pm.getEncryptedMessage()));
+
+        pm.decryptMessage(user.getMyPrivateKey());
         this.allMessage.add(pm);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                 "//////////////////////////PMPM//////////////////////////////");
@@ -216,11 +221,18 @@ public class MainModelManager implements MainModel {
 
         ArrayList<PrivateMessage> pivi = new ArrayList<>();
         for (PublicMessage p : this.allMessage) {
-            if (p instanceof PrivateMessage && (((PrivateMessage) p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail()))) {
-                ((PrivateMessage) p).decryptMessage(receiver.getMyPrivateKey());
-                pivi.add(((PrivateMessage) p));
+            if ( p instanceof PrivateMessage) {
+                if (((PrivateMessage) p).getEncryptedFor().getEmail().equals(getCurrentUser().getEmail())) {
+                    if (((PrivateMessage) p).getReceiver().getEmail().equals(receiver.getEmail()) ||
+                            p.getSender().getEmail().equals(receiver.getEmail())) {
+                        ((PrivateMessage) p).decryptMessage(getCurrentUser().getMyPrivateKey() );
+                        pivi.add(((PrivateMessage) p));
+                    }
+
+                }
             }
         }
+
         return pivi;
     }
 

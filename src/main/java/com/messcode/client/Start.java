@@ -1,14 +1,17 @@
 package com.messcode.client;
 
+import JDBC.DBConn.DatabaseConnection;
 import JDBC.ImportData;
 import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.MessageEncryptionManager;
+import com.messcode.transferobjects.User;
 import javafx.application.Application;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.sql.*;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -76,7 +79,35 @@ public class Start {
 
         System.out.println("password: " + new String(encryptedPassword));
         System.out.println("salt: " + salt);
-        System.out.println("public key: " + new String(myPublicKey.getEncoded()));
-        System.out.println("private key: " + new String(myPrivateKey.getEncoded()));
+        System.out.println("public key: " + Arrays.toString(myPublicKey.getEncoded()));
+        System.out.println("private key: " + Arrays.toString(myPrivateKey.getEncoded()));
+
+        DatabaseConnection conn = new DatabaseConnection();
+        Connection c;
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager.getConnection(conn.getConn(), conn.getName(), conn.getPass());
+
+            /*
+            User newUser = new User("Martin", "Svab", "xsvab@stuba.sk", encryptedPassword, salt, "employee", myPrivateKey.getEncoded(), myPublicKey.getEncoded());
+            //User newUser = new User("Peter", "Petruch", "peterpetruch@gmail.com", encryptedPassword, salt, "employee", myPrivateKey.getEncoded(), myPublicKey.getEncoded());
+
+            String query = "INSERT INTO account (id, fname, lname, pwd_hash, pwd_salt, type, email, private_key, public_key) " +
+                    "VALUES(default, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement myPreparedStatement = c.prepareStatement(query);
+            myPreparedStatement.setString(1, newUser.getName());
+            myPreparedStatement.setString(2, newUser.getSurname());
+            myPreparedStatement.setString(3, Arrays.toString(newUser.getHashedPassword()));
+            myPreparedStatement.setString(4, newUser.getSalt());
+            myPreparedStatement.setString(5, newUser.getType());
+            myPreparedStatement.setString(6, newUser.getEmail());
+            myPreparedStatement.setBytes(7, newUser.getMyPrivateKey());
+            myPreparedStatement.setBytes(8, newUser.getMyPublicKey());
+            myPreparedStatement.executeUpdate();
+             */
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

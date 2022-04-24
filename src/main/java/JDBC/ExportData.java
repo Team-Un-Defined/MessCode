@@ -143,8 +143,8 @@ public class ExportData {
             ema = rs.getString("email");
             salt = rs.getString("pwd_salt");
             type = rs.getString("type");
-            myPrivateKey = rs.getString("private_key").getBytes();
-            myPublicKey = rs.getString("public_key").getBytes();
+            myPrivateKey = rs.getBytes("private_key");
+            myPublicKey = rs.getBytes("public_key");
         }
 
         String query2 = "SELECT m.public_message_id FROM last_seen AS m " +
@@ -180,7 +180,7 @@ public class ExportData {
             lastSeen.add(new PublicMessage(null, "PublicMessageTrue"));
         }
 
-        String query4 = "SELECT la.user_id, la.private_message_id, p.receiver_id, p.sender_id, ep.message, p.date, a.fname, " +
+        String query4 = "SELECT la.user_id, la.private_message_id, p.receiver_id, p.sender_id, ep.encrypted_message, p.date, a.fname, " +
                 "a.lname, a.email FROM last_seen AS la JOIN private_messages as p ON p.id = la.private_message_id " +
                 "JOIN account AS a ON (a.id = p.receiver_id OR a.id = p.sender_id) AND a.id != ? " +
                 "JOIN encrypted_private_messages AS ep ON ep.private_message_id = p.id " +
@@ -202,22 +202,21 @@ public class ExportData {
 
             PrivateMessage pm;
             if (rs.getInt("sender_id") == id) {
-                pm = new PrivateMessage(use, u, use, rs.getString("message"), rs.getTimestamp("date"));
+                pm = new PrivateMessage(use, u, use, rs.getBytes("message"), rs.getTimestamp("date"));
             } else {
-                pm = new PrivateMessage(u, use, use, rs.getString("message"), rs.getTimestamp("date"));
+                pm = new PrivateMessage(u, use, use, rs.getBytes("message"), rs.getTimestamp("date"));
             }
 
             lastSeen.add(pm);
         }
 
-        String query5 = "SELECT m.sender_id, m.receiver_id, m.message, m.date, a.fname, a.lname, a.email " +
+        String query5 = "SELECT m.sender_id, m.receiver_id, ep.encrypted_message, m.date, a.fname, a.lname, a.email " +
                 "FROM private_messages AS m JOIN account AS a ON (a.id = m.receiver_id OR a.id = m.sender_id) " +
                 "AND a.id != ? JOIN encrypted_private_messages AS ep ON ep.private_message_id = m.id " +
-                "WHERE m.receiver_id = ? OR m.sender_id = ? ORDER BY DATE";
+                "WHERE ep.user_id = ? ORDER BY DATE";
         myPreparedStatement = c.prepareStatement(query5, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
         myPreparedStatement.setInt(1, id);
         myPreparedStatement.setInt(2, id);
-        myPreparedStatement.setInt(3, id);
         rs = myPreparedStatement.executeQuery();
 
         rs.beforeFirst();
@@ -227,9 +226,9 @@ public class ExportData {
             u.setSurname(rs.getString("lname"));
             PrivateMessage pm;
             if(rs.getInt("sender_id") == id) {
-                pm = new PrivateMessage(use, u, use, rs.getString("message"), rs.getTimestamp("date"));
+                pm = new PrivateMessage(use, u, use, rs.getBytes("encrypted_message"), rs.getTimestamp("date"));
             } else {
-                pm = new PrivateMessage(u, use, use, rs.getString("message"), rs.getTimestamp("date"));
+                pm = new PrivateMessage(u, use, use, rs.getBytes("encrypted_message"), rs.getTimestamp("date"));
             }
 
            allMessages.add(pm);
@@ -249,7 +248,7 @@ public class ExportData {
             u.setSurname(rs.getString("lname"));
             u.setType(rs.getString("type"));
             u.setSalt("");
-            u.setMyPublicKey(rs.getString("public_key").getBytes());
+            u.setMyPublicKey(rs.getBytes("public_key"));
 
             users.add(u);
         }

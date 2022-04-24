@@ -86,22 +86,27 @@ public class ImportData {
                     rid = rs.getInt("id");
                 }
 
-                if (rs.getString("email").equals(pm1.getEncrypted_for().getEmail())) {
+                if (rs.getString("email").equals(pm1.getEncryptedFor().getEmail())) {
                     eid = rs.getInt("id");
                 }
             }
 
-            String query = "INSERT INTO private_messages (id, sender_id, receiver_id, date) VALUES(default, ?, ?, ?, ?)";
+            String query = "INSERT INTO private_messages (id, sender_id, receiver_id, date) VALUES(default, ?, ?, ?)";
             myPreparedStatement = c.prepareStatement(query);
             myPreparedStatement.setInt(1, sid);
             myPreparedStatement.setInt(2, rid);
-            myPreparedStatement.setTimestamp(4, pm.getTime());
+            myPreparedStatement.setTimestamp(3, pm.getTime());
             myPreparedStatement.executeUpdate();
 
-            rs = myPreparedStatement.getGeneratedKeys();
+            query = "SELECT id FROM private_messages WHERE sender_id = ? AND receiver_id = ? AND date = ?";
+            myPreparedStatement = c.prepareStatement(query);
+            myPreparedStatement.setInt(1, sid);
+            myPreparedStatement.setInt(2, rid);
+            myPreparedStatement.setTimestamp(3, pm.getTime());
+            rs = myPreparedStatement.executeQuery();
 
             if (rs.next()) {
-                pid = rs.getInt(1);
+                pid = rs.getInt("id");
             }
 
             String query2 = "INSERT INTO encrypted_private_messages (id, user_id, private_message_id, encrypted_message) " +
@@ -109,7 +114,8 @@ public class ImportData {
             myPreparedStatement = c.prepareStatement(query2);
             myPreparedStatement.setInt(1, eid);
             myPreparedStatement.setInt(2, pid);
-            myPreparedStatement.setString(3, pm.getMsg());
+            myPreparedStatement.setBytes(3, ((PrivateMessage) pm).getEncryptedMessage());
+            myPreparedStatement.executeUpdate();
 
         } else if (pm instanceof GroupMessages) {
             GroupMessages pm1 = (GroupMessages) pm;
