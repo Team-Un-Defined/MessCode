@@ -10,7 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
+ * This class is used for generating passwords, salts and password encryption.
+ * It also contains some regexes for checking validity of account information.
  */
 public class AccountManager {
 

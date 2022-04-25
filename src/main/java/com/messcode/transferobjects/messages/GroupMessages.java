@@ -13,16 +13,20 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
- * @author Nao
+ * These messages are sent to group chats.
+ * Therefore, group to which this message belongs to must be provided.
  */
 public class GroupMessages extends PublicMessage implements Serializable {
 
     private Group group;
 
     /**
-     * @param username
-     * @param message
-     * @param group
+     * This constructor is when sending new group message.
+     * Timestamp is set automatically.
+     *
+     * @param username group member who sent this message
+     * @param message message that was sent
+     * @param group group to which this message belongs to
      */
     public GroupMessages(User username, String message, Group group) {
         super(username, message);
@@ -30,10 +34,13 @@ public class GroupMessages extends PublicMessage implements Serializable {
     }
 
     /**
-     * @param username
-     * @param message
-     * @param group
-     * @param time
+     * This constructor is used when taking group message from database.
+     * Timestamp should be provided in parameters.
+     *
+     * @param username group member who sent this message
+     * @param message message that was sent
+     * @param group group to which this message belongs to
+     * @param time time at which this message was sent
      */
     public GroupMessages(User username, String message, Group group, Timestamp time) {
         super(username, message, time);
@@ -41,14 +48,14 @@ public class GroupMessages extends PublicMessage implements Serializable {
     }
 
     /**
-     * @return
+     * @return group to which this message belongs to
      */
     public Group getGroup() {
         return group;
     }
 
     /**
-     * @param group
+     * @param group group to which this message belongs to
      */
     public void setGroup(Group group) {
         this.group = group;
