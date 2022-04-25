@@ -203,9 +203,7 @@ public class ChatClientViewModel implements Subject {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
 
         if (this.receiver == null) return;
-        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
-
-            // PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {    
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
         }

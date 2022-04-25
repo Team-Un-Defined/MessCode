@@ -199,13 +199,6 @@ public class User implements Serializable {
     public void removeUnreadMessages(PublicMessage unreadMessages) {
         this.unreadMessages.remove(unreadMessages);
     }
-    public void filterUnreadMessages(){
-    
-        
-       unreadMessages.forEach(p-> unreadMessages.removeIf(u-> u instanceof PrivateMessage && p instanceof PrivateMessage && ((PrivateMessage)u).getReceiver().getEmail().equals(p.getSender().getEmail())));
-      
-            
-            
-    }
+   
     
 }

@@ -170,6 +170,7 @@ public class MainModelManager implements MainModel {
             {
                 user.getUnreadMessages().remove(u);
                 user.getUnreadMessages().add(pm);
+                 support.firePropertyChange("newPM", null, pm);
                 return;
             }
 
@@ -227,7 +228,7 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void sendPM(PrivateMessage message) {
-        client.sendPM(message);
+        
         System.out.println("5555/////////////////////////////////////////////////////////////////////////");
         user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
         System.out.println("/////////////////////////////////////////////////////////////////////////");
@@ -243,13 +244,13 @@ public class MainModelManager implements MainModel {
                     System.out.println("/////////////////////////////////////////////////////////////////////////");
                     user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
                     System.out.println("/////////////////////////////////////////////////////////////////////////");
-
+                    client.sendPM(message);
                     return;
                 }
             }
         }
 
-
+        client.sendPM(message);
 
     }
 
@@ -369,7 +370,7 @@ public class MainModelManager implements MainModel {
 
     @Override
     public boolean unredPMs(User u) {
-       user.filterUnreadMessages();
+    
       ArrayList<PrivateMessage> pivi = loadPMs(u);
       PrivateMessage last=null;
      if(pivi.isEmpty())
