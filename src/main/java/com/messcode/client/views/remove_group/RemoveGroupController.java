@@ -1,15 +1,14 @@
 package com.messcode.client.views.remove_group;
 
-import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
-import java.util.ResourceBundle;
-
 /**
- *
+ * The Controller of the RemoveGroup panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class RemoveGroupController {
 
@@ -17,23 +16,18 @@ public class RemoveGroupController {
     public ListView<Group> groupsList;
 
     private RemoveGroupViewModel removeGroupVM;
-    private ViewHandler vh;
-    private ResourceBundle bundle;
 
     /**
-     * @param removeGroupVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param removeGroupVM ViewModel of the RemoveGroup panel
      */
-    public void init(RemoveGroupViewModel removeGroupVM, ViewHandler vh, ResourceBundle bundle) {
+    public void init(RemoveGroupViewModel removeGroupVM) {
         this.removeGroupVM = removeGroupVM;
-        this.vh = vh;
-        this.bundle = bundle;
         updateGroupList();
     }
 
     /**
-     *
+     * Updates the list of groups from the list in the ViewModel
      */
     private void updateGroupList() {
         groupsList.setItems(removeGroupVM.getGroups());
@@ -52,7 +46,7 @@ public class RemoveGroupController {
     }
 
     /**
-     *
+     * Initiates the removal of the group
      */
     public void removeButton() {
         Group g = groupsList.getSelectionModel().getSelectedItem();

@@ -14,7 +14,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 /**
- *
+ * The ViewModel of the EditProjectLeader panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class EditProjectLeaderViewModel implements Subject {
     private Group selectedGroup;
@@ -23,7 +25,8 @@ public class EditProjectLeaderViewModel implements Subject {
     private MainModel mainModel;
 
     /**
-     * @param mainModel
+     * Constructor of the EditProjectLeaderViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public EditProjectLeaderViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
@@ -35,11 +38,11 @@ public class EditProjectLeaderViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Adds all the users to the list
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
-
         Platform.runLater(() -> {
             for (User u : users) {
                 if (u.getType().equals("superuser") || u.getType().equals("employer")) {
@@ -52,15 +55,17 @@ public class EditProjectLeaderViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Gets the update from the MainModel
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void updateGroup(PropertyChangeEvent propertyChangeEvent) {
         selectedGroup = (Group) propertyChangeEvent.getNewValue();
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -68,8 +73,9 @@ public class EditProjectLeaderViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -77,7 +83,8 @@ public class EditProjectLeaderViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the list of users
+     * @return ObservableList<User>
      */
     public ObservableList<User> getUsers() {
         ObservableList<User> use = FXCollections.observableArrayList();
@@ -87,14 +94,16 @@ public class EditProjectLeaderViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the leader of the group
+     * @return User
      */
     public User getLeader() {
         return selectedGroup.getLeader();
     }
 
     /**
-     * @param u
+     * Initiates the leader change
+     * @param u User
      */
     void changeLeader(User u) {
         if (u.getEmail().equals(selectedGroup.getLeader().getEmail())) {

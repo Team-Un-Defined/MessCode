@@ -8,28 +8,25 @@ import javafx.stage.Stage;
 import java.util.ResourceBundle;
 
 /**
- *
+ * The Controller of the ViewProfile panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class ViewProfileController {
-    public Label nameLabel;
+    public Label nameLabel; // Label for the whole name (first name + last name)
     public Label firstNameLabel;
     public Label lastNameLabel;
     public Label emailLabel;
     public Label roleLabel;
 
     private ViewProfileViewModel viewProfileVM;
-    private ViewHandler vh;
-    private ResourceBundle bundle;
 
     /**
-     * @param viewProfileVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param viewProfileVM ViewModel of the ViewProfile panel
      */
-    public void init(ViewProfileViewModel viewProfileVM, ViewHandler vh, ResourceBundle bundle) {
+    public void init(ViewProfileViewModel viewProfileVM) {
         this.viewProfileVM = viewProfileVM;
-        this.vh = vh;
-        this.bundle = bundle;
 
         this.viewProfileVM.setUser();
 
@@ -42,7 +39,7 @@ public class ViewProfileController {
     }
 
     /**
-     *
+     * Closes the ViewProfile stage
      */
     public void close() {
         Stage stage = (Stage) nameLabel.getScene().getWindow();

@@ -1,7 +1,6 @@
 package com.messcode.client.views.login;
 
 import com.messcode.client.model.MainModel;
-import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.util.Subject;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,7 +12,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
 /**
- *
+ * The ViewModel of the Login panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class LoginViewModel implements Subject {
 
@@ -23,7 +24,8 @@ public class LoginViewModel implements Subject {
     private StringProperty error;
 
     /**
-     * @param mainModel
+     * Constructor of the LoginViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public LoginViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
@@ -35,14 +37,16 @@ public class LoginViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Opens the panel ChatClient
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void openChatClient(PropertyChangeEvent propertyChangeEvent) {
         support.firePropertyChange("OpenChat", null, true);
     }
 
     /**
-     * @param propertyChangeEvent
+     * Gets the response for the login attempt
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         boolean answer = (boolean) propertyChangeEvent.getNewValue();
@@ -58,15 +62,17 @@ public class LoginViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the error
+     * @return StringProperty of the error
      */
     public StringProperty errorProperty() {
         return error;
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -74,8 +80,9 @@ public class LoginViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -83,8 +90,9 @@ public class LoginViewModel implements Subject {
     }
 
     /**
-     * @param email
-     * @param pass
+     * Initiates the login
+     * @param email String containing email
+     * @param pass String containing password
      */
     public void login(String email, String pass) {
         if (email.length() >= 4) {

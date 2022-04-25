@@ -1,41 +1,32 @@
 package com.messcode.client.views.edit_project_leader;
 
-import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
-import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-
-import java.util.ResourceBundle;
 import javafx.scene.control.ListCell;
 
-import java.util.ResourceBundle;
-
 /**
- *
+ * The Controller of the EditProjectLeader panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class EditProjectLeaderController {
 
     private EditProjectLeaderViewModel editProjectLeaderVM;
-    private ViewHandler vh;
-    private ResourceBundle bundle;
     public ComboBox<User> groupLeaderComboBox;
     public Label errorLabel;
 
     /**
-     * @param editProjectLeaderVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param editProjectLeaderVM ViewModel of the EditProjectLeader panel
      */
-    public void init(EditProjectLeaderViewModel editProjectLeaderVM, ViewHandler vh, ResourceBundle bundle) {
+    public void init(EditProjectLeaderViewModel editProjectLeaderVM) {
         this.editProjectLeaderVM = editProjectLeaderVM;
-        this.vh = vh;
-        this.bundle = bundle;
         setGroupLeaderComboBox();
     }
 
     /**
-     *
+     * Initiates the leader change
      */
     public void confirmButton() {
         User u = groupLeaderComboBox.getSelectionModel().getSelectedItem();
@@ -43,7 +34,7 @@ public class EditProjectLeaderController {
     }
 
     /**
-     *
+     * Fills the Combobox with the possible group leaders
      */
     private void setGroupLeaderComboBox() {
         groupLeaderComboBox.setItems(editProjectLeaderVM.getUsers());
@@ -61,12 +52,7 @@ public class EditProjectLeaderController {
 
 
         });
-
         groupLeaderComboBox.getItems().add(editProjectLeaderVM.getLeader());
         groupLeaderComboBox.getSelectionModel().select(editProjectLeaderVM.getLeader());
     }
-    
-
-
-
 }

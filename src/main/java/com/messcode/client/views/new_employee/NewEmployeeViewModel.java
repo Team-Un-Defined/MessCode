@@ -23,7 +23,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- *
+ * The ViewModel of the NewEmployee panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class NewEmployeeViewModel implements Subject {
 
@@ -35,7 +37,8 @@ public class NewEmployeeViewModel implements Subject {
     private ResourceBundle bundle;
 
     /**
-     * @param mainModel
+     * Constructor of the NewEmployeeViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public NewEmployeeViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
@@ -46,7 +49,8 @@ public class NewEmployeeViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Receives the repsonse of the new employee creation
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         checkLanguage();
@@ -71,14 +75,14 @@ public class NewEmployeeViewModel implements Subject {
                 System.out.println("ThIsEMailISNalradyiNUSER");
                 error.setValue(bundle.getString("new_employee.email_in_use"));
             });
-
             System.out.println("HELLO I SHOULD RET REPSONSE 3");
         }
     }
 
     /**
-     * @param password
-     * @return
+     * Copies the password upon the dialog close
+     * @param password String of the password
+     * @return EventHandler<DialogEvent>
      */
     private EventHandler<DialogEvent> passwordDialogClose(String password) {
         String ctc = password;
@@ -89,16 +93,17 @@ public class NewEmployeeViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the error
+     * @return StringProperty of the error
      */
     public StringProperty errorProperty() {
         return error;
     }
 
-
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -106,8 +111,9 @@ public class NewEmployeeViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -115,17 +121,18 @@ public class NewEmployeeViewModel implements Subject {
     }
 
     /**
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param type
-     * @return
+     * Initiates the registering of the user
+     * Checks the names and emails
+     * @param firstName String first name
+     * @param lastName String last name
+     * @param email String email
+     * @param type String type/role of user
+     * @return int state
      */
     public int createAccount(String firstName, String lastName, String email, String type) {
         checkLanguage();
         System.out.println("CREATE ACC 1");
         AccountManager myAccountManager = new AccountManager();
-        String password;
         if (firstName.equals("") || lastName.equals("") || email.equals("") || type.equals("")) {
             error.setValue(bundle.getString("error.fields_are_empty"));
             return 0;
@@ -148,7 +155,6 @@ public class NewEmployeeViewModel implements Subject {
                 this.password = myAccountManager.generatePassword();
                 error.setValue(bundle.getString("error.generated_pass") + ": " + this.password);
                 mainModel.register(firstName, lastName, email, this.password, type);
-
                 return 2;
             }
             error.setValue(bundle.getString("error.email_in_use"));
@@ -157,7 +163,7 @@ public class NewEmployeeViewModel implements Subject {
     }
 
     /**
-     *
+     * Checks the language of the panel
      */
     private void checkLanguage(){
         if(SettingsConfig.getConfigOf("language").equals("SK")){

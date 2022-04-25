@@ -9,7 +9,6 @@ import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,7 +19,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.WindowEvent;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.awt.*;
@@ -32,7 +30,9 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
- *
+ * The Controller of the ChatClient (main) panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class ChatClientController {
 
@@ -90,9 +90,10 @@ public class ChatClientController {
     private String paneInFront = "all";
 
     /**
-     * @param chatVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param chatVM ViewModel of the ChatClient panel
+     * @param vh ViewHandler
+     * @param bundle ResourceBundle
      */
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
         this.chatVM = chatVM;
@@ -108,14 +109,11 @@ public class ChatClientController {
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
 
-        Platform.runLater(() -> sendAllButton.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent t) {
-                System.out.println("nyeheheeee");
-                chatVM.saveDataOnExit();
-                Platform.exit();
-                System.exit(0);
-            }
+        Platform.runLater(() -> sendAllButton.getScene().getWindow().setOnCloseRequest(t -> {
+            System.out.println("nyeheheeee");
+            chatVM.saveDataOnExit();
+            Platform.exit();
+            System.exit(0);
         }));
 
         editProjectLeaderButton.setVisible(false);
@@ -499,7 +497,7 @@ public class ChatClientController {
     }
 
     /**
-     * @param actionEvent
+     * @param actionEvent ActionEvent triggered event
      */
     public void handleClicks(ActionEvent actionEvent) {
         if (actionEvent.getSource() == buttonAll) {
@@ -627,14 +625,14 @@ public class ChatClientController {
     }
 
     /**
-     * @param actionEvent
+     * @param actionEvent ActionEvent triggered event
      */
     public void viewProfileClicked(ActionEvent actionEvent) {
         vh.openViewProfile(cssUsed);
     }
 
     /**
-     * @param evt
+     * @param evt PropertyChangeEvent triggered event
      */
     private void displayPublic(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
@@ -655,7 +653,7 @@ public class ChatClientController {
     }
 
     /**
-     * @param evt
+     * @param evt PropertyChangeEvent triggered event
      */
     private void displayPM(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
@@ -672,7 +670,7 @@ public class ChatClientController {
     }
 
     /**
-     * @param evt
+     * @param evt PropertyChangeEvent triggered event
      */
     private void displayGroup(PropertyChangeEvent evt) {
         String ans = (String) evt.getNewValue();
@@ -712,7 +710,7 @@ public class ChatClientController {
     }
 
     /**
-     * @param event
+     * @param event ActionEvent triggered event
      */
     public void changeColor(ActionEvent event) {
         Color color = colorPicker.getValue();

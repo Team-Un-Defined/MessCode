@@ -14,7 +14,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 /**
- *
+ * The ViewModel of the EditMember panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class EditMemberViewModel implements Subject {
 
@@ -26,10 +28,12 @@ public class EditMemberViewModel implements Subject {
     private ObservableList<User> usersNotInGroup;
 
     /**
-     * @param mainModel
+     * Constructor of the EditMemberViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public EditMemberViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
+        support = new PropertyChangeSupport(this);
         allUsers = FXCollections.observableArrayList();
         usersNotInGroup = FXCollections.observableArrayList();
         users = FXCollections.observableArrayList();
@@ -38,14 +42,16 @@ public class EditMemberViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the selected group
+     * @return Group
      */
     public Group getSelectedGroup() {
         return selectedGroup;
     }
 
     /**
-     * @param propertyChangeEvent
+     * Adds all the users to the list
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
@@ -62,7 +68,8 @@ public class EditMemberViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Updates the list of users
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void updateUsers(PropertyChangeEvent propertyChangeEvent) {
         selectedGroup = (Group) propertyChangeEvent.getNewValue();
@@ -79,15 +86,17 @@ public class EditMemberViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the members of the group
+     * @return ObservableList<User>
      */
     public ObservableList<User> getMembers() {
         return users;
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -95,8 +104,9 @@ public class EditMemberViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -104,7 +114,7 @@ public class EditMemberViewModel implements Subject {
     }
 
     /**
-     *
+     * Sets the users (not in group) for the list
      */
     public void setUsers() {
         usersNotInGroup.clear();
@@ -112,7 +122,6 @@ public class EditMemberViewModel implements Subject {
         help.addAll(allUsers);
         for (User u : allUsers) {
             for (User c : selectedGroup.getMembers()) {
-
                 if (u.getEmail().equals(c.getEmail()))
                     help.remove(u);
             }
@@ -121,14 +130,16 @@ public class EditMemberViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the users that aren't in the group
+     * @return ObservableList<User>
      */
     public ObservableList<User> getUsers() {
         return usersNotInGroup;
     }
 
     /**
-     * @param u
+     * Initiates the adding of the member(s)
+     * @param u ObservableList<User>
      */
     public void addMember(ObservableList<User> u) {
         ArrayList<User> usi = new ArrayList<>();
@@ -137,7 +148,8 @@ public class EditMemberViewModel implements Subject {
     }
 
     /**
-     * @param u
+     * Initiates the removal of the member(s)
+     * @param u ObservableList<User>
      */
     public void removeMember(ObservableList<User> u) {
         ArrayList<User> usi = new ArrayList<>();

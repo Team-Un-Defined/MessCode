@@ -13,7 +13,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 /**
- *
+ * The ViewModel of the RemoveUser panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class RemoveUserViewModel implements Subject {
     private MainModel mainModel;
@@ -22,7 +24,8 @@ public class RemoveUserViewModel implements Subject {
     private ObservableList<User> usersList;
 
     /**
-     * @param mainModel
+     * Constructor of the RemoveUserViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public RemoveUserViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
@@ -33,11 +36,11 @@ public class RemoveUserViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Adds all the users to a list
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> use = (ArrayList<User>) propertyChangeEvent.getNewValue();
-
         Platform.runLater(() -> {
             System.out.println("TÖFÖFÖGK");
             use.removeIf(user -> user.getSalt().equals(" - deleted") );
@@ -47,14 +50,16 @@ public class RemoveUserViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the list of users
+     * @return ObservableList<User>
      */
     public ObservableList<User> getUsers() {
         return usersList;
     }
 
     /**
-     * @return
+     * Getter for the current user
+     * @return User
      */
     public User getCurrentUser()
     {
@@ -62,7 +67,8 @@ public class RemoveUserViewModel implements Subject {
     }
 
     /**
-     * @param use
+     * Initiates the removel of the user
+     * @param use User
      */
     public void deleteUser(User use) {
         mainModel.deleteUser(use);
@@ -72,8 +78,9 @@ public class RemoveUserViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -81,8 +88,9 @@ public class RemoveUserViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {

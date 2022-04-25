@@ -1,6 +1,5 @@
 package com.messcode.client.views.remove_user;
 
-import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -9,7 +8,9 @@ import javafx.scene.control.ListView;
 import java.util.ResourceBundle;
 
 /**
- *
+ * The Controller of the RemoveUser panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class RemoveUserController {
 
@@ -17,24 +18,21 @@ public class RemoveUserController {
     public ListView<User> usersList;
 
     private RemoveUserViewModel removeUserVM;
-    private ViewHandler vh;
-    private User user;
     private ResourceBundle bundle;
 
     /**
-     * @param removeUserVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param removeUserVM ViewModel of the RemoveUser panel
+     * @param bundle ResourceBundle
      */
-    public void init(RemoveUserViewModel removeUserVM, ViewHandler vh, ResourceBundle bundle) {
+    public void init(RemoveUserViewModel removeUserVM, ResourceBundle bundle) {
         this.removeUserVM = removeUserVM;
-        this.vh = vh;
         this.bundle = bundle;
         updateUserList();
     }
 
     /**
-     *
+     * Updates the list of users from the list in the ViewModel
      */
     private void updateUserList() {
         usersList.setItems(removeUserVM.getUsers());
@@ -53,7 +51,8 @@ public class RemoveUserController {
     }
 
     /**
-     *
+     * Initiates the removal of the user
+     * Checks the selected user
      */
     public void removeButton() {
         if (usersList.getSelectionModel().getSelectedItems().isEmpty()) {
@@ -63,7 +62,6 @@ public class RemoveUserController {
             System.out.println(use.getEmail());
             if (!use.getEmail().equals(removeUserVM.getCurrentUser().getEmail())) {
                removeUserVM.deleteUser(use);
-
             } else {
                errorLabel.setText(bundle.getString("talk_to_yourself"));
             }

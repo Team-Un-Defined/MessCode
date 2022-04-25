@@ -14,7 +14,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
 /**
- *
+ * The Controller of the Login panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class LoginController implements Subject {
 
@@ -27,9 +29,10 @@ public class LoginController implements Subject {
     private ViewHandler vh;
 
     /**
-     * @param loginVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param loginVM ViewModel of the Login panel
+     * @param vh ViewHandler
+     * @param bundle ResourceBundle
      */
     public void init(LoginViewModel loginVM, ViewHandler vh, ResourceBundle bundle) {
         this.loginVM = loginVM;
@@ -43,29 +46,32 @@ public class LoginController implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Initiates the opening of the panel ChatClient
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void openChat(PropertyChangeEvent propertyChangeEvent) {
         Platform.runLater(() -> vh.openChatClientView());
     }
 
     /**
-     * @param propertyChangeEvent
+     * Receives the response of the attempted login
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         vh.openChatClientView();
     }
 
     /**
-     *
+     * Initiates the login
      */
     public void enterChatBtn() {
         loginVM.login(emailField.getText(), passwordField.getText());
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -73,8 +79,9 @@ public class LoginController implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {

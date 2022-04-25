@@ -29,7 +29,9 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 /**
- *
+ * The ViewModel of the ChatClient (main) panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class ChatClientViewModel implements Subject {
 
@@ -38,21 +40,16 @@ public class ChatClientViewModel implements Subject {
     private ObservableList<User> usersList;
     private ObservableList<Group> groups;
     private MainModel mainModel;
-    private StringProperty message;
-    private StringProperty PMmessage;
-    private StringProperty GMmessage;
     private User receiver;
     private Group receiverGroup;
 
 
     /**
-     * @param mainModel
+     * Constructor of the ChatClientViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public ChatClientViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
-        message = new SimpleStringProperty();
-        PMmessage = new SimpleStringProperty();
-        GMmessage = new SimpleStringProperty();
         usersList = FXCollections.observableArrayList();
         groups = FXCollections.observableArrayList();
         this.mainModel = mainModel;
@@ -67,7 +64,8 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Refreshes the list of groups
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
         Platform.runLater(() -> {
@@ -77,11 +75,11 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Adds the users to the list
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
-
         Platform.runLater(() -> {
             usersList.addAll(users);
             System.out.println(usersList);
@@ -89,7 +87,8 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Removes the user from the list
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
@@ -106,24 +105,26 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Sets the current user's name
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void setUsernameInChat(PropertyChangeEvent propertyChangeEvent) {
         currentUser = (User) propertyChangeEvent.getNewValue();
     }
 
     /**
-     * @param propertyChangeEvent
+     * Initiates the displaying of the public message
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void displayPublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
-
         // message.setValue(publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
         support.firePropertyChange("MessageForEveryone", null, publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
     }
 
     /**
-     * @param propertyChangeEvent
+     * 
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
@@ -210,8 +211,9 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -219,8 +221,9 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -228,7 +231,7 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void displayPM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
@@ -241,7 +244,7 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void displayGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
@@ -257,7 +260,6 @@ public class ChatClientViewModel implements Subject {
         } else {
             support.firePropertyChange("newGroupMessage", null, "false");
         }
-
     }
 
     /**

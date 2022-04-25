@@ -13,7 +13,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 /**
- *
+ * The ViewModel of the RemoveGroup panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class RemoveGroupViewModel implements Subject {
     private MainModel mainModel;
@@ -21,7 +23,8 @@ public class RemoveGroupViewModel implements Subject {
     private ObservableList<Group> groups;
 
     /**
-     * @param mainModel
+     * Constructor of the RemoveGroupViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public RemoveGroupViewModel(MainModel mainModel) {
         this.groups= FXCollections.observableArrayList() ;
@@ -31,7 +34,8 @@ public class RemoveGroupViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Refreshes the list of groups
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> groupList = (ArrayList<Group>) propertyChangeEvent.getNewValue();
@@ -43,8 +47,9 @@ public class RemoveGroupViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -52,8 +57,9 @@ public class RemoveGroupViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -61,14 +67,16 @@ public class RemoveGroupViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the list of groups
+     * @return ObservableList<Group>
      */
     public ObservableList<Group> getGroups() {
         return groups;
     }
 
     /**
-     * @param g
+     * Initiates the removal of the group
+     * @param g Group
      */
     void deleteGroup(Group g) {
         mainModel.deleteGroup(g);
