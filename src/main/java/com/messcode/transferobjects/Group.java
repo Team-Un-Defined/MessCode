@@ -18,6 +18,11 @@ public class Group implements Serializable {
     private User leader;
     private ArrayList<User> members;
 
+    /**
+     * @param name
+     * @param description
+     * @param leader
+     */
     public Group(String name, String description, User leader) {
         this.name = name;
         this.description = description;
@@ -26,46 +31,79 @@ public class Group implements Serializable {
         members.add(leader);
     }
 
+    /**
+     * @param u
+     */
     public void addMember(User u) {
         members.add(u);
     }
 
+    /**
+     * @param u
+     */
     public void addMembers(ArrayList<User> u) {
         members.addAll(u);
     }
 
+    /**
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * @return
+     */
     public User getLeader() {
         return leader;
     }
 
+    /**
+     * @param leader
+     */
     public void setLeader(User leader) {
         this.leader = leader;
     }
 
+    /**
+     * @return
+     */
     public ArrayList<User> getMembers() {
         return members;
     }
 
+    /**
+     * @param members
+     */
     public void setMembers(ArrayList<User> members) {
         this.members = members;
     }
 
+    /**
+     * @param members
+     */
     public void removeMembers(ArrayList<User> members) {
         ArrayList<User> help = new ArrayList<User>();
         help.addAll(this.members);
@@ -77,6 +115,10 @@ public class Group implements Serializable {
         });
     }
 
+    /**
+     * @param user
+     * @return
+     */
     public boolean isMember(User user) {
         for (User u: members) {
             if (u.getEmail().equals(user.getEmail()))

@@ -28,6 +28,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class ViewHandler {
 
     private ViewModelFactory vmf;
@@ -46,16 +49,25 @@ public class ViewHandler {
 
     private User myUser = null;
 
+    /**
+     * @param vmf
+     */
     public ViewHandler(ViewModelFactory vmf) {
         stage = new Stage();
         this.vmf = vmf;
     }
 
+    /**
+     *
+     */
     public void start() {
         SettingsConfig.readConfig();
         showConfirmation();
     }
 
+    /**
+     *
+     */
     private void showConfirmation() {
         String languageConfig = SettingsConfig.getConfigOf("language");
         if (languageConfig.equals("ENG")) {
@@ -102,8 +114,11 @@ public class ViewHandler {
             openLogin();
     }
 
-    public void changeLanguage(String language){
-        if(language.equals("SK")){
+    /**
+     * @param language
+     */
+    public void changeLanguage(String language) {
+        if (language.equals("SK")) {
             System.out.println("Bundle SK");
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));
         } else {
@@ -119,6 +134,9 @@ public class ViewHandler {
         stage.setY(y);
     }
 
+    /**
+     * @return
+     */
     public ChatClientController openChatClientView() {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(this.bundle);
@@ -138,14 +156,17 @@ public class ViewHandler {
         return controller;
     }
 
+    /**
+     *
+     */
     private void openLogin() {
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("login.fxml", loader);
-            LoginController controller = loader.getController();
-            controller.init(vmf.getLoginVM(), this, bundle);
-            login = new Scene(root);
+        Parent root = getRootByPath("login.fxml", loader);
+        LoginController controller = loader.getController();
+        controller.init(vmf.getLoginVM(), this, bundle);
+        login = new Scene(root);
 
         stage.setTitle(bundle.getString("login.up"));
         stage.setScene(login);
@@ -156,15 +177,18 @@ public class ViewHandler {
         stage.show();
     }
 
+    /**
+     * @param css
+     */
     public void openNewEmployee(String css) {
         Stage newEmployeeStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("NewEmployee.fxml", loader);
-            NewEmployeeController controller = loader.getController();
-            controller.init(vmf.getNewEmployeeVM(), this, bundle);
-            newEmployee = new Scene(root);
+        Parent root = getRootByPath("NewEmployee.fxml", loader);
+        NewEmployeeController controller = loader.getController();
+        controller.init(vmf.getNewEmployeeVM(), this, bundle);
+        newEmployee = new Scene(root);
 
         newEmployeeStage.setTitle(bundle.getString("new_employee.up"));
         newEmployeeStage.setScene(newEmployee);
@@ -174,15 +198,18 @@ public class ViewHandler {
         newEmployeeStage.show();
     }
 
+    /**
+     * @param css
+     */
     public void openNewGroup(String css) {
         Stage newGroupStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("NewGroup.fxml", loader);
-            NewGroupController controller = loader.getController();
-            controller.init(vmf.getNewGroupVM(), this, bundle);
-            newGroup = new Scene(root);
+        Parent root = getRootByPath("NewGroup.fxml", loader);
+        NewGroupController controller = loader.getController();
+        controller.init(vmf.getNewGroupVM(), this, bundle);
+        newGroup = new Scene(root);
 
         newGroupStage.setTitle(bundle.getString("new_group.up"));
         newGroupStage.setScene(newGroup);
@@ -192,15 +219,18 @@ public class ViewHandler {
         newGroupStage.show();
     }
 
+    /**
+     * @param css
+     */
     public void openChangePassword(String css) {
         Stage changePasswordStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("ChangePassword.fxml", loader);
-            ChangePasswordController controller = loader.getController();
-            controller.init(vmf.getChangePasswordVM(), this, bundle);
-            changePassword = new Scene(root);
+        Parent root = getRootByPath("ChangePassword.fxml", loader);
+        ChangePasswordController controller = loader.getController();
+        controller.init(vmf.getChangePasswordVM(), this, bundle);
+        changePassword = new Scene(root);
 
         changePasswordStage.setTitle(bundle.getString("change_pass.up"));
         changePasswordStage.setScene(changePassword);
@@ -210,15 +240,18 @@ public class ViewHandler {
         changePasswordStage.show();
     }
 
+    /**
+     * @param css
+     */
     public void openEditMember(String css) {
         Stage editMemberStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("EditMember.fxml", loader);
-            EditMemberController controller = loader.getController();
-            controller.init(vmf.getEditMemberVM(), this, bundle);
-            editMember = new Scene(root);
+        Parent root = getRootByPath("EditMember.fxml", loader);
+        EditMemberController controller = loader.getController();
+        controller.init(vmf.getEditMemberVM(), this, bundle);
+        editMember = new Scene(root);
 
         editMemberStage.setTitle(bundle.getString("edit_member.up"));
         editMemberStage.setScene(editMember);
@@ -228,15 +261,18 @@ public class ViewHandler {
         editMemberStage.show();
     }
 
+    /**
+     * @param css
+     */
     public void openEditProjectLeader(String css) {
         Stage editProjectLeaderStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("EditProjectLeader.fxml", loader);
-            EditProjectLeaderController controller = loader.getController();
-            controller.init(vmf.getEditProjectLeaderVM(), this, bundle);
-            editProjectLeader = new Scene(root);
+        Parent root = getRootByPath("EditProjectLeader.fxml", loader);
+        EditProjectLeaderController controller = loader.getController();
+        controller.init(vmf.getEditProjectLeaderVM(), this, bundle);
+        editProjectLeader = new Scene(root);
 
         editProjectLeaderStage.setTitle(bundle.getString("edit_project_leader.up"));
         editProjectLeaderStage.setScene(editProjectLeader);
@@ -246,15 +282,18 @@ public class ViewHandler {
         editProjectLeaderStage.show();
     }
 
+    /**
+     * @param css
+     */
     public void openRemoveUser(String css) {
         Stage removeUserStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("RemoveUser.fxml", loader);
-            RemoveUserController controller = loader.getController();
-            controller.init(vmf.getRemoveUserVM(), this, bundle);
-            removeUser = new Scene(root);
+        Parent root = getRootByPath("RemoveUser.fxml", loader);
+        RemoveUserController controller = loader.getController();
+        controller.init(vmf.getRemoveUserVM(), this, bundle);
+        removeUser = new Scene(root);
 
         removeUserStage.setTitle(bundle.getString("remove_user.up"));
         removeUserStage.setScene(removeUser);
@@ -264,15 +303,18 @@ public class ViewHandler {
         removeUserStage.show();
     }
 
+    /**
+     * @param css
+     */
     public void openRemoveGroup(String css) {
         Stage removeGroupStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("RemoveGroup.fxml", loader);
-            RemoveGroupController controller = loader.getController();
-            controller.init(vmf.getRemoveGroupVM(), this, bundle);
-            removeGroup = new Scene(root);
+        Parent root = getRootByPath("RemoveGroup.fxml", loader);
+        RemoveGroupController controller = loader.getController();
+        controller.init(vmf.getRemoveGroupVM(), this, bundle);
+        removeGroup = new Scene(root);
 
         removeGroupStage.setTitle(bundle.getString("remove_group.up"));
         removeGroupStage.setScene(removeGroup);
@@ -282,15 +324,18 @@ public class ViewHandler {
         removeGroupStage.show();
     }
 
+    /**
+     * @param css
+     */
     public void openViewProfile(String css) {
         Stage viewProfileStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
         loader.setResources(bundle);
 
-            Parent root = getRootByPath("ViewProfile.fxml", loader);
-            ViewProfileController controller = loader.getController();
-            controller.init(vmf.getViewProfileVM(), this, bundle);
-            viewProfile = new Scene(root);
+        Parent root = getRootByPath("ViewProfile.fxml", loader);
+        ViewProfileController controller = loader.getController();
+        controller.init(vmf.getViewProfileVM(), this, bundle);
+        viewProfile = new Scene(root);
 
         viewProfileStage.setTitle(bundle.getString("view_profile.up"));
         viewProfileStage.setScene(viewProfile);
@@ -300,6 +345,11 @@ public class ViewHandler {
         viewProfileStage.show();
     }
 
+    /**
+     * @param path
+     * @param loader
+     * @return
+     */
     private Parent getRootByPath(String path, FXMLLoader loader) {
         loader.setLocation(getClass().getResource(path));
         Parent root = null;
@@ -311,11 +361,11 @@ public class ViewHandler {
         return root;
     }
 
-    public String getCssStyle(){
-        if(Objects.equals(SettingsConfig.getConfigOf("dark_theme"), "0")){
+    public String getCssStyle() {
+        if (Objects.equals(SettingsConfig.getConfigOf("dark_theme"), "0")) {
             return "lite.css";
         }
-        return  "dark.css";
+        return "dark.css";
     }
 
     public User getMyUser() {

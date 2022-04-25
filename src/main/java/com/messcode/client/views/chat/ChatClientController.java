@@ -8,11 +8,7 @@ import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,10 +18,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.controlsfx.control.ToggleSwitch;
 
@@ -34,14 +28,12 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.io.InputStream;
-
-import static java.lang.Thread.sleep;
-
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+/**
+ *
+ */
 public class ChatClientController {
 
     public TextField textFieldAll;
@@ -97,6 +89,11 @@ public class ChatClientController {
     private String cssUsed;
     private String paneInFront = "all";
 
+    /**
+     * @param chatVM
+     * @param vh
+     * @param bundle
+     */
     public void init(ChatClientViewModel chatVM, ViewHandler vh, ResourceBundle bundle) {
         this.chatVM = chatVM;
         this.vh = vh;
@@ -115,12 +112,11 @@ public class ChatClientController {
             @Override
             public void handle(WindowEvent t) {
                 System.out.println("nyeheheeee");
-                // perhaps
+                chatVM.saveDataOnExit();
                 Platform.exit();
                 System.exit(0);
             }
         }));
-
 
         editProjectLeaderButton.setVisible(false);
         editMemberButton.setVisible(false);
@@ -228,6 +224,9 @@ public class ChatClientController {
         sendAllButton.setDefaultButton(true);
     }
 
+    /**
+     *
+     */
     private void updateGroupList() {
         groupsList.setItems(chatVM.getGroups());
         groupsList.setCellFactory(lv -> new ListCell<>() {
@@ -256,6 +255,9 @@ public class ChatClientController {
         });
     }
 
+    /**
+     *
+     */
     private void updateUserList() {
         usersListFXML.setItems(chatVM.getUsersList());
         usersListFXML.setCellFactory(lv -> new ListCell<>() {
@@ -306,6 +308,9 @@ public class ChatClientController {
         });
     }
 
+    /**
+     *
+     */
     public void sendButton() {
         System.out.println("*************************************");
         String message = textFieldAll.getText();
@@ -313,6 +318,9 @@ public class ChatClientController {
         textFieldAll.clear();
     }
 
+    /**
+     *
+     */
     public void sendPM() {
         if (chatVM.getReceiver() == null) {
             System.out.println("FUCK YOU");
@@ -326,6 +334,9 @@ public class ChatClientController {
         }
     }
 
+    /**
+     *
+     */
     public void sendGroup() {
         if (chatVM.getReceiverGroup() == null) {
             System.out.println("EF YOU 2.0");
@@ -337,6 +348,9 @@ public class ChatClientController {
         }
     }
 
+    /**
+     *
+     */
     public void inviteToPmButton() {
         messagesListPM.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
@@ -403,12 +417,18 @@ public class ChatClientController {
         }
     }
 
+    /**
+     * @param str
+     */
     private void copyMessage(String str) {
         StringSelection stringSelection = new StringSelection(str);
         Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
         clpbrd.setContents(stringSelection, null);
     }
 
+    /**
+     *
+     */
     public void openGroup() {
         messagesListGroup.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
@@ -425,7 +445,7 @@ public class ChatClientController {
                         setStyle(a);
                         setText(item.getText());
                     }
-                    
+
                 }
             };
             return cell;
@@ -441,9 +461,9 @@ public class ChatClientController {
 
             if (chatVM.getCurrentUser().getType().equals("project_leader")) {
                 editMemberButton.setVisible(true);
-              
+
             }
-           
+
 
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
 
@@ -475,6 +495,9 @@ public class ChatClientController {
         }
     }
 
+    /**
+     * @param actionEvent
+     */
     public void handleClicks(ActionEvent actionEvent) {
         if (actionEvent.getSource() == buttonAll) {
             paneInFront = "all";
@@ -514,22 +537,37 @@ public class ChatClientController {
         }
     }
 
+    /**
+     *
+     */
     public void changePasswordClicked() {
         vh.openChangePassword(cssUsed);
     }
 
+    /**
+     *
+     */
     public void newEmployeeClicked() {
         vh.openNewEmployee(cssUsed);
     }
 
+    /**
+     *
+     */
     public void newGroupClicked() {
         vh.openNewGroup(cssUsed);
     }
 
+    /**
+     *
+     */
     public void editMemberClicked() {
         vh.openEditMember(cssUsed);
     }
 
+    /**
+     *
+     */
     public void refreshPublic() {
         messagesListAll.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
@@ -564,22 +602,37 @@ public class ChatClientController {
         messagesListAll.scrollTo(messagesListAll.getItems().size());
     }
 
+    /**
+     *
+     */
     public void removeGroupClicked() {
         vh.openRemoveGroup(cssUsed);
     }
 
+    /**
+     *
+     */
     public void removeUserClicked() {
         vh.openRemoveUser(cssUsed);
     }
 
+    /**
+     *
+     */
     public void editProjectLeaderClicked() {
         vh.openEditProjectLeader(cssUsed);
     }
 
+    /**
+     * @param actionEvent
+     */
     public void viewProfileClicked(ActionEvent actionEvent) {
         vh.openViewProfile(cssUsed);
     }
 
+    /**
+     * @param evt
+     */
     private void displayPublic(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
         Platform.runLater(() -> {
@@ -598,6 +651,9 @@ public class ChatClientController {
         });
     }
 
+    /**
+     * @param evt
+     */
     private void displayPM(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -612,22 +668,21 @@ public class ChatClientController {
         });
     }
 
+    /**
+     * @param evt
+     */
     private void displayGroup(PropertyChangeEvent evt) {
-        String ans = (String)evt.getNewValue();
-        if(ans.equals("true")) {
-
+        String ans = (String) evt.getNewValue();
+        if (ans.equals("true")) {
             System.out.println("WTHIS SHOULD BE RUNNING? ");
             InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 
             groupButtonImage.setImage(new Image(reddot));
 
-
             updateGroupList();
-        } else if (ans.equals("false")){
+        } else if (ans.equals("false")) {
             updateGroupList();
-
-        }else
-        {
+        } else {
             System.out.println("WOW?? ");
             String a = (String) evt.getNewValue();
             Platform.runLater(() -> {
@@ -641,6 +696,9 @@ public class ChatClientController {
         }
     }
 
+    /**
+     *
+     */
     public void resetPassword() {
         if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
@@ -650,6 +708,9 @@ public class ChatClientController {
         }
     }
 
+    /**
+     * @param event
+     */
     public void changeColor(ActionEvent event) {
         Color color = colorPicker.getValue();
         String webFormat = String.format("#%02x%02x%02x",

@@ -12,6 +12,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class LoginViewModel implements Subject {
 
     public ResourceBundle bundle;
@@ -19,6 +22,9 @@ public class LoginViewModel implements Subject {
     private PropertyChangeSupport support;
     private StringProperty error;
 
+    /**
+     * @param mainModel
+     */
     public LoginViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
         support = new PropertyChangeSupport(this);
@@ -28,10 +34,16 @@ public class LoginViewModel implements Subject {
         mainModel.addListener("LoginData", this::openChatClient);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void openChatClient(PropertyChangeEvent propertyChangeEvent) {
         support.firePropertyChange("OpenChat", null, true);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         boolean answer = (boolean) propertyChangeEvent.getNewValue();
         String resp;
@@ -45,20 +57,35 @@ public class LoginViewModel implements Subject {
         Platform.runLater(() -> error.setValue(resp));
     }
 
+    /**
+     * @return
+     */
     public StringProperty errorProperty() {
         return error;
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param email
+     * @param pass
+     */
     public void login(String email, String pass) {
         if (email.length() >= 4) {
             mainModel.addUser(email, pass);

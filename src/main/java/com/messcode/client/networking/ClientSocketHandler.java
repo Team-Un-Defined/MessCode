@@ -21,6 +21,9 @@ import com.messcode.transferobjects.messages.GroupMessages;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+/**
+ *
+ */
 public class ClientSocketHandler implements Runnable {
 
     private SocketClient socketClient;
@@ -28,6 +31,11 @@ public class ClientSocketHandler implements Runnable {
     private ObjectOutputStream outToServer;
     private ObjectInputStream inFromServer;
 
+    /**
+     * @param socket
+     * @param socketClient
+     * @throws IOException
+     */
     public ClientSocketHandler(Socket socket, SocketClient socketClient) throws IOException {
         this.socket = socket;
         this.socketClient = socketClient;
@@ -35,6 +43,9 @@ public class ClientSocketHandler implements Runnable {
         inFromServer = new ObjectInputStream(socket.getInputStream());
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         try {
@@ -153,22 +164,37 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param packet
+     */
     private void addNewOfflineUser(Container packet) {
         socketClient.addOfflineUser(packet);
     }
 
+    /**
+     * @param pckt
+     */
     private void getALlGroupMessages(Container pckt) {
         socketClient.getAllGroupMessages(pckt);
     }
 
+    /**
+     * @param packet
+     */
     private void removedUser(Container packet) {
         socketClient.removeUser(packet);
     }
 
+    /**
+     * @param packet
+     */
     private void passChangeResponse(Container packet) {
         socketClient.passChangeResponse(packet);
     }
 
+    /**
+     * @param cont
+     */
     private void userCreateResponse(Container cont) {
         socketClient.userCreateResponse(cont);
     }
@@ -177,20 +203,32 @@ public class ClientSocketHandler implements Runnable {
         socketClient.loginData(packet);
     }
 
+    /**
+     * @param arg
+     */
     private void userLeft(Object arg) {
         User user = (User) arg;
         socketClient.removeFromList(user);
     }
 
+    /**
+     * @param answ
+     */
     //  BACK TO FXML
     private void loginResponse(boolean answ) {
         socketClient.loginResponse(answ);
     }
 
+    /**
+     * @param user
+     */
     private void addToUsersList(User user) {
         socketClient.addToList(user);
     }
 
+    /**
+     * @param message
+     */
     private void receivePublic(PublicMessage message) {
         socketClient.displayMessage(message);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
@@ -198,6 +236,9 @@ public class ClientSocketHandler implements Runnable {
         System.out.println("I GOT THIS: " + message.getUsername() + " " + message.getMsg());
     }
 
+    /**
+     * @param message
+     */
     private void receivePM(PrivateMessage message) {
         socketClient.displayPM(message);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
@@ -205,6 +246,9 @@ public class ClientSocketHandler implements Runnable {
         System.out.println("CLIENT GOT THE PM : " + message.getUsername() + " " + message.getMsg());
     }
 
+    /**
+     * @param gm
+     */
     private void receiveGroup(GroupMessages gm) {
         socketClient.displayGroup(gm);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
@@ -212,6 +256,9 @@ public class ClientSocketHandler implements Runnable {
         System.out.println("CLIENT GOT THE Group message : " + gm.getUsername() + " " + gm.getMsg());
     }
 
+    /**
+     * @param message
+     */
     public void sendPM(PrivateMessage message) {
         try {
             Container packet = new Container(message, PRIVATE_MESSAGE);
@@ -221,6 +268,9 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param message
+     */
     //  TO SERVER
     public void sendPublic(PublicMessage message) {
         try {
@@ -231,6 +281,9 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param username
+     */
     public void addUser(User username) {
         try {
             java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "wgatdup: " + username);
@@ -252,6 +305,9 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param newUser
+     */
     public void register(User newUser) {
         try {
             Container packet = new Container(newUser, ClassName.CREATE_ACCOUNT);
@@ -262,6 +318,9 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param g
+     */
     public void addGroup(Group g) {
         try {
             Container packet = new Container(g, ClassName.CREATING_GROUP);
@@ -271,10 +330,16 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param groups
+     */
     private void receiveGroups(ArrayList<Group> groups) {
         socketClient.refreshGroupList(groups);
     }
 
+    /**
+     * @param mess
+     */
     void sendGroup(GroupMessages mess) {
         try {
             Container packet = new Container(mess, ClassName.GROUP_MESSAGE);
@@ -284,6 +349,9 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param u
+     */
     public void changePassword(User u) {
         try {
             Container packet = new Container(u, ClassName.PASSWORD_CHANGE);
@@ -293,8 +361,10 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param use
+     */
     public void deleteUser(User use) {
-
         try {
             Container packet = new Container(use, ClassName.REMOVE_USER);
             outToServer.writeObject(packet);
@@ -303,6 +373,9 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param selectedGroup
+     */
     void addMember(Group selectedGroup) {
         try{
         Container packet = new Container(selectedGroup,ClassName.ADD_GROUPMEMBER);
@@ -310,9 +383,11 @@ public class ClientSocketHandler implements Runnable {
         }catch(IOException e){
           e.printStackTrace();
         }
-        
     }
 
+    /**
+     * @param selectedGroup
+     */
     void removeMember(Group selectedGroup) {
         try{
         Container packet = new Container(selectedGroup,ClassName.REMOVE_GROUPMEMBER);
@@ -322,6 +397,9 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param g
+     */
     void deleteGroup(Group g) {
          try{
         Container packet = new Container(g,ClassName.DELETE_GROUP);
@@ -331,6 +409,9 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param use
+     */
     public void resetPassword(User use) {
         try{
             Container packet = new Container(use,ClassName.RESET_PASSWORD);
@@ -340,12 +421,24 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param g
+     */
     void changeLeader(Group g) {
         try{
         Container packet = new Container(g,ClassName.CHANGE_GROUP_LEADER);
         outToServer.writeObject(packet);
         }catch(IOException e){
           e.printStackTrace();
+        }
+    }
+
+    public void saveDataOnExit(User user) {
+        try{
+            Container packet = new Container(user,ClassName.USER_LEFT);
+            outToServer.writeObject(packet);
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
 }

@@ -22,6 +22,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ *
+ */
 public class NewEmployeeViewModel implements Subject {
 
     private MainModel mainModel;
@@ -31,6 +34,9 @@ public class NewEmployeeViewModel implements Subject {
     private String password = "";
     private ResourceBundle bundle;
 
+    /**
+     * @param mainModel
+     */
     public NewEmployeeViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
         support = new PropertyChangeSupport(this);
@@ -39,6 +45,9 @@ public class NewEmployeeViewModel implements Subject {
         mainModel.addListener("createUserResponse", this::response);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         checkLanguage();
         System.out.println("HELLO I SHOULD RET REPSONSE 1");
@@ -51,7 +60,7 @@ public class NewEmployeeViewModel implements Subject {
                 dialog.setContentText("Please make sure to forward the new user their\n" +
                         "generated password: " + password);
                 dialog.getDialogPane().getButtonTypes().add(buttonType);
-                dialog.setOnCloseRequest(actionEvent(password));
+                dialog.setOnCloseRequest(passwordDialogClose(password));
                 dialog.showAndWait();
 
             });
@@ -66,29 +75,52 @@ public class NewEmployeeViewModel implements Subject {
             System.out.println("HELLO I SHOULD RET REPSONSE 3");
         }
     }
-    private EventHandler<DialogEvent> actionEvent(String password) {
+
+    /**
+     * @param password
+     * @return
+     */
+    private EventHandler<DialogEvent> passwordDialogClose(String password) {
         String ctc = password;
         StringSelection stringSelection = new StringSelection(ctc);
         Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
         clpbrd.setContents(stringSelection, null);
         return null;
     }
+
+    /**
+     * @return
+     */
     public StringProperty errorProperty() {
         return error;
     }
 
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
-    
+    /**
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param type
+     * @return
+     */
     public int createAccount(String firstName, String lastName, String email, String type) {
         checkLanguage();
         System.out.println("CREATE ACC 1");
@@ -117,15 +149,16 @@ public class NewEmployeeViewModel implements Subject {
                 error.setValue(bundle.getString("error.generated_pass") + ": " + this.password);
                 mainModel.register(firstName, lastName, email, this.password, type);
 
-
                 return 2;
             }
             error.setValue(bundle.getString("error.email_in_use"));
-
         }
         return 3;
     }
 
+    /**
+     *
+     */
     private void checkLanguage(){
         if(SettingsConfig.getConfigOf("language").equals("SK")){
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));

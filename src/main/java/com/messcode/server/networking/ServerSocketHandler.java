@@ -2,11 +2,7 @@ package com.messcode.server.networking;
 
 import JDBC.ExportData;
 import JDBC.ImportData;
-import com.messcode.transferobjects.ClassName;
-import com.messcode.transferobjects.Container;
-import com.messcode.transferobjects.Group;
-import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.UserList;
+import com.messcode.transferobjects.*;
 import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
@@ -17,10 +13,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class ServerSocketHandler implements Runnable {
 
     private static final Logger log4j = LogManager.getLogger(ServerSocketHandler.class);
@@ -34,6 +32,13 @@ public class ServerSocketHandler implements Runnable {
 
     private User user;
 
+    /**
+     * @param socket
+     * @param pool
+     * @param dbii
+     * @param dbee
+     * @throws IOException
+     */
     public ServerSocketHandler(Socket socket, ConnectionPool pool, ImportData dbii, ExportData dbee) throws IOException {
         dbe = dbee;
         dbi = dbii;
@@ -43,6 +48,9 @@ public class ServerSocketHandler implements Runnable {
         outToClient = new ObjectOutputStream(socket.getOutputStream());
     }
 
+    /**
+     *
+     */
     @Override
     public void run() {
         try {
@@ -191,6 +199,9 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
+    /**
+     *
+     */
     public void updateUsersList() {
         try {
             UserList users = new UserList();
@@ -204,6 +215,9 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param publicMessage
+     */
     public void sendMessage(PublicMessage publicMessage) {
         try {
             System.out.println(
@@ -217,10 +231,16 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @return
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     * @param user
+     */
     public void joinChat(User user) {
         try {
             Container packet = new Container(user, ClassName.USER_JOIN);
@@ -232,7 +252,9 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
-
+    /**
+     * @param pm
+     */
     public void sendMessageInPM(PrivateMessage pm) {
         try {
             System.out.println("HELLO THIS SHOULD BE BLALGLA");
@@ -245,6 +267,9 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param user
+     */
     public void userLeft(User user) {
         Container packet = new Container(user, ClassName.USER_LEFT);
         try {
@@ -255,6 +280,9 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param updateGroups
+     */
     void sendGroups(Container updateGroups) {
         try {
             outToClient.writeObject(updateGroups);
@@ -264,6 +292,9 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * @param message
+     */
     public void sendGroupMessage(GroupMessages message) {
         try {
             System.out.println(
@@ -275,9 +306,11 @@ public class ServerSocketHandler implements Runnable {
             e.printStackTrace();
             log4j.error(e.getMessage(), e);
         }
-
     }
 
+    /**
+     *
+     */
     public void removeUser() {
         try {
             Container b = new Container("byebye", ClassName.KICK_USER);
@@ -289,6 +322,9 @@ public class ServerSocketHandler implements Runnable {
 
     }
 
+    /**
+     * @param groupMessages
+     */
     public void sendAllGroupMessage(ArrayList<PublicMessage> groupMessages) {
         try {
             Container b = new Container(groupMessages, ClassName.ALL_GROUP_MESSAGES);

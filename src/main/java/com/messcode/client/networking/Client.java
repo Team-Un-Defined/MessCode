@@ -10,37 +10,90 @@ import com.messcode.transferobjects.util.Subject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public interface Client extends Subject {
 
+    /**
+     * @throws IOException
+     */
     void start() throws IOException;
 
+    /**
+     * @param message
+     */
     void displayMessage(PublicMessage message);
 
+    /**
+     * @param username
+     */
     void addUser(User username);
 
+    /**
+     * @param um
+     */
     void sendPublic(PublicMessage um);
 
+    /**
+     * @param pm
+     */
     void sendPM(PrivateMessage pm);
 
-    public void register(User newUser);
-    
-    public void newGroup(Group g);
-    
-    public void refreshGroupList(ArrayList<Group> g);
-    
-    public void sendGroup(GroupMessages mess);
+    /**
+     * @param newUser
+     */
+    void register(User newUser);
 
+    /**
+     * @param g
+     */
+    void newGroup(Group g);
+
+    /**
+     * @param g
+     */
+    void refreshGroupList(ArrayList<Group> g);
+
+    /**
+     * @param mess
+     */
+    void sendGroup(GroupMessages mess);
+
+    /**
+     * @param u
+     */
     void changePassword(User u);
 
+    /**
+     * @param use
+     */
     void deleteUser(User use);
 
-    public void addMember(Group selectedGroup);
+    /**
+     * @param selectedGroup
+     */
+    void addMember(Group selectedGroup);
 
-    public void removeMember(Group selectedGroup);
+    /**
+     * @param selectedGroup
+     */
+    void removeMember(Group selectedGroup);
 
-    public void deleteGroup(Group g);
+    /**
+     * @param g
+     */
+    void deleteGroup(Group g);
 
-    public void changeLeader(Group g);
+    /**
+     * @param g
+     */
+    void changeLeader(Group g);
 
+    /**
+     * @param use
+     */
     void resetPassword(User use);
+
+    void saveDataOnExit(User user);
 }

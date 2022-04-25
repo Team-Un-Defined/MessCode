@@ -19,21 +19,38 @@ public class GroupMessages extends PublicMessage implements Serializable {
 
     private Group group;
 
-    public GroupMessages(User username,String message, Group group) {
+    /**
+     * @param username
+     * @param message
+     * @param group
+     */
+    public GroupMessages(User username, String message, Group group) {
         super(username, message);
         this.group = group;
     }
-     public GroupMessages(User username,String message, Group group,Timestamp time) {
-        super(username, message,time);
+
+    /**
+     * @param username
+     * @param message
+     * @param group
+     * @param time
+     */
+    public GroupMessages(User username, String message, Group group, Timestamp time) {
+        super(username, message, time);
         this.group = group;
     }
 
+    /**
+     * @return
+     */
     public Group getGroup() {
         return group;
     }
 
+    /**
+     * @param group
+     */
     public void setGroup(Group group) {
         this.group = group;
     }
-    
 }
