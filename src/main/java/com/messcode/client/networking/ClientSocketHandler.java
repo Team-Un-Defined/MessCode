@@ -138,12 +138,23 @@ public class ClientSocketHandler implements Runnable {
 
                         break;
                     }
+                    case OFFLINE_USER: {
+                        java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
+                                "i A NEW OFFLINE USER " + packet);
+                        addNewOfflineUser(packet);
+
+                        break;
+                    }
 
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addNewOfflineUser(Container packet) {
+        socketClient.addOfflineUser(packet);
     }
 
     private void getALlGroupMessages(Container pckt) {

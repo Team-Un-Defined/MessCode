@@ -54,6 +54,7 @@ public class ImportData {
         myPreparedStatement.setString(4, us.getSalt());
         myPreparedStatement.setString(5, us.getType());
         myPreparedStatement.setString(6, us.getEmail());
+        System.out.println("name: "+ us.getName() + " email : "+ us.getEmail());
         ResultSet rs = myPreparedStatement.executeQuery();
 
         if (rs.next()) {

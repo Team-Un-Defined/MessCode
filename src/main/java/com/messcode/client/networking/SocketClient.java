@@ -160,6 +160,10 @@ public class SocketClient implements Client {
     public void changeLeader(Group g) {
         socketHandler.changeLeader(g);
     }
+
+    public void addOfflineUser(Container packet) {
+        support.firePropertyChange("addOfflineUser", null, packet);
+    }
 }
 
 

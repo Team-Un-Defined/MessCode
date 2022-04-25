@@ -143,9 +143,11 @@ public class ServerSocketHandler implements Runnable {
                     case CREATE_ACCOUNT: {
                         User u = (User) packet.getObject();
                         Container c = dbi.createAccount(u);
+                        if((User)c.getObject()!=null) {
+                            pool.addNewOfflineUser(u,user);
 
+                        }
                         outToClient.writeObject(c);
-
                         break;
                     }
                     case PASSWORD_CHANGE: {
@@ -291,6 +293,17 @@ public class ServerSocketHandler implements Runnable {
         try {
             Container b = new Container(groupMessages, ClassName.ALL_GROUP_MESSAGES);
             outToClient.writeObject(b);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log4j.error(e.getMessage(), e);
+        }
+    }
+
+    public void updateOfflineList(User u) {
+        try {
+
+            Container packet = new Container(u, ClassName.OFFLINE_USER);
+            outToClient.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();
             log4j.error(e.getMessage(), e);
