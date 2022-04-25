@@ -1,5 +1,6 @@
 package com.messcode.transferobjects;
 
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import java.io.Serializable;
@@ -187,7 +188,22 @@ public class User implements Serializable {
         
         return pm;
     }
-    
+    public ArrayList<GroupMessages> getUnreadGMs() {
+        ArrayList<GroupMessages> gm = new ArrayList<GroupMessages>();
+        for (PublicMessage un: unreadMessages){
+            if (un instanceof GroupMessages){
+                gm.add((GroupMessages) un);
+            }
+
+
+        }
+
+        return gm;
+    }
+
+
+
+
     public void setUnreadMessages(ArrayList<PublicMessage> unreadMessages) {
         this.unreadMessages = unreadMessages;
     }
