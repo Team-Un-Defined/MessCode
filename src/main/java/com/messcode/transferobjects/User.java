@@ -9,7 +9,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 /**
- *
+ * This class is used for storing important account information such as name, email, RSA keys etc...
+ * Attribute type can be employee, superuser, projectLeader or employer.
  */
 public class User implements Serializable {
 
@@ -50,13 +51,14 @@ public class User implements Serializable {
     }
 
     /**
+     * This constructor is used when creating new employee.
+     *
      * @param name
      * @param surname
      * @param email
      * @param password
      * @param type
      */
-    // if you are creating new employee you use this constructor
     public User(String name, String surname, String email, String password, String type) {
         AccountManager myAccountManager = new AccountManager();
         this.name = name;
@@ -78,6 +80,8 @@ public class User implements Serializable {
     }
 
     /**
+     * This constructor is used when you get employee information from database
+     *
      * @param name
      * @param surname
      * @param email
@@ -85,7 +89,6 @@ public class User implements Serializable {
      * @param salt
      * @param type
      */
-    // if you took employee from database you use this constructor
     public User(String name, String surname, String email, byte[] hashedPassword, String salt, String type) {
         this.name = name;
         this.surname = surname;
