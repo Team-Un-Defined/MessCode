@@ -222,26 +222,23 @@ public class ChatClientController {
                 super.updateItem(item, empty);
                 if (empty) {
                     setText(null);
-                } else if (item.getLeader() == null) {
-                    String text = item.getName();
-                    setText(text);
-                    this.setTextFill(Color.RED);
-                } else {
-                    if (chatVM.getUnredGMs(item)) {
+                } else if (chatVM.getUnredGMs(item)) {
 
                         InputStream in = getClass().getResourceAsStream("/orangedotm.png");
                         ImageView imageView = new ImageView(new Image(in));
                         imageView.setFitHeight(10);
                         imageView.setPreserveRatio(true);
                         this.setGraphic(imageView);
-
+                        String text = item.getName(); // get text from item
+                        setText(text);
 
                     } else {
                         String text = item.getName(); // get text from item
                         setText(text);
                     }
+                
                 }
-            }
+            
         });
     }
 
@@ -368,7 +365,7 @@ public class ChatClientController {
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
                 updateUserList();
                 chatVM.setReceiver(use);
-
+                updateUserList();
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
                 for (PrivateMessage pm : priv) {
@@ -415,6 +412,7 @@ public class ChatClientController {
                         setStyle(a);
                         setText(item.getText());
                     }
+                    
                 }
             };
             return cell;
@@ -430,7 +428,9 @@ public class ChatClientController {
 
             if (chatVM.getCurrentUser().getType().equals("project_leader")) {
                 editMemberButton.setVisible(true);
+              
             }
+           
 
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
 
@@ -447,6 +447,7 @@ public class ChatClientController {
 
             System.out.println(group.getName());
             chatVM.setReceiverGroup(group);
+            updateGroupList();
             messagesListGroup.getItems().clear();
             ArrayList<GroupMessages> groupMess = chatVM.loadGroup();
             for (GroupMessages g : groupMess) {
@@ -586,7 +587,9 @@ public class ChatClientController {
 
     private void displayPM(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Platform.runLater(() -> {
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             Label label = new Label(a);
             label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
             label.setWrapText(true);
@@ -597,15 +600,27 @@ public class ChatClientController {
     }
 
     private void displayGroup(PropertyChangeEvent evt) {
-        String a = (String) evt.getNewValue();
-        Platform.runLater(() -> {
-            Label label = new Label(a);
-            label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
-            label.setWrapText(true);
-            label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
-            messagesListGroup.getItems().add(label);
-            messagesListGroup.scrollTo(messagesListGroup.getItems().size());
-        });
+        if(evt.getNewValue() instanceof String) {
+            System.out.println("WOW?? ");
+            String a = (String) evt.getNewValue();
+            Platform.runLater(() -> {
+                Label label = new Label(a);
+                label.setMaxWidth(messagesListGroup.getWidth() - 25);
+                label.setWrapText(true);
+                label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
+                messagesListGroup.getItems().add(label);
+                messagesListGroup.scrollTo(messagesListGroup.getItems().size());
+            });
+        } else {
+            System.out.println("WTHIS SHOULD BE RUNNING? ");
+            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+
+                groupButtonImage.setImage(new Image(reddot));
+
+
+            updateGroupList();
+
+        }
     }
 
     public void resetPassword() {
