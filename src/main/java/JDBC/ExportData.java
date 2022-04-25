@@ -129,6 +129,7 @@ public class ExportData {
         myPreparedStatement.setString(1, email);
         myPreparedStatement.setString(2, password);
         ResultSet rs = myPreparedStatement.executeQuery();
+        ResultSet rs0;
 
         boolean doesAccountHaveGroups = true;
         String fname = null;
@@ -212,6 +213,48 @@ public class ExportData {
 
             lastSeen.add(pm);
         }
+        String query45 = "SELECT distinct  la.user_id, la.group_message_id, p.sender_id, p.message, p.date, a.fname, a.type,\n" +
+                "a.lname, a.email,  pps.name,pps.description,pps.leader_id FROM last_seen AS la JOIN group_messages as p ON p.id = la.group_message_id \n" +
+                "jOIN account AS a ON (a.id = p.sender_id) \n" +
+                "join project_members as gms on gms.account_id = a.id \n" +
+                "join projects as pps on pps.id = p.project_id\n" +
+                "WHERE la.user_id = ? \n" +
+                "ORDER BY DATE";
+        myPreparedStatement = c.prepareStatement(query45, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        myPreparedStatement.setInt(1, id);
+
+        rs = myPreparedStatement.executeQuery();
+        rs.beforeFirst();
+        while (rs.next()) {
+            User u = new User(rs.getString("email"), "a");
+            u.setName(rs.getString("fname"));
+            u.setSurname(rs.getString("lname"));
+            u.setType(rs.getString("type"));
+            int leaderid= rs.getInt("leader_id");
+            User leader= new User("asd----","asd") ;
+            String query46 = " select * from  projects as o join account as a on a.id=o.leader_id where o.leader_id=? ";
+            myPreparedStatement = c.prepareStatement(query46, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            myPreparedStatement.setInt(1, leaderid);
+
+            rs0 = myPreparedStatement.executeQuery();
+            while(rs0.next())
+            {
+                leader=new User(rs0.getString("fname"),rs0.getString("lname"),rs0.getString("email"),"asda",rs0.getString("type"));
+            }
+            if(leader.getEmail().equals("asd----"))
+            {
+                System.out.println("SYSTEM ERROR, IMMIDIATE SHUTDOWN !");
+            }
+
+           Group g = new Group(rs.getString("name"),rs.getString("description"),leader);
+            GroupMessages pm = new GroupMessages(u, rs.getString("message"),g, rs.getTimestamp("date"));
+
+            lastSeen.add(pm);
+
+
+        }
+
+
 
         String query5 = "SELECT m.sender_id, m.receiver_id, m.message, m.date, a.fname, a.lname, a.email " +
                 "FROM private_messages AS m JOIN account AS a ON (a.id = m.receiver_id OR a.id = m.sender_id) " +
