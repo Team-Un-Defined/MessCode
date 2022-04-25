@@ -133,11 +133,13 @@ public class ConnectionPool {
     public void sendGroupMessages(GroupMessages message) {
         for (ServerSocketHandler handler : connections) {
             for (int i = 0; i < message.getGroup().getMembers().size(); i++) {
-                if (message.getGroup().getMembers().get(i).getEmail().equals(handler.getUser().getEmail())) {
+                if (message.getGroup().getMembers().get(i).getEmail().equals(handler.getUser().getEmail()) || handler.getUser().getType().equals("superuser")|| handler.getUser().getType().equals("employer")) {
                     handler.sendGroupMessage(message);
                     break;
                 }
             }
+
+
         }
     }
 

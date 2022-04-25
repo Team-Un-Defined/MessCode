@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
- *
+ * This class is used to manage all main windows and popup windows of the application.
  */
 public class ViewHandler {
 
@@ -50,7 +50,8 @@ public class ViewHandler {
     private User myUser = null;
 
     /**
-     * @param vmf
+     * Creates new ViewHandler instance
+     * @param vmf active instance of ViewModelFactory
      */
     public ViewHandler(ViewModelFactory vmf) {
         stage = new Stage();
@@ -58,7 +59,7 @@ public class ViewHandler {
     }
 
     /**
-     *
+     * The method calls the first start window after reading the actual config
      */
     public void start() {
         SettingsConfig.readConfig();
@@ -66,7 +67,10 @@ public class ViewHandler {
     }
 
     /**
-     *
+     * The method checks if the user has selected the application interface language;
+     * if the user starts the application for the first time,
+     * method displays a dialog box with the localization language selection.
+     * After selecting a language, an open login window handler is called.
      */
     private void showConfirmation() {
         String languageConfig = SettingsConfig.getConfigOf("language");
@@ -115,7 +119,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param language
+     * This method dynamically changes the language within the application.
+     * @param language Language localize app to
      */
     public void changeLanguage(String language) {
         if (language.equals("SK")) {
@@ -135,7 +140,8 @@ public class ViewHandler {
     }
 
     /**
-     * @return
+     * This method opens the main window with chats.
+     * @return Returns client window controller
      */
     public ChatClientController openChatClientView() {
         FXMLLoader loader = new FXMLLoader();
@@ -157,7 +163,7 @@ public class ViewHandler {
     }
 
     /**
-     *
+     * This method opens login window
      */
     private void openLogin() {
         FXMLLoader loader = new FXMLLoader();
@@ -178,7 +184,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param css
+     *  This method opens window popup with functionality of adding a new employee
+     * @param css Current interface theme
      */
     public void openNewEmployee(String css) {
         Stage newEmployeeStage = new Stage();
@@ -199,7 +206,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param css
+     *  This method opens window popup with functionality of adding a new group
+     * @param css Current interface theme
      */
     public void openNewGroup(String css) {
         Stage newGroupStage = new Stage();
@@ -220,7 +228,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param css
+     *  This method opens window popup with functionality of changing user password
+     * @param css Current interface theme
      */
     public void openChangePassword(String css) {
         Stage changePasswordStage = new Stage();
@@ -241,7 +250,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param css
+     *  This method opens window popup with functionality of editing members to the group chat
+     * @param css Current interface theme
      */
     public void openEditMember(String css) {
         Stage editMemberStage = new Stage();
@@ -262,7 +272,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param css
+     *  This method opens window popup with functionality of changing project leader of the group chat
+     * @param css Current interface theme
      */
     public void openEditProjectLeader(String css) {
         Stage editProjectLeaderStage = new Stage();
@@ -283,7 +294,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param css
+     *  This method opens window popup with functionality of removing user
+     * @param css Current interface theme
      */
     public void openRemoveUser(String css) {
         Stage removeUserStage = new Stage();
@@ -304,7 +316,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param css
+     *  This method opens window popup with functionality of removing group chat
+     * @param css Current interface theme
      */
     public void openRemoveGroup(String css) {
         Stage removeGroupStage = new Stage();
@@ -325,7 +338,8 @@ public class ViewHandler {
     }
 
     /**
-     * @param css
+     *  This method opens window popup with functionality of viewing other user's profile information
+     * @param css Current interface theme
      */
     public void openViewProfile(String css) {
         Stage viewProfileStage = new Stage();
@@ -346,9 +360,10 @@ public class ViewHandler {
     }
 
     /**
-     * @param path
-     * @param loader
-     * @return
+     * This method finds the FXML for a window in the application files
+     * @param path FXML file name
+     * @param loader FXMLLoader instance
+     * @return loaded file
      */
     private Parent getRootByPath(String path, FXMLLoader loader) {
         loader.setLocation(getClass().getResource(path));
@@ -361,6 +376,10 @@ public class ViewHandler {
         return root;
     }
 
+    /**
+     * This method gets currently used interface style from app config
+     * @return current used interface style
+     */
     public String getCssStyle() {
         if (Objects.equals(SettingsConfig.getConfigOf("dark_theme"), "0")) {
             return "lite.css";
