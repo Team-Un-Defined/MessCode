@@ -127,6 +127,7 @@
                             </ColorPicker>
                         </children>
                     </Pane>
+                    <Button layoutX="200.0" layoutY="74.0" mnemonicParsing="false" onAction="#changePasswordClicked" style="-fx-background-color: transparent;" styleClass="buttonPass" text="%chat_client.change_pass" />
                     <Button fx:id="newGroupButton" layoutX="14.0" layoutY="320.0" mnemonicParsing="false" onAction="#newGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_group" />
                     <Button fx:id="newEmployeeButton" layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#newEmployeeClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_employee" />
                     <Button fx:id="removeGroupButton" layoutX="250.0" layoutY="320.0" mnemonicParsing="false" onAction="#removeGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_group" />
@@ -149,7 +150,7 @@
                     <Label fx:id="otherUserNameLabel" layoutX="14.0" layoutY="14.0" />
                   <Button fx:id="resetPasswordButton" layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#resetPassword" prefHeight="25.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.reset_pass" />
                   <Label fx:id="newPasswordLabel" layoutX="377.0" layoutY="14.0" />
-                  <Button layoutX="163.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewProfileClicked" style="-fx-background-color: transparent;" text="View profile..." />
+                  <Button fx:id="viewProfileButton" layoutX="163.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewProfileClicked" style="-fx-background-color: transparent;" text="View profile..." />
                 </children></Pane>
         </children>
     </StackPane>
