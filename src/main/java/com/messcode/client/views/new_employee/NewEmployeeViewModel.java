@@ -1,5 +1,6 @@
 package com.messcode.client.views.new_employee;
 
+import com.messcode.client.core.SettingsConfig;
 import com.messcode.client.model.MainModel;
 import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.util.Subject;
@@ -11,6 +12,8 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -26,6 +29,7 @@ public class NewEmployeeViewModel implements Subject {
     private StringProperty error;
     private String currentEmail = "";
     private String password = "";
+    private ResourceBundle bundle;
 
     public NewEmployeeViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
@@ -36,6 +40,7 @@ public class NewEmployeeViewModel implements Subject {
     }
 
     private void response(PropertyChangeEvent propertyChangeEvent) {
+        checkLanguage();
         System.out.println("HELLO I SHOULD RET REPSONSE 1");
         if ((boolean) propertyChangeEvent.getNewValue()) {
             support.firePropertyChange("accCreateResponse", null, "Successfull account creation");
@@ -55,7 +60,7 @@ public class NewEmployeeViewModel implements Subject {
             support.firePropertyChange("accCreateResponse", null, "not successfull");
             Platform.runLater(() -> {
                 System.out.println("ThIsEMailISNalradyiNUSER");
-                error.setValue("This email is already in use");
+                error.setValue(bundle.getString("new_employee.email_in_use"));
             });
 
             System.out.println("HELLO I SHOULD RET REPSONSE 3");
@@ -85,38 +90,47 @@ public class NewEmployeeViewModel implements Subject {
 
     
     public int createAccount(String firstName, String lastName, String email, String type) {
+        checkLanguage();
         System.out.println("CREATE ACC 1");
         AccountManager myAccountManager = new AccountManager();
         String password;
         if (firstName.equals("") || lastName.equals("") || email.equals("") || type.equals("")) {
-            error.setValue("Some fields are empty");
+            error.setValue(bundle.getString("error.fields_are_empty"));
             return 0;
         }
         if (!myAccountManager.nameRegex(firstName)) {
-            error.setValue("Invalid first name format!");
+            error.setValue(bundle.getString("error.invalid_first_name_format"));
             return 1;
         }
         if (!myAccountManager.nameRegex(lastName)) {
-            error.setValue("Invalid last name format!");
+            error.setValue(bundle.getString("error.invalid_last_name_format"));
             return 1;
         }
         if (!myAccountManager.emailRegex(email)) {
-            error.setValue("Invalid email format!");
+            error.setValue(bundle.getString("error.invalid_email"));
             return 1;
         } else {
             if (!(currentEmail.equals(email))) {
                 System.out.println("CREATE ACC 2");
                 currentEmail = email;
                 this.password = myAccountManager.generatePassword();
-                error.setValue("Generated password : " + this.password);
+                error.setValue(bundle.getString("error.generated_pass") + ": " + this.password);
                 mainModel.register(firstName, lastName, email, this.password, type);
 
 
                 return 2;
             }
-            error.setValue("This email is already in use");
+            error.setValue(bundle.getString("error.email_in_use"));
 
         }
         return 3;
+    }
+
+    private void checkLanguage(){
+        if(SettingsConfig.getConfigOf("language").equals("SK")){
+            this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));
+        } else {
+            this.bundle = ResourceBundle.getBundle("bundle", new Locale("en", "EN"));
+        }
     }
 }
