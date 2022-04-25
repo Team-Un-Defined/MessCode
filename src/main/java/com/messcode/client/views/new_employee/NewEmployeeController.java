@@ -5,10 +5,14 @@ import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.UserList;
 import com.messcode.transferobjects.util.Subject;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -62,7 +66,6 @@ public class NewEmployeeController implements Subject {
         errorLabel.setVisible(true);
         System.out.println("WOTÖFÖK? AGAIN2");
         // put here the exit
-
     }
 
     /**
@@ -78,6 +81,8 @@ public class NewEmployeeController implements Subject {
             errorLabel.setVisible(true);
         } else if (resp == 2) {
             errorLabel.setVisible(false);
+            Stage stage = (Stage) errorLabel.getScene().getWindow();
+            stage.close();
         } else if (resp == 3) {
             errorLabel.setVisible(true);
         } else if (resp == 0) {

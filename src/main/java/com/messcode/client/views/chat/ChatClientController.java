@@ -178,7 +178,6 @@ public class ChatClientController {
             newGroupButton.setVisible(false);
             removeUserButton.setVisible(false);
             removeGroupButton.setVisible(false);
-            editMemberButton.setVisible(false);
             resetPasswordButton.setVisible(false);
             editProjectLeaderButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isProjectLeader()) {
@@ -461,14 +460,11 @@ public class ChatClientController {
 
             if (chatVM.getCurrentUser().getType().equals("project_leader")) {
                 editMemberButton.setVisible(true);
-
             }
-
 
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
 
-            if (groupsList.getSelectionModel().getSelectedItems().get(0).getLeader() == null
-                    || !group.isMember(chatVM.getCurrentUser())) {
+            if (groupsList.getSelectionModel().getSelectedItems().get(0).getLeader() == null) {
                 sendGroupButton.setDisable(true);
                 editProjectLeaderButton.setDisable(true);
                 editMemberButton.setDisable(true);
@@ -476,6 +472,13 @@ public class ChatClientController {
                 sendGroupButton.setDisable(false);
                 editProjectLeaderButton.setDisable(false);
                 editMemberButton.setDisable(false);
+
+                if (!group.isMember(chatVM.getCurrentUser())) {
+                    sendGroupButton.setDisable(true);
+                }
+                else {
+                    sendGroupButton.setDisable(false);
+                }
             }
 
             System.out.println(group.getName());
