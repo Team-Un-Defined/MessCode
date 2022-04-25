@@ -578,7 +578,9 @@ public class ChatClientController {
 
     private void displayPM(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         Platform.runLater(() -> {
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             Label label = new Label(a);
             label.setMaxWidth(messagesListGroup.getWidth() - 25);
             label.setWrapText(true);
