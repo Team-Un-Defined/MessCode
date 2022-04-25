@@ -140,4 +140,6 @@ public interface MainModel extends Subject {
      * @return
      */
     boolean unredGMs(Group g);
+
+    void saveDataOnExit();
 }

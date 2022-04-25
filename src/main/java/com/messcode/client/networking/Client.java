@@ -94,4 +94,6 @@ public interface Client extends Subject {
      * @param use
      */
     void resetPassword(User use);
+
+    void saveDataOnExit(User user);
 }

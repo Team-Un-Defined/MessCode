@@ -170,4 +170,14 @@ public class ConnectionPool {
             }
         }
     }
+
+    public void addNewOfflineUser(User u, User userr) {
+
+        for (ServerSocketHandler handler : connections) {
+            if (handler.getUser() != null && (!handler.getUser().getEmail().equals(userr.getEmail()))) {
+                handler.updateOfflineList(u);
+            }
+        }
+
+    }
 }
