@@ -31,6 +31,7 @@ import java.util.ArrayList;
 /**
  * The ViewModel of the ChatClient (main) panel.
  * Filters & processes the information going to and from the Controller.
+ *
  * @author Kamilla Kisová
  */
 public class ChatClientViewModel implements Subject {
@@ -46,6 +47,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Constructor of the ChatClientViewModel
+     *
      * @param mainModel the MainModel, which manages all the information in the background
      */
     public ChatClientViewModel(MainModel mainModel) {
@@ -65,6 +67,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Refreshes the list of groups
+     *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
@@ -76,6 +79,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Adds the users to the list
+     *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
@@ -89,6 +93,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Removes the user from the list
+     *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -107,6 +112,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Sets the current user's name
+     *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void setUsernameInChat(PropertyChangeEvent propertyChangeEvent) {
@@ -115,6 +121,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Initiates the displaying of the public message
+     *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void displayPublic(PropertyChangeEvent propertyChangeEvent) {
@@ -125,6 +132,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Gets the list of users from the triggered event
+     *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -164,6 +172,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Getter for the list of users
+     *
      * @return ObservableList<User>
      */
     public ObservableList<User> getUsersList() {
@@ -172,6 +181,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Getter for the list of groups
+     *
      * @return ObservableList<Group>
      */
     public ObservableList<Group> getGroups() {
@@ -180,6 +190,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Sends the public message
+     *
      * @param mess PublicMessage
      */
     public void sendPublic(PublicMessage mess) {
@@ -188,6 +199,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Sends the private message
+     *
      * @param mess PrivateMessage
      */
     public void sendPM(PrivateMessage mess) {
@@ -196,6 +208,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Sends the group message
+     *
      * @param mess GroupMessages
      */
     public void sendGroup(GroupMessages mess) {
@@ -204,6 +217,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Getter for the current user
+     *
      * @return User
      */
     public User getCurrentUser() {
@@ -212,6 +226,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Sends list of PM room users
+     *
      * @param usersPM PrivateMessage
      */
     public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
@@ -220,8 +235,9 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Method for adding a listener. Inherited from Subject
+     *
      * @param eventName String name of the event
-     * @param listener PropertyChangeListener listener of the event
+     * @param listener  PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -230,8 +246,9 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Method for removing a listener. Inherited from Subject
+     *
      * @param eventName String name of the event
-     * @param listener PropertyChangeListener listener of the event
+     * @param listener  PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -240,12 +257,16 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Displays the incoming private message
+     *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void displayPM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
-        if (this.receiver == null) return;
-        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
+
+        if (this.receiver == null) {
+            support.firePropertyChange("newPM", null, "true");
+            return;
+        } else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
         }
@@ -253,6 +274,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Displays the selected group and its options
+     *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void displayGroup(PropertyChangeEvent propertyChangeEvent) {
@@ -272,6 +294,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Loads the public messages
+     *
      * @return ArrayList<PublicMessage>
      */
     public ArrayList<PublicMessage> loadPublics() {
@@ -280,6 +303,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Loads the private messages
+     *
      * @return ArrayList<PrivateMessage>
      */
     public ArrayList<PrivateMessage> loadPMs() {
@@ -288,6 +312,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Loads the groups
+     *
      * @return ArrayList<GroupMessages>
      */
     public ArrayList<GroupMessages> loadGroup() {
@@ -296,6 +321,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Getter for the receiver user
+     *
      * @return User
      */
     public User getReceiver() {
@@ -304,6 +330,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Setter for the receiver user
+     *
      * @param receiver User
      */
     public void setReceiver(User receiver) {
@@ -313,6 +340,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Getter for the receiver gorup
+     *
      * @return Group
      */
     public Group getReceiverGroup() {
@@ -321,6 +349,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Setter for the receiver group
+     *
      * @param receiverGroup Group that receives the message
      */
     public void setReceiverGroup(Group receiverGroup) {
@@ -330,6 +359,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Initiates the password reset of the User
+     *
      * @param use User
      */
     public void resetPassword(User use) {
@@ -354,6 +384,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Copies the password upon dialog close
+     *
      * @param password String
      * @return EventHandler<DialogEvent>
      */
@@ -367,6 +398,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Retrieves the unread PMs from the MainModel
+     *
      * @param u User
      * @return boolean
      */
@@ -376,6 +408,7 @@ public class ChatClientViewModel implements Subject {
 
     /**
      * Retrieves the unread GMs from the MainModel
+     *
      * @param g Group
      * @return boolean
      */

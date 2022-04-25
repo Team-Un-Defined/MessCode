@@ -9,7 +9,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 /**
- *
+ * This class is used for storing important account information such as name, email, RSA keys etc...
+ * Attribute type can be employee, superuser, projectLeader or employer.
  */
 public class User implements Serializable {
 
@@ -25,8 +26,8 @@ public class User implements Serializable {
     // for login
 
     /**
-     * @param email
-     * @param password
+     * @param email email address
+     * @param password open password
      */
     public User(String email, String password) {
         this.email = email;
@@ -34,29 +35,14 @@ public class User implements Serializable {
     }
 
     /**
-     * @param salt
-     * @param password
-     * @param type
+     * This constructor is used when creating new employee.
+     *
+     * @param name first name
+     * @param surname last name
+     * @param email email address
+     * @param password open password
+     * @param type type of user (employee/employer/projectLeader/superuser)
      */
-    public User(String salt, String password, String type) {
-        AccountManager myAccountManager = new AccountManager();
-
-        this.salt = salt;
-
-        this.hashedPassword = myAccountManager.hashPassword(password, salt);
-        System.out.println("JHEÉLLO, USER TALKING pwd: " + password + " salt: " + salt + " pwd_hash:" + hashedPassword);
-
-        this.type = type;
-    }
-
-    /**
-     * @param name
-     * @param surname
-     * @param email
-     * @param password
-     * @param type
-     */
-    // if you are creating new employee you use this constructor
     public User(String name, String surname, String email, String password, String type) {
         AccountManager myAccountManager = new AccountManager();
         this.name = name;
@@ -71,21 +57,22 @@ public class User implements Serializable {
     }
 
     /**
-     * @param salt
+     * @param salt string appended to password before hashing it
      */
     public void setSalt(String salt) {
         this.salt = salt;
     }
 
     /**
-     * @param name
-     * @param surname
-     * @param email
-     * @param hashedPassword
-     * @param salt
-     * @param type
+     * This constructor is used when you get employee information from database
+     *
+     * @param name first name
+     * @param surname last name
+     * @param email email address
+     * @param hashedPassword hashed password
+     * @param salt string appended to password before hashing it
+     * @param type type of user (employee/employer/projectLeader/superuser)
      */
-    // if you took employee from database you use this constructor
     public User(String name, String surname, String email, byte[] hashedPassword, String salt, String type) {
         this.name = name;
         this.surname = surname;
@@ -98,105 +85,105 @@ public class User implements Serializable {
     }
 
     /**
-     * @return
+     * @return string version of password
      */
     public String getStrPassword() {
         return strPassword;
     }
 
     /**
-     * @param strPassword
+     * @param strPassword string version of password
      */
     public void setStrPassword(String strPassword) {
         this.strPassword = strPassword;
     }
 
     /**
-     * @return
+     * @return true if type is employee
      */
     public boolean isEmployee() {
         return type.equals("employee");
     }
 
     /**
-     * @return
+     * @return true if type is project leader
      */
     public boolean isProjectLeader() {
         return type.equals("project_leader");
     }
 
     /**
-     * @return
+     * @return true if type is superuser
      */
     public boolean isSuperuser() {
         return type.equals("superuser");
     }
 
     /**
-     * @return
+     * @return true if type is employer
      */
     public boolean isEmployer() {
         return type.equals("employer");
     }
 
     /**
-     *
+     * Sets the type to employee.
      */
     public void setEmployee() {
         type = "employee";
     }
 
     /**
-     *
+     * Sets the type to project leader.
      */
     public void setProjectLeader() {
         type = "project_leader";
     }
 
     /**
-     *
+     * Sets the type to superuser.
      */
     public void setSuperuser() {
         type = "superuser";
     }
 
     /**
-     *
+     * Sets the type to employer.
      */
     public void setEmployer() {
         type = "employer";
     }
 
     /**
-     * @return
+     * @return type of user
      */
     public String getType() {
         return type;
     }
 
     /**
-     * @return
+     * @return email of user
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * @param email
+     * @param email email of user
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * @return
+     * @return first name of user
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name
+     * @param name first name of user
      */
     public void setName(String name) {
         this.name = name;
@@ -204,14 +191,14 @@ public class User implements Serializable {
     }
 
     /**
-     * @return
+     * @return last name of user
      */
     public String getSurname() {
         return surname;
     }
 
     /**
-     * @param surname
+     * @param surname last name of user
      */
     public void setSurname(String surname) {
         this.surname = surname;
@@ -219,7 +206,7 @@ public class User implements Serializable {
     }
 
     /**
-     * @return
+     * @return full username of user
      */
     public String getUsername() {
         return username;
@@ -233,21 +220,23 @@ public class User implements Serializable {
     }
 
     /**
-     * @return
+     * @return hashed version of password
      */
     public byte[] getHashedPassword() {
         return hashedPassword;
     }
 
     /**
-     * @param h
+     * @param h hashed version of password
      */
     public void setHashedPassword(byte[] h) {
         this.hashedPassword = h;
     }
 
     /**
-     * @param password
+     * This method generates salt and hashes the password after appending it with the generated salt.
+     *
+     * @param password string version of password
      */
     public void setPassword(String password) {
         AccountManager myAccountManager = new AccountManager();
@@ -256,14 +245,14 @@ public class User implements Serializable {
     }
 
     /**
-     * @return
+     * @return string appended to password before hashing it
      */
     public String getSalt() {
         return salt;
     }
 
     /**
-     * @return
+     * @return email of user
      */
     @Override
     public String toString() {
@@ -271,21 +260,21 @@ public class User implements Serializable {
     }
 
     /**
-     * @param type
+     * @param type type of user
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * @return
+     * @return all unread messages
      */
     public ArrayList<PublicMessage> getUnreadMessages() {
         return unreadMessages;
     }
 
     /**
-     * @return
+     * @return all unread private messages
      */
     public ArrayList<PrivateMessage> getUnreadPMs() {
         ArrayList<PrivateMessage> pm = new ArrayList<PrivateMessage>();
@@ -298,7 +287,7 @@ public class User implements Serializable {
     }
 
     /**
-     * @return
+     * @return all unread group messages
      */
     public ArrayList<GroupMessages> getUnreadGMs() {
         ArrayList<GroupMessages> gm = new ArrayList<GroupMessages>();
@@ -311,21 +300,21 @@ public class User implements Serializable {
     }
 
     /**
-     * @param unreadMessages
+     * @param unreadMessages all unread public messages
      */
     public void setUnreadMessages(ArrayList<PublicMessage> unreadMessages) {
         this.unreadMessages = unreadMessages;
     }
 
     /**
-     * @param unreadMessages
+     * @param unreadMessages all unread messages
      */
     public void addUnreadMessages(PublicMessage unreadMessages) {
         this.unreadMessages.add(unreadMessages);
     }
 
     /**
-     * @param unreadMessages
+     * @param unreadMessages all unread messages
      */
     public void removeUnreadMessages(PublicMessage unreadMessages) {
         this.unreadMessages.remove(unreadMessages);

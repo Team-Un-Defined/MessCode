@@ -9,7 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * @author Nao
+ * Each project has its own group.
+ * This class holds the project's information and list of its members
  */
 public class Group implements Serializable {
 
@@ -19,9 +20,11 @@ public class Group implements Serializable {
     private ArrayList<User> members;
 
     /**
-     * @param name
-     * @param description
-     * @param leader
+     * Creates group for project.
+     *
+     * @param name project name
+     * @param description additional information about project
+     * @param leader member that is responsible for this project
      */
     public Group(String name, String description, User leader) {
         this.name = name;
@@ -32,77 +35,77 @@ public class Group implements Serializable {
     }
 
     /**
-     * @param u
+     * @param u new group member
      */
     public void addMember(User u) {
         members.add(u);
     }
 
     /**
-     * @param u
+     * @param u list of group members
      */
     public void addMembers(ArrayList<User> u) {
         members.addAll(u);
     }
 
     /**
-     * @return
+     * @return project name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name
+     * @param name project name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @return
+     * @return additional information about project
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * @param description
+     * @param description additional information about project
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
-     * @return
+     * @return member that is responsible for this project
      */
     public User getLeader() {
         return leader;
     }
 
     /**
-     * @param leader
+     * @param leader member that is responsible for this project
      */
     public void setLeader(User leader) {
         this.leader = leader;
     }
 
     /**
-     * @return
+     * @return list of group members
      */
     public ArrayList<User> getMembers() {
         return members;
     }
 
     /**
-     * @param members
+     * @param members list of group members
      */
     public void setMembers(ArrayList<User> members) {
         this.members = members;
     }
 
     /**
-     * @param members
+     * @param members list of group members to be removed
      */
     public void removeMembers(ArrayList<User> members) {
         ArrayList<User> help = new ArrayList<User>();
@@ -116,8 +119,10 @@ public class Group implements Serializable {
     }
 
     /**
-     * @param user
-     * @return
+     * Check if user is part of a group.
+     *
+     * @param user user to be checked
+     * @return true if user is group member
      */
     public boolean isMember(User user) {
         for (User u: members) {
