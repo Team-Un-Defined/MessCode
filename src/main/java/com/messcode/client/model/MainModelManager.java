@@ -258,6 +258,22 @@ public class MainModelManager implements MainModel {
     public void sendGroup(GroupMessages mess) {
         client.sendGroup(mess);
 
+        for(int i=0;i<user.getUnreadMessages().size();i++){
+
+            if( user.getUnreadMessages().get(i) instanceof GroupMessages)
+            {
+                if(((GroupMessages) user.getUnreadMessages().get(i)).getGroup().getName().equals(mess.getGroup().getName()) )
+                {
+                    user.getUnreadMessages().set(i,mess);
+                    System.out.println("/////////////////////////////////////////////////////////////////////////");
+                    user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
+                    System.out.println("/////////////////////////////////////////////////////////////////////////");
+
+                    return;
+                }
+            }
+        }
+
     }
 
     public ArrayList<PublicMessage> getAllMessage() {
@@ -481,16 +497,40 @@ public class MainModelManager implements MainModel {
 
     @Override
     public boolean unredgGMs(Group g) {
-        ArrayList<GroupMessages> pivi = loadGroup(g);
 
-        for (PublicMessage p : user.getUnreadMessages()) {
-            if (p instanceof GroupMessages) {
-                for (GroupMessages piv : pivi) {
-                    if (p.getTime().before(piv.getTime()) && (((GroupMessages) p).getGroup().getName().equals(g.getName()))) {
+        ArrayList<GroupMessages> grps = loadGroup(g);
+        GroupMessages last=null;
+        if(grps.isEmpty())
+        {return false;}
+
+
+
+        for(GroupMessages gub : grps){
+
+            if(last!=null){
+                if(last.getTime().before(gub.getTime())){
+                    last = gub;
+                }
+
+            }
+            else last = gub;
+
+        }
+
+        for (PublicMessage p: user.getUnreadMessages()){
+            if(p instanceof GroupMessages){
+
+                if(((GroupMessages) p).getGroup().getName().equals(g.getName())){
+                    if((p.getTime().before(last.getTime()))){
+
+
+                        System.out.println(last.getMsg());
+
                         return true;
                     }
-
                 }
+
+
             }
 
         }
