@@ -18,8 +18,8 @@ public class AccountManager {
     /**
      * Checks if 2 user classes are the same using their emails.
      *
-     * @param user1
-     * @param user2
+     * @param user1 first user
+     * @param user2 second user
      * @return true if users are equal false if they are not equal
      */
     public boolean equals(User user1, User user2) {
@@ -29,7 +29,7 @@ public class AccountManager {
     /**
      * Generates a random 10 character long String.
      *
-     * @return salt that is used in hashing algorithm
+     * @return string that is used in hashing algorithm
      */
     public String generateSalt() {
         byte[] array = new byte[10];
@@ -66,8 +66,8 @@ public class AccountManager {
     /**
      * This method encrypts password using SHA-512 hashing algorithm.
      *
-     * @param password    open text of password
-     * @param salt        this string is appended to password before hashing
+     * @param password open text of password
+     * @param salt this string is appended to password before hashing
      * @return hash value of password
      */
     public byte[] hashPassword(String password, String salt) {
@@ -102,7 +102,7 @@ public class AccountManager {
      * Valid account name format is only using regular letters and letters using diacritics.
      * The first character has to be uppercase letter, the rest are lowercase letters.
      *
-     * @param name   this String is checked
+     * @param name this String is checked
      * @return true if account name is valid, false if it is not valid
      */
     public boolean nameRegex(String name) {
@@ -120,7 +120,7 @@ public class AccountManager {
      * Password must contain 1 lowercase letter, 1 uppercase letter and 1 number.
      * It can contain lowercase letters, uppercase letters, numbers and special symbols.
      *
-     * @param password   this String is checked
+     * @param password this String is checked
      * @return true if password is valid, false if it is not valid
      */
     public boolean passwordRegex(String password) {
@@ -143,7 +143,7 @@ public class AccountManager {
      * Domain part of email can contain multiple domains each separated by comma. Each domain can be at most 63 characters long.
      * Top level domain in domain part must be at least 2 characters long.
      *
-     * @param email   this String is checked
+     * @param email this String is checked
      * @return true if password is valid, false if it is not valid
      */
     public boolean emailRegex(String email) {
