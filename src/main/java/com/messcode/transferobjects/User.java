@@ -10,7 +10,8 @@ import java.security.*;
 import java.util.ArrayList;
 
 /*
-* This class is used for storing important account information such as name, email, public key and private key, etc...
+* This class is used for storing important account information such as name, email, RSA keys etc...
+* Attribute type can be employee, superuser, projectLeader or employer.
  */
 public class User implements Serializable {
 
