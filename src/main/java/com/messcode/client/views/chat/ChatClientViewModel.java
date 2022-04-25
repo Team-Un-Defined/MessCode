@@ -269,6 +269,8 @@ public class ChatClientViewModel implements Subject {
         } else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+        }else{
+            support.firePropertyChange("newPM",null, "false");
         }
     }
 
