@@ -44,3 +44,62 @@ org.postgresql.util.PSQLException: ERROR: syntax error at or near "o"
 	at JDBC.ImportData.saveDataOnExit(ImportData.java:400) ~[classes/:?]
 	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:139) [classes/:?]
 	at java.lang.Thread.run(Thread.java:829) [?:?]
+[ERROR] 2022-04-25 16:10:58.707 [Thread-0] ServerSocketHandler - ERROR: syntax error at or near "o"
+  Position: 67
+org.postgresql.util.PSQLException: ERROR: syntax error at or near "o"
+  Position: 67
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2675) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2365) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:355) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:490) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:408) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:166) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:134) ~[postgresql-42.3.3.jar:?]
+	at JDBC.ImportData.saveDataOnExit(ImportData.java:425) ~[classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:147) [classes/:?]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
+[ERROR] 2022-04-25 16:11:24.396 [Thread-1] ServerSocketHandler - Connection reset by peer: socket write error
+java.net.SocketException: Connection reset by peer: socket write error
+	at java.net.SocketOutputStream.socketWrite0(Native Method) ~[?:?]
+	at java.net.SocketOutputStream.socketWrite(SocketOutputStream.java:110) ~[?:?]
+	at java.net.SocketOutputStream.write(SocketOutputStream.java:150) ~[?:?]
+	at java.io.ObjectOutputStream$BlockDataOutputStream.drain(ObjectOutputStream.java:1883) ~[?:?]
+	at java.io.ObjectOutputStream$BlockDataOutputStream.setBlockDataMode(ObjectOutputStream.java:1792) ~[?:?]
+	at java.io.ObjectOutputStream.writeNonProxyDesc(ObjectOutputStream.java:1287) ~[?:?]
+	at java.io.ObjectOutputStream.writeClassDesc(ObjectOutputStream.java:1232) ~[?:?]
+	at java.io.ObjectOutputStream.writeOrdinaryObject(ObjectOutputStream.java:1428) ~[?:?]
+	at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1179) ~[?:?]
+	at java.io.ObjectOutputStream.writeFatalException(ObjectOutputStream.java:1583) ~[?:?]
+	at java.io.ObjectOutputStream.writeObject(ObjectOutputStream.java:352) ~[?:?]
+	at com.messcode.server.networking.ServerSocketHandler.joinChat(ServerSocketHandler.java:248) [classes/:?]
+	at com.messcode.server.networking.ConnectionPool.userJoin(ConnectionPool.java:42) [classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:127) [classes/:?]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
+[ERROR] 2022-04-25 16:11:29.764 [Thread-1] ServerSocketHandler - ERROR: syntax error at or near "o"
+  Position: 67
+org.postgresql.util.PSQLException: ERROR: syntax error at or near "o"
+  Position: 67
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2675) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2365) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:355) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:490) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:408) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:166) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:134) ~[postgresql-42.3.3.jar:?]
+	at JDBC.ImportData.saveDataOnExit(ImportData.java:425) ~[classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:147) [classes/:?]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
+[ERROR] 2022-04-25 16:12:39.779 [Thread-0] ServerSocketHandler - ERROR: syntax error at or near "o"
+  Position: 67
+org.postgresql.util.PSQLException: ERROR: syntax error at or near "o"
+  Position: 67
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2675) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2365) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:355) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:490) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:408) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:166) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:134) ~[postgresql-42.3.3.jar:?]
+	at JDBC.ImportData.saveDataOnExit(ImportData.java:425) ~[classes/:?]
+	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:147) [classes/:?]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
