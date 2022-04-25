@@ -1,16 +1,16 @@
 package com.messcode.client.views.edit_member;
 
-import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
 
 /**
- *
+ * The Controller of the EditMember panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class EditMemberController {
 
@@ -20,17 +20,15 @@ public class EditMemberController {
     public Button removeButton;
     public Label errorLabel;
     private EditMemberViewModel editMemberVM;
-    private ViewHandler vh;
     private ResourceBundle bundle;
 
     /**
-     * @param editMemberVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param editMemberVM ViewModel of the EditMember panel
+     * @param bundle ResourceBundle
      */
-    public void init(EditMemberViewModel editMemberVM, ViewHandler vh, ResourceBundle bundle) {
+    public void init(EditMemberViewModel editMemberVM, ResourceBundle bundle) {
         this.editMemberVM = editMemberVM;
-        this.vh = vh;
         this.bundle = bundle;
         updateUserList();
         updateUsersInGroupList();
@@ -40,7 +38,8 @@ public class EditMemberController {
     }
 
     /**
-     *
+     * Initiates adding the member to the group
+     * Checks the selection
      */
     public void addMember() {
         if (allUsersList.getSelectionModel().getSelectedItems().isEmpty()) {
@@ -52,7 +51,7 @@ public class EditMemberController {
     }
 
     /**
-     *
+     * Updates the list of all users
      */
     private void updateUserList() {
         allUsersList.setItems(editMemberVM.getUsers());
@@ -72,7 +71,7 @@ public class EditMemberController {
     }
 
     /**
-     *
+     * Updates the list of users that are already in the group
      */
     private void updateUsersInGroupList() {
         inGroupUsersList.setItems(editMemberVM.getMembers());
@@ -92,7 +91,7 @@ public class EditMemberController {
     }
 
     /**
-     *
+     * Initiates the removal of the member
      */
     public void removeMember() {
         if (inGroupUsersList.getSelectionModel().getSelectedItems().isEmpty()) {
@@ -104,7 +103,7 @@ public class EditMemberController {
     }
 
     /**
-     *
+     * Closes the stage
      */
     public void confirmClicked() {
         Stage stage = (Stage) errorLabel.getScene().getWindow();

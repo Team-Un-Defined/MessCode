@@ -13,7 +13,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- *
+ * The ViewModel of the ChangePassword panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class ChangePasswordViewModel implements Subject {
 
@@ -23,7 +25,8 @@ public class ChangePasswordViewModel implements Subject {
     private ResourceBundle bundle;
 
     /**
-     * @param mainModel
+     * Constructor of the ChangePasswordViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public ChangePasswordViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
@@ -34,7 +37,8 @@ public class ChangePasswordViewModel implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Gets the response from the MainModel
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         checkLanguage();
@@ -47,16 +51,19 @@ public class ChangePasswordViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the error
+     * @return StringProperty of the error
      */
     public StringProperty errorProperty() {
         return error;
     }
 
     /**
-     * @param current
-     * @param password
-     * @param passwordConfirmed
+     * Initiates the password change
+     * Checks if the new and the confirm password match
+     * @param current String current password
+     * @param password String new password
+     * @param passwordConfirmed String new password confirmation
      */
     public void changePassword(String current, String password, String passwordConfirmed) {
         checkLanguage();
@@ -71,8 +78,9 @@ public class ChangePasswordViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -80,8 +88,9 @@ public class ChangePasswordViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -89,7 +98,7 @@ public class ChangePasswordViewModel implements Subject {
     }
 
     /**
-     *
+     * Checks the language for the panel
      */
     private void checkLanguage(){
         if(SettingsConfig.getConfigOf("language").equals("SK")){

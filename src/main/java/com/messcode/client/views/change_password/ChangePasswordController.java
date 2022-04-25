@@ -1,16 +1,13 @@
 package com.messcode.client.views.change_password;
 
-import com.messcode.client.core.ViewHandler;
-import com.messcode.transferobjects.User;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.beans.PropertyChangeSupport;
-import java.util.ResourceBundle;
-
 /**
- *
+ * The Controller of the ChangePassword panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class ChangePasswordController {
 
@@ -21,32 +18,23 @@ public class ChangePasswordController {
     public TextField passwordTextField;
 
     private ChangePasswordViewModel changePasswordVM;
-    private ViewHandler vh;
-
-    private ResourceBundle bundle;
 
     /**
-     * @param changePasswordVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param changePasswordVM ViewModel of the ChangePassword panel
      */
-    public void init(ChangePasswordViewModel changePasswordVM, ViewHandler vh, ResourceBundle bundle) {
+    public void init(ChangePasswordViewModel changePasswordVM) {
         this.changePasswordVM = changePasswordVM;
-        this.vh = vh;
-        this.bundle = bundle;
-
         errorLabel.textProperty().bind(changePasswordVM.errorProperty());
     }
 
     /**
-     *
+     * Initiates the password change
      */
     public void confirmClicked() {
         String currentPassword = currentPasswordTextField.getText();
         String password = passwordTextField.getText();
         String passwordConfirmed = passwordConfirmTextField.getText();
         changePasswordVM.changePassword(currentPassword,password,passwordConfirmed);
-
-        // NOMMI do we need regex for passwords?
     }
 }

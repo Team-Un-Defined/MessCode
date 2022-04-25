@@ -48,29 +48,29 @@ public interface MainModel extends Subject {
      * @param password
      * @param type
      */
-    public void register(String firstName, String lastName, String email, String password,String type);
+    void register(String firstName, String lastName, String email, String password,String type);
 
     /**
      * @param receiver
      * @return
      */
-    public ArrayList<PrivateMessage> loadPMs(User receiver);
+    ArrayList<PrivateMessage> loadPMs(User receiver);
 
     /**
      * @return
      */
-    public ArrayList<PublicMessage> loadPublics();
+    ArrayList<PublicMessage> loadPublics();
 
     /**
      * @param g
      */
-   public void newGroup(Group g);
+    void newGroup(Group g);
 
     /**
      * @param selectedGroup
      * @return
      */
-    public ArrayList<GroupMessages> loadGroup(Group selectedGroup);
+    ArrayList<GroupMessages> loadGroup(Group selectedGroup);
 
     /**
      * @param current
@@ -82,7 +82,7 @@ public interface MainModel extends Subject {
     /**
      * @param selectedGroup
      */
-    public void setSelectedGroup(Group selectedGroup);
+    void setSelectedGroup(Group selectedGroup);
 
     /**
      * @return

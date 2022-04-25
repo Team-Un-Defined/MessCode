@@ -20,7 +20,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
 /**
- *
+ * The Controller of the NewEmployee panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class NewEmployeeController implements Subject {
 
@@ -29,27 +31,21 @@ public class NewEmployeeController implements Subject {
     public Label errorLabel;
     public TextField firstNameTextField;
     public TextField lastNameTextField;
-    public ComboBox typeComboBox;
+    public ComboBox<String> typeComboBox;
 
     private NewEmployeeViewModel newEmployeeVM;
-    private ViewHandler vh;
-
-    private ResourceBundle bundle;
     private PropertyChangeSupport support;
 
     /**
-     * @param newEmployeeVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components.
+     * @param newEmployeeVM ViewModel of the NewEmployee panel
      */
-    public void init(NewEmployeeViewModel newEmployeeVM, ViewHandler vh, ResourceBundle bundle) {
+    public void init(NewEmployeeViewModel newEmployeeVM) {
         this.newEmployeeVM = newEmployeeVM;
-        this.vh = vh;
-        this.bundle = bundle;
         ObservableList<String> types = FXCollections.observableArrayList(
                 "employee",
                 "employer",
-                "superuser"
+                "superuser" // TODO
         );
         typeComboBox.setItems(types);
         support = new PropertyChangeSupport(this);
@@ -59,7 +55,8 @@ public class NewEmployeeController implements Subject {
     }
 
     /**
-     * @param propertyChangeEvent
+     * Receives the response of the evaluation
+     * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void evalute(PropertyChangeEvent propertyChangeEvent) {
         System.out.println("WOTÖFÖK? AGAIN");
@@ -69,7 +66,7 @@ public class NewEmployeeController implements Subject {
     }
 
     /**
-     *
+     * Initiates the new employee creation
      */
     public void createClicked() {
         String firstName = firstNameTextField.getText();
@@ -91,8 +88,9 @@ public class NewEmployeeController implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -100,8 +98,9 @@ public class NewEmployeeController implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {

@@ -1,17 +1,16 @@
 package com.messcode.client.views.new_group;
 
-import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.AccountManager;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import javafx.util.StringConverter;
 
 import java.util.ResourceBundle;
 
 /**
- *
+ * The Controller of the NewGroup panel.
+ * Processes the input of the user and forwards it to the ViewModel.
+ * @author Kamilla Kisová
  */
 public class NewGroupController {
 
@@ -23,17 +22,14 @@ public class NewGroupController {
     public TextField groupNameTextField;
 
     private NewGroupViewModel newGroupVM;
-    private ViewHandler vh;
-    private User user;
     private ResourceBundle bundle;
 
     /**
-     * @param newGroupVM
-     * @param vh
-     * @param bundle
+     * Initialization method for the Controller. Prepares the panel and its components
+     * @param newGroupVM ViewModel of the NewGroup panel
+     * @param bundle ResourceBundle
      */
-    public void init(NewGroupViewModel newGroupVM, ViewHandler vh, ResourceBundle bundle) {
-        this.vh = vh;
+    public void init(NewGroupViewModel newGroupVM, ResourceBundle bundle) {
         this.newGroupVM = newGroupVM;
         this.bundle = bundle;
         this.descriptionTextArea.setText(bundle.getString("new_group.write_smth_nice"));
@@ -45,7 +41,7 @@ public class NewGroupController {
                 if (empty ) {
                     setText(null);
                 } else {
-                    String text = item.getName() + " " + item.getSurname() + item.getSalt(); // get text from item
+                    String text = item.getName() + " " + item.getSurname() + item.getSalt();
                     setText(text);
                 }
             }
@@ -53,7 +49,8 @@ public class NewGroupController {
     }
 
     /**
-     *
+     * Initializes the creation of the new group.
+     * Checks the selected group name
      */
     public void createClicked() {
         String groupName = groupNameTextField.getText();

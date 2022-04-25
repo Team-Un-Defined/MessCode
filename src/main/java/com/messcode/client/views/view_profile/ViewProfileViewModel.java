@@ -8,7 +8,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- *
+ * The ViewModel of the ViewProfile panel.
+ * Filters & processes the information going to and from the Controller.
+ * @author Kamilla Kisová
  */
 public class ViewProfileViewModel implements Subject {
 
@@ -17,7 +19,8 @@ public class ViewProfileViewModel implements Subject {
     private User user;
 
     /**
-     * @param mainModel
+     * Constructor of the ViewProfileViewModel
+     * @param mainModel the MainModel, which manages all the information in the background
      */
     public ViewProfileViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
@@ -26,22 +29,24 @@ public class ViewProfileViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the viewed user
+     * @return the viewed user
      */
     public User getUser() {
         return user;
     }
 
     /**
-     *
+     * Setter for the viewed user
      */
     public void setUser() {
         this.user = mainModel.getSelectedUser();
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for adding a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -49,8 +54,9 @@ public class ViewProfileViewModel implements Subject {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     * Method for removing a listener. Inherited from Subject
+     * @param eventName String name of the event
+     * @param listener PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {

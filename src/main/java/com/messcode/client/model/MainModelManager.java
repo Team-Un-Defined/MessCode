@@ -30,17 +30,6 @@ public class MainModelManager implements MainModel {
     private User selectedUser;
 
     /**
-     * @param propertyChangeEvent
-     */
-    private void addOfflineUser(PropertyChangeEvent propertyChangeEvent) {
-        User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
-
-        allUsers.add(u);
-        support.firePropertyChange("AddOfflineUsers", null, allUsers);
-    }
-
-
-    /**
      * @param client
      */
     public MainModelManager(Client client) {
@@ -66,6 +55,16 @@ public class MainModelManager implements MainModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * @param propertyChangeEvent
+     */
+    private void addOfflineUser(PropertyChangeEvent propertyChangeEvent) {
+        User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
+
+        allUsers.add(u);
+        support.firePropertyChange("AddOfflineUsers", null, allUsers);
     }
 
     /**
