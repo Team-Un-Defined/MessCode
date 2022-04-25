@@ -227,7 +227,7 @@ public class MainModelManager implements MainModel {
                 }
                 i++;
             }
-        } else if (selectedUser != null && (pm.getSender().getEmail().equals(user.getEmail()))) {
+        } else if ((pm.getSender().getEmail().equals(user.getEmail()))) {
 
             for (int i = 0; i < user.getUnreadMessages().size(); i++) {
 
@@ -246,7 +246,8 @@ public class MainModelManager implements MainModel {
                 }
             }
         }
-          System.out.println("///////////////////////444444///////////////////////////////////");
+        
+         System.out.println("///////////////////////444444///////////////////////////////////");
         user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
        System.out.println("//////////////////////////////////////////////////////////");
         System.out.println("//////////////////////////PMPM//////////////////////////////");
