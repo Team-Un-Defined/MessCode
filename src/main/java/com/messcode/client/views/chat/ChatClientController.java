@@ -512,6 +512,7 @@ public class ChatClientController {
         }
         if (actionEvent.getSource() == buttonGroup) {
             paneInFront = "group";
+            openGroup();
             paneGroup.toFront();
             groupListPane.toFront();
             sendAllButton.setDefaultButton(false);
@@ -521,6 +522,7 @@ public class ChatClientController {
         }
         if (actionEvent.getSource() == buttonPrivate) {
             paneInFront = "pm";
+            inviteToPmButton();
             panePrivate.toFront();
             userListPane.toFront();
             sendGroupButton.setDefaultButton(false);
