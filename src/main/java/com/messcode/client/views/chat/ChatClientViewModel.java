@@ -124,7 +124,7 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * 
+     * Gets the list of users from the triggered event
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -163,49 +163,56 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param mess
-     */
-    public void sendPublic(PublicMessage mess) {
-        mainModel.sendPublic(mess);
-    }
-
-    /**
-     * @return
+     * Getter for the list of users
+     * @return ObservableList<User>
      */
     public ObservableList<User> getUsersList() {
         return usersList;
     }
 
     /**
-     * @return
+     * Getter for the list of groups
+     * @return ObservableList<Group>
      */
     public ObservableList<Group> getGroups() {
         return groups;
     }
 
     /**
-     * @param mess
+     * Sends the public message
+     * @param mess PublicMessage
+     */
+    public void sendPublic(PublicMessage mess) {
+        mainModel.sendPublic(mess);
+    }
+
+    /**
+     * Sends the private message
+     * @param mess PrivateMessage
      */
     public void sendPM(PrivateMessage mess) {
         mainModel.sendPM(mess);
     }
 
     /**
-     * @param mess
+     * Sends the group message
+     * @param mess GroupMessages
      */
     public void sendGroup(GroupMessages mess) {
         mainModel.sendGroup(mess);
     }
 
     /**
-     * @return
+     * Getter for the current user
+     * @return User
      */
     public User getCurrentUser() {
         return currentUser;
     }
 
     /**
-     * @param usersPM
+     * Sends list of PM room users
+     * @param usersPM PrivateMessage
      */
     public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
         mainModel.sendListOfPmRoomUsers(usersPM);
@@ -232,11 +239,11 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
+     * Displays the incoming private message
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void displayPM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
-
         if (this.receiver == null) return;
         else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
@@ -245,11 +252,11 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
+     * Displays the selected group and its options
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void displayGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
-
         if (this.receiverGroup == null) {
             System.out.println("IM IN DISPLAYSGROUP in vm");
             support.firePropertyChange("newGroupMessage", null, "true");
@@ -264,36 +271,40 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Loads the public messages
+     * @return ArrayList<PublicMessage>
      */
     public ArrayList<PublicMessage> loadPublics() {
         return mainModel.loadPublics();
     }
 
     /**
-     * @return
+     * Loads the private messages
+     * @return ArrayList<PrivateMessage>
      */
     public ArrayList<PrivateMessage> loadPMs() {
         return mainModel.loadPMs(receiver);
     }
 
     /**
-     * @return
+     * Loads the groups
+     * @return ArrayList<GroupMessages>
      */
     public ArrayList<GroupMessages> loadGroup() {
-
         return mainModel.loadGroup(receiverGroup);
     }
 
     /**
-     * @return
+     * Getter for the receiver user
+     * @return User
      */
     public User getReceiver() {
         return receiver;
     }
 
     /**
-     * @param receiver
+     * Setter for the receiver user
+     * @param receiver User
      */
     public void setReceiver(User receiver) {
         this.receiver = receiver;
@@ -301,14 +312,16 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @return
+     * Getter for the receiver gorup
+     * @return Group
      */
     public Group getReceiverGroup() {
         return receiverGroup;
     }
 
     /**
-     * @param receiverGroup
+     * Setter for the receiver group
+     * @param receiverGroup Group that receives the message
      */
     public void setReceiverGroup(Group receiverGroup) {
         this.receiverGroup = receiverGroup;
@@ -316,7 +329,8 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param use
+     * Initiates the password reset of the User
+     * @param use User
      */
     public void resetPassword(User use) {
         AccountManager m = new AccountManager();
@@ -339,8 +353,9 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param password
-     * @return
+     * Copies the password upon dialog close
+     * @param password String
+     * @return EventHandler<DialogEvent>
      */
     private EventHandler<DialogEvent> actionEvent(String password) {
         String ctc = password;
@@ -351,16 +366,18 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     * @param u
-     * @return
+     * Retrieves the unread PMs from the MainModel
+     * @param u User
+     * @return boolean
      */
     public boolean getUnredPMs(User u) {
         return mainModel.unredPMs(u);
     }
 
     /**
-     * @param g
-     * @return
+     * Retrieves the unread GMs from the MainModel
+     * @param g Group
+     * @return boolean
      */
     public boolean getUnredGMs(Group g) {
         boolean lul = mainModel.unredGMs(g);
@@ -369,7 +386,7 @@ public class ChatClientViewModel implements Subject {
     }
 
     /**
-     *
+     * Initiates the data save on exit
      */
     public void saveDataOnExit() {
         mainModel.saveDataOnExit();
