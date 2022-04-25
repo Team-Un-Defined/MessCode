@@ -9,6 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.ArrayList;
 
+/*
+* This class is used for storing important account information such as name, email, public key and private key, etc...
+ */
 public class User implements Serializable {
 
     private String type = "employee";
@@ -22,7 +25,6 @@ public class User implements Serializable {
     private byte[] myPublicKey;
     private byte[] myPrivateKey;
     private ArrayList<PublicMessage> unreadMessages;
-    // for login
 
     public User(String email, String password) {
         this.email = email;
@@ -40,7 +42,9 @@ public class User implements Serializable {
 
         this.type=type;
     }
-    // if you are creating new employee you use this constructor
+    /*
+     * If you are creating new employee you use this constructor.
+     */
     public User(String name, String surname, String email, String password, String type) {
         AccountManager myAccountManager = new AccountManager();
         MessageEncryptionManager myMessageEncryptionManager = new MessageEncryptionManager();
@@ -63,7 +67,9 @@ public class User implements Serializable {
         this.type=type;
     }
 
-    // if you took employee from database you use this constructor
+    /*
+     * If you took employee from database you use this constructor.
+     */
     public User(String name, String surname, String email, byte[] hashedPassword, String salt, String type, byte[] myPrivateKey, byte[] myPublicKey) {
         this.name = name;
         this.surname = surname;
