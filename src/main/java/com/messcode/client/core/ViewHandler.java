@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 
 /**
  * This class is used to manage all main windows and popup windows of the application.
+ * @author Kamilla Kisová, Roman Khorzov
  */
 public class ViewHandler {
 
@@ -47,10 +48,8 @@ public class ViewHandler {
     private Scene viewProfile;
     private ResourceBundle bundle;
 
-    private User myUser = null;
-
     /**
-     * Creates new ViewHandler instance
+     * Constructor for a new ViewHandler instance
      * @param vmf active instance of ViewModelFactory
      */
     public ViewHandler(ViewModelFactory vmf) {
@@ -59,7 +58,7 @@ public class ViewHandler {
     }
 
     /**
-     * The method calls the first start window after reading the actual config
+     * Calls the first start window after reading the actual config
      */
     public void start() {
         SettingsConfig.readConfig();
@@ -67,7 +66,7 @@ public class ViewHandler {
     }
 
     /**
-     * The method checks if the user has selected the application interface language;
+     * Checks if the user has selected the application interface language;
      * if the user starts the application for the first time,
      * method displays a dialog box with the localization language selection.
      * After selecting a language, an open login window handler is called.
@@ -119,7 +118,7 @@ public class ViewHandler {
     }
 
     /**
-     * This method dynamically changes the language within the application.
+     * Dynamically changes the language within the application.
      * @param language Language localize app to
      */
     public void changeLanguage(String language) {
@@ -140,7 +139,7 @@ public class ViewHandler {
     }
 
     /**
-     * This method opens the main window with chats.
+     * Opens the main window with chats.
      * @return Returns client window controller
      */
     public ChatClientController openChatClientView() {
@@ -163,7 +162,7 @@ public class ViewHandler {
     }
 
     /**
-     * This method opens login window
+     * Opens login window
      */
     private void openLogin() {
         FXMLLoader loader = new FXMLLoader();
@@ -184,7 +183,7 @@ public class ViewHandler {
     }
 
     /**
-     *  This method opens window popup with functionality of adding a new employee
+     * Opens window popup with functionality of adding a new employee
      * @param css Current interface theme
      */
     public void openNewEmployee(String css) {
@@ -194,7 +193,7 @@ public class ViewHandler {
 
         Parent root = getRootByPath("NewEmployee.fxml", loader);
         NewEmployeeController controller = loader.getController();
-        controller.init(vmf.getNewEmployeeVM(), this, bundle);
+        controller.init(vmf.getNewEmployeeVM());
         newEmployee = new Scene(root);
 
         newEmployeeStage.setTitle(bundle.getString("new_employee.up"));
@@ -206,7 +205,7 @@ public class ViewHandler {
     }
 
     /**
-     *  This method opens window popup with functionality of adding a new group
+     * Opens window popup with functionality of adding a new group
      * @param css Current interface theme
      */
     public void openNewGroup(String css) {
@@ -216,7 +215,7 @@ public class ViewHandler {
 
         Parent root = getRootByPath("NewGroup.fxml", loader);
         NewGroupController controller = loader.getController();
-        controller.init(vmf.getNewGroupVM(), this, bundle);
+        controller.init(vmf.getNewGroupVM(), bundle);
         newGroup = new Scene(root);
 
         newGroupStage.setTitle(bundle.getString("new_group.up"));
@@ -228,7 +227,7 @@ public class ViewHandler {
     }
 
     /**
-     *  This method opens window popup with functionality of changing user password
+     * Opens window popup with functionality of changing user password
      * @param css Current interface theme
      */
     public void openChangePassword(String css) {
@@ -238,7 +237,7 @@ public class ViewHandler {
 
         Parent root = getRootByPath("ChangePassword.fxml", loader);
         ChangePasswordController controller = loader.getController();
-        controller.init(vmf.getChangePasswordVM(), this, bundle);
+        controller.init(vmf.getChangePasswordVM());
         changePassword = new Scene(root);
 
         changePasswordStage.setTitle(bundle.getString("change_pass.up"));
@@ -250,7 +249,7 @@ public class ViewHandler {
     }
 
     /**
-     *  This method opens window popup with functionality of editing members to the group chat
+     * Opens window popup with functionality of editing members to the group chat
      * @param css Current interface theme
      */
     public void openEditMember(String css) {
@@ -260,7 +259,7 @@ public class ViewHandler {
 
         Parent root = getRootByPath("EditMember.fxml", loader);
         EditMemberController controller = loader.getController();
-        controller.init(vmf.getEditMemberVM(), this, bundle);
+        controller.init(vmf.getEditMemberVM(), bundle);
         editMember = new Scene(root);
 
         editMemberStage.setTitle(bundle.getString("edit_member.up"));
@@ -272,7 +271,7 @@ public class ViewHandler {
     }
 
     /**
-     *  This method opens window popup with functionality of changing project leader of the group chat
+     * Opens window popup with functionality of changing project leader of the group chat
      * @param css Current interface theme
      */
     public void openEditProjectLeader(String css) {
@@ -282,7 +281,7 @@ public class ViewHandler {
 
         Parent root = getRootByPath("EditProjectLeader.fxml", loader);
         EditProjectLeaderController controller = loader.getController();
-        controller.init(vmf.getEditProjectLeaderVM(), this, bundle);
+        controller.init(vmf.getEditProjectLeaderVM());
         editProjectLeader = new Scene(root);
 
         editProjectLeaderStage.setTitle(bundle.getString("edit_project_leader.up"));
@@ -294,7 +293,7 @@ public class ViewHandler {
     }
 
     /**
-     *  This method opens window popup with functionality of removing user
+     * Opens window popup with functionality of removing user
      * @param css Current interface theme
      */
     public void openRemoveUser(String css) {
@@ -304,7 +303,7 @@ public class ViewHandler {
 
         Parent root = getRootByPath("RemoveUser.fxml", loader);
         RemoveUserController controller = loader.getController();
-        controller.init(vmf.getRemoveUserVM(), this, bundle);
+        controller.init(vmf.getRemoveUserVM(), bundle);
         removeUser = new Scene(root);
 
         removeUserStage.setTitle(bundle.getString("remove_user.up"));
@@ -316,7 +315,7 @@ public class ViewHandler {
     }
 
     /**
-     *  This method opens window popup with functionality of removing group chat
+     * Opens window popup with functionality of removing group chat
      * @param css Current interface theme
      */
     public void openRemoveGroup(String css) {
@@ -326,7 +325,7 @@ public class ViewHandler {
 
         Parent root = getRootByPath("RemoveGroup.fxml", loader);
         RemoveGroupController controller = loader.getController();
-        controller.init(vmf.getRemoveGroupVM(), this, bundle);
+        controller.init(vmf.getRemoveGroupVM());
         removeGroup = new Scene(root);
 
         removeGroupStage.setTitle(bundle.getString("remove_group.up"));
@@ -338,7 +337,7 @@ public class ViewHandler {
     }
 
     /**
-     *  This method opens window popup with functionality of viewing other user's profile information
+     * Opens window popup with functionality of viewing other user's profile information
      * @param css Current interface theme
      */
     public void openViewProfile(String css) {
@@ -348,7 +347,7 @@ public class ViewHandler {
 
         Parent root = getRootByPath("ViewProfile.fxml", loader);
         ViewProfileController controller = loader.getController();
-        controller.init(vmf.getViewProfileVM(), this, bundle);
+        controller.init(vmf.getViewProfileVM());
         viewProfile = new Scene(root);
 
         viewProfileStage.setTitle(bundle.getString("view_profile.up"));
@@ -360,7 +359,7 @@ public class ViewHandler {
     }
 
     /**
-     * This method finds the FXML for a window in the application files
+     * Finds the FXML for a window in the application files
      * @param path FXML file name
      * @param loader FXMLLoader instance
      * @return loaded file
@@ -377,7 +376,7 @@ public class ViewHandler {
     }
 
     /**
-     * This method gets currently used interface style from app config
+     * Gets currently used interface style from app config
      * @return current used interface style
      */
     public String getCssStyle() {
@@ -385,13 +384,5 @@ public class ViewHandler {
             return "lite.css";
         }
         return "dark.css";
-    }
-
-    public User getMyUser() {
-        return myUser;
-    }
-
-    public void setMyUser(User myUser) {
-        this.myUser = myUser;
     }
 }
