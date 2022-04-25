@@ -164,18 +164,22 @@ public class MainModelManager implements MainModel {
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(pm);
+        
+        if( selectedUser!=null && (pm.getSender().getEmail().equals(selectedUser.getEmail()))){
          for(PublicMessage u : user.getUnreadMessages()){
         if(u instanceof PrivateMessage){
-            if(selectedUser!=null){
-            if(!(pm.getSender().getEmail().equals(user.getEmail())) && (((PrivateMessage)u).getSender().getEmail().equals(selectedUser.getEmail())) && ((((PrivateMessage)u).getReceiver().getEmail().equals(pm.getSender().getEmail())) || (((PrivateMessage)u).getSender().getEmail().equals(pm.getSender().getEmail()))) )
+           
+            if(((PrivateMessage) u).getReceiver().getEmail().equals(selectedUser.getEmail()) || u.getSender().getEmail().equals(selectedUser.getEmail()) )
             {
                 user.getUnreadMessages().remove(u);
                 user.getUnreadMessages().add(pm);
                 return;
             }
-            }
-        }
             
+            
+        }      
+        }
+          user.getUnreadMessages().add(pm);
         }
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
@@ -230,7 +234,9 @@ public class MainModelManager implements MainModel {
     @Override
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
-       
+         System.out.println("******************************************************************");
+                 user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
+                 System.out.println("******************************************************************");
         for(PublicMessage u : user.getUnreadMessages() ){
         if(u instanceof PrivateMessage){
             if(u.getSender().getEmail().equals(message.getReceiver().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(message.getReceiver().getEmail()) )
@@ -239,6 +245,10 @@ public class MainModelManager implements MainModel {
                 return ;
                 }
         }
+          System.out.println("/////////////////////////////////////////////////////////////////////////");
+                 user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
+                 System.out.println("/////////////////////////////////////////////////////////////////////////");
+        
     }
 
     @Override
@@ -360,19 +370,49 @@ public class MainModelManager implements MainModel {
 
     @Override
     public boolean unredPMs(User u) {
+       user.filterUnreadMessages();
       ArrayList<PrivateMessage> pivi = loadPMs(u);
-        
+      PrivateMessage last=null;  
+     if(pivi.isEmpty())
+     {return false;}
+     
+      
+               
+      for(PrivateMessage pub : pivi){
+     
+            if(last!=null){
+                if(last.getTime().before(pub.getTime())){
+                last = pub;
+                }
+            
+            }
+            else last = pub;
+    
+      }
+     
         for (PublicMessage p: user.getUnreadMessages()){
          if(p instanceof PrivateMessage){
-             for(PrivateMessage piv :pivi){
-                 System.out.println("--------------------"+p.getMsg()+"----------------"+p.getTime().before(piv.getTime()));
-             if((p.getTime().before(piv.getTime())) &&(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail())  ||  p.getSender().getEmail().equals(u.getEmail()))){
-
-                  System.out.println("---------***********-----------"+p.getMsg()+"------**********----------"+p.getTime().before(piv.getTime()));
+             
+            if(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail())){
+             if((p.getTime().before(last.getTime()))){
+                 
+                 
+                 System.out.println(last.getMsg());
+               
                  return true;
              }
+            }
+            else if(((PrivateMessage) p).getSender().getEmail().equals(u.getEmail())){
+            
+            if((p.getTime().before(last.getTime())) ){
+               
+                System.out.println(last.getMsg());
+               
+                 return true;
+            
+            }
+            }
              
-             }
          }
         
         }
@@ -382,6 +422,7 @@ public class MainModelManager implements MainModel {
     @Override
     public void setSelectedUser(User us) {
         
+      
         selectedUser = us;
         PrivateMessage lastMessage= null;
         for(PublicMessage pub : allMessage){
@@ -398,15 +439,36 @@ public class MainModelManager implements MainModel {
         }
         
         }
+        
+        
         if(lastMessage != null){
         for(PublicMessage u : user.getUnreadMessages()){
         if(u instanceof PrivateMessage){
-            if((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) && (u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail())) )
+          if(lastMessage.getSender().getEmail().equals(us.getEmail()) ){
+            if((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) &&
+                    (u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail())) )
                 user.getUnreadMessages().remove(u);
-
                 user.getUnreadMessages().add(lastMessage);
+               
                 return;
                 }
+          else {
+              if((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) &&
+                    (u.getSender().getEmail().equals(lastMessage.getReceiver().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(lastMessage.getReceiver().getEmail())) ){
+              
+               user.getUnreadMessages().remove(u);
+                user.getUnreadMessages().add(lastMessage);
+               
+                return;
+              
+              
+              }
+          
+          
+          
+          }
+          
+        }
         }
     }
         

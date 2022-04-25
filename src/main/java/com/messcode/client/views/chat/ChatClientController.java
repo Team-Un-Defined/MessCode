@@ -341,7 +341,7 @@ public class ChatClientController {
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
                 updateUserList();
                 chatVM.setReceiver(use);
-                
+                updateUserList();
                 messagesListPM.getItems().clear();
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
                 for (PrivateMessage pm : priv) {
