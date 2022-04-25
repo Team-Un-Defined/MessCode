@@ -1,29 +1,28 @@
 package com.messcode.client.views.chat;
 
 import com.messcode.client.core.SettingsConfig;
-import com.messcode.transferobjects.Group;
-import com.messcode.transferobjects.messages.GroupMessages;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.control.*;
 import com.messcode.client.core.ViewHandler;
+import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
+import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.controlsfx.control.ToggleSwitch;
 
 import java.awt.*;
@@ -31,13 +30,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.io.InputStream;
-
-import static java.lang.Thread.sleep;
-
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ChatClientController {
 
@@ -108,6 +102,17 @@ public class ChatClientController {
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
 
+        Platform.runLater(() -> sendAllButton.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                System.out.println("nyeheheeee");
+                // perhaps
+                Platform.exit();
+                System.exit(0);
+            }
+        }));
+
+
         editProjectLeaderButton.setVisible(false);
         editMemberButton.setVisible(false);
         resetPasswordButton.setVisible(false);
@@ -125,11 +130,11 @@ public class ChatClientController {
 
         if (SettingsConfig.getConfigOf("dark_theme").equals("1")) {
             toggleSwitch.setSelected(true);
-            colorPicker.setValue(new Color(0,0,0,1));
+            colorPicker.setValue(new Color(0, 0, 0, 1));
         } else {
-            colorPicker.setValue(new Color(1,1,1,1));
+            colorPicker.setValue(new Color(1, 1, 1, 1));
         }
-        if(!SettingsConfig.getConfigOf("message_color_r").equals("n")){
+        if (!SettingsConfig.getConfigOf("message_color_r").equals("n")) {
             colorPicker.setValue(new Color(
                     Double.parseDouble(SettingsConfig.getConfigOf("message_color_r")),
                     Double.parseDouble(SettingsConfig.getConfigOf("message_color_g")),
@@ -224,21 +229,21 @@ public class ChatClientController {
                     setText(null);
                 } else if (chatVM.getUnredGMs(item)) {
 
-                        InputStream in = getClass().getResourceAsStream("/orangedotm.png");
-                        ImageView imageView = new ImageView(new Image(in));
-                        imageView.setFitHeight(10);
-                        imageView.setPreserveRatio(true);
-                        this.setGraphic(imageView);
-                        String text = item.getName(); // get text from item
-                        setText(text);
+                    InputStream in = getClass().getResourceAsStream("/orangedotm.png");
+                    ImageView imageView = new ImageView(new Image(in));
+                    imageView.setFitHeight(10);
+                    imageView.setPreserveRatio(true);
+                    this.setGraphic(imageView);
+                    String text = item.getName(); // get text from item
+                    setText(text);
 
-                    } else {
-                        String text = item.getName(); // get text from item
-                        setText(text);
-                    }
-                
+                } else {
+                    String text = item.getName(); // get text from item
+                    setText(text);
                 }
-            
+
+            }
+
         });
     }
 
@@ -354,8 +359,7 @@ public class ChatClientController {
                 viewProfileButton.setVisible(false);
                 sendPMButton.setDisable(true);
                 resetPasswordButton.setDisable(true);
-            }
-            else {
+            } else {
                 viewProfileButton.setVisible(true);
                 sendPMButton.setDisable(false);
             }
@@ -412,7 +416,7 @@ public class ChatClientController {
                         setStyle(a);
                         setText(item.getText());
                     }
-                    
+
                 }
             };
             return cell;
@@ -428,9 +432,9 @@ public class ChatClientController {
 
             if (chatVM.getCurrentUser().getType().equals("project_leader")) {
                 editMemberButton.setVisible(true);
-              
+
             }
-           
+
 
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
 
@@ -600,7 +604,7 @@ public class ChatClientController {
     }
 
     private void displayGroup(PropertyChangeEvent evt) {
-        if(evt.getNewValue() instanceof String) {
+        if (evt.getNewValue() instanceof String) {
             System.out.println("WOW?? ");
             String a = (String) evt.getNewValue();
             Platform.runLater(() -> {
@@ -615,7 +619,7 @@ public class ChatClientController {
             System.out.println("WTHIS SHOULD BE RUNNING? ");
             InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 
-                groupButtonImage.setImage(new Image(reddot));
+            groupButtonImage.setImage(new Image(reddot));
 
 
             updateGroupList();
@@ -643,7 +647,7 @@ public class ChatClientController {
         SettingsConfig.setConfigOf("message_color_b", String.valueOf(color.getBlue()));
         SettingsConfig.setConfigOf("message_color_a", "1");
         SettingsConfig.setConfigOf("message_color", webFormat);
-        if ((int) (255 * color.getRed())*0.299 + (int) (255 * color.getGreen())*0.587 + (int) (255 * color.getBlue())*0.114 > 140){
+        if ((int) (255 * color.getRed()) * 0.299 + (int) (255 * color.getGreen()) * 0.587 + (int) (255 * color.getBlue()) * 0.114 > 140) {
             SettingsConfig.setConfigOf("text_color", "black");
         } else {
             SettingsConfig.setConfigOf("text_color", "white");
