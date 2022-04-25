@@ -368,7 +368,7 @@ public class ImportData {
                 myPreparedStatement.setString(2, ((PrivateMessage) (us.getUnreadMessages().get(i))).getReceiver().getEmail());
                 myPreparedStatement.setInt(3, userid);
                 myPreparedStatement.setString(4, ((PrivateMessage) (us.getUnreadMessages().get(i))).getReceiver().getEmail());
-                myPreparedStatement.setString(5, us.getUnreadMessages().get(1).getTime().toString());
+                myPreparedStatement.setTimestamp(5, us.getUnreadMessages().get(1).getTime());
                 rs = myPreparedStatement.executeQuery();
 
                 while (rs.next()) {
@@ -393,7 +393,7 @@ public class ImportData {
                     lid = rs.getInt("id");
                 }
 
-                String query3 = "UPDATE public.last_seen SET private_message_id = ? WHERE id = ?";
+                String query3 = "UPDATE public.last_seen SET private_message_id = ? WHERE id = ? o";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, pmid);
                 myPreparedStatement.setInt(2, lid);
@@ -426,7 +426,7 @@ public class ImportData {
                     lid = rs.getInt("id");
                 }
 
-                String query3 = "UPDATE public.last_seen SET group_nessage_id = ? WHERE id = ?";
+                String query3 = "UPDATE public.last_seen SET group_message_id = ? WHERE id = ?";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, gmid);
                 myPreparedStatement.setInt(2, lid);
@@ -437,7 +437,7 @@ public class ImportData {
                 int pmid = 0;
                 int lid = 0;
 
-                String query1 = "SELECT pm.id = pmid, pm.sender_id, pm.nessage, pm.date FROM public_nessages pm " +
+                String query1 = "SELECT pm.id as pmid, pm.sender_id, pm.message, pm.date FROM public_messages pm " +
                         "WHERE date = ?";
                 myPreparedStatement = c.prepareStatement(query1);
                 myPreparedStatement.setTimestamp(1, us.getUnreadMessages().get(i).getTime());
