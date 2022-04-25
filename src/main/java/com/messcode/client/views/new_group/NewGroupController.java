@@ -28,7 +28,7 @@ public class NewGroupController {
         this.vh = vh;
         this.newGroupVM = newGroupVM;
         this.bundle = bundle;
-        this.descriptionTextArea.setText("Write something nice");
+        this.descriptionTextArea.setText(bundle.getString("new_group.write_smth_nice"));
         groupLeaderComboBox.setItems(newGroupVM.getUsersList());
         groupLeaderComboBox.setCellFactory(lv -> new ListCell<User>() {
             @Override
@@ -55,7 +55,7 @@ public class NewGroupController {
             errorLabel.setVisible(false);
             newGroupVM.newGroup(new Group(groupName, description, groupLeader));
         } else {
-            errorLabel.setText("Incorrect group name format!");
+            errorLabel.setText(bundle.getString("new_group.incorrect_format"));
             errorLabel.setVisible(true);
         }
     }

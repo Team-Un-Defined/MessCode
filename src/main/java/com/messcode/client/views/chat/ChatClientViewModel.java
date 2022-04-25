@@ -243,7 +243,6 @@ public class ChatClientViewModel implements Subject {
     public void setReceiver(User receiver) {
         this.receiver = receiver;
         mainModel.setSelectedUser(receiver);
-       
     }
 
     public Group getReceiverGroup() {

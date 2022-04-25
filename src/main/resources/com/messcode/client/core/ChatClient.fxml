@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.paint.Color?>
 
 <?import org.controlsfx.control.ToggleSwitch?>
 
@@ -116,14 +118,19 @@
                             <Label layoutX="95.0" layoutY="33.0" text="OFF" />
                             <Label layoutX="165.0" layoutY="33.0" text="ON" />
                             <ToggleSwitch fx:id="toggleSwitch" layoutX="105.0" layoutY="33.0" />
+
+                            <Label layoutY="66.0" text="%chat_client.mess_color" />
+                            <ColorPicker fx:id="colorPicker" layoutX="95.0" layoutY="66.0" onAction="#changeColor">
+                                <value>
+                                    <Color />
+                                </value>
+                            </ColorPicker>
                         </children>
                     </Pane>
-                  <Button layoutX="200.0" layoutY="74.0" mnemonicParsing="false" onAction="#changePasswordClicked" style="-fx-background-color: transparent;" styleClass="buttonPass" text="%chat_client.change_pass" />
-                  <Button fx:id="newGroupButton" layoutX="14.0" layoutY="280.0" mnemonicParsing="false" onAction="#newGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_group" />
-                  <Button fx:id="newEmployeeButton" layoutX="14.0" layoutY="320.0" mnemonicParsing="false" onAction="#newEmployeeClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_employee" />
-                  <Button fx:id="removeGroupButton" layoutX="250.0" layoutY="280.0" mnemonicParsing="false" onAction="#removeGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_group" />
-                  <Button fx:id="removeUserButton" layoutX="250.0" layoutY="320.0" mnemonicParsing="false" onAction="#removeUserClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_user" />
-                </children>
+                    <Button fx:id="newGroupButton" layoutX="14.0" layoutY="320.0" mnemonicParsing="false" onAction="#newGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_group" />
+                    <Button fx:id="newEmployeeButton" layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#newEmployeeClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.add_new_employee" />
+                    <Button fx:id="removeGroupButton" layoutX="250.0" layoutY="320.0" mnemonicParsing="false" onAction="#removeGroupClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_group" />
+                    <Button fx:id="removeUserButton" layoutX="250.0" layoutY="360.0" mnemonicParsing="false" onAction="#removeUserClicked" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.remove_user" /></children>
             </Pane>
             <Pane fx:id="paneGroup" styleClass="pane">
                 <children>
@@ -142,6 +149,7 @@
                     <Label fx:id="otherUserNameLabel" layoutX="14.0" layoutY="14.0" />
                   <Button fx:id="resetPasswordButton" layoutX="514.0" layoutY="10.0" mnemonicParsing="false" onAction="#resetPassword" prefHeight="25.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%chat_client.reset_pass" />
                   <Label fx:id="newPasswordLabel" layoutX="377.0" layoutY="14.0" />
+                  <Button layoutX="163.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewProfileClicked" style="-fx-background-color: transparent;" text="View profile..." />
                 </children></Pane>
         </children>
     </StackPane>
