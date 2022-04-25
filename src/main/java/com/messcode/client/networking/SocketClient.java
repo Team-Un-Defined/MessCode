@@ -152,6 +152,11 @@ public class SocketClient implements Client {
         socketHandler.resetPassword(use);
     }
 
+    @Override
+    public void saveDataOnExit(User user) {
+        socketHandler.saveDataOnExit(user);
+    }
+
     public void getAllGroupMessages(Container pckt) {
         support.firePropertyChange("AddAllGroupMessages",null,pckt);
     }

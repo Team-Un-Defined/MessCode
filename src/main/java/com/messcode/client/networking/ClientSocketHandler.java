@@ -348,4 +348,13 @@ public class ClientSocketHandler implements Runnable {
           e.printStackTrace();
         }
     }
+
+    public void saveDataOnExit(User user) {
+        try{
+            Container packet = new Container(user,ClassName.USER_LEFT);
+            outToServer.writeObject(packet);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 }

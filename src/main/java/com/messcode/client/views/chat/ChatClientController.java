@@ -115,7 +115,7 @@ public class ChatClientController {
             @Override
             public void handle(WindowEvent t) {
                 System.out.println("nyeheheeee");
-                // perhaps
+                chatVM.saveDataOnExit();
                 Platform.exit();
                 System.exit(0);
             }

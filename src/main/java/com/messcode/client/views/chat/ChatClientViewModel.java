@@ -295,7 +295,9 @@ public class ChatClientViewModel implements Subject {
         return  lul;
 
     }
-    
-    
-    
+
+
+    public void saveDataOnExit() {
+        mainModel.saveDataOnExit();
+    }
 }
