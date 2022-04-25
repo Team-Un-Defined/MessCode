@@ -28,6 +28,9 @@ import java.beans.PropertyChangeSupport;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class ChatClientViewModel implements Subject {
 
     private User currentUser;
@@ -42,6 +45,9 @@ public class ChatClientViewModel implements Subject {
     private Group receiverGroup;
 
 
+    /**
+     * @param mainModel
+     */
     public ChatClientViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
         message = new SimpleStringProperty();
@@ -58,14 +64,11 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
-
-
-
     }
 
-
-
-
+    /**
+     * @param propertyChangeEvent
+     */
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
         Platform.runLater(() -> {
             groups.clear();
@@ -73,6 +76,9 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
 
@@ -82,6 +88,9 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
@@ -96,10 +105,16 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void setUsernameInChat(PropertyChangeEvent propertyChangeEvent) {
         currentUser = (User) propertyChangeEvent.getNewValue();
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void displayPublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
 
@@ -107,32 +122,30 @@ public class ChatClientViewModel implements Subject {
         support.firePropertyChange("MessageForEveryone", null, publicMessage.getTime() + " " + publicMessage.getUsername() + ": " + publicMessage.getMsg());
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
-        System.out.println("USER SALT: "+ user.getSalt());
+        System.out.println("USER SALT: " + user.getSalt());
         Platform.runLater(() -> {
-            if(user.getSalt().equals(" - deleted")){
+            if (user.getSalt().equals(" - deleted")) {
                 for (int i = 0; i < usersList.size(); i++) {
                     if (usersList.get(i).getEmail().equals(user.getEmail())) {
-                        usersList.set(i, user);              // KAMI PUT THE ONLINE DOT HERE or in the controller i dont know man, i hate my life and i hate guis,how are you btw?
-                                                            // heyo, im pretty okay rn, thanks for the question (and the note) wbu?
-                                                            // im good, i just hate lings' merge conflicts, btw i added the - deleted user tag, it is added in the salt from server.
-                        break;                              // fug dat bitch ass lings man
-                                                            //we should delete this tho, he might be able to see it, and he is gonna be sad that we dont like his merge conflicts
+                        usersList.set(i, user);
+                        break;
                     }
                 }
-            }else {
-                user.setSalt(" - online");  //
+            } else {
+                user.setSalt(" - online");
                 for (int i = 0; i < usersList.size(); i++) {
                     if (usersList.get(i).getEmail().equals(user.getEmail())) {
                         usersList.remove(i);
-                        for (int j = 0; j < usersList.size(); j++)
-                        {
-                            if((!usersList.get(j).getSalt().equals(" - online")))
-                            {
+                        for (int j = 0; j < usersList.size(); j++) {
+                            if ((!usersList.get(j).getSalt().equals(" - online"))) {
                                 User temp = usersList.get(j);
-                                usersList.set(j,user);
-                                if(!temp.getEmail().equals(user.getEmail())) {
+                                usersList.set(j, user);
+                                if (!temp.getEmail().equals(user.getEmail())) {
                                     usersList.add(temp);
                                 }
                                 break;
@@ -147,120 +160,165 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
+    /**
+     * @param mess
+     */
     public void sendPublic(PublicMessage mess) {
         mainModel.sendPublic(mess);
     }
 
+    /**
+     * @return
+     */
     public ObservableList<User> getUsersList() {
         return usersList;
     }
 
+    /**
+     * @return
+     */
     public ObservableList<Group> getGroups() {
         return groups;
     }
 
-    public StringProperty messageProperty() {
-        return message;
-    }
-
-    public StringProperty GMProperty() {
-        return GMmessage;
-    }
-
-    public StringProperty PMProperty() {
-        return PMmessage;
-    }
-
+    /**
+     * @param mess
+     */
     public void sendPM(PrivateMessage mess) {
         mainModel.sendPM(mess);
     }
 
+    /**
+     * @param mess
+     */
     public void sendGroup(GroupMessages mess) {
         mainModel.sendGroup(mess);
     }
 
+    /**
+     * @return
+     */
     public User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * @param usersPM
+     */
     public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
         mainModel.sendListOfPmRoomUsers(usersPM);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void displayPM(PropertyChangeEvent propertyChangeEvent) {
-
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
 
         if (this.receiver == null) return;
-        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {    
+        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
         }
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void displayGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
 
         if (this.receiverGroup == null) {
             System.out.println("IM IN DISPLAYSGROUP in vm");
-            support.firePropertyChange("newGroupMessage", null, "true");}
-        else if (gm.getGroup().getName().equals(this.receiverGroup.getName())) {
+            support.firePropertyChange("newGroupMessage", null, "true");
+        } else if (gm.getGroup().getName().equals(this.receiverGroup.getName())) {
             System.out.println("Im in displaysgroup in vm, but i have selected the group");
             //GMmessage.set(gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
             String s = gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg();
             support.firePropertyChange("newGroupMessage", null, s);
-        }else {
+        } else {
             support.firePropertyChange("newGroupMessage", null, "false");
         }
 
     }
 
+    /**
+     * @return
+     */
     public ArrayList<PublicMessage> loadPublics() {
         return mainModel.loadPublics();
     }
 
+    /**
+     * @return
+     */
     public ArrayList<PrivateMessage> loadPMs() {
         return mainModel.loadPMs(receiver);
     }
 
+    /**
+     * @return
+     */
     public ArrayList<GroupMessages> loadGroup() {
 
         return mainModel.loadGroup(receiverGroup);
     }
 
+    /**
+     * @return
+     */
     public User getReceiver() {
         return receiver;
     }
 
+    /**
+     * @param receiver
+     */
     public void setReceiver(User receiver) {
         this.receiver = receiver;
         mainModel.setSelectedUser(receiver);
     }
 
+    /**
+     * @return
+     */
     public Group getReceiverGroup() {
         return receiverGroup;
     }
 
+    /**
+     * @param receiverGroup
+     */
     public void setReceiverGroup(Group receiverGroup) {
         this.receiverGroup = receiverGroup;
         mainModel.setSelectedGroup(receiverGroup);
     }
 
-
+    /**
+     * @param use
+     */
     public void resetPassword(User use) {
         AccountManager m = new AccountManager();
-        String password= m.generatePassword();
-        User user = new User(use.getName(),use.getSurname(),use.getEmail(),password,use.getType());
+        String password = m.generatePassword();
+        User user = new User(use.getName(), use.getSurname(), use.getEmail(), password, use.getType());
 
         Platform.runLater(() -> {
             Dialog<String> dialog = new Dialog<>();
@@ -268,7 +326,7 @@ public class ChatClientViewModel implements Subject {
             ButtonType buttonType = new ButtonType("Copy password", ButtonBar.ButtonData.OK_DONE);
             dialog.setContentText("Please make sure to forward the new user their\n" +
                     "generated password: " + password);
-            System.out.println("ppass: "+ password);
+            System.out.println("ppass: " + password);
             dialog.getDialogPane().getButtonTypes().add(buttonType);
             dialog.setOnCloseRequest(actionEvent(password));
 
@@ -277,6 +335,10 @@ public class ChatClientViewModel implements Subject {
         mainModel.resetPassword(user);
     }
 
+    /**
+     * @param password
+     * @return
+     */
     private EventHandler<DialogEvent> actionEvent(String password) {
         String ctc = password;
         StringSelection stringSelection = new StringSelection(ctc);
@@ -284,18 +346,29 @@ public class ChatClientViewModel implements Subject {
         clpbrd.setContents(stringSelection, null);
         return null;
     }
-    public boolean getUnredPMs (User u){
-    
-     return   mainModel.unredPMs ( u);
-    
-    }
-    public boolean getUnredGMs (Group g){
-        boolean lul =  mainModel.unredGMs (g);
-        System.out.println(" THIS IS MY LIFE "  + lul);
-        return  lul;
 
+    /**
+     * @param u
+     * @return
+     */
+    public boolean getUnredPMs(User u) {
+        return mainModel.unredPMs(u);
     }
-    
-    
-    
+
+    /**
+     * @param g
+     * @return
+     */
+    public boolean getUnredGMs(Group g) {
+        boolean lul = mainModel.unredGMs(g);
+        System.out.println(" THIS IS MY LIFE " + lul);
+        return lul;
+    }
+
+    /**
+     *
+     */
+    public void saveDataOnExit() {
+        mainModel.saveDataOnExit();
+    }
 }

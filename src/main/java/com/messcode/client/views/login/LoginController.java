@@ -13,6 +13,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class LoginController implements Subject {
 
     public TextField emailField;
@@ -23,6 +26,11 @@ public class LoginController implements Subject {
     private LoginViewModel loginVM;
     private ViewHandler vh;
 
+    /**
+     * @param loginVM
+     * @param vh
+     * @param bundle
+     */
     public void init(LoginViewModel loginVM, ViewHandler vh, ResourceBundle bundle) {
         this.loginVM = loginVM;
         this.vh = vh;
@@ -34,34 +42,40 @@ public class LoginController implements Subject {
         signInButton.setDefaultButton(true);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void openChat(PropertyChangeEvent propertyChangeEvent) {
         Platform.runLater(() -> vh.openChatClientView());
     }
 
-        /*
-        if (usernameField.getText().length() >= 4) {
-            String username = usernameField.getText();
-            loginVM.addUser(new User(username));
-            vh.openChatClientView();
-        } else {
-            usernameErrorLabel.setText("Username too short(min 4 char)");
-            usernameErrorLabel.setText(bundle.getString("short_login"));
-        }
-        */
-
+    /**
+     * @param propertyChangeEvent
+     */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         vh.openChatClientView();
     }
 
+    /**
+     *
+     */
     public void enterChatBtn() {
         loginVM.login(emailField.getText(), passwordField.getText());
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);

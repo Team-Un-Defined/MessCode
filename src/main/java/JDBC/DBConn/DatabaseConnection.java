@@ -13,18 +13,30 @@ public class DatabaseConnection {
     private final String name = "postgres";
     private final String pass = "chickenattack777";
 
+    /**
+     * @return
+     */
     public String getConn() {
         return conn;
     }
 
+    /**
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return
+     */
     public String getPass() {
         return pass;
     }
 
+    /**
+     *
+     */
     public DatabaseConnection() {
     }
 }

@@ -1,5 +1,8 @@
 package com.messcode.transferobjects;
 
+/**
+ *
+ */
 public enum ClassName {
     //  login
     CHECK_LOGIN,

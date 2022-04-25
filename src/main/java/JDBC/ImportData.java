@@ -10,8 +10,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Arrays;
-import java.util.logging.Level;
 
+/**
+ *
+ */
 public class ImportData {
 
     private static final Logger log4j = LogManager.getLogger(ImportData.class);
@@ -19,10 +21,10 @@ public class ImportData {
     private Connection c;
     private DatabaseConnection conn;
 
+    /**
+     * Constructor method for LoadCharacter. Gets the PostgreSQL connection.
+     */
     public ImportData() {
-        /**
-         * Constructor method for LoadCharacter. Gets the PostgreSQL connection.
-         */
         conn = new DatabaseConnection();
         try {
             Class.forName("org.postgresql.Driver");
@@ -64,6 +66,10 @@ public class ImportData {
         return new Container(done, ClassName.CREATE_ACCOUNT);
     }
 
+    /**
+     * @param pm
+     * @throws SQLException
+     */
     public void saveMessage(PublicMessage pm) throws SQLException {
         boolean done = false;
 
@@ -150,6 +156,9 @@ public class ImportData {
         }
     }
 
+    /**
+     * @param g
+     */
     public void createGroup(Group g) {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -199,6 +208,10 @@ public class ImportData {
         }
     }
 
+    /**
+     * @param g
+     * @throws SQLException
+     */
     public void addGroupMembers(Group g) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -224,6 +237,10 @@ public class ImportData {
         }
     }
 
+    /**
+     * @param g
+     * @throws SQLException
+     */
     public void removeGroupMembers(Group g) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -246,6 +263,10 @@ public class ImportData {
             }
         }
     }
+
+    /**
+     * @param g
+     */
     public void updateLeader(Group g) {
         try {
             PreparedStatement myPreparedStatement0;
@@ -338,8 +359,12 @@ public class ImportData {
         }
     
     }
-   
 
+
+    /**
+     * @param us
+     * @throws SQLException
+     */
     public void saveDataOnExit(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -368,7 +393,7 @@ public class ImportData {
                 myPreparedStatement.setString(2, ((PrivateMessage) (us.getUnreadMessages().get(i))).getReceiver().getEmail());
                 myPreparedStatement.setInt(3, userid);
                 myPreparedStatement.setString(4, ((PrivateMessage) (us.getUnreadMessages().get(i))).getReceiver().getEmail());
-                myPreparedStatement.setString(5, us.getUnreadMessages().get(1).getTime().toString());
+                myPreparedStatement.setTimestamp(5, us.getUnreadMessages().get(1).getTime());
                 rs = myPreparedStatement.executeQuery();
 
                 while (rs.next()) {
@@ -394,6 +419,7 @@ public class ImportData {
                 }
                 if(lid !=0){
                 String query3 = "UPDATE public.last_seen SET private_message_id = ? WHERE id = ?";
+
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, pmid);
                 myPreparedStatement.setInt(2, lid);
@@ -401,7 +427,7 @@ public class ImportData {
 
                 System.out.println("EXECUTED QUERY");
                 }
-                else 
+                else
                 {
                      String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
                                     "VALUES (default,null,?,null,?)";
@@ -409,7 +435,7 @@ public class ImportData {
                 myPreparedStatement.setInt(1, pmid);
                 myPreparedStatement.setInt(2, userid);
                 myPreparedStatement.executeUpdate();
-                
+
                 }
             } else if (us.getUnreadMessages().get(i) instanceof GroupMessages) {
                 int gmid = 0;
@@ -436,28 +462,28 @@ public class ImportData {
                     lid = rs.getInt("id");
                 }
                 if(lid!=0){
-                String query3 = "UPDATE public.last_seen SET group_nessage_id = ? WHERE id = ?";
+                String query3 = "UPDATE public.last_seen SET group_message_id = ? WHERE id = ?";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, gmid);
                 myPreparedStatement.setInt(2, lid);
                 myPreparedStatement.executeUpdate();
                 }
                 else{
-                
+
                 String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
                 "VALUES (default,null,?,null,?)";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, gmid);
                 myPreparedStatement.setInt(2, userid);
                 myPreparedStatement.executeUpdate();
-            
+
                 }
                 System.out.println("EXECUTED QUERY");
             } else {
                 int pmid = 0;
                 int lid = 0;
 
-                String query1 = "SELECT pm.id = pmid, pm.sender_id, pm.nessage, pm.date FROM public_nessages pm " +
+                String query1 = "SELECT pm.id as pmid, pm.sender_id, pm.message, pm.date FROM public_messages pm " +
                         "WHERE date = ?";
                 myPreparedStatement = c.prepareStatement(query1);
                 myPreparedStatement.setTimestamp(1, us.getUnreadMessages().get(i).getTime());
@@ -492,13 +518,19 @@ public class ImportData {
                 myPreparedStatement.setInt(1, pmid);
                 myPreparedStatement.setInt(2,userid);
                 myPreparedStatement.executeUpdate();
-            
+
             }
-                
+
             }
         }
     }
 
+    /**
+     * @param password
+     * @param email
+     * @return
+     * @throws SQLException
+     */
     public boolean test(String password, String email) throws SQLException {
         boolean unique = false;
 
@@ -535,6 +567,11 @@ public class ImportData {
         return unique;
     }
 
+    /**
+     * @param us
+     * @return
+     * @throws SQLException
+     */
     public boolean changePassword(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -576,8 +613,12 @@ public class ImportData {
         return true;
     }
 
+    /**
+     * @param u
+     * @return
+     * @throws SQLException
+     */
     public boolean deleteUser(User u) throws SQLException {
-
         Statement st = c.createStatement();
 
         String query0 = "UPDATE account set  pwd_hash = 'deleted' where email='" + u.getEmail() + "' ;";
@@ -594,11 +635,13 @@ public class ImportData {
         return false;
     }
 
+    /**
+     * @param u
+     * @throws SQLException
+     */
     public void resetPassword(User u) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
-
-
 
         String query1 = "UPDATE account SET pwd_salt = ? WHERE email = ?";
         myPreparedStatement = c.prepareStatement(query1);
@@ -611,8 +654,5 @@ public class ImportData {
         myPreparedStatement.setString(1,  Arrays.toString(u.getHashedPassword()));
         myPreparedStatement.setString(2,u.getEmail());
         myPreparedStatement.executeUpdate();
-
     }
-
-    
 }

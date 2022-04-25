@@ -12,6 +12,9 @@ import com.messcode.client.views.remove_group.RemoveGroupViewModel;
 import com.messcode.client.views.remove_user.RemoveUserViewModel;
 import com.messcode.client.views.view_profile.ViewProfileViewModel;
 
+/**
+ *
+ */
 public class ViewModelFactory {
 
     private ModelFactory mf;
@@ -26,6 +29,9 @@ public class ViewModelFactory {
     private EditProjectLeaderViewModel editProjectLeaderVM;
     private ViewProfileViewModel viewProfileVM;
 
+    /**
+     * @param mf
+     */
     public ViewModelFactory(ModelFactory mf) {
         this.mf = mf;
         chatVM = new ChatClientViewModel(mf.getMainModel());
@@ -40,42 +46,72 @@ public class ViewModelFactory {
         viewProfileVM = new ViewProfileViewModel(mf.getMainModel());
     }
 
+    /**
+     * @return
+     */
     public ChatClientViewModel getChatVM() {
         return chatVM;
     }
 
+    /**
+     * @return
+     */
     public LoginViewModel getLoginVM() {
         return loginVM;
     }
 
+    /**
+     * @return
+     */
     public NewEmployeeViewModel getNewEmployeeVM() {
         return newEmployeeVM;
     }
 
+    /**
+     * @return
+     */
     public NewGroupViewModel getNewGroupVM() {
         return newGroupVM;
     }
 
+    /**
+     * @return
+     */
     public ChangePasswordViewModel getChangePasswordVM() {
         return changePasswordVM;
     }
 
+    /**
+     * @return
+     */
     public EditMemberViewModel getEditMemberVM() {
         return editMemberVM;
     }
 
+    /**
+     * @return
+     */
     public RemoveGroupViewModel getRemoveGroupVM() {
         return removeGroupVM;
     }
 
+    /**
+     * @return
+     */
     public RemoveUserViewModel getRemoveUserVM() {
         return removeUserVM;
     }
 
+    /**
+     * @return
+     */
     public EditProjectLeaderViewModel getEditProjectLeaderVM() {
         return editProjectLeaderVM;
     }
 
+    /**
+     * @return
+     */
     public ViewProfileViewModel getViewProfileVM() {
         return viewProfileVM;
     }

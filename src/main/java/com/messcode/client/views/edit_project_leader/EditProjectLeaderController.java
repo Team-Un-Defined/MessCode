@@ -11,6 +11,9 @@ import javafx.scene.control.ListCell;
 
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class EditProjectLeaderController {
 
     private EditProjectLeaderViewModel editProjectLeaderVM;
@@ -19,6 +22,11 @@ public class EditProjectLeaderController {
     public ComboBox<User> groupLeaderComboBox;
     public Label errorLabel;
 
+    /**
+     * @param editProjectLeaderVM
+     * @param vh
+     * @param bundle
+     */
     public void init(EditProjectLeaderViewModel editProjectLeaderVM, ViewHandler vh, ResourceBundle bundle) {
         this.editProjectLeaderVM = editProjectLeaderVM;
         this.vh = vh;
@@ -26,11 +34,17 @@ public class EditProjectLeaderController {
         setGroupLeaderComboBox();
     }
 
+    /**
+     *
+     */
     public void confirmButton() {
         User u = groupLeaderComboBox.getSelectionModel().getSelectedItem();
         editProjectLeaderVM.changeLeader(u);
     }
 
+    /**
+     *
+     */
     private void setGroupLeaderComboBox() {
         groupLeaderComboBox.setItems(editProjectLeaderVM.getUsers());
         groupLeaderComboBox.setCellFactory(lv -> new ListCell<>() {
