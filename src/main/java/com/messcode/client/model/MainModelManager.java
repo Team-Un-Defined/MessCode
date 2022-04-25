@@ -199,22 +199,21 @@ public class MainModelManager implements MainModel {
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
         this.allMessage.add(gm);
-        if(selectedGroup!=null){
-        if(gm.getGroup().getName().equals(selectedGroup.getName())) {
-            for (PublicMessage g : user.getUnreadMessages()) {
-                if (g instanceof GroupMessages) {
-                    if (selectedGroup != null) {
-                        if (((GroupMessages) g).getGroup().getName().equals(gm.getGroup().getName())) {
-                            user.getUnreadMessages().remove(g);
-                            user.getUnreadMessages().add(gm);
-                            support.firePropertyChange("newGroupMessage", null, gm);
-                            return;
-                        }
+
+
+        if((selectedGroup != null && gm.getGroup().getName().equals(selectedGroup.getName())) || gm.getSender().equals(user.getEmail())){
+        for (PublicMessage g : user.getUnreadMessages()) {
+            if (g instanceof GroupMessages) {
+                    if (((GroupMessages) g).getGroup().getName().equals(selectedGroup.getName())) {
+                        user.getUnreadMessages().remove(g);
+                        user.getUnreadMessages().add(gm);
+                        support.firePropertyChange("newGroupMessage", null, gm);
+                        return;
                     }
                 }
-
             }
-        }
+
+
         }
         support.firePropertyChange("newGroupMessage", null, gm);
     }
@@ -365,7 +364,7 @@ public class MainModelManager implements MainModel {
 
     @Override
     public boolean unredPMs(User u) {
-    
+
       ArrayList<PrivateMessage> pivi = loadPMs(u);
       PrivateMessage last=null;
      if(pivi.isEmpty())
@@ -382,10 +381,10 @@ public class MainModelManager implements MainModel {
             else last = pub;
 
       }
-
+ int m =0;
         for (PublicMessage p: user.getUnreadMessages()){
          if(p instanceof PrivateMessage){
-
+             if(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail()) || p.getSender().getEmail().equals(u.getEmail())) m++;
             if(((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail())){
              if((p.getTime().before(last.getTime()))){
 
@@ -407,8 +406,13 @@ public class MainModelManager implements MainModel {
             }
 
          }
-        
+
         }
+         if(last!=null && m==0)
+        {
+            return true;
+        }
+
         return false;
     }
 
@@ -463,6 +467,7 @@ public class MainModelManager implements MainModel {
 
                 }
             }
+       user.getUnreadMessages().add(lastMessage);
         }
 
 
@@ -479,7 +484,6 @@ public class MainModelManager implements MainModel {
         GroupMessages last=null;
         if(grps.isEmpty())
         {
-            System.out.println("DOES THIS RETURN always false?");
             return false;
         }
 
@@ -496,7 +500,7 @@ public class MainModelManager implements MainModel {
             }
             else last = gub;
         }
-       
+
         if(user.getUnreadMessages().isEmpty())
         {
             return true;
@@ -505,7 +509,9 @@ public class MainModelManager implements MainModel {
         for (PublicMessage p: user.getUnreadMessages()){
 
             if(p instanceof GroupMessages){
-                 m++;
+
+                if(g.getName().equals(((GroupMessages) p).getGroup().getName()))m++;
+
                 if(((GroupMessages) p).getGroup().getName().equals(g.getName())){
                     if((p.getTime().before(last.getTime()))){
                         System.out.println("this will never run "+ last.getMsg());
@@ -528,7 +534,9 @@ public class MainModelManager implements MainModel {
     public void setSelectedGroup(Group selectedGroup) {
         support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
         this.selectedGroup = selectedGroup;
-
+            System.out.println("//////////////////////////////////////////////////////////////");
+            if (!user.getUnreadGMs().isEmpty())user.getUnreadGMs().forEach(g-> System.out.println("[GROUP]  "+ g.getGroup().getName() + "[MESSAGE]  " + g.getMsg()+"   TIME:"+g.getTime()));
+             System.out.println("//////////////////////////////////////////////////////////////");
         GroupMessages lastMessage= null;
         for(PublicMessage pub : allMessage){
             if(pub instanceof GroupMessages && ((GroupMessages)pub).getGroup().getName().equals(selectedGroup.getName()) )
@@ -557,7 +565,11 @@ public class MainModelManager implements MainModel {
                         }
                     }
                 }
-            }  user.getUnreadMessages().add(lastMessage);
+            }
+
+            user.getUnreadMessages().add(lastMessage);
+
+
         }
     }
 
