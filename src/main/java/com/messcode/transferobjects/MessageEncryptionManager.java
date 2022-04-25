@@ -9,14 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
+* This method is used for encrypting message and private keys.
 * Asymmetric encryption is used for encrypting private and group messages.
 * Symmetric encryption is used for encrypting private keys.
 */
-
 public class MessageEncryptionManager {
     private String asymmetricCryptographyAlgorithm = "RSA";
     private String symmetricCryptographyAlgorithm = "AES";
 
+    /*
+    * Generates RSA key pair.
+    *
+    * @return   RSA key pair
+     */
     public KeyPair generateKeyPair() {
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance(asymmetricCryptographyAlgorithm);
@@ -29,6 +34,13 @@ public class MessageEncryptionManager {
         }
     }
 
+    /*
+    * Turns input key into valid symmetric key.
+    * Valid symmetric key used in symmetric encryption and decryption must be 16 characters long.
+    * For example when you want to use String "12345" for encryption this method turns it into "1234512345123451".
+    *
+    * @return   valid symmetric key
+     */
     private byte[] generateCorrectSymmetricKey(byte[] key) {
         int correct_key_size = 16;
         byte[] correct_key = new byte[16];
@@ -47,6 +59,13 @@ public class MessageEncryptionManager {
         return correct_key;
     }
 
+    /*
+    * Encrypts message that we want to send using receiver's public key.
+    *
+    * @param    data    open message that we want to encrypt
+    * @param    encryptionKey   public key used for encrypting message
+    * @return   encrypted message
+     */
     public byte[] asymmetricDataEncryption(byte[] data, byte[] encryptionKey) {
         try {
             PublicKey key = KeyFactory.getInstance(asymmetricCryptographyAlgorithm).generatePublic(new X509EncodedKeySpec(encryptionKey));
@@ -60,6 +79,13 @@ public class MessageEncryptionManager {
         }
     }
 
+    /*
+     * Decrypts message that we received using our private key.
+     *
+     * @param    data    encrypted message that we want to decrypt
+     * @param    decryptionKey   private key used for decrypting message
+     * @return   decrypted message
+     */
     public byte[] asymmetricDataDecryption(byte[] data, byte[] decryptionKey) {
         try {
             PrivateKey key = KeyFactory.getInstance(asymmetricCryptographyAlgorithm).generatePrivate(new PKCS8EncodedKeySpec(decryptionKey));
@@ -73,6 +99,13 @@ public class MessageEncryptionManager {
         }
     }
 
+    /*
+     * Encrypts private key that we want to send using our password
+     *
+     * @param    data    private key that we want to encrypt
+     * @param    key   our password that we use to encrypt our private key
+     * @return   encrypted private key
+     */
     public byte[] symmetricDataEncryption(byte[] data, byte[] key) {
         try {
             byte[] correctSymmetricKey = generateCorrectSymmetricKey(key);
@@ -87,6 +120,13 @@ public class MessageEncryptionManager {
         }
     }
 
+    /*
+     * Decrypts private key that we received from database using our password
+     *
+     * @param    data    private key that we want to decrypt
+     * @param    key   our password that we use to decrypt our private key
+     * @return   decrypted private key
+     */
     public byte[] symmetricDataDecryption(byte[] data, byte[] key) {
         try {
             byte[] correctSymmetricKey = generateCorrectSymmetricKey(key);
