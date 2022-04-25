@@ -443,6 +443,7 @@ public class ChatClientController {
 
             System.out.println(group.getName());
             chatVM.setReceiverGroup(group);
+            updateGroupList();
             messagesListGroup.getItems().clear();
             ArrayList<GroupMessages> groupMess = chatVM.loadGroup();
             for (GroupMessages g : groupMess) {
@@ -591,15 +592,27 @@ public class ChatClientController {
     }
 
     private void displayGroup(PropertyChangeEvent evt) {
-        String a = (String) evt.getNewValue();
-        Platform.runLater(() -> {
-            Label label = new Label(a);
-            label.setMaxWidth(messagesListGroup.getWidth() - 25);
-            label.setWrapText(true);
-            label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
-            messagesListGroup.getItems().add(label);
-            messagesListGroup.scrollTo(messagesListGroup.getItems().size());
-        });
+        if(evt.getNewValue() instanceof String) {
+            System.out.println("WOW?? ");
+            String a = (String) evt.getNewValue();
+            Platform.runLater(() -> {
+                Label label = new Label(a);
+                label.setMaxWidth(messagesListGroup.getWidth() - 25);
+                label.setWrapText(true);
+                label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
+                messagesListGroup.getItems().add(label);
+                messagesListGroup.scrollTo(messagesListGroup.getItems().size());
+            });
+        } else {
+            System.out.println("WTHIS SHOULD BE RUNNING? ");
+            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+
+                groupButtonImage.setImage(new Image(reddot));
+
+
+            updateGroupList();
+
+        }
     }
 
     public void resetPassword() {

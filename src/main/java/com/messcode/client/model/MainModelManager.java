@@ -30,41 +30,7 @@ public class MainModelManager implements MainModel {
         return selectedGroup;
     }
 
-    public void setSelectedGroup(Group selectedGroup) {
-        support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
-        this.selectedGroup = selectedGroup;
-        
-         GroupMessages lastMessage= null;
-        for(PublicMessage pub : allMessage){
-            if(pub instanceof GroupMessages && ((GroupMessages)pub).getGroup().getName().equals(selectedGroup.getName()) )
-            {
-                if(lastMessage!=null){
-                    if(lastMessage.getTime().before(pub.getTime())){
-                        lastMessage = (GroupMessages)pub;
 
-                    }
-
-                }
-                else lastMessage = (GroupMessages)pub;
-            }
-
-        }
-        
-          if(lastMessage != null){
-            for(PublicMessage u : user.getUnreadMessages()){
-                if(u instanceof GroupMessages){
-                    if(((GroupMessages) u).getGroup().getName().equals(selectedGroup.getName()) ){
-                        if((u.getTime().before(lastMessage.getTime()))){
-                            user.getUnreadMessages().remove(u);
-                            user.getUnreadMessages().add(lastMessage);
-
-                        return;
-                    }
-                }
-            }
-        }
-    }
-    }
 
     @Override
     public User getCurrentUser() {
@@ -233,19 +199,21 @@ public class MainModelManager implements MainModel {
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
         this.allMessage.add(gm);
-        if(gm.getGroup().getName().equals(selectedGroup.getName())){
-        for (PublicMessage g : user.getUnreadMessages()) {
-            if (g instanceof GroupMessages) {
-                if (selectedGroup != null) {
-                    if (((GroupMessages) g).getGroup().getName().equals(gm.getGroup().getName())) {
-                        user.getUnreadMessages().remove(g);
-                        user.getUnreadMessages().add(gm);
-                        support.firePropertyChange("newGroupMessage", null, gm);
-                        return;
+        if(selectedGroup!=null){
+        if(gm.getGroup().getName().equals(selectedGroup.getName())) {
+            for (PublicMessage g : user.getUnreadMessages()) {
+                if (g instanceof GroupMessages) {
+                    if (selectedGroup != null) {
+                        if (((GroupMessages) g).getGroup().getName().equals(gm.getGroup().getName())) {
+                            user.getUnreadMessages().remove(g);
+                            user.getUnreadMessages().add(gm);
+                            support.firePropertyChange("newGroupMessage", null, gm);
+                            return;
+                        }
                     }
                 }
-            }
 
+            }
         }
         }
         support.firePropertyChange("newGroupMessage", null, gm);
@@ -510,7 +478,10 @@ public class MainModelManager implements MainModel {
         ArrayList<GroupMessages> grps = loadGroup(g);
         GroupMessages last=null;
         if(grps.isEmpty())
-        {return false;}
+        {
+            System.out.println("DOES THIS RETURN always false?");
+            return false;
+        }
 
 
 
@@ -519,18 +490,25 @@ public class MainModelManager implements MainModel {
             if(last!=null){
                 if(last.getTime().before(gub.getTime())){
                     last = gub;
+                    System.out.println("is this the last? "+ last.getMsg());
                 }
 
             }
             else last = gub;
         }
        
-        
+        if(user.getUnreadMessages().isEmpty())
+        {
+            return true;
+        }
+        int m =0;
         for (PublicMessage p: user.getUnreadMessages()){
-            if(p instanceof GroupMessages){
 
+            if(p instanceof GroupMessages){
+                 m++;
                 if(((GroupMessages) p).getGroup().getName().equals(g.getName())){
                     if((p.getTime().before(last.getTime()))){
+                        System.out.println("this will never run "+ last.getMsg());
 
                         return true;
                     }
@@ -540,7 +518,47 @@ public class MainModelManager implements MainModel {
             }
 
         }
+        if(last!=null && m==0)
+        {
+            return true;
+        }
+        System.out.println("WE FOUND NOTHINGUUU ");
         return false;
+    }
+    public void setSelectedGroup(Group selectedGroup) {
+        support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
+        this.selectedGroup = selectedGroup;
+
+        GroupMessages lastMessage= null;
+        for(PublicMessage pub : allMessage){
+            if(pub instanceof GroupMessages && ((GroupMessages)pub).getGroup().getName().equals(selectedGroup.getName()) )
+            {
+                if(lastMessage!=null){
+                    if(lastMessage.getTime().before(pub.getTime())){
+                        lastMessage = (GroupMessages)pub;
+
+                    }
+
+                }
+                else lastMessage = (GroupMessages)pub;
+            }
+
+        }
+
+        if(lastMessage != null){
+            for(PublicMessage u : user.getUnreadMessages()){
+                if(u instanceof GroupMessages){
+                    if(((GroupMessages) u).getGroup().getName().equals(selectedGroup.getName()) ){
+                        if((u.getTime().before(lastMessage.getTime()))){
+                            user.getUnreadMessages().remove(u);
+                            user.getUnreadMessages().add(lastMessage);
+
+                            return;
+                        }
+                    }
+                }
+            }  user.getUnreadMessages().add(lastMessage);
+        }
     }
 
 }
