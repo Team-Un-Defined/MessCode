@@ -12,11 +12,17 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class RemoveGroupViewModel implements Subject {
     private MainModel mainModel;
     private PropertyChangeSupport support;
     private ObservableList<Group> groups;
-    
+
+    /**
+     * @param mainModel
+     */
     public RemoveGroupViewModel(MainModel mainModel) {
         this.groups= FXCollections.observableArrayList() ;
         this.mainModel = mainModel;
@@ -24,6 +30,9 @@ public class RemoveGroupViewModel implements Subject {
         mainModel.addListener("RefresgGroups", this::refreshGroups);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> groupList = (ArrayList<Group>) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
@@ -33,20 +42,34 @@ public class RemoveGroupViewModel implements Subject {
         });
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @return
+     */
     public ObservableList<Group> getGroups() {
         return groups;
     }
 
+    /**
+     * @param g
+     */
     void deleteGroup(Group g) {
         mainModel.deleteGroup(g);
     }

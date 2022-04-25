@@ -12,23 +12,25 @@ import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
 
+/**
+ *
+ */
 public class ExportData {
 
     private static final Logger log4j = LogManager.getLogger(ExportData.class);
     private Connection c;
     private DatabaseConnection conn;
 
+    /**
+     * Constructor method for Loading stuff from database. Gets the PostgreSQL connection.
+     */
     public ExportData() {
-        /**
-         * Constructor method for Loading stuff from database. Gets the PostgreSQL connection.
-         */
         conn = new DatabaseConnection();
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager.getConnection(conn.getConn(), conn.getName(),
-                            conn.getPass()); //use your own password here
+                    conn.getPass()); //use your own password here
             System.out.println("hello success");
 
 
@@ -51,7 +53,7 @@ public class ExportData {
      *                      access error or other errors.
      */
     public Container checkLogin(String email, String password) throws SQLException {
-        
+
         System.out.println("hello why not?");
         String answer = null;
 
@@ -81,18 +83,16 @@ public class ExportData {
 
             AccountManager am = new AccountManager();
             pass = am.hashPassword(password, salt);
-            System.out.println("pwd from client = "+ Arrays.toString(pass));
+            System.out.println("pwd from client = " + Arrays.toString(pass));
 
             if (ema != null) {
                 if (Arrays.toString(pass).equals(hashedPassword)) {
                     System.out.println("THEY ARE THE SAME OMG");
                     answer = hashedPassword;
                 }
-
                 break;
             }
         }
-
         System.out.println("ans3" + answer);
 
         return new Container(answer, ClassName.LOGIN_RESPONSE);
@@ -102,13 +102,12 @@ public class ExportData {
      * Creates an SQL statement that will get the account information and the groups, that
      * the user is part of , from the database.
      *
-     * @param email    String containing the username
-     *
+     * @param email String containing the username
      * @throws SQLException an exception that provides information on a database
      *                      access error or other errors.
      * @returns Container that contains a boolean true stating that the login was successfull, the account of the user and an ArrayList of groups.
      */
-    public Container acceptLogin(String email, String  password) throws SQLException {
+    public Container acceptLogin(String email, String password) throws SQLException {
         PreparedStatement myPreparedStatement;
 
         System.out.println("db: " + email + " " + password);
@@ -161,12 +160,12 @@ public class ExportData {
         rs.beforeFirst();
         while (rs.next()) {
             cid = rs.getInt("id");
-            User us = new User(rs.getString("email"),"a");
+            User us = new User(rs.getString("email"), "a");
             us.setSurname(rs.getString("lname"));
             us.setName(rs.getString("fname"));
             us.setType(rs.getString("type"));
-            
-            PublicMessage pubm = new PublicMessage(us, rs.getString("message"),rs.getTimestamp("date"));
+
+            PublicMessage pubm = new PublicMessage(us, rs.getString("message"), rs.getTimestamp("date"));
             allMessages.add(pubm);
         }
 
@@ -188,7 +187,7 @@ public class ExportData {
 
         rs.beforeFirst();
         while (rs.next()) {
-            User u = new User(rs.getString("email"),"a");
+            User u = new User(rs.getString("email"), "a");
             u.setName(rs.getString("fname"));
             u.setSurname(rs.getString("lname"));
 
@@ -213,17 +212,17 @@ public class ExportData {
 
         rs.beforeFirst();
         while (rs.next()) {
-            User u = new User(rs.getString("email"),"a");
+            User u = new User(rs.getString("email"), "a");
             u.setName(rs.getString("fname"));
             u.setSurname(rs.getString("lname"));
             PrivateMessage pm;
-            if(rs.getInt("sender_id") == id) {
+            if (rs.getInt("sender_id") == id) {
                 pm = new PrivateMessage(use, u, rs.getString("message"), rs.getTimestamp("date"));
             } else {
                 pm = new PrivateMessage(u, use, rs.getString("message"), rs.getTimestamp("date"));
             }
 
-           allMessages.add(pm);
+            allMessages.add(pm);
         }
 
         String query6 = "SELECT * FROM account AS a WHERE a.id != ?";
@@ -234,44 +233,42 @@ public class ExportData {
         ArrayList<User> users = new ArrayList<>();
         rs.beforeFirst();
         while (rs.next()) {
-            User u = new User(rs.getString("email"),"a");
+            User u = new User(rs.getString("email"), "a");
 
             u.setName(rs.getString("fname"));
             u.setSurname(rs.getString("lname"));
             u.setType(rs.getString("type"));
-            if(rs.getString("pwd_hash").equals("deleted"))
-            {
+            if (rs.getString("pwd_hash").equals("deleted")) {
 
                 u.setSalt(" - deleted");
-                System.out.println("this guy should be delted: "+ u.getEmail() +" : "+ u.getSalt());
-            }else {
+                System.out.println("this guy should be delted: " + u.getEmail() + " : " + u.getSalt());
+            } else {
                 u.setSalt("");
             }
 
-
             users.add(u);
         }
-        
-        ArrayList <Group> groups = updateGroups(use);
-        if(groups!=null){
-        for (Group group : groups) {
-            String query7 = "SELECT g.message, g.date, a.fname, a.lname, a.type, a.email FROM group_messages AS g " +
-                    "JOIN account AS a ON a.id = g.sender_id JOIN projects AS p ON p.id = g.project_id " +
-                    "WHERE p.name = ? ORDER BY DATE";
-            myPreparedStatement = c.prepareStatement(query7, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            myPreparedStatement.setString(1, group.getName());
-            rs = myPreparedStatement.executeQuery();
 
-            rs.beforeFirst();
-            while (rs.next()) {
-                User member = new User(rs.getString("email"), "a");
-                member.setName(rs.getString("fname"));
-                member.setSurname(rs.getString("lname"));
-                member.setType(rs.getString("type"));
-                GroupMessages g = new GroupMessages(member, rs.getString("message"), group, rs.getTimestamp("date"));
-                allMessages.add(g);
+        ArrayList<Group> groups = updateGroups(use);
+        if (groups != null) {
+            for (Group group : groups) {
+                String query7 = "SELECT g.message, g.date, a.fname, a.lname, a.type, a.email FROM group_messages AS g " +
+                        "JOIN account AS a ON a.id = g.sender_id JOIN projects AS p ON p.id = g.project_id " +
+                        "WHERE p.name = ? ORDER BY DATE";
+                myPreparedStatement = c.prepareStatement(query7, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                myPreparedStatement.setString(1, group.getName());
+                rs = myPreparedStatement.executeQuery();
+
+                rs.beforeFirst();
+                while (rs.next()) {
+                    User member = new User(rs.getString("email"), "a");
+                    member.setName(rs.getString("fname"));
+                    member.setSurname(rs.getString("lname"));
+                    member.setType(rs.getString("type"));
+                    GroupMessages g = new GroupMessages(member, rs.getString("message"), group, rs.getTimestamp("date"));
+                    allMessages.add(g);
+                }
             }
-        }
         }
         ArrayList<Object> objs = new ArrayList<>();
         objs.add(allMessages);
@@ -279,11 +276,16 @@ public class ExportData {
         objs.add(use);
         objs.add(users);
         objs.add(groups);
-        
+
         return new Container(objs, ClassName.LOGIN_DATA);
     }
 
 
+    /**
+     * @param current
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<Group> updateGroups(User current) throws SQLException {
         ArrayList<Group> groups = new ArrayList<Group>();
         PreparedStatement myPreparedStatement;
@@ -298,11 +300,11 @@ public class ExportData {
             myPreparedStatement = c.prepareStatement(query0, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             myPreparedStatement.setString(1, current.getEmail());
             rs0 = myPreparedStatement.executeQuery();
-            if(!rs0.next()){
-            return null;
+            if (!rs0.next()) {
+                return null;
             }
             //rs0.beforeFirst();
-      
+
         }
 
         do {
@@ -317,23 +319,22 @@ public class ExportData {
                 myPreparedStatement1 = c.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             }
             rs = myPreparedStatement1.executeQuery();
-            
-               
+
+
             while (rs.next()) {
-               Group g;
-               if(rs.getObject("leader_id")!=null){ 
-                User lead = new User(rs.getString("email"),rs.getString("fname")+rs.getString("lname"));
-                lead.setName(rs.getString("fname"));
-                lead.setSurname(rs.getString("lname"));
-                lead.setType(rs.getString("type"));
-                g = new Group(rs.getString("name"),rs.getString("description"),lead);
-               }
-               else {
-                 
-                   g = new Group(rs.getString("name"),rs.getString("description"),null);
-                
-               }
-               
+                Group g;
+                if (rs.getObject("leader_id") != null) {
+                    User lead = new User(rs.getString("email"), rs.getString("fname") + rs.getString("lname"));
+                    lead.setName(rs.getString("fname"));
+                    lead.setSurname(rs.getString("lname"));
+                    lead.setType(rs.getString("type"));
+                    g = new Group(rs.getString("name"), rs.getString("description"), lead);
+                } else {
+
+                    g = new Group(rs.getString("name"), rs.getString("description"), null);
+
+                }
+
                 String query2 = "SELECT a.fname, a.lname, a.email, a.type FROM project_members AS pm " +
                         "JOIN account AS a ON a.id = pm.account_id JOIN projects AS p ON p.id = pm.project_id " +
                         "WHERE p.name = ?";
@@ -341,8 +342,8 @@ public class ExportData {
                 myPreparedStatement2.setString(1, rs.getString("name"));
                 ResultSet rs2 = myPreparedStatement2.executeQuery();
 
-                while(rs2.next()) {
-                    User u = new User (rs2.getString("email"),rs2.getString("fname")+rs2.getString("lname"));
+                while (rs2.next()) {
+                    User u = new User(rs2.getString("email"), rs2.getString("fname") + rs2.getString("lname"));
                     u.setName(rs2.getString("fname"));
                     u.setSurname(rs2.getString("lname"));
                     u.setType(rs2.getString("type"));
@@ -351,37 +352,40 @@ public class ExportData {
 
                 groups.add(g);
             }
-        } while(!(rs0 == null) && rs0.next());
+        } while (!(rs0 == null) && rs0.next());
 
         return groups;
     }
 
+    /**
+     * @param g
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<PublicMessage> getGroupMessages(Group g) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs = null;
 
 
-
-
         ArrayList<PublicMessage> groupMessages = new ArrayList<>();
 
         String query7 = "SELECT g.message, g.date, a.fname, a.lname, a.type, a.email FROM group_messages AS g " +
-                        "JOIN account AS a ON a.id = g.sender_id JOIN projects AS p ON p.id = g.project_id " +
-                        "WHERE p.name = ? ORDER BY DATE";
-                myPreparedStatement = c.prepareStatement(query7, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                myPreparedStatement.setString(1, g.getName());
-                rs = myPreparedStatement.executeQuery();
+                "JOIN account AS a ON a.id = g.sender_id JOIN projects AS p ON p.id = g.project_id " +
+                "WHERE p.name = ? ORDER BY DATE";
+        myPreparedStatement = c.prepareStatement(query7, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        myPreparedStatement.setString(1, g.getName());
+        rs = myPreparedStatement.executeQuery();
 
-                rs.beforeFirst();
-                while (rs.next()) {
-                    User member = new User(rs.getString("email"), "a");
-                    member.setName(rs.getString("fname"));
-                    member.setSurname(rs.getString("lname"));
-                    member.setType(rs.getString("type"));
-                    GroupMessages gg = new GroupMessages(member, rs.getString("message"), g, rs.getTimestamp("date"));
-                    groupMessages.add(gg);
-                }
+        rs.beforeFirst();
+        while (rs.next()) {
+            User member = new User(rs.getString("email"), "a");
+            member.setName(rs.getString("fname"));
+            member.setSurname(rs.getString("lname"));
+            member.setType(rs.getString("type"));
+            GroupMessages gg = new GroupMessages(member, rs.getString("message"), g, rs.getTimestamp("date"));
+            groupMessages.add(gg);
+        }
 
-       return groupMessages;
+        return groupMessages;
     }
 }

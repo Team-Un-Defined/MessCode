@@ -20,10 +20,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ *
+ */
 public class SettingsConfig {
     private static File configFile;
     private static Document doc;
 
+    /**
+     *
+     */
     public static void readConfig() {
         ClassLoader classLoader = SettingsConfig.class.getClassLoader();
         configFile = new File(classLoader.getResource("config.xml").getFile());
@@ -47,6 +53,10 @@ public class SettingsConfig {
         doc.getDocumentElement().normalize();
     }
 
+    /**
+     * @param stuff
+     * @return
+     */
     public static String getConfigOf(String stuff) {
         String result = null;
         NodeList nodes = doc.getElementsByTagName("config");

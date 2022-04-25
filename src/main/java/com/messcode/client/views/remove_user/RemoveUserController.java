@@ -2,14 +2,15 @@ package com.messcode.client.views.remove_user;
 
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
-import com.messcode.transferobjects.messages.PrivateMessage;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class RemoveUserController {
 
     public Label errorLabel;
@@ -20,14 +21,21 @@ public class RemoveUserController {
     private User user;
     private ResourceBundle bundle;
 
+    /**
+     * @param removeUserVM
+     * @param vh
+     * @param bundle
+     */
     public void init(RemoveUserViewModel removeUserVM, ViewHandler vh, ResourceBundle bundle) {
         this.removeUserVM = removeUserVM;
         this.vh = vh;
         this.bundle = bundle;
         updateUserList();
-
     }
 
+    /**
+     *
+     */
     private void updateUserList() {
         usersList.setItems(removeUserVM.getUsers());
         usersList.setCellFactory(lv -> new ListCell<User>() {
@@ -44,6 +52,9 @@ public class RemoveUserController {
         });
     }
 
+    /**
+     *
+     */
     public void removeButton() {
         if (usersList.getSelectionModel().getSelectedItems().isEmpty()) {
             errorLabel.setText(bundle.getString("select_user"));

@@ -12,6 +12,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class ChangePasswordViewModel implements Subject {
 
     private MainModel mainModel;
@@ -19,7 +22,9 @@ public class ChangePasswordViewModel implements Subject {
     private StringProperty error;
     private ResourceBundle bundle;
 
-
+    /**
+     * @param mainModel
+     */
     public ChangePasswordViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
         support = new PropertyChangeSupport(this);
@@ -28,6 +33,9 @@ public class ChangePasswordViewModel implements Subject {
         mainModel.addListener("passChangeResponse", this::response);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void response(PropertyChangeEvent propertyChangeEvent) {
         checkLanguage();
         if (((boolean) propertyChangeEvent.getNewValue())) {
@@ -38,10 +46,18 @@ public class ChangePasswordViewModel implements Subject {
         }
     }
 
+    /**
+     * @return
+     */
     public StringProperty errorProperty() {
         return error;
     }
 
+    /**
+     * @param current
+     * @param password
+     * @param passwordConfirmed
+     */
     public void changePassword(String current, String password, String passwordConfirmed) {
         checkLanguage();
         if (passwordConfirmed.equals("") || password.equals("") || current.equals("")) {
@@ -54,16 +70,27 @@ public class ChangePasswordViewModel implements Subject {
         }
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
+    /**
+     *
+     */
     private void checkLanguage(){
         if(SettingsConfig.getConfigOf("language").equals("SK")){
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));

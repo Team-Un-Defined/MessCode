@@ -2,11 +2,18 @@ package com.messcode.transferobjects;
 
 import java.io.Serializable;
 
+/**
+ *
+ */
 public class Container implements Serializable {
 
     private Object object;
     private ClassName className;
 
+    /**
+     * @param object
+     * @param className
+     */
     public Container(Object object, ClassName className) {
         this.object = object;
         this.className = className;

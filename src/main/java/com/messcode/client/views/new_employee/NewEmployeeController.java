@@ -15,6 +15,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class NewEmployeeController implements Subject {
 
     public Button createButton;
@@ -30,6 +33,11 @@ public class NewEmployeeController implements Subject {
     private ResourceBundle bundle;
     private PropertyChangeSupport support;
 
+    /**
+     * @param newEmployeeVM
+     * @param vh
+     * @param bundle
+     */
     public void init(NewEmployeeViewModel newEmployeeVM, ViewHandler vh, ResourceBundle bundle) {
         this.newEmployeeVM = newEmployeeVM;
         this.vh = vh;
@@ -46,6 +54,9 @@ public class NewEmployeeController implements Subject {
         newEmployeeVM.addListener("accCreateResponse", this::evalute);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void evalute(PropertyChangeEvent propertyChangeEvent) {
         System.out.println("WOTÖFÖK? AGAIN");
         errorLabel.setVisible(true);
@@ -54,6 +65,9 @@ public class NewEmployeeController implements Subject {
 
     }
 
+    /**
+     *
+     */
     public void createClicked() {
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -69,14 +83,21 @@ public class NewEmployeeController implements Subject {
         } else if (resp == 0) {
             errorLabel.setVisible(true);
         }
-
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);

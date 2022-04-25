@@ -9,18 +9,32 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ */
 public class AccountManager {
 
+    /**
+     * @param user1
+     * @param user2
+     * @return
+     */
     public boolean equals(User user1, User user2) {
         return user1.getEmail().equals(user2.getEmail());
     }
 
+    /**
+     * @return
+     */
     public String generateSalt() {
         byte[] array = new byte[10];
         new Random().nextBytes(array);
         return new String(array, StandardCharsets.UTF_8);
     }
 
+    /**
+     * @return
+     */
     public String generatePassword() {
         while (true) {
             String legalCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?";
@@ -41,6 +55,11 @@ public class AccountManager {
         }
     }
 
+    /**
+     * @param password
+     * @param salt
+     * @return
+     */
     public byte[] hashPassword(String password, String salt) {
         String appendedPassword = password + salt;
         try {
@@ -52,6 +71,10 @@ public class AccountManager {
         }
     }
 
+    /**
+     * @param groupName
+     * @return
+     */
     public boolean groupNameRegex(String groupName) {
         String myRegex = "^.{4,}$";
 
@@ -61,6 +84,10 @@ public class AccountManager {
         return myMatcher.find();
     }
 
+    /**
+     * @param name
+     * @return
+     */
     public boolean nameRegex(String name) {
         String myRegex = "^[A-ZŠĽČŤŽŇÝÁÉÚÍÄÔ]{1}[a-zšľčťžňýáíéúäô]{1,}$";
 
@@ -70,6 +97,10 @@ public class AccountManager {
         return myMatcher.find();
     }
 
+    /**
+     * @param password
+     * @return
+     */
     public boolean passwordRegex(String password) {
         String myRegex = "^(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)[a-zA-Z0-9~`!@#$%^&*()_\\-+={[}\\]\\|\\:;\"'<,>.?/]]{8,16}$";
 
@@ -79,6 +110,10 @@ public class AccountManager {
         return myMatcher.find();
     }
 
+    /**
+     * @param email
+     * @return
+     */
     public boolean emailRegex(String email) {
         String myRegex = "^(?!\\.|-|_)(?!.*\\.\\.|.*--|.*__)(?!.*\\.@|.*-@|.*_@)[a-zA-Z0-9.\\-_]{1,64}@(?!.{255,})((?!-)(?!.*-\\.)[a-zA-Z0-9-]{1,63}\\.)+[a-z]{2,}$";
 

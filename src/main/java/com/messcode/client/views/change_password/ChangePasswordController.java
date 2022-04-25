@@ -9,6 +9,9 @@ import javafx.scene.control.TextField;
 import java.beans.PropertyChangeSupport;
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class ChangePasswordController {
 
     public Button confirmButton;
@@ -22,6 +25,11 @@ public class ChangePasswordController {
 
     private ResourceBundle bundle;
 
+    /**
+     * @param changePasswordVM
+     * @param vh
+     * @param bundle
+     */
     public void init(ChangePasswordViewModel changePasswordVM, ViewHandler vh, ResourceBundle bundle) {
         this.changePasswordVM = changePasswordVM;
         this.vh = vh;
@@ -30,6 +38,9 @@ public class ChangePasswordController {
         errorLabel.textProperty().bind(changePasswordVM.errorProperty());
     }
 
+    /**
+     *
+     */
     public void confirmClicked() {
         String currentPassword = currentPasswordTextField.getText();
         String password = passwordTextField.getText();

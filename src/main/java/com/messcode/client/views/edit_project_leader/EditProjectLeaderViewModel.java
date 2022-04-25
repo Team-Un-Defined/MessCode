@@ -13,12 +13,18 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class EditProjectLeaderViewModel implements Subject {
     private Group selectedGroup;
     private ObservableList<User> usersList;
     private PropertyChangeSupport support;
     private MainModel mainModel;
 
+    /**
+     * @param mainModel
+     */
     public EditProjectLeaderViewModel(MainModel mainModel) {
         support = new PropertyChangeSupport(this);
         usersList = FXCollections.observableArrayList();
@@ -28,6 +34,9 @@ public class EditProjectLeaderViewModel implements Subject {
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
 
@@ -42,21 +51,34 @@ public class EditProjectLeaderViewModel implements Subject {
         });
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void updateGroup(PropertyChangeEvent propertyChangeEvent) {
         selectedGroup = (Group) propertyChangeEvent.getNewValue();
-
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @return
+     */
     public ObservableList<User> getUsers() {
         ObservableList<User> use = FXCollections.observableArrayList();
         use.addAll(usersList);
@@ -64,16 +86,21 @@ public class EditProjectLeaderViewModel implements Subject {
         return use;
     }
 
+    /**
+     * @return
+     */
     public User getLeader() {
         return selectedGroup.getLeader();
     }
 
+    /**
+     * @param u
+     */
     void changeLeader(User u) {
         if (u.getEmail().equals(selectedGroup.getLeader().getEmail())) {
             return;
         }
         Group g = new Group(selectedGroup.getName(), selectedGroup.getDescription(), u);
         mainModel.changeLeader(g);
-
     }
 }
