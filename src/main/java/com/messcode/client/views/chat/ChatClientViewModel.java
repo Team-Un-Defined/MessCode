@@ -25,6 +25,7 @@ import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class ChatClientViewModel implements Subject {
@@ -201,9 +202,7 @@ public class ChatClientViewModel implements Subject {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
 
         if (this.receiver == null) return;
-        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
-
-            // PMmessage.setValue(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {    
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
         }
@@ -212,8 +211,11 @@ public class ChatClientViewModel implements Subject {
     private void displayGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
 
-        if (this.receiverGroup == null) return;
+        if (this.receiverGroup == null) {
+            System.out.println("IM IN DISPLAYSGROUP in vm");
+            support.firePropertyChange("newGroupMessage", null, false);}
         else if (gm.getGroup().getName().equals(this.receiverGroup.getName())) {
+            System.out.println("Im in displaysgroup in vm, but i have selected the group");
             //GMmessage.set(gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
             String s = gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg();
             support.firePropertyChange("newGroupMessage", null, s);
@@ -286,8 +288,9 @@ public class ChatClientViewModel implements Subject {
     
     }
     public boolean getUnredGMs (Group g){
-
-        return   mainModel.unredgGMs (g);
+        boolean lul =  mainModel.unredGMs (g);
+        System.out.println(" THIS IS MY LIFE "  + lul);
+        return  lul;
 
     }
     

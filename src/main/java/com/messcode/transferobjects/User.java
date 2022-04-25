@@ -1,5 +1,6 @@
 package com.messcode.transferobjects;
 
+import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
@@ -173,7 +174,20 @@ public class User implements Serializable {
     public ArrayList<PublicMessage> getUnreadMessages() {
         return unreadMessages;
     }
-
+    public ArrayList<PrivateMessage> getUnreadPMs() {
+        ArrayList<PrivateMessage> pm = new ArrayList<PrivateMessage>();
+        for (PublicMessage un: unreadMessages){
+        if (un instanceof PrivateMessage){
+        pm.add((PrivateMessage) un);
+        }
+        
+            
+        }
+        
+        
+        return pm;
+    }
+    
     public void setUnreadMessages(ArrayList<PublicMessage> unreadMessages) {
         this.unreadMessages = unreadMessages;
     }
@@ -185,4 +199,6 @@ public class User implements Serializable {
     public void removeUnreadMessages(PublicMessage unreadMessages) {
         this.unreadMessages.remove(unreadMessages);
     }
+   
+    
 }

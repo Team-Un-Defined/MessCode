@@ -54,12 +54,6 @@ public class MainModelManager implements MainModel {
         return selectedGroup;
     }
 
-    public void setSelectedGroup(Group selectedGroup) {
-        support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
-        this.selectedGroup = selectedGroup;
-
-    }
-
     @Override
     public User getCurrentUser() {
         return user;
@@ -159,12 +153,29 @@ public class MainModelManager implements MainModel {
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(pm);
-        for (PublicMessage u : user.getUnreadMessages()) {
-            if (u instanceof PrivateMessage) {
-                if (selectedUser != null) {
-                    if (!(pm.getSender().getEmail().equals(user.getEmail())) && (((PrivateMessage) u).getSender().getEmail().equals(selectedUser.getEmail())) && ((((PrivateMessage) u).getReceiver().getEmail().equals(pm.getSender().getEmail())) || (((PrivateMessage) u).getSender().getEmail().equals(pm.getSender().getEmail())))) {
+
+        if (selectedUser != null && (pm.getSender().getEmail().equals(selectedUser.getEmail()))) {
+            for (PublicMessage u : user.getUnreadMessages()) {
+                if (u instanceof PrivateMessage) {
+
+                    if (((PrivateMessage) u).getReceiver().getEmail().equals(selectedUser.getEmail()) || u.getSender().getEmail().equals(selectedUser.getEmail())) {
                         user.getUnreadMessages().remove(u);
                         user.getUnreadMessages().add(pm);
+                        support.firePropertyChange("newPM", null, pm);
+                        return;
+                    }
+                }
+            }
+        } else if (selectedUser != null && (pm.getReceiver().getEmail().equals(selectedUser.getEmail()))) {
+
+            for (int i = 0; i < user.getUnreadMessages().size(); i++) {
+
+                if (user.getUnreadMessages().get(i) instanceof PrivateMessage) {
+                    if (((PrivateMessage) user.getUnreadMessages().get(i)).getReceiver().getEmail().equals(pm.getReceiver().getEmail()) ||
+                            user.getUnreadMessages().get(i).getSender().getEmail().equals(pm.getReceiver().getEmail())) {
+                        user.getUnreadMessages().set(i, pm);
+
+                        support.firePropertyChange("newPM", null, pm);
                         return;
                     }
                 }
@@ -177,17 +188,23 @@ public class MainModelManager implements MainModel {
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
         this.allMessage.add(gm);
-        for (PublicMessage g : user.getUnreadMessages()) {
-            if (g instanceof GroupMessages) {
-                if (selectedGroup != null) {
-                    if (((GroupMessages) g).getGroup().getName().equals(gm.getGroup().getName())) {
-                        user.getUnreadMessages().remove(g);
-                        user.getUnreadMessages().add(gm);
+        if (selectedGroup != null) {
+            if (gm.getGroup().getName().equals(selectedGroup.getName())) {
+                for (PublicMessage g : user.getUnreadMessages()) {
+                    if (g instanceof GroupMessages) {
+                        if (selectedGroup != null) {
+                            if (((GroupMessages) g).getGroup().getName().equals(gm.getGroup().getName())) {
+                                user.getUnreadMessages().remove(g);
+                                user.getUnreadMessages().add(gm);
+                                support.firePropertyChange("newGroupMessage", null, gm);
+                                return;
+                            }
+                        }
                     }
                 }
             }
+            support.firePropertyChange("newGroupMessage", null, gm);
         }
-        support.firePropertyChange("newGroupMessage", null, gm);
     }
 
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
@@ -219,15 +236,6 @@ public class MainModelManager implements MainModel {
     @Override
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
-
-        for (PublicMessage u : user.getUnreadMessages()) {
-            if (u instanceof PrivateMessage) {
-                if (u.getSender().getEmail().equals(message.getReceiver().getEmail()) || ((PrivateMessage) u).getReceiver().getEmail().equals(message.getReceiver().getEmail()))
-                    user.getUnreadMessages().remove(u);
-                user.getUnreadMessages().add(message);
-                return;
-            }
-        }
     }
 
     @Override
@@ -344,19 +352,46 @@ public class MainModelManager implements MainModel {
 
     @Override
     public boolean unredPMs(User u) {
+
         ArrayList<PrivateMessage> pivi = loadPMs(u);
+        PrivateMessage last = null;
+        if (pivi.isEmpty()) {
+            return false;
+        }
+
+        for (PrivateMessage pub : pivi) {
+
+            if (last != null) {
+                if (last.getTime().before(pub.getTime())) {
+                    last = pub;
+                }
+
+            } else last = pub;
+
+        }
 
         for (PublicMessage p : user.getUnreadMessages()) {
             if (p instanceof PrivateMessage) {
-                for (PrivateMessage piv : pivi) {
-                    System.out.println("--------------------" + p.getMsg() + "----------------" + p.getTime().before(piv.getTime()));
-                    if ((p.getTime().before(piv.getTime())) && (((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail()) || p.getSender().getEmail().equals(u.getEmail()))) {
 
-                        System.out.println("---------***********-----------" + p.getMsg() + "------**********----------" + p.getTime().before(piv.getTime()));
+                if (((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail())) {
+                    if ((p.getTime().before(last.getTime()))) {
+
+
+                        System.out.println(last.getMsg());
+
                         return true;
                     }
+                } else if (((PrivateMessage) p).getSender().getEmail().equals(u.getEmail())) {
 
+                    if ((p.getTime().before(last.getTime()))) {
+
+                        System.out.println(last.getMsg());
+
+                        return true;
+
+                    }
                 }
+
             }
 
         }
@@ -379,17 +414,38 @@ public class MainModelManager implements MainModel {
             }
 
         }
+
+
         if (lastMessage != null) {
             for (PublicMessage u : user.getUnreadMessages()) {
                 if (u instanceof PrivateMessage) {
-                    if ((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) && (u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage) u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail())))
-                        user.getUnreadMessages().remove(u);
+                    if (lastMessage.getSender().getEmail().equals(us.getEmail())) {
+                        if ((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) &&
+                                (u.getSender().getEmail().equals(lastMessage.getSender().getEmail()) || ((PrivateMessage) u).getReceiver().getEmail().equals(lastMessage.getSender().getEmail())))
+                            user.getUnreadMessages().remove(u);
+                        user.getUnreadMessages().add(lastMessage);
 
-                    user.getUnreadMessages().add(lastMessage);
-                    return;
+                        return;
+                    } else {
+                        if ((u.getTime().before(lastMessage.getTime()) || u.getTime().equals(lastMessage.getTime())) &&
+                                (u.getSender().getEmail().equals(lastMessage.getReceiver().getEmail()) || ((PrivateMessage) u).getReceiver().getEmail().equals(lastMessage.getReceiver().getEmail()))) {
+
+                            user.getUnreadMessages().remove(u);
+                            user.getUnreadMessages().add(lastMessage);
+
+                            return;
+
+
+                        }
+
+
+                    }
+
                 }
             }
         }
+
+
     }
 
     public User getSelectedUser() {
@@ -397,19 +453,86 @@ public class MainModelManager implements MainModel {
     }
 
     @Override
-    public boolean unredgGMs(Group g) {
-        ArrayList<GroupMessages> pivi = loadGroup(g);
+    public boolean unredGMs(Group g) {
 
+        ArrayList<GroupMessages> grps = loadGroup(g);
+        GroupMessages last = null;
+        if (grps.isEmpty()) {
+            System.out.println("DOES THIS RETURN always false?");
+            return false;
+        }
+
+
+        for (GroupMessages gub : grps) {
+
+            if (last != null) {
+                if (last.getTime().before(gub.getTime())) {
+                    last = gub;
+                    System.out.println("is this the last? " + last.getMsg());
+                }
+
+            } else last = gub;
+        }
+
+        if (user.getUnreadMessages().isEmpty()) {
+            return true;
+        }
+        int m = 0;
         for (PublicMessage p : user.getUnreadMessages()) {
+
             if (p instanceof GroupMessages) {
-                for (GroupMessages piv : pivi) {
-                    if (p.getTime().before(piv.getTime()) && (((GroupMessages) p).getGroup().getName().equals(g.getName()))) {
+                m++;
+                if (((GroupMessages) p).getGroup().getName().equals(g.getName())) {
+                    if ((p.getTime().before(last.getTime()))) {
+                        System.out.println("this will never run " + last.getMsg());
+
                         return true;
                     }
+                }
 
+
+            }
+
+        }
+        if (last != null && m == 0) {
+            return true;
+        }
+        System.out.println("WE FOUND NOTHINGUUU ");
+        return false;
+    }
+
+    public void setSelectedGroup(Group selectedGroup) {
+        support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
+        this.selectedGroup = selectedGroup;
+
+        GroupMessages lastMessage = null;
+        for (PublicMessage pub : allMessage) {
+            if (pub instanceof GroupMessages && ((GroupMessages) pub).getGroup().getName().equals(selectedGroup.getName())) {
+                if (lastMessage != null) {
+                    if (lastMessage.getTime().before(pub.getTime())) {
+                        lastMessage = (GroupMessages) pub;
+
+                    }
+
+                } else lastMessage = (GroupMessages) pub;
+            }
+
+        }
+
+        if (lastMessage != null) {
+            for (PublicMessage u : user.getUnreadMessages()) {
+                if (u instanceof GroupMessages) {
+                    if (((GroupMessages) u).getGroup().getName().equals(selectedGroup.getName())) {
+                        if ((u.getTime().before(lastMessage.getTime()))) {
+                            user.getUnreadMessages().remove(u);
+                            user.getUnreadMessages().add(lastMessage);
+
+                            return;
+                        }
+                    }
                 }
             }
+            user.getUnreadMessages().add(lastMessage);
         }
-        return false;
     }
 }
