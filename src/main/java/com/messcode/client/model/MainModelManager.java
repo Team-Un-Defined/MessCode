@@ -26,6 +26,13 @@ public class MainModelManager implements MainModel {
     private Group selectedGroup;
     private User selectedUser;
 
+    private void addOfflineUser(PropertyChangeEvent propertyChangeEvent) {
+        User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
+   
+        allUsers.add(u);
+        support.firePropertyChange("AddOfflineUsers", null, allUsers);
+    }
+
     public Group getSelectedGroup() {
         return selectedGroup;
     }
@@ -61,6 +68,7 @@ public class MainModelManager implements MainModel {
             client.addListener("passChangeResponse", this::passChangeResponse);
             client.addListener("userDeleted", this::userDeleted);
             client.addListener("AddAllGroupMessages", this::addAllGroupMessages);
+            client.addListener("addOfflineUser", this::addOfflineUser);
         } catch (IOException e) {
             e.printStackTrace();
         }

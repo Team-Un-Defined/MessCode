@@ -213,12 +213,14 @@ public class ChatClientViewModel implements Subject {
 
         if (this.receiverGroup == null) {
             System.out.println("IM IN DISPLAYSGROUP in vm");
-            support.firePropertyChange("newGroupMessage", null, false);}
+            support.firePropertyChange("newGroupMessage", null, "true");}
         else if (gm.getGroup().getName().equals(this.receiverGroup.getName())) {
             System.out.println("Im in displaysgroup in vm, but i have selected the group");
             //GMmessage.set(gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg());
             String s = gm.getTime() + " " + gm.getUsername() + ": " + gm.getMsg();
             support.firePropertyChange("newGroupMessage", null, s);
+        }else {
+            support.firePropertyChange("newGroupMessage", null, "false");
         }
 
     }

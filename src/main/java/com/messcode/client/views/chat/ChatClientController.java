@@ -8,7 +8,10 @@ import com.messcode.transferobjects.messages.GroupMessages;
 import com.messcode.transferobjects.messages.PrivateMessage;
 import com.messcode.transferobjects.messages.PublicMessage;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -30,8 +34,13 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.beans.PropertyChangeEvent;
 import java.io.InputStream;
+
+import static java.lang.Thread.sleep;
+
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ChatClientController {
 
@@ -116,7 +125,6 @@ public class ChatClientController {
         editProjectLeaderButton.setVisible(false);
         editMemberButton.setVisible(false);
         resetPasswordButton.setVisible(false);
-        viewProfileButton.setVisible(false);
 
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userDisplayedName2.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
@@ -185,6 +193,7 @@ public class ChatClientController {
             resetPasswordButton.setVisible(false);
             editProjectLeaderButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
+//            sendGroupButton.setVisible(false);
             removeUserButton.setVisible(false);
             resetPasswordButton.setVisible(false);
         }
@@ -416,7 +425,7 @@ public class ChatClientController {
                         setStyle(a);
                         setText(item.getText());
                     }
-
+                    
                 }
             };
             return cell;
@@ -432,9 +441,9 @@ public class ChatClientController {
 
             if (chatVM.getCurrentUser().getType().equals("project_leader")) {
                 editMemberButton.setVisible(true);
-
+              
             }
-
+           
 
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
 
@@ -604,7 +613,21 @@ public class ChatClientController {
     }
 
     private void displayGroup(PropertyChangeEvent evt) {
-        if (evt.getNewValue() instanceof String) {
+        String ans = (String)evt.getNewValue();
+        if(ans.equals("true")) {
+
+            System.out.println("WTHIS SHOULD BE RUNNING? ");
+            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+
+            groupButtonImage.setImage(new Image(reddot));
+
+
+            updateGroupList();
+        } else if (ans.equals("false")){
+            updateGroupList();
+
+        }else
+        {
             System.out.println("WOW?? ");
             String a = (String) evt.getNewValue();
             Platform.runLater(() -> {
@@ -615,15 +638,6 @@ public class ChatClientController {
                 messagesListGroup.getItems().add(label);
                 messagesListGroup.scrollTo(messagesListGroup.getItems().size());
             });
-        } else {
-            System.out.println("WTHIS SHOULD BE RUNNING? ");
-            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-
-            groupButtonImage.setImage(new Image(reddot));
-
-
-            updateGroupList();
-
         }
     }
 
