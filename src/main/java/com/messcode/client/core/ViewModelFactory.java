@@ -10,6 +10,7 @@ import com.messcode.client.views.new_employee.NewEmployeeViewModel;
 import com.messcode.client.views.new_group.NewGroupViewModel;
 import com.messcode.client.views.remove_group.RemoveGroupViewModel;
 import com.messcode.client.views.remove_user.RemoveUserViewModel;
+import com.messcode.client.views.view_group.ViewGroupViewModel;
 import com.messcode.client.views.view_profile.ViewProfileViewModel;
 
 /**
@@ -28,6 +29,7 @@ public class ViewModelFactory {
     private RemoveUserViewModel removeUserVM;
     private EditProjectLeaderViewModel editProjectLeaderVM;
     private ViewProfileViewModel viewProfileVM;
+    private ViewGroupViewModel viewGroupVM;
 
     /**
      * @param mf
@@ -44,6 +46,7 @@ public class ViewModelFactory {
         removeUserVM = new RemoveUserViewModel(mf.getMainModel());
         editProjectLeaderVM = new EditProjectLeaderViewModel(mf.getMainModel());
         viewProfileVM = new ViewProfileViewModel(mf.getMainModel());
+        viewGroupVM = new ViewGroupViewModel(mf.getMainModel());
     }
 
     /**
@@ -114,5 +117,9 @@ public class ViewModelFactory {
      */
     public ViewProfileViewModel getViewProfileVM() {
         return viewProfileVM;
+    }
+
+    public ViewGroupViewModel getViewGroupVM() {
+        return viewGroupVM;
     }
 }

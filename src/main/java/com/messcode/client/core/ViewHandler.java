@@ -9,6 +9,7 @@ import com.messcode.client.views.new_employee.NewEmployeeController;
 import com.messcode.client.views.new_group.NewGroupController;
 import com.messcode.client.views.remove_group.RemoveGroupController;
 import com.messcode.client.views.remove_user.RemoveUserController;
+import com.messcode.client.views.view_group.ViewGroupController;
 import com.messcode.client.views.view_profile.ViewProfileController;
 import com.messcode.transferobjects.User;
 import javafx.application.Platform;
@@ -46,6 +47,7 @@ public class ViewHandler {
     private Scene removeGroup;
     private Scene editProjectLeader;
     private Scene viewProfile;
+    private Scene viewGroup;
     private ResourceBundle bundle;
 
     /**
@@ -356,6 +358,28 @@ public class ViewHandler {
         viewProfileStage.getScene().getStylesheets().add(css);
         viewProfileStage.setResizable(false);
         viewProfileStage.show();
+    }
+
+    /**
+     * Opens window popup with functionality of viewing a group's information
+     * @param css Current interface theme
+     */
+    public void openViewGroup(String css) {
+        Stage viewGroupStage = new Stage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setResources(bundle);
+
+        Parent root = getRootByPath("ViewGroup.fxml", loader);
+        ViewGroupController controller = loader.getController();
+        controller.init(vmf.getViewGroupVM());
+        viewGroup = new Scene(root);
+
+        viewGroupStage.setTitle(bundle.getString("view_group.up"));
+        viewGroupStage.setScene(viewGroup);
+        viewGroupStage.getIcons().add(new Image("icon.png"));
+        viewGroupStage.getScene().getStylesheets().add(css);
+        viewGroupStage.setResizable(false);
+        viewGroupStage.show();
     }
 
     /**

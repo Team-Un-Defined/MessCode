@@ -42,6 +42,7 @@ public class ChatClientController {
     public ListView<User> usersListFXML;
     public ListView<Group> groupsList;
     public Button viewProfileButton;
+    public Button viewGroupButton;
     @FXML
     private ColorPicker colorPicker;
     public ListView<Label> messagesListAll;
@@ -119,6 +120,8 @@ public class ChatClientController {
         editProjectLeaderButton.setVisible(false);
         editMemberButton.setVisible(false);
         resetPasswordButton.setVisible(false);
+        viewGroupButton.setVisible(false);
+        viewProfileButton.setVisible(false);
 
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userDisplayedName2.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
@@ -187,7 +190,6 @@ public class ChatClientController {
             resetPasswordButton.setVisible(false);
             editProjectLeaderButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
-//            sendGroupButton.setVisible(false);
             removeUserButton.setVisible(false);
             resetPasswordButton.setVisible(false);
         }
@@ -462,10 +464,12 @@ public class ChatClientController {
                 sendGroupButton.setDisable(true);
                 editProjectLeaderButton.setDisable(true);
                 editMemberButton.setDisable(true);
+                viewGroupButton.setVisible(false);
             } else {
                 sendGroupButton.setDisable(false);
                 editProjectLeaderButton.setDisable(false);
                 editMemberButton.setDisable(false);
+                viewGroupButton.setVisible(true);
 
                 if (!group.isMember(chatVM.getCurrentUser())) {
                     sendGroupButton.setDisable(true);
@@ -727,5 +731,9 @@ public class ChatClientController {
         } else {
             SettingsConfig.setConfigOf("text_color", "white");
         }
+    }
+
+    public void viewGroupClicked() {
+        vh.openViewGroup(cssUsed);
     }
 }
