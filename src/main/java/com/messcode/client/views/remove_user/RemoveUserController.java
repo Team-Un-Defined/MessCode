@@ -37,7 +37,6 @@ public class RemoveUserController {
                 if (empty) {
                     setText(null);
                 } else {
-
                     String text = item.getName() + " " + item.getSurname(); // get text from item
                     setText(text);
                 }

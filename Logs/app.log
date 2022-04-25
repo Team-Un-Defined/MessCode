@@ -1,51 +1,7 @@
-[ERROR] 2022-04-24 15:08:27.587 [Thread-0] ImportData - ResultSet not positioned properly, perhaps you need to call next.
-org.postgresql.util.PSQLException: ResultSet not positioned properly, perhaps you need to call next.
-	at org.postgresql.jdbc.PgResultSet.getRawValue(PgResultSet.java:3092) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2330) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2779) ~[postgresql-42.3.3.jar:42.3.3]
-	at JDBC.ImportData.updateLeader(ImportData.java:285) [classes/:?]
-	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:55) [classes/:?]
-	at java.lang.Thread.run(Thread.java:832) [?:?]
-[ERROR] 2022-04-24 15:09:33.178 [Thread-0] ImportData - ResultSet not positioned properly, perhaps you need to call next.
-org.postgresql.util.PSQLException: ResultSet not positioned properly, perhaps you need to call next.
-	at org.postgresql.jdbc.PgResultSet.getRawValue(PgResultSet.java:3092) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2330) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2779) ~[postgresql-42.3.3.jar:42.3.3]
-	at JDBC.ImportData.updateLeader(ImportData.java:285) [classes/:?]
-	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:55) [classes/:?]
-	at java.lang.Thread.run(Thread.java:832) [?:?]
-[ERROR] 2022-04-24 15:17:03.541 [Thread-0] ImportData - The column name account_id was not found in this ResultSet.
+[ERROR] 2022-04-25 09:12:26.744 [Thread-1] ImportData - The column name account_id was not found in this ResultSet.
 org.postgresql.util.PSQLException: The column name account_id was not found in this ResultSet.
-	at org.postgresql.jdbc.PgResultSet.findColumn(PgResultSet.java:2901) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2779) ~[postgresql-42.3.3.jar:42.3.3]
+	at org.postgresql.jdbc.PgResultSet.findColumn(PgResultSet.java:2901) ~[postgresql-42.3.3.jar:?]
+	at org.postgresql.jdbc.PgResultSet.getInt(PgResultSet.java:2779) ~[postgresql-42.3.3.jar:?]
 	at JDBC.ImportData.updateLeader(ImportData.java:319) [classes/:?]
 	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:63) [classes/:?]
-	at java.lang.Thread.run(Thread.java:832) [?:?]
-[ERROR] 2022-04-24 22:53:04.930 [main] ImportData - FATAL: password authentication failed for user "postgres"
-org.postgresql.util.PSQLException: FATAL: password authentication failed for user "postgres"
-	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:646) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:180) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:235) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:223) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.Driver.makeConnection(Driver.java:400) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.Driver.connect(Driver.java:259) ~[postgresql-42.3.3.jar:42.3.3]
-	at java.sql.DriverManager.getConnection(DriverManager.java:677) ~[java.sql:?]
-	at java.sql.DriverManager.getConnection(DriverManager.java:228) ~[java.sql:?]
-	at JDBC.ImportData.<init>(ImportData.java:30) [classes/:?]
-	at com.messcode.server.networking.Server.start(Server.java:25) [classes/:?]
-	at com.messcode.server.RunServer.main(RunServer.java:9) [classes/:?]
-[ERROR] 2022-04-24 22:53:04.970 [main] ExportData - FATAL: password authentication failed for user "postgres"
-org.postgresql.util.PSQLException: FATAL: password authentication failed for user "postgres"
-	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:646) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:180) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:235) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:223) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.Driver.makeConnection(Driver.java:400) ~[postgresql-42.3.3.jar:42.3.3]
-	at org.postgresql.Driver.connect(Driver.java:259) ~[postgresql-42.3.3.jar:42.3.3]
-	at java.sql.DriverManager.getConnection(DriverManager.java:677) ~[java.sql:?]
-	at java.sql.DriverManager.getConnection(DriverManager.java:228) ~[java.sql:?]
-	at JDBC.ExportData.<init>(ExportData.java:31) [classes/:?]
-	at com.messcode.server.networking.Server.start(Server.java:26) [classes/:?]
-	at com.messcode.server.RunServer.main(RunServer.java:9) [classes/:?]
+	at java.lang.Thread.run(Thread.java:834) [?:?]
