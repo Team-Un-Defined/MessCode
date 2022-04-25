@@ -228,20 +228,28 @@ public class MainModelManager implements MainModel {
     @Override
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
-         System.out.println("******************************************************************");
-                 user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
-                 System.out.println("******************************************************************");
-        for(PublicMessage u : user.getUnreadMessages() ){
-        if(u instanceof PrivateMessage){
-            if(u.getSender().getEmail().equals(message.getReceiver().getEmail()) || ((PrivateMessage)u).getReceiver().getEmail().equals(message.getReceiver().getEmail()) )
-                user.getUnreadMessages().remove(u);
-                user.getUnreadMessages().add(message);
-                return;
+        System.out.println("5555/////////////////////////////////////////////////////////////////////////");
+        user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
+        System.out.println("/////////////////////////////////////////////////////////////////////////");
+
+        for(int i=0;i<user.getUnreadMessages().size();i++){
+
+            if( user.getUnreadMessages().get(i) instanceof PrivateMessage)
+            {
+                if(((PrivateMessage) user.getUnreadMessages().get(i)).getReceiver().getEmail().equals(message.getReceiver().getEmail()) ||
+                        user.getUnreadMessages().get(i).getSender().getEmail().equals(message.getReceiver().getEmail()))
+                {
+                    user.getUnreadMessages().set(i,message);
+                    System.out.println("/////////////////////////////////////////////////////////////////////////");
+                    user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
+                    System.out.println("/////////////////////////////////////////////////////////////////////////");
+
+                    return;
+                }
             }
         }
-          System.out.println("/////////////////////////////////////////////////////////////////////////");
-                 user.getUnreadPMs().forEach(p -> System.out.println("[SENDER] " + p.getSender().getEmail()+"_____   [RECEIVER]  "+p.getReceiver().getEmail() +"  "+ p.getTime()));
-                 System.out.println("/////////////////////////////////////////////////////////////////////////");
+
+
 
     }
 
