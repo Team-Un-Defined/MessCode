@@ -388,15 +388,16 @@ public class ImportData {
                 String query1 = "SELECT p.receiver_id, p.sender_id, p.date, p.id FROM private_messages AS p " +
                         "JOIN account AS a ON a.id = p.sender_id OR a.id = p.receiver_id " +
                         "WHERE ((p.receiver_id = ? AND a.email = ?) OR (p.sender_id = ? AND a.email = ?)) AND date = ?";
-                myPreparedStatement = c.prepareStatement(query1);
+                myPreparedStatement = c.prepareStatement(query1,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 myPreparedStatement.setInt(1, userid);
                 myPreparedStatement.setString(2, ((PrivateMessage) (us.getUnreadMessages().get(i))).getReceiver().getEmail());
                 myPreparedStatement.setInt(3, userid);
                 myPreparedStatement.setString(4, ((PrivateMessage) (us.getUnreadMessages().get(i))).getReceiver().getEmail());
-                myPreparedStatement.setTimestamp(5, us.getUnreadMessages().get(1).getTime());
+                myPreparedStatement.setTimestamp(5, us.getUnreadMessages().get(i).getTime());
                 rs = myPreparedStatement.executeQuery();
-
+                  rs.beforeFirst();
                 while (rs.next()) {
+
                     pmid = rs.getInt("id");
                     rid = rs.getInt("receiver_id");
 
@@ -417,7 +418,9 @@ public class ImportData {
                 while (rs.next()) {
                     lid = rs.getInt("id");
                 }
+
                 if(lid !=0){
+
                 String query3 = "UPDATE public.last_seen SET private_message_id = ? WHERE id = ?";
 
                 myPreparedStatement = c.prepareStatement(query3);
@@ -429,6 +432,7 @@ public class ImportData {
                 }
                 else
                 {
+
                      String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
                                     "VALUES (default,null,?,null,?)";
                 myPreparedStatement = c.prepareStatement(query3);
@@ -440,28 +444,40 @@ public class ImportData {
             } else if (us.getUnreadMessages().get(i) instanceof GroupMessages) {
                 int gmid = 0;
                 int lid = 0;
-
-                String query1 = "SELECT gm.id AS gmid, gm.project_id, gm.sender_id, gm.message, gm, date, p.id, p.leader_id, p.name, p.description " +
-                        "FROM group_messages gm JOIN projects AS p ON p.id = gm.project_id WHERE p.name = ? AND date = ?";
+                if(us.getUnreadMessages().get(i).getMsg().equals("alpaca")) {
+                    System.out.println("hi : "+ us.getUnreadMessages().get(i).getMsg() + "group : "+ ((GroupMessages) us.getUnreadMessages().get(i)).getGroup()
+                    + " time "+ us.getUnreadMessages().get(i).getTime());
+                }
+                String query1 = "SELECT gm.id AS gmid, gm.project_id, gm.sender_id, gm.message, date, p.id, p.leader_id, p.name, p.description " +
+                        "FROM group_messages gm JOIN projects AS p ON p.id = gm.project_id WHERE p.name = ? AND date = ? ";
                 myPreparedStatement = c.prepareStatement(query1);
                 myPreparedStatement.setString(1, ((GroupMessages) us.getUnreadMessages().get(i)).getGroup().getName());
                 myPreparedStatement.setTimestamp(2, us.getUnreadMessages().get(i).getTime());
                 rs = myPreparedStatement.executeQuery();
 
                 while (rs.next()) {
+                    if(us.getUnreadMessages().get(i).getMsg().equals("alpaca")) {
+                        System.out.println("rs should be 82 : "+ rs.getInt("gmid"));
+                    }
                     gmid = rs.getInt("gmid");
                 }
 
                 String query2 = "SELECT ls.group_message_id, gm.sender_id, ls.id FROM last_seen AS ls " +
-                        "JOIN group_messages AS gm ON gm.id = ls.group_message_id WHERE ls.user_id = ?";
+                        "JOIN group_messages AS gm ON gm.id = ls.group_message_id WHERE ls.user_id = ? AND gm.id= ? ";
                 myPreparedStatement = c.prepareStatement(query2);
                 myPreparedStatement.setInt(1, userid);
+                myPreparedStatement.setInt(2, gmid);
                 rs = myPreparedStatement.executeQuery();
 
                 while (rs.next()) {
+
                     lid = rs.getInt("id");
                 }
+                if(us.getUnreadMessages().get(i).getMsg().equals("alpaca")){
+                    System.out.println("lid for alpaca currently?: "+ lid);
+                    System.out.println("pmid for alpaca currently?: "+ gmid);}
                 if(lid!=0){
+
                 String query3 = "UPDATE public.last_seen SET group_message_id = ? WHERE id = ?";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, gmid);
@@ -469,9 +485,11 @@ public class ImportData {
                 myPreparedStatement.executeUpdate();
                 }
                 else{
-
+                    if(us.getUnreadMessages().get(i).getMsg().equals("alpaca")){
+                        System.out.println("lid currently?: "+ lid);
+                        System.out.println("pmid currently?: "+ gmid);}
                 String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
-                "VALUES (default,null,?,null,?)";
+                "VALUES (default,?,null,null,?)";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, gmid);
                 myPreparedStatement.setInt(2, userid);
