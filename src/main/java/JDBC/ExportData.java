@@ -425,7 +425,7 @@ public class ExportData {
         ArrayList<PublicMessage> groupMessages = new ArrayList<>();
 
         String query7 = "SELECT g.message, g.date, a.fname, a.lname, a.type, a.email FROM group_messages AS g " +
-                "JOIN account AS a ON a.id = g.sender_id JOIN projects AS p ON p.id = g.project_id " +
+                "JOIN account AS a ON a.id = g.sender_id  JOIN projects AS p ON p.id = g.project_id " +
                 "WHERE p.name = ? ORDER BY DATE";
         myPreparedStatement = c.prepareStatement(query7, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
         myPreparedStatement.setString(1, g.getName());
