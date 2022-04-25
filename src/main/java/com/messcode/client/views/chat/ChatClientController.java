@@ -665,14 +665,16 @@ public class ChatClientController {
         
         
         String a = (String) evt.getNewValue();
-      if (a.equals("true")) {
-          
+
+        if (a.equals("true")) {
             InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 
             PMButtonImage.setImage(new Image(reddot));
 
             updateUserList();
-        } 
+        } else if (a.equals("false")) {
+            updateGroupList();
+        }
       else{
         Platform.runLater(() -> {
           
