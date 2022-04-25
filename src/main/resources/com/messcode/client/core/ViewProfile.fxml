@@ -12,14 +12,14 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="150.0" text="Email" />
-      <Label layoutX="20.0" layoutY="70.0" text="First name" />
-      <Label layoutX="20.0" layoutY="110.0" text="Last name" />
-      <Label layoutX="20.0" layoutY="190.0" text="Role" />
+      <Label layoutX="20.0" layoutY="150.0" text="%view_profile.email" />
+      <Label layoutX="20.0" layoutY="70.0" text="%view_profile.fist_name" />
+      <Label layoutX="20.0" layoutY="110.0" text="%view_profile.last_name" />
+      <Label layoutX="20.0" layoutY="190.0" text="%view_profile.role" />
       <Label fx:id="firstNameLabel" layoutX="140.0" layoutY="70.0" text="Label" />
       <Label fx:id="lastNameLabel" layoutX="140.0" layoutY="110.0" text="Label" />
       <Label fx:id="emailLabel" layoutX="140.0" layoutY="150.0" text="Label" />
       <Label fx:id="roleLabel" layoutX="140.0" layoutY="192.0" text="Label" />
-      <Button layoutX="269.0" layoutY="247.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Close" />
+      <Button layoutX="269.0" layoutY="247.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%view_profile.close" />
    </children>
 </Pane>
