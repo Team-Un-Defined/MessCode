@@ -39,7 +39,19 @@ public class ExportData {
             log4j.error(e.getMessage(), e);
         }
     }
+     public void checkDatabaseState() throws SQLException {
+         Statement st = c.createStatement();
+         String query = "SELECT * FROM account ";
 
+         ResultSet rs = st.executeQuery(query);
+         if(!rs.next())
+         { User u = new User("Admin","Admin","admin@gmail.com","admin","superuser");
+
+          query= "INSERT INTO ACCOUNT(id,fname,lname,pwd_hash,pwd_salt,type,email) values(default,'Admin','Admin','admin@gmail.com','"+ Arrays.toString(u.getHashedPassword()) +"','"+u.getSalt()+"','superuser')";
+         }
+
+
+     }
 
     /**
      * Creates an SQL statement that checks if the username and password are found in
