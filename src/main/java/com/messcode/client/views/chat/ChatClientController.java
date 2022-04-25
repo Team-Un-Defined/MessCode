@@ -112,7 +112,7 @@ public class ChatClientController {
             @Override
             public void handle(WindowEvent t) {
                 System.out.println("nyeheheeee");
-                // perhaps
+                chatVM.saveDataOnExit();
                 Platform.exit();
                 System.exit(0);
             }
@@ -121,7 +121,6 @@ public class ChatClientController {
         editProjectLeaderButton.setVisible(false);
         editMemberButton.setVisible(false);
         resetPasswordButton.setVisible(false);
-        viewProfileButton.setVisible(false);
 
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userDisplayedName2.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
@@ -190,6 +189,7 @@ public class ChatClientController {
             resetPasswordButton.setVisible(false);
             editProjectLeaderButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
+//            sendGroupButton.setVisible(false);
             removeUserButton.setVisible(false);
             resetPasswordButton.setVisible(false);
         }
@@ -672,7 +672,17 @@ public class ChatClientController {
      * @param evt
      */
     private void displayGroup(PropertyChangeEvent evt) {
-        if (evt.getNewValue() instanceof String) {
+        String ans = (String) evt.getNewValue();
+        if (ans.equals("true")) {
+            System.out.println("WTHIS SHOULD BE RUNNING? ");
+            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+
+            groupButtonImage.setImage(new Image(reddot));
+
+            updateGroupList();
+        } else if (ans.equals("false")) {
+            updateGroupList();
+        } else {
             System.out.println("WOW?? ");
             String a = (String) evt.getNewValue();
             Platform.runLater(() -> {
@@ -683,13 +693,6 @@ public class ChatClientController {
                 messagesListGroup.getItems().add(label);
                 messagesListGroup.scrollTo(messagesListGroup.getItems().size());
             });
-        } else {
-            System.out.println("WTHIS SHOULD BE RUNNING? ");
-            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-
-            groupButtonImage.setImage(new Image(reddot));
-
-            updateGroupList();
         }
     }
 

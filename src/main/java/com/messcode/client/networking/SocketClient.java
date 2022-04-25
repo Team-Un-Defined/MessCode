@@ -235,6 +235,14 @@ public class SocketClient implements Client {
     }
 
     /**
+     * @param user
+     */
+    @Override
+    public void saveDataOnExit(User user) {
+        socketHandler.saveDataOnExit(user);
+    }
+
+    /**
      * @param pckt
      */
     public void getAllGroupMessages(Container pckt) {
@@ -247,6 +255,10 @@ public class SocketClient implements Client {
     @Override
     public void changeLeader(Group g) {
         socketHandler.changeLeader(g);
+    }
+
+    public void addOfflineUser(Container packet) {
+        support.firePropertyChange("addOfflineUser", null, packet);
     }
 }
 

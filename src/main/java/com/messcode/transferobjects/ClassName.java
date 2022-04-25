@@ -44,6 +44,7 @@ public enum ClassName {
     KICK_USER,
     ALL_GROUP_MESSAGES,
     RESET_PASSWORD,
+    OFFLINE_USER,
     /**
      * new user registration
      */
