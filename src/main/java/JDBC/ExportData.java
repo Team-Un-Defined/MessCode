@@ -27,8 +27,7 @@ public class ExportData {
         conn = new DatabaseConnection();
         try {
             Class.forName("org.postgresql.Driver");
-            c = DriverManager
-                    .getConnection(conn.getConn(), conn.getName(),
+            c = DriverManager.getConnection(conn.getConn(), conn.getName(),
                             conn.getPass()); //use your own password here
             System.out.println("hello success");
 
@@ -52,6 +51,7 @@ public class ExportData {
      *                      access error or other errors.
      */
     public Container checkLogin(String email, String password) throws SQLException {
+        
         System.out.println("hello why not?");
         String answer = null;
 
