@@ -46,6 +46,7 @@ public class ChatClientController {
     public TextField textFieldGroup;
     public ListView<User> usersListFXML;
     public ListView<Group> groupsList;
+    public Button viewProfileButton;
     @FXML
     private ColorPicker colorPicker;
     public ListView<Label> messagesListAll;
@@ -110,6 +111,7 @@ public class ChatClientController {
         editProjectLeaderButton.setVisible(false);
         editMemberButton.setVisible(false);
         resetPasswordButton.setVisible(false);
+        viewProfileButton.setVisible(false);
 
         userDisplayedName1.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
         userDisplayedName2.setText(chatVM.getCurrentUser().getSurname() + " " + chatVM.getCurrentUser().getName());
@@ -178,7 +180,6 @@ public class ChatClientController {
             resetPasswordButton.setVisible(false);
             editProjectLeaderButton.setVisible(false);
         } else if (chatVM.getCurrentUser().isEmployer()) {
-//            sendGroupButton.setVisible(false);
             removeUserButton.setVisible(false);
             resetPasswordButton.setVisible(false);
         }
@@ -294,14 +295,6 @@ public class ChatClientController {
         });
     }
 
-//    // TODO as in do we still need this? i dont think so
-//    private void openPrivateChat(PropertyChangeEvent propertyChangeEvent) {
-//        usersPM = ((PrivateMessage) propertyChangeEvent.getNewValue());
-//        chatVM.setReceiver(usersPM.getReceiver());
-//        panePrivate.toFront();
-//        chatVM.sendListOfPmRoomUsers(usersPM);
-//    }
-
     public void sendButton() {
         System.out.println("*************************************");
         String message = textFieldAll.getText();
@@ -334,9 +327,8 @@ public class ChatClientController {
     }
 
     public void inviteToPmButton() {
-
         messagesListPM.setCellFactory(list -> {
-            ListCell<Label> cell = new ListCell<Label>() {
+            ListCell<Label> cell = new ListCell<>() {
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -362,8 +354,15 @@ public class ChatClientController {
                 resetPasswordButton.setVisible(true);
             }
             if (usersListFXML.getSelectionModel().getSelectedItems().get(0).getSalt().equals(" - deleted")) {
+                viewProfileButton.setVisible(false);
                 sendPMButton.setDisable(true);
+                resetPasswordButton.setDisable(true);
             }
+            else {
+                viewProfileButton.setVisible(true);
+                sendPMButton.setDisable(false);
+            }
+
             User use = usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
@@ -374,6 +373,8 @@ public class ChatClientController {
                 ArrayList<PrivateMessage> priv = chatVM.loadPMs();
                 for (PrivateMessage pm : priv) {
                     Label label = new Label(pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+                    label.setMaxWidth(messagesListPM.getPrefWidth() - 30);
+                    label.setWrapText(true);
                     label.setOnMouseClicked((evt) -> this.copyMessage(label.getText()));
                     messagesListPM.getItems().add(label);
                 }
@@ -399,9 +400,8 @@ public class ChatClientController {
     }
 
     public void openGroup() {
-
         messagesListGroup.setCellFactory(list -> {
-            ListCell<Label> cell = new ListCell<Label>() {
+            ListCell<Label> cell = new ListCell<>() {
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -435,10 +435,14 @@ public class ChatClientController {
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
 
             if (groupsList.getSelectionModel().getSelectedItems().get(0).getLeader() == null
-                    || group.isMember(chatVM.getCurrentUser())) {
+                    || !group.isMember(chatVM.getCurrentUser())) {
                 sendGroupButton.setDisable(true);
+                editProjectLeaderButton.setDisable(true);
+                editMemberButton.setDisable(true);
             } else {
                 sendGroupButton.setDisable(false);
+                editProjectLeaderButton.setDisable(false);
+                editMemberButton.setDisable(false);
             }
 
             System.out.println(group.getName());
@@ -447,6 +451,8 @@ public class ChatClientController {
             ArrayList<GroupMessages> groupMess = chatVM.loadGroup();
             for (GroupMessages g : groupMess) {
                 Label label = new Label(g.getTime() + " " + g.getUsername() + ": " + g.getMsg());
+                label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
+                label.setWrapText(true);
                 label.setOnMouseClicked((evt) -> this.copyMessage(label.getText()));
                 messagesListGroup.getItems().add(label);
             }
@@ -511,9 +517,8 @@ public class ChatClientController {
     }
 
     public void refreshPublic() {
-
         messagesListAll.setCellFactory(list -> {
-            ListCell<Label> cell = new ListCell<Label>() {
+            ListCell<Label> cell = new ListCell<>() {
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -536,6 +541,9 @@ public class ChatClientController {
         ArrayList<PublicMessage> pub = chatVM.loadPublics();
         for (PublicMessage pb : pub) {
             Label label = new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg());
+            System.out.println(messagesListAll.getPrefWidth());
+            label.setMaxWidth(messagesListAll.getPrefWidth() - 30);
+            label.setWrapText(true);
             label.setOnMouseClicked((evt) -> this.copyMessage(label.getText()));
             messagesListAll.getItems().add(label);
         }
@@ -563,7 +571,7 @@ public class ChatClientController {
         Platform.runLater(() -> {
             System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
             Label label = new Label(a);
-            label.setMaxWidth(messagesListAll.getWidth() - 25);
+            label.setMaxWidth(messagesListAll.getPrefWidth() - 30);
             label.setWrapText(true);
             label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
             messagesListAll.getItems().add(label);
@@ -580,7 +588,7 @@ public class ChatClientController {
         String a = (String) evt.getNewValue();
         Platform.runLater(() -> {
             Label label = new Label(a);
-            label.setMaxWidth(messagesListGroup.getWidth() - 25);
+            label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
             label.setWrapText(true);
             label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
             messagesListPM.getItems().add(label);
@@ -592,7 +600,7 @@ public class ChatClientController {
         String a = (String) evt.getNewValue();
         Platform.runLater(() -> {
             Label label = new Label(a);
-            label.setMaxWidth(messagesListGroup.getWidth() - 25);
+            label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
             label.setWrapText(true);
             label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
             messagesListGroup.getItems().add(label);

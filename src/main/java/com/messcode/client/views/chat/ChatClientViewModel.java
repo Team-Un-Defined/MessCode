@@ -137,8 +137,6 @@ public class ChatClientViewModel implements Subject {
                                 break;
                             }
                         }
-
-
                         break;
                     }
                 }
