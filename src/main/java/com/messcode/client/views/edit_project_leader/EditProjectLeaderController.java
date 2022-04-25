@@ -2,8 +2,11 @@ package com.messcode.client.views.edit_project_leader;
 
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
+import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+
+import java.util.ResourceBundle;
 import javafx.scene.control.ListCell;
 
 import java.util.ResourceBundle;
@@ -48,4 +51,8 @@ public class EditProjectLeaderController {
         groupLeaderComboBox.getItems().add(editProjectLeaderVM.getLeader());
         groupLeaderComboBox.getSelectionModel().select(editProjectLeaderVM.getLeader());
     }
+    
+
+
+
 }
