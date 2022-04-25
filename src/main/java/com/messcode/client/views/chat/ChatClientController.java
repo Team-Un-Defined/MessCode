@@ -221,26 +221,23 @@ public class ChatClientController {
                 super.updateItem(item, empty);
                 if (empty) {
                     setText(null);
-                } else if (item.getLeader() == null) {
-                    String text = item.getName();
-                    setText(text);
-                    this.setTextFill(Color.RED);
-                } else {
-                    if (chatVM.getUnredGMs(item)) {
+                } else if (chatVM.getUnredGMs(item)) {
 
                         InputStream in = getClass().getResourceAsStream("/orangedotm.png");
                         ImageView imageView = new ImageView(new Image(in));
                         imageView.setFitHeight(10);
                         imageView.setPreserveRatio(true);
                         this.setGraphic(imageView);
-
+                        String text = item.getName(); // get text from item
+                        setText(text);
 
                     } else {
                         String text = item.getName(); // get text from item
                         setText(text);
                     }
+                
                 }
-            }
+            
         });
     }
 
@@ -415,6 +412,7 @@ public class ChatClientController {
                         setStyle(a);
                         setText(item.getText());
                     }
+                    
                 }
             };
             return cell;
@@ -430,12 +428,14 @@ public class ChatClientController {
 
             if (chatVM.getCurrentUser().getType().equals("project_leader")) {
                 editMemberButton.setVisible(true);
+              
             }
+           
 
             Group group = groupsList.getSelectionModel().getSelectedItems().get(0);
 
             if (groupsList.getSelectionModel().getSelectedItems().get(0).getLeader() == null
-                    || group.isMember(chatVM.getCurrentUser())) {
+                    || !group.isMember(chatVM.getCurrentUser())) {
                 sendGroupButton.setDisable(true);
             } else {
                 sendGroupButton.setDisable(false);
