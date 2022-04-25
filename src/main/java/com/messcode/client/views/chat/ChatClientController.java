@@ -350,6 +350,7 @@ public class ChatClientController {
     public void inviteToPmButton() {
         messagesListPM.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
+
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -358,10 +359,10 @@ public class ChatClientController {
                         setStyle(null);
                         setText(null);
                     } else {
-                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
-                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
-                        setStyle(a);
                         setText(item.getText());
+                        String a = " -fx-control-inner-background:" + SettingsConfig.getConfigOf("message_color") +
+                                ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                        setStyle(a);
                     }
                 }
             };
@@ -429,6 +430,7 @@ public class ChatClientController {
     public void openGroup() {
         messagesListGroup.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
+
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -437,12 +439,11 @@ public class ChatClientController {
                         setStyle(null);
                         setText(null);
                     } else {
-                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
-                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
-                        setStyle(a);
                         setText(item.getText());
+                        String a = " -fx-control-inner-background:" + SettingsConfig.getConfigOf("message_color") +
+                                ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                        setStyle(a);
                     }
-
                 }
             };
             return cell;
@@ -574,6 +575,7 @@ public class ChatClientController {
     public void refreshPublic() {
         messagesListAll.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
+
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -582,10 +584,10 @@ public class ChatClientController {
                         setStyle(null);
                         setText(null);
                     } else {
-                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
-                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
-                        setStyle(a);
                         setText(item.getText());
+                        String a = " -fx-control-inner-background:" + SettingsConfig.getConfigOf("message_color") +
+                                ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                        setStyle(a);
                     }
                 }
             };
