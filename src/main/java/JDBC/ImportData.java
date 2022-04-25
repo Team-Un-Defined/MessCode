@@ -10,8 +10,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Arrays;
-import java.util.logging.Level;
 
+/**
+ *
+ */
 public class ImportData {
 
     private static final Logger log4j = LogManager.getLogger(ImportData.class);
@@ -19,10 +21,10 @@ public class ImportData {
     private Connection c;
     private DatabaseConnection conn;
 
+    /**
+     * Constructor method for LoadCharacter. Gets the PostgreSQL connection.
+     */
     public ImportData() {
-        /**
-         * Constructor method for LoadCharacter. Gets the PostgreSQL connection.
-         */
         conn = new DatabaseConnection();
         try {
             Class.forName("org.postgresql.Driver");
@@ -63,6 +65,10 @@ public class ImportData {
         return new Container(done, ClassName.CREATE_ACCOUNT);
     }
 
+    /**
+     * @param pm
+     * @throws SQLException
+     */
     public void saveMessage(PublicMessage pm) throws SQLException {
         boolean done = false;
 
@@ -149,6 +155,9 @@ public class ImportData {
         }
     }
 
+    /**
+     * @param g
+     */
     public void createGroup(Group g) {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -198,6 +207,10 @@ public class ImportData {
         }
     }
 
+    /**
+     * @param g
+     * @throws SQLException
+     */
     public void addGroupMembers(Group g) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -223,6 +236,10 @@ public class ImportData {
         }
     }
 
+    /**
+     * @param g
+     * @throws SQLException
+     */
     public void removeGroupMembers(Group g) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -245,6 +262,10 @@ public class ImportData {
             }
         }
     }
+
+    /**
+     * @param g
+     */
     public void updateLeader(Group g) {
         try {
             PreparedStatement myPreparedStatement0;
@@ -337,8 +358,12 @@ public class ImportData {
         }
     
     }
-   
 
+
+    /**
+     * @param us
+     * @throws SQLException
+     */
     public void saveDataOnExit(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -467,6 +492,12 @@ public class ImportData {
         }
     }
 
+    /**
+     * @param password
+     * @param email
+     * @return
+     * @throws SQLException
+     */
     public boolean test(String password, String email) throws SQLException {
         boolean unique = false;
 
@@ -503,6 +534,11 @@ public class ImportData {
         return unique;
     }
 
+    /**
+     * @param us
+     * @return
+     * @throws SQLException
+     */
     public boolean changePassword(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
@@ -544,8 +580,12 @@ public class ImportData {
         return true;
     }
 
+    /**
+     * @param u
+     * @return
+     * @throws SQLException
+     */
     public boolean deleteUser(User u) throws SQLException {
-
         Statement st = c.createStatement();
 
         String query0 = "UPDATE account set  pwd_hash = 'deleted' where email='" + u.getEmail() + "' ;";
@@ -562,11 +602,13 @@ public class ImportData {
         return false;
     }
 
+    /**
+     * @param u
+     * @throws SQLException
+     */
     public void resetPassword(User u) throws SQLException {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
-
-
 
         String query1 = "UPDATE account SET pwd_salt = ? WHERE email = ?";
         myPreparedStatement = c.prepareStatement(query1);
@@ -579,8 +621,5 @@ public class ImportData {
         myPreparedStatement.setString(1,  Arrays.toString(u.getHashedPassword()));
         myPreparedStatement.setString(2,u.getEmail());
         myPreparedStatement.executeUpdate();
-
     }
-
-    
 }

@@ -2,12 +2,14 @@ package com.messcode.client.views.view_profile;
 
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class ViewProfileController {
     public Label nameLabel;
     public Label firstNameLabel;
@@ -19,6 +21,11 @@ public class ViewProfileController {
     private ViewHandler vh;
     private ResourceBundle bundle;
 
+    /**
+     * @param viewProfileVM
+     * @param vh
+     * @param bundle
+     */
     public void init(ViewProfileViewModel viewProfileVM, ViewHandler vh, ResourceBundle bundle) {
         this.viewProfileVM = viewProfileVM;
         this.vh = vh;
@@ -34,6 +41,9 @@ public class ViewProfileController {
         roleLabel.setText(user.getType());
     }
 
+    /**
+     *
+     */
     public void close() {
         Stage stage = (Stage) nameLabel.getScene().getWindow();
         stage.close();

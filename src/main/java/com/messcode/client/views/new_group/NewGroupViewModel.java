@@ -13,12 +13,18 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class NewGroupViewModel implements Subject {
 
     private MainModel mainModel;
     private PropertyChangeSupport support;
     private ObservableList<User> usersList;
 
+    /**
+     * @param mainModel
+     */
     public NewGroupViewModel(MainModel mainModel) {
         this.usersList = FXCollections.observableArrayList();
         this.mainModel = mainModel;
@@ -27,6 +33,9 @@ public class NewGroupViewModel implements Subject {
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
 
@@ -41,19 +50,33 @@ public class NewGroupViewModel implements Subject {
         });
     }
 
+    /**
+     * @return
+     */
     public ObservableList<User> getUsersList() {
         return usersList;
     }
 
+    /**
+     * @param g
+     */
     public void newGroup(Group g) {
         mainModel.newGroup(g);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);

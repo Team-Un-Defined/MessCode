@@ -14,6 +14,9 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ *
+ */
 public class MainModelManager implements MainModel {
 
     private Client client;
@@ -26,6 +29,9 @@ public class MainModelManager implements MainModel {
     private Group selectedGroup;
     private User selectedUser;
 
+    /**
+     * @param client
+     */
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
         allMessage = new ArrayList<>();
@@ -50,20 +56,32 @@ public class MainModelManager implements MainModel {
         }
     }
 
+    /**
+     * @return
+     */
     public Group getSelectedGroup() {
         return selectedGroup;
     }
 
+    /**
+     * @return
+     */
     @Override
     public User getCurrentUser() {
         return user;
     }
 
+    /**
+     * @param use
+     */
     @Override
     public void deleteUser(User use) {
         client.deleteUser(use);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void addAllGroupMessages(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<GroupMessages> msgs = (ArrayList<GroupMessages>) ((Container) propertyChangeEvent.getNewValue()).getObject();
         for (PublicMessage pu : allMessage) {
@@ -75,16 +93,25 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("newGroupMessagesAdded", null, true);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void userDeleted(PropertyChangeEvent propertyChangeEvent) {
         User u = (User) ((Container) propertyChangeEvent.getNewValue()).getObject();
         support.firePropertyChange("AddNewUser", null, u);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void passChangeResponse(PropertyChangeEvent propertyChangeEvent) {
         Container packet = ((Container) propertyChangeEvent.getNewValue());
         support.firePropertyChange("passChangeResponse", null, ((boolean) packet.getObject()));
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void createAccount(PropertyChangeEvent propertyChangeEvent) {
         if (((User) ((Container) propertyChangeEvent.getNewValue()).getObject()) == null) {
             System.out.println("THE OBJECT IS NULL, NICCEEE");
@@ -98,6 +125,9 @@ public class MainModelManager implements MainModel {
         }
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void loginData(PropertyChangeEvent propertyChangeEvent) {
         Container packet = ((Container) propertyChangeEvent.getNewValue());
         ArrayList<Object> objs = (ArrayList<Object>) packet.getObject();
@@ -126,16 +156,25 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("SetUsernameInChat", null, user);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
         boolean answer = (boolean) propertyChangeEvent.getNewValue();
         System.out.println("in model: " + answer);
         support.firePropertyChange("LoginResponseToVM", null, answer);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         support.firePropertyChange(propertyChangeEvent);
     }
 
+    /**
+     * @param usersPM
+     */
     //  GLOBAL CHAT
     @Override
     public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
@@ -143,6 +182,9 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("UsersOnlineInPM", null, usersPM);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(publicMessage);
@@ -150,6 +192,9 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("MessageForEveryone", null, publicMessage);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
         this.allMessage.add(pm);
@@ -185,6 +230,9 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("newPM", null, pm);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
         this.allMessage.add(gm);
@@ -207,56 +255,97 @@ public class MainModelManager implements MainModel {
         }
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
         support.firePropertyChange("AddNewUser", null, user);
     }
 
+    /**
+     * @param email
+     * @param pwd
+     */
     @Override
     public void addUser(String email, String pwd) {
         User user = new User(email, pwd);
         client.addUser(user);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
         support.addPropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param eventName
+     * @param listener
+     */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
         support.removePropertyChangeListener(eventName, listener);
     }
 
+    /**
+     * @param mess
+     */
     @Override
     public void sendPublic(PublicMessage mess) {
         client.sendPublic(mess);
     }
 
+    /**
+     * @param message
+     */
     @Override
     public void sendPM(PrivateMessage message) {
         client.sendPM(message);
     }
 
+    /**
+     * @param mess
+     */
     @Override
     public void sendGroup(GroupMessages mess) {
         client.sendGroup(mess);
     }
 
+    /**
+     * @return
+     */
     public ArrayList<PublicMessage> getAllMessage() {
         return allMessage;
     }
 
+    /**
+     * @param allMessage
+     */
     public void setAllMessage(ArrayList<PublicMessage> allMessage) {
         this.allMessage = allMessage;
     }
 
+    /**
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param password
+     * @param type
+     */
     @Override
     public void register(String firstName, String lastName, String email, String password, String type) {
         User newUser = new User(firstName, lastName, email, password, type);
         client.register(newUser);
     }
 
+    /**
+     * @param receiver
+     * @return
+     */
     @Override
     public ArrayList<PrivateMessage> loadPMs(User receiver) {
         ArrayList<PrivateMessage> pivi = new ArrayList<>();
@@ -268,6 +357,9 @@ public class MainModelManager implements MainModel {
         return pivi;
     }
 
+    /**
+     * @return
+     */
     @Override
     public ArrayList<PublicMessage> loadPublics() {
         ArrayList<PublicMessage> pubi = new ArrayList<>();
@@ -281,6 +373,10 @@ public class MainModelManager implements MainModel {
         return pubi;
     }
 
+    /**
+     * @param selectedGroup
+     * @return
+     */
     @Override
     public ArrayList<GroupMessages> loadGroup(Group selectedGroup) {
         ArrayList<GroupMessages> grupi = new ArrayList<>();
@@ -292,6 +388,11 @@ public class MainModelManager implements MainModel {
         return grupi;
     }
 
+    /**
+     * @param current
+     * @param password
+     * @param passwordConfirmed
+     */
     @Override
     public void changePassword(String current, String password, String passwordConfirmed) {
         User u = new User(user.getEmail(), current);
@@ -300,11 +401,17 @@ public class MainModelManager implements MainModel {
         client.changePassword(u);
     }
 
+    /**
+     * @param g
+     */
     @Override
     public void newGroup(Group g) {
         client.newGroup(g);
     }
 
+    /**
+     * @param propertyChangeEvent
+     */
     public void refreshGroupList(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
         if (selectedGroup != null) {
@@ -320,6 +427,9 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("RefresgGroups", null, g);
     }
 
+    /**
+     * @param u
+     */
     @Override
     public void addMember(ArrayList<User> u) {
         Group updatedGroup = new Group(selectedGroup.getName(), selectedGroup.getDescription(), selectedGroup.getLeader());
@@ -328,6 +438,9 @@ public class MainModelManager implements MainModel {
         client.addMember(updatedGroup);
     }
 
+    /**
+     * @param u
+     */
     @Override
     public void removeMember(ArrayList<User> u) {
         Group updatedGroup = new Group(selectedGroup.getName(), selectedGroup.getDescription(), selectedGroup.getLeader());
@@ -335,24 +448,36 @@ public class MainModelManager implements MainModel {
         client.removeMember(updatedGroup);
     }
 
+    /**
+     * @param g
+     */
     @Override
     public void deleteGroup(Group g) {
         client.deleteGroup(g);
     }
 
+    /**
+     * @param use
+     */
     @Override
     public void resetPassword(User use) {
         client.resetPassword(use);
     }
 
+    /**
+     * @param g
+     */
     @Override
     public void changeLeader(Group g) {
         client.changeLeader(g);
     }
 
+    /**
+     * @param u
+     * @return
+     */
     @Override
     public boolean unredPMs(User u) {
-
         ArrayList<PrivateMessage> pivi = loadPMs(u);
         PrivateMessage last = null;
         if (pivi.isEmpty()) {
@@ -360,14 +485,12 @@ public class MainModelManager implements MainModel {
         }
 
         for (PrivateMessage pub : pivi) {
-
             if (last != null) {
                 if (last.getTime().before(pub.getTime())) {
                     last = pub;
                 }
 
             } else last = pub;
-
         }
 
         for (PublicMessage p : user.getUnreadMessages()) {
@@ -391,13 +514,14 @@ public class MainModelManager implements MainModel {
 
                     }
                 }
-
             }
-
         }
         return false;
     }
 
+    /**
+     * @param us
+     */
     @Override
     public void setSelectedUser(User us) {
         selectedUser = us;
@@ -412,9 +536,7 @@ public class MainModelManager implements MainModel {
 
                 } else lastMessage = (PrivateMessage) pub;
             }
-
         }
-
 
         if (lastMessage != null) {
             for (PublicMessage u : user.getUnreadMessages()) {
@@ -437,24 +559,25 @@ public class MainModelManager implements MainModel {
 
 
                         }
-
-
                     }
-
                 }
             }
         }
-
-
     }
 
+    /**
+     * @return
+     */
     public User getSelectedUser() {
         return selectedUser;
     }
 
+    /**
+     * @param g
+     * @return
+     */
     @Override
     public boolean unredGMs(Group g) {
-
         ArrayList<GroupMessages> grps = loadGroup(g);
         GroupMessages last = null;
         if (grps.isEmpty()) {
@@ -462,9 +585,7 @@ public class MainModelManager implements MainModel {
             return false;
         }
 
-
         for (GroupMessages gub : grps) {
-
             if (last != null) {
                 if (last.getTime().before(gub.getTime())) {
                     last = gub;
@@ -489,10 +610,7 @@ public class MainModelManager implements MainModel {
                         return true;
                     }
                 }
-
-
             }
-
         }
         if (last != null && m == 0) {
             return true;
@@ -501,6 +619,9 @@ public class MainModelManager implements MainModel {
         return false;
     }
 
+    /**
+     * @param selectedGroup
+     */
     public void setSelectedGroup(Group selectedGroup) {
         support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
         this.selectedGroup = selectedGroup;

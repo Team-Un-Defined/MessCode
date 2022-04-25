@@ -10,6 +10,9 @@ import javafx.util.StringConverter;
 
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class NewGroupController {
 
     public Button createButton;
@@ -24,6 +27,11 @@ public class NewGroupController {
     private User user;
     private ResourceBundle bundle;
 
+    /**
+     * @param newGroupVM
+     * @param vh
+     * @param bundle
+     */
     public void init(NewGroupViewModel newGroupVM, ViewHandler vh, ResourceBundle bundle) {
         this.vh = vh;
         this.newGroupVM = newGroupVM;
@@ -44,6 +52,9 @@ public class NewGroupController {
         });
     }
 
+    /**
+     *
+     */
     public void createClicked() {
         String groupName = groupNameTextField.getText();
         User groupLeader = groupLeaderComboBox.getValue();

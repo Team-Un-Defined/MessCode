@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class EditMemberController {
 
     public ListView<User> allUsersList;
@@ -20,6 +23,11 @@ public class EditMemberController {
     private ViewHandler vh;
     private ResourceBundle bundle;
 
+    /**
+     * @param editMemberVM
+     * @param vh
+     * @param bundle
+     */
     public void init(EditMemberViewModel editMemberVM, ViewHandler vh, ResourceBundle bundle) {
         this.editMemberVM = editMemberVM;
         this.vh = vh;
@@ -31,6 +39,9 @@ public class EditMemberController {
         inGroupUsersList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
+    /**
+     *
+     */
     public void addMember() {
         if (allUsersList.getSelectionModel().getSelectedItems().isEmpty()) {
             errorLabel.setText(bundle.getString("select_user"));
@@ -40,6 +51,9 @@ public class EditMemberController {
         }
     }
 
+    /**
+     *
+     */
     private void updateUserList() {
         allUsersList.setItems(editMemberVM.getUsers());
         allUsersList.setCellFactory(lv -> new ListCell<User>() {
@@ -57,6 +71,9 @@ public class EditMemberController {
         });
     }
 
+    /**
+     *
+     */
     private void updateUsersInGroupList() {
         inGroupUsersList.setItems(editMemberVM.getMembers());
         inGroupUsersList.setCellFactory(lv -> new ListCell<User>() {
@@ -74,6 +91,9 @@ public class EditMemberController {
         });
     }
 
+    /**
+     *
+     */
     public void removeMember() {
         if (inGroupUsersList.getSelectionModel().getSelectedItems().isEmpty()) {
             errorLabel.setText(bundle.getString("select_user"));
@@ -83,6 +103,9 @@ public class EditMemberController {
         }
     }
 
+    /**
+     *
+     */
     public void confirmClicked() {
         Stage stage = (Stage) errorLabel.getScene().getWindow();
         stage.close();
