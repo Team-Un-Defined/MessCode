@@ -3,7 +3,9 @@ package com.messcode.client.views.edit_member;
 import com.messcode.client.core.ViewHandler;
 import com.messcode.transferobjects.User;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.util.ResourceBundle;
 
@@ -73,11 +75,16 @@ public class EditMemberController {
     }
 
     public void removeMember() {
-        if (allUsersList.getSelectionModel().getSelectedItems().isEmpty()) {
+        if (inGroupUsersList.getSelectionModel().getSelectedItems().isEmpty()) {
             errorLabel.setText(bundle.getString("select_user"));
         } else {
             ObservableList<User> u = inGroupUsersList.getSelectionModel().getSelectedItems();
             editMemberVM.removeMember(u);
         }
+    }
+
+    public void confirmClicked() {
+        Stage stage = (Stage) errorLabel.getScene().getWindow();
+        stage.close();
     }
 }

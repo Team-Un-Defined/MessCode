@@ -26,26 +26,6 @@ public class MainModelManager implements MainModel {
     private Group selectedGroup;
     private User selectedUser;
 
-    public Group getSelectedGroup() {
-        return selectedGroup;
-    }
-
-    public void setSelectedGroup(Group selectedGroup) {
-        support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
-        this.selectedGroup = selectedGroup;
-
-    }
-
-    @Override
-    public User getCurrentUser() {
-        return user;
-    }
-
-    @Override
-    public void deleteUser(User use) {
-        client.deleteUser(use);
-    }
-
     public MainModelManager(Client client) {
         support = new PropertyChangeSupport(this);
         allMessage = new ArrayList<>();
@@ -68,6 +48,26 @@ public class MainModelManager implements MainModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Group getSelectedGroup() {
+        return selectedGroup;
+    }
+
+    public void setSelectedGroup(Group selectedGroup) {
+        support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
+        this.selectedGroup = selectedGroup;
+
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return user;
+    }
+
+    @Override
+    public void deleteUser(User use) {
+        client.deleteUser(use);
     }
 
     private void addAllGroupMessages(PropertyChangeEvent propertyChangeEvent) {
@@ -102,8 +102,6 @@ public class MainModelManager implements MainModel {
             allUsers.add(u);
             support.firePropertyChange("AddOfflineUsers", null, allUsers);
         }
-
-
     }
 
     private void loginData(PropertyChangeEvent propertyChangeEvent) {
@@ -171,7 +169,6 @@ public class MainModelManager implements MainModel {
                     }
                 }
             }
-
         }
         System.out.println("//////////////////////////PMPM//////////////////////////////");
         support.firePropertyChange("newPM", null, pm);
@@ -189,7 +186,6 @@ public class MainModelManager implements MainModel {
                     }
                 }
             }
-
         }
         support.firePropertyChange("newGroupMessage", null, gm);
     }
@@ -237,7 +233,6 @@ public class MainModelManager implements MainModel {
     @Override
     public void sendGroup(GroupMessages mess) {
         client.sendGroup(mess);
-
     }
 
     public ArrayList<PublicMessage> getAllMessage() {
@@ -256,7 +251,6 @@ public class MainModelManager implements MainModel {
 
     @Override
     public ArrayList<PrivateMessage> loadPMs(User receiver) {
-
         ArrayList<PrivateMessage> pivi = new ArrayList<>();
         for (PublicMessage p : this.allMessage) {
             if (p instanceof PrivateMessage && (((PrivateMessage) p).getReceiver().getEmail().equals(receiver.getEmail()) || ((PrivateMessage) p).getSender().getEmail().equals(receiver.getEmail()))) {
@@ -371,7 +365,6 @@ public class MainModelManager implements MainModel {
 
     @Override
     public void setSelectedUser(User us) {
-
         selectedUser = us;
         PrivateMessage lastMessage = null;
         for (PublicMessage pub : allMessage) {
@@ -419,5 +412,4 @@ public class MainModelManager implements MainModel {
         }
         return false;
     }
-
 }
