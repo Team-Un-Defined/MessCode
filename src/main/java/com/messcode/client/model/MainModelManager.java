@@ -66,19 +66,8 @@ public class MainModelManager implements MainModel {
         }
     }
 
-    public Group getSelectedGroup() {
-        return selectedGroup;
-    }
-
-    @Override
-    public User getCurrentUser() {
-        return user;
-    }
-
-    @Override
-    public void deleteUser(User use) {
-        client.deleteUser(use);
-    }
+ 
+    
 
     private void addAllGroupMessages(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<GroupMessages> msgs = (ArrayList<GroupMessages>) ((Container) propertyChangeEvent.getNewValue()).getObject();
