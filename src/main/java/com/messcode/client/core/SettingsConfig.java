@@ -21,14 +21,15 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *
+ * This class is used to retrieve and save the system settings config of the application in the XML file format.
  */
 public class SettingsConfig {
     private static File configFile;
     private static Document doc;
 
     /**
-     *
+     * This method is used to initialize the reading and editing of the XML file with config.
+     * Loads config as Document class from XML file
      */
     public static void readConfig() {
         ClassLoader classLoader = SettingsConfig.class.getClassLoader();
@@ -54,10 +55,11 @@ public class SettingsConfig {
     }
 
     /**
-     * @param stuff
-     * @return
+     * This method finds and returns the requested setting in config
+     * @param parameter name of the requested setting
+     * @return returns string with actual value of the requested setting
      */
-    public static String getConfigOf(String stuff) {
+    public static String getConfigOf(String parameter) {
         String result = null;
         NodeList nodes = doc.getElementsByTagName("config");
         Node mynode = nodes.item(0);
@@ -65,13 +67,17 @@ public class SettingsConfig {
         if (mynode.getNodeType() == Node.ELEMENT_NODE) {
             Element myelement = (Element) mynode;
 
-            result = myelement.getElementsByTagName(stuff).item(0).getTextContent();
+            result = myelement.getElementsByTagName(parameter).item(0).getTextContent();
             //System.out.println("Get config of " + stuff + ": " + result);
         }
         return result;
     }
 
-
+    /**
+     * This method sets the desired setting in the config and calls function to save it
+     * @param stuff name of the setting
+     * @param value new value of the setting
+     */
     public static void setConfigOf(String stuff, String value) {
         NodeList nodes = doc.getElementsByTagName("config");
         Node mynode = nodes.item(0);
@@ -87,7 +93,9 @@ public class SettingsConfig {
         saveConfig();
     }
 
-
+    /**
+     *  Method saves current loaded config to XML file
+     */
     public static void saveConfig() {
         // write DOM back to the file
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
