@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 /**
  *
@@ -637,6 +638,7 @@ public class ImportData {
      * @throws SQLException
      */
     public boolean deleteUser(User u) throws SQLException {
+
         Statement st = c.createStatement();
 
         String query0 = "UPDATE account set  pwd_hash = 'deleted' where email='" + u.getEmail() + "' ;";
@@ -661,6 +663,8 @@ public class ImportData {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
 
+
+
         String query1 = "UPDATE account SET pwd_salt = ? WHERE email = ?";
         myPreparedStatement = c.prepareStatement(query1);
         myPreparedStatement.setString(1, u.getSalt());
@@ -672,5 +676,8 @@ public class ImportData {
         myPreparedStatement.setString(1,  Arrays.toString(u.getHashedPassword()));
         myPreparedStatement.setString(2,u.getEmail());
         myPreparedStatement.executeUpdate();
+
     }
+
+
 }

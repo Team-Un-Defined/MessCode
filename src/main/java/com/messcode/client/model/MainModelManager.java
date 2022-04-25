@@ -126,10 +126,8 @@ public class MainModelManager implements MainModel {
      */
     private void createAccount(PropertyChangeEvent propertyChangeEvent) {
         if (((User) ((Container) propertyChangeEvent.getNewValue()).getObject()) == null) {
-            System.out.println("THE OBJECT IS NULL, NICCEEE");
             support.firePropertyChange("createUserResponse", null, false);
         } else {
-            System.out.println("THE OBJECT IS NOT NULL, NICEE");
             User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
             support.firePropertyChange("createUserResponse", null, true);
             allUsers.add(u);
@@ -657,7 +655,6 @@ public class MainModelManager implements MainModel {
 
                 } else lastMessage = (GroupMessages) pub;
             }
-
         }
 
         if (lastMessage != null) {
