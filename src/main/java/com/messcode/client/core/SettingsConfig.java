@@ -56,7 +56,7 @@ public class SettingsConfig {
             Element myelement = (Element) mynode;
 
             result = myelement.getElementsByTagName(stuff).item(0).getTextContent();
-            System.out.println("Get config of " + stuff + ": " + result);
+            //System.out.println("Get config of " + stuff + ": " + result);
         }
         return result;
     }

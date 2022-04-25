@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -45,6 +46,8 @@ public class ChatClientController {
     public TextField textFieldGroup;
     public ListView<User> usersListFXML;
     public ListView<Group> groupsList;
+    @FXML
+    private ColorPicker colorPicker;
     public ListView<Label> messagesListAll;
     public ListView<Label> messagesListPM;
     public ListView<Label> messagesListGroup;
@@ -120,6 +123,16 @@ public class ChatClientController {
 
         if (SettingsConfig.getConfigOf("dark_theme").equals("1")) {
             toggleSwitch.setSelected(true);
+            colorPicker.setValue(new Color(0,0,0,1));
+        } else {
+            colorPicker.setValue(new Color(1,1,1,1));
+        }
+        if(!SettingsConfig.getConfigOf("message_color_r").equals("n")){
+            colorPicker.setValue(new Color(
+                    Double.parseDouble(SettingsConfig.getConfigOf("message_color_r")),
+                    Double.parseDouble(SettingsConfig.getConfigOf("message_color_g")),
+                    Double.parseDouble(SettingsConfig.getConfigOf("message_color_b")),
+                    1));
         }
 
         toggleSwitch.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
@@ -321,6 +334,27 @@ public class ChatClientController {
     }
 
     public void inviteToPmButton() {
+
+        messagesListPM.setCellFactory(list -> {
+            ListCell<Label> cell = new ListCell<Label>() {
+                @Override
+                protected void updateItem(Label item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                        setStyle(null);
+                        setText(null);
+                    } else {
+                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
+                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                        setStyle(a);
+                        setText(item.getText());
+                    }
+                }
+            };
+            return cell;
+        });
+
         if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
@@ -365,6 +399,28 @@ public class ChatClientController {
     }
 
     public void openGroup() {
+
+        messagesListGroup.setCellFactory(list -> {
+            ListCell<Label> cell = new ListCell<Label>() {
+                @Override
+                protected void updateItem(Label item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                        setStyle(null);
+                        setText(null);
+                    } else {
+                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
+                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                        setStyle(a);
+                        setText(item.getText());
+                    }
+                }
+            };
+            return cell;
+        });
+
+
         if (groupsList.getSelectionModel().getSelectedItems().isEmpty()) {
         } else {
             if (chatVM.getCurrentUser().getType().equals("superuser") || chatVM.getCurrentUser().getType().equals("employer")) {
@@ -455,6 +511,27 @@ public class ChatClientController {
     }
 
     public void refreshPublic() {
+
+        messagesListAll.setCellFactory(list -> {
+            ListCell<Label> cell = new ListCell<Label>() {
+                @Override
+                protected void updateItem(Label item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                        setStyle(null);
+                        setText(null);
+                    } else {
+                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
+                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                        setStyle(a);
+                        setText(item.getText());
+                    }
+                }
+            };
+            return cell;
+        });
+
         messagesListAll.getItems().clear();
         ArrayList<PublicMessage> pub = chatVM.loadPublics();
         for (PublicMessage pb : pub) {
@@ -529,6 +606,24 @@ public class ChatClientController {
         } else {
             User use = (User) usersListFXML.getSelectionModel().getSelectedItems().get(0);
             chatVM.resetPassword(use);
+        }
+    }
+
+    public void changeColor(ActionEvent event) {
+        Color color = colorPicker.getValue();
+        String webFormat = String.format("#%02x%02x%02x",
+                (int) (255 * color.getRed()),
+                (int) (255 * color.getGreen()),
+                (int) (255 * color.getBlue()));
+        SettingsConfig.setConfigOf("message_color_r", String.valueOf(color.getRed()));
+        SettingsConfig.setConfigOf("message_color_g", String.valueOf(color.getGreen()));
+        SettingsConfig.setConfigOf("message_color_b", String.valueOf(color.getBlue()));
+        SettingsConfig.setConfigOf("message_color_a", "1");
+        SettingsConfig.setConfigOf("message_color", webFormat);
+        if ((int) (255 * color.getRed())*0.299 + (int) (255 * color.getGreen())*0.587 + (int) (255 * color.getBlue())*0.114 > 140){
+            SettingsConfig.setConfigOf("text_color", "black");
+        } else {
+            SettingsConfig.setConfigOf("text_color", "white");
         }
     }
 }
