@@ -392,7 +392,7 @@ public class ImportData {
                 while (rs.next()) {
                     lid = rs.getInt("id");
                 }
-
+                if(lid !=0){
                 String query3 = "UPDATE public.last_seen SET private_message_id = ? WHERE id = ?";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, pmid);
@@ -400,7 +400,17 @@ public class ImportData {
                 myPreparedStatement.executeUpdate();
 
                 System.out.println("EXECUTED QUERY");
-
+                }
+                else 
+                {
+                     String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
+                                    "VALUES (default,null,?,null,?)";
+                myPreparedStatement = c.prepareStatement(query3);
+                myPreparedStatement.setInt(1, pmid);
+                myPreparedStatement.setInt(2, userid);
+                myPreparedStatement.executeUpdate();
+                
+                }
             } else if (us.getUnreadMessages().get(i) instanceof GroupMessages) {
                 int gmid = 0;
                 int lid = 0;
@@ -425,13 +435,23 @@ public class ImportData {
                 while (rs.next()) {
                     lid = rs.getInt("id");
                 }
-
+                if(lid!=0){
                 String query3 = "UPDATE public.last_seen SET group_nessage_id = ? WHERE id = ?";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, gmid);
                 myPreparedStatement.setInt(2, lid);
                 myPreparedStatement.executeUpdate();
-
+                }
+                else{
+                
+                String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
+                "VALUES (default,null,?,null,?)";
+                myPreparedStatement = c.prepareStatement(query3);
+                myPreparedStatement.setInt(1, gmid);
+                myPreparedStatement.setInt(2, userid);
+                myPreparedStatement.executeUpdate();
+            
+                }
                 System.out.println("EXECUTED QUERY");
             } else {
                 int pmid = 0;
@@ -456,7 +476,7 @@ public class ImportData {
                 while (rs.next()) {
                     lid = rs.getInt("id");
                 }
-
+                if(lid!=0){
                 String query3 = "UPDATE public.last_seen SET public_message_id = ? WHERE id = ?";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, pmid);
@@ -464,6 +484,17 @@ public class ImportData {
                 myPreparedStatement.executeUpdate();
 
                 System.out.println("EXECUTED QUERY");
+                }
+                else{
+                    String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
+                "VALUES (default,null,null,?,?)";
+                myPreparedStatement = c.prepareStatement(query3);
+                myPreparedStatement.setInt(1, pmid);
+                myPreparedStatement.setInt(2,userid);
+                myPreparedStatement.executeUpdate();
+            
+            }
+                
             }
         }
     }
