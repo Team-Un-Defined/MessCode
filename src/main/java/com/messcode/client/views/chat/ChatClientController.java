@@ -659,10 +659,21 @@ public class ChatClientController {
      * @param evt PropertyChangeEvent triggered event
      */
     private void displayPM(PropertyChangeEvent evt) {
+        
+        
+        
         String a = (String) evt.getNewValue();
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+      if (a.equals("true")) {
+          
+            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+
+            PMButtonImage.setImage(new Image(reddot));
+
+            updateUserList();
+        } 
+      else{
         Platform.runLater(() -> {
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+          
             Label label = new Label(a);
             label.setWrapText(true);
             label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
@@ -670,6 +681,7 @@ public class ChatClientController {
             messagesListPM.getItems().add(label);
             messagesListPM.scrollTo(messagesListPM.getItems().size());
         });
+      }
     }
 
     /**
@@ -677,6 +689,7 @@ public class ChatClientController {
      * @param evt PropertyChangeEvent triggered event
      */
     private void displayGroup(PropertyChangeEvent evt) {
+
         String ans = (String) evt.getNewValue();
         if (ans.equals("true")) {
             System.out.println("WTHIS SHOULD BE RUNNING? ");
