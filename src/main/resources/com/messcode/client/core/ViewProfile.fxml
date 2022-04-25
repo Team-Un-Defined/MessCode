@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.messcode.client.views.view_profile.ViewProfileController">
    <children>
       <Label fx:id="nameLabel" layoutX="20.0" layoutY="20.0" text="Name Name">
@@ -21,6 +20,6 @@
       <Label fx:id="lastNameLabel" layoutX="140.0" layoutY="110.0" text="Label" />
       <Label fx:id="emailLabel" layoutX="140.0" layoutY="150.0" text="Label" />
       <Label fx:id="roleLabel" layoutX="140.0" layoutY="192.0" text="Label" />
-      <Button layoutX="269.0" layoutY="247.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Close" />
+      <Button layoutX="269.0" layoutY="247.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Close" />
    </children>
 </Pane>
