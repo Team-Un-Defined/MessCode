@@ -511,7 +511,7 @@ public class MainModelManager implements MainModel {
 
         for (PrivateMessage pub : pivi) {
             if (last != null) {
-                if (last.getTime().before(pub.getTime())) {
+                if (last.getTime().getNanos()<(pub.getTime()).getNanos()) {
                     last = pub;
                 }
             } else last = pub;
@@ -525,8 +525,11 @@ public class MainModelManager implements MainModel {
                 if (((PrivateMessage) p).getReceiver().getEmail().equals(u.getEmail())) {
                     if ((p.getTime().getNanos()<last.getTime().getNanos())) {
 
+            System.out.println("///////////////////////LASTTT111111///////////////////////////////////");
+            user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() +"[MESSAGE]  "+h.getMsg()+"[TIME]: " + h.getTime()));
+           System.out.println("//////////////////////"+last.getMsg() + "[TIME] "+last.getTime() +"    "+last.getReceiver().getEmail()+"   "+ last.getSender().getEmail()   +"////////////////////////////////////");
 
-                        System.out.println(last.getMsg());
+          
 
                         return true;
                     }
@@ -534,7 +537,9 @@ public class MainModelManager implements MainModel {
 
                     if ((p.getTime().getNanos()< last.getTime().getNanos())) {
 
-                        System.out.println(last.getMsg());
+                        System.out.println("///////////////////////LASTTT111111///////////////////////////////////");
+            user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() +"[MESSAGE]  "+h.getMsg()+"[TIME]: " + h.getTime()));
+           System.out.println("//////////////////////"+last.getMsg() + "[TIME] "+last.getTime() +"    "+last.getReceiver().getEmail()+"   "+ last.getSender().getEmail()   +"////////////////////////////////////");
 
                         return true;
                     }
@@ -542,6 +547,10 @@ public class MainModelManager implements MainModel {
             }
         }
         if (last != null && m == 0) {
+              System.out.println("///////////////////////LASTTT111111///////////////////////////////////");
+            user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() +"[MESSAGE]  "+h.getMsg()+"[TIME]: " + h.getTime()));
+           System.out.println("//////////////////////"+last.getMsg() + "[TIME] "+last.getTime() +"    "+last.getReceiver().getEmail()+"   "+ last.getSender().getEmail()   +"////////////////////////////////////");
+
             return true;
         }
         
@@ -556,13 +565,13 @@ public class MainModelManager implements MainModel {
         selectedUser = us;
         ArrayList<PrivateMessage> goog = loadPMs(us);
         PrivateMessage lastMessage = null;
-        for (PublicMessage pub : goog) {
+        for (PrivateMessage pub : goog) {
                 if (lastMessage != null) {
-                    if (lastMessage.getTime().before(pub.getTime())) {
-                        lastMessage = (PrivateMessage) pub;
+                    if (lastMessage.getTime().getNanos()<(pub.getTime()).getNanos()) {
+                        lastMessage = pub;
                     }
 
-                } else lastMessage = (PrivateMessage) pub;
+                } else lastMessage = pub;
         }
 //        System.out.println("**************************************"+lastMessage.getMsg());
         if (lastMessage != null) {
