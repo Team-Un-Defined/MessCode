@@ -23,5 +23,8 @@ Then run client-side application:
 
 > your_11_java_version\bin\java.exe -jar MessCodeClient.jar
 
+You can find jar files in "out/artifacts/...".
+
+When running client you must have config file in the same file path as executable.
 
 To be able to effectively test the messenger it is recommended to run three client instances, with the employer, project manager, and worker accounts.
