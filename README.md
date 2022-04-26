@@ -14,8 +14,10 @@ It is also necessary to locally create the database with the following parameter
 And restore it from database backup file “backupName.tz”.
 
 The program can be run using the two included JAR files, a server-side and a client program:
+Firstly start-up the server:
+> your_11_java_version\bin\java.exe -jar MessCodeServer.jar
+Then run client-side application:
 > your_11_java_version\bin\java.exe -jar MessCodeClient.jar
 
-> your_11_java_version\bin\java.exe -jar MessCodeServer.jar
 
 To be able to effectively test the messenger it is recommended to run three client instances, with the employer, project manager, and worker accounts.
