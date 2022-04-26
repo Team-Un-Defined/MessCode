@@ -109,6 +109,7 @@ public class ChatClientController {
         chatVM.addListener("MessageForEveryone", this::displayPublic);
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
+        chatVM.addListener("refresh",this::refresh);
 
         // OnCloseRequest to save data on exit
         Platform.runLater(() -> sendAllButton.getScene().getWindow().setOnCloseRequest(t -> {
@@ -218,6 +219,11 @@ public class ChatClientController {
         paneAll.toFront();
         userListPane.toFront();
         sendAllButton.setDefaultButton(true);
+    }
+
+    private void refresh(PropertyChangeEvent propertyChangeEvent) {
+
+        updateUserList();
     }
 
     /**
@@ -586,7 +592,9 @@ public class ChatClientController {
                     } else {
                         setText(item.getText());
                         String a = " -fx-control-inner-background:" + SettingsConfig.getConfigOf("message_color") +
-                                ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                                ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color") +
+                                ";" + " -fx-max-width: " + (messagesListAll.getPrefWidth() - 30) +
+                                ";" + " -fx-wrap-text: true";
                         setStyle(a);
                     }
                 }
@@ -663,31 +671,29 @@ public class ChatClientController {
      * @param evt PropertyChangeEvent triggered event
      */
     private void displayPM(PropertyChangeEvent evt) {
-        
-        
-        
-        String a = (String) evt.getNewValue();
 
+
+
+        String a = (String) evt.getNewValue();
         if (a.equals("true")) {
+
             InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 
             PMButtonImage.setImage(new Image(reddot));
 
             updateUserList();
-        } else if (a.equals("false")) {
-            updateGroupList();
         }
-      else{
-        Platform.runLater(() -> {
-          
-            Label label = new Label(a);
-            label.setWrapText(true);
-            label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
-            label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
-            messagesListPM.getItems().add(label);
-            messagesListPM.scrollTo(messagesListPM.getItems().size());
-        });
-      }
+        else{
+            Platform.runLater(() -> {
+
+                Label label = new Label(a);
+                label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
+                label.setWrapText(true);
+                label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
+                messagesListPM.getItems().add(label);
+                messagesListPM.scrollTo(messagesListPM.getItems().size());
+            });
+        }
     }
 
     /**

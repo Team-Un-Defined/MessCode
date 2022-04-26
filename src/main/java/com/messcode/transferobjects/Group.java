@@ -11,6 +11,7 @@ import java.util.ArrayList;
 /**
  * Each project has its own group.
  * This class holds the project's information and list of its members
+ * @author Noémi Farkas
  */
 public class Group implements Serializable {
 

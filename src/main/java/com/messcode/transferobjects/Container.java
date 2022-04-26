@@ -3,7 +3,8 @@ package com.messcode.transferobjects;
 import java.io.Serializable;
 
 /**
- *
+ * The Container is used to send packets to and from the server.
+ * @author Olivér Izsák
  */
 public class Container implements Serializable {
 
@@ -11,8 +12,9 @@ public class Container implements Serializable {
     private ClassName className;
 
     /**
-     * @param object
-     * @param className
+     * Constructor of the Container
+     * @param object Object to send/receive
+     * @param className specification of the package type
      */
     public Container(Object object, ClassName className) {
         this.object = object;

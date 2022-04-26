@@ -7,10 +7,12 @@ import com.messcode.transferobjects.messages.PublicMessage;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * This class is used for storing important account information such as name, email, RSA keys etc...
  * Attribute type can be employee, superuser, projectLeader or employer.
+ * @author Martin Šváb
  */
 public class User implements Serializable {
 
@@ -23,7 +25,6 @@ public class User implements Serializable {
     private byte[] hashedPassword;
     private String salt;
     private ArrayList<PublicMessage> unreadMessages;
-    // for login
 
     /**
      * @param email email address
@@ -310,7 +311,50 @@ public class User implements Serializable {
      * @param unreadMessages all unread messages
      */
     public void addUnreadMessages(PublicMessage unreadMessages) {
-        this.unreadMessages.add(unreadMessages);
+        if(unreadMessages.getSender()==null)return;
+        int end=0;
+        ListIterator<PublicMessage> listIterator = this.unreadMessages.listIterator();
+       if(unreadMessages instanceof PrivateMessage){
+       while(listIterator.hasNext()){
+      PublicMessage mess = listIterator.next();
+  
+       if(mess instanceof PrivateMessage){
+           
+       String senderNow = unreadMessages.getSender().getEmail();
+       String senderThen = mess.getSender().getEmail();
+       String receiverNow = ((PrivateMessage) unreadMessages).getReceiver().getEmail();
+       String receiverThen = ((PrivateMessage) mess).getReceiver().getEmail();
+           
+       System.out.println("GOT NOW SENDER: "+senderNow + "GOT THEN SENDER: "+ senderThen + "GOT NOW RECEICER: "+ receiverNow + "GOT THEN RECEIVER: " + receiverThen);
+       System.out.println("SENDER NOW = SENDER THEN ?  "+(senderNow.equals(senderThen)&& receiverNow.contains(receiverThen)));
+       System.out.println("SENDER Then = SENDER NOW ?  "+ (senderNow.equals(receiverThen) && receiverNow.equals(senderThen)));
+       if((senderNow.equals(senderThen)&& receiverNow.contains(receiverThen)) || (senderNow.equals(receiverThen) && receiverNow.equals(senderThen) ))
+       {end=1;
+           if(mess.getTime().getNanos()< unreadMessages.getTime().getNanos()){
+              System.out.println("///////////////////////_____1_________///////////////////////////////////");
+              getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
+              System.out.println("//////////////////////////////////////////////////////////");
+   
+            listIterator.set(unreadMessages);
+            
+            System.out.println("///////////////////////_____2________///////////////////////////////////");
+            getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
+            System.out.println("//////////////////////////////////////////////////////////");
+            end=1;
+           }
+       }
+       }
+       }
+         if(end==1){return;}
+       listIterator.add(unreadMessages);
+       System.out.println("///////////////////////_____3_____///////////////////////////////////");
+       getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
+       System.out.println("//////////////////////////////////////////////////////////");
+       return;
+       }
+       
+        
+       else this.unreadMessages.add(unreadMessages);
     }
 
     /**

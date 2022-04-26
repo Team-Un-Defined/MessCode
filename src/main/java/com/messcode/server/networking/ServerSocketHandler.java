@@ -46,11 +46,7 @@ public class ServerSocketHandler implements Runnable {
         this.pool = pool;
         inFromClient = new ObjectInputStream(socket.getInputStream());
         outToClient = new ObjectOutputStream(socket.getOutputStream());
-        try {
-            dbe.checkDatabaseState();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**
