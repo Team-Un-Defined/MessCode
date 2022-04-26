@@ -109,6 +109,7 @@ public class ChatClientController {
         chatVM.addListener("MessageForEveryone", this::displayPublic);
         chatVM.addListener("newPM", this::displayPM);
         chatVM.addListener("newGroupMessage", this::displayGroup);
+        chatVM.addListener("refresh",this::refresh);
 
         // OnCloseRequest to save data on exit
         Platform.runLater(() -> sendAllButton.getScene().getWindow().setOnCloseRequest(t -> {
@@ -218,6 +219,11 @@ public class ChatClientController {
         paneAll.toFront();
         userListPane.toFront();
         sendAllButton.setDefaultButton(true);
+    }
+
+    private void refresh(PropertyChangeEvent propertyChangeEvent) {
+
+        updateUserList();
     }
 
     /**
@@ -350,6 +356,7 @@ public class ChatClientController {
     public void inviteToPmButton() {
         messagesListPM.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
+
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -358,10 +365,10 @@ public class ChatClientController {
                         setStyle(null);
                         setText(null);
                     } else {
-                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
-                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
-                        setStyle(a);
                         setText(item.getText());
+                        String a = " -fx-control-inner-background:" + SettingsConfig.getConfigOf("message_color") +
+                                ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                        setStyle(a);
                     }
                 }
             };
@@ -429,6 +436,7 @@ public class ChatClientController {
     public void openGroup() {
         messagesListGroup.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
+
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -437,12 +445,11 @@ public class ChatClientController {
                         setStyle(null);
                         setText(null);
                     } else {
-                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
-                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
-                        setStyle(a);
                         setText(item.getText());
+                        String a = " -fx-control-inner-background:" + SettingsConfig.getConfigOf("message_color") +
+                                ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                        setStyle(a);
                     }
-
                 }
             };
             return cell;
@@ -512,6 +519,7 @@ public class ChatClientController {
         }
         if (actionEvent.getSource() == buttonGroup) {
             paneInFront = "group";
+            openGroup();
             paneGroup.toFront();
             groupListPane.toFront();
             sendAllButton.setDefaultButton(false);
@@ -521,6 +529,7 @@ public class ChatClientController {
         }
         if (actionEvent.getSource() == buttonPrivate) {
             paneInFront = "pm";
+            inviteToPmButton();
             panePrivate.toFront();
             userListPane.toFront();
             sendGroupButton.setDefaultButton(false);
@@ -572,6 +581,7 @@ public class ChatClientController {
     public void refreshPublic() {
         messagesListAll.setCellFactory(list -> {
             ListCell<Label> cell = new ListCell<>() {
+
                 @Override
                 protected void updateItem(Label item, boolean empty) {
                     super.updateItem(item, empty);
@@ -580,12 +590,12 @@ public class ChatClientController {
                         setStyle(null);
                         setText(null);
                     } else {
-                        String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
-                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color") + "";
-                        setStyle(a);
-                        setWrapText(true);
-                        setMaxWidth(messagesListAll.getPrefWidth() - 30);
                         setText(item.getText());
+                        String a = " -fx-control-inner-background:" + SettingsConfig.getConfigOf("message_color") +
+                                ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color") +
+                                ";" + " -fx-max-width: " + (messagesListAll.getPrefWidth() - 30) +
+                                ";" + " -fx-wrap-text: true";
+                        setStyle(a);
                     }
                 }
             };
@@ -661,29 +671,29 @@ public class ChatClientController {
      * @param evt PropertyChangeEvent triggered event
      */
     private void displayPM(PropertyChangeEvent evt) {
-        
-        
-        
+
+
+
         String a = (String) evt.getNewValue();
-      if (a.equals("true")) {
-          
+        if (a.equals("true")) {
+
             InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 
             PMButtonImage.setImage(new Image(reddot));
 
             updateUserList();
-        } 
-      else{
-        Platform.runLater(() -> {
-          
-            Label label = new Label(a);
-            label.setWrapText(true);
-            label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
-            label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
-            messagesListPM.getItems().add(label);
-            messagesListPM.scrollTo(messagesListPM.getItems().size());
-        });
-      }
+        }
+        else{
+            Platform.runLater(() -> {
+
+                Label label = new Label(a);
+                label.setMaxWidth(messagesListGroup.getPrefWidth() - 30);
+                label.setWrapText(true);
+                label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
+                messagesListPM.getItems().add(label);
+                messagesListPM.scrollTo(messagesListPM.getItems().size());
+            });
+        }
     }
 
     /**
