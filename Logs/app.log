@@ -10,3 +10,6 @@ org.postgresql.util.PSQLException: The column name account_id was not found in t
 	at JDBC.ImportData.updateLeader(ImportData.java:366) [classes/:?]
 	at com.messcode.server.networking.ServerSocketHandler.run(ServerSocketHandler.java:74) [classes/:?]
 	at java.lang.Thread.run(Thread.java:829) [?:?]
+[INFO ] 2022-04-26 20:38:57.150 [Thread-0] ImportData - Account created: i@gmail.com
+[INFO ] 2022-04-26 20:41:30.350 [Thread-2] ImportData - Account created: ax@gmail.com
+[INFO ] 2022-04-26 20:43:18.467 [Thread-0] ImportData - Account created: fa@gmail.com
