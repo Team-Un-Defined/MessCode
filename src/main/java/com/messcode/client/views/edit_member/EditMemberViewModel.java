@@ -58,7 +58,7 @@ public class EditMemberViewModel implements Subject {
 
         Platform.runLater(() -> {
             for (User u : users) {
-                if (u.getType().equals("superuser") || u.getType().equals("employer")) {
+                if (u.isSuperuser() || u.isEmployer()) {
                     continue;
                 }
                 allUsers.add(u);

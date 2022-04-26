@@ -44,7 +44,7 @@ public class NewGroupViewModel implements Subject {
         ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
             for (User u : users) {
-                if (u.getType().equals("superuser") || u.getType().equals("employer")) {
+                if (u.isSuperuser() || u.isEmployer()) {
                     continue;
                 }
                 usersList.add(u);

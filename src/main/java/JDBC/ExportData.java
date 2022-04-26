@@ -349,7 +349,7 @@ public class ExportData {
         ResultSet rs0 = null;
         ResultSet rs;
 
-        if (current.getType().equals("employee") || current.getType().equals("project_leader")) {
+        if (current.isEmployee() || current.isProjectLeader()) {
             String query0 = "SELECT p.name FROM projects AS p JOIN project_members as pm ON pm.project_id = p.id " +
                     "JOIN account AS a ON a.id = pm.account_id WHERE a.email = ?";
             myPreparedStatement = c.prepareStatement(query0, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
