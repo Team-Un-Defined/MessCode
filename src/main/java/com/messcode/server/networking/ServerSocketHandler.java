@@ -33,6 +33,8 @@ public class ServerSocketHandler implements Runnable {
     private User user;
 
     /**
+     * Constructor where the Socket, ConnectionPool, ImportData,ExportData, ObjectOutputStream,ObjectInputStream are initialized
+     *
      * @param socket
      * @param pool
      * @param dbii

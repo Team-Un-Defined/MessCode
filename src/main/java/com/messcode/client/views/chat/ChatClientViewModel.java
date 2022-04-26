@@ -65,6 +65,15 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
         mainModel.addListener("LoginData",this::refresh);
         mainModel.addListener("removeOfflineUser",this::removeOfflineUser);
+        mainModel.addListener("AddNewOfflineUser",this::addOfflineUserOne);
+    }
+
+    private void addOfflineUserOne(PropertyChangeEvent propertyChangeEvent) {
+     User us = (User) propertyChangeEvent.getNewValue();
+        Platform.runLater(() -> {
+            usersList.add(us);
+            System.out.println(usersList);
+        });
     }
 
     private void removeOfflineUser(PropertyChangeEvent propertyChangeEvent) {
