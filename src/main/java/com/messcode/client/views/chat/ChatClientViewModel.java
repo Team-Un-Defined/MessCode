@@ -127,7 +127,9 @@ public class ChatClientViewModel implements Subject {
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
-        User user = (User) propertyChangeEvent.getNewValue();
+        com.messcode.transferobjects.Container c = (com.messcode.transferobjects.Container) propertyChangeEvent.getNewValue();
+
+        User user =(User)c.getObject()  ;
         user.setSalt("");
         Platform.runLater(() -> {
 
