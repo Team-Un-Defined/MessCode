@@ -306,7 +306,7 @@ public class ChatClientController {
      * Initiates the sending of a message in the all chat
      */
     public void sendButton() {
-        System.out.println("*************************************");
+     
         String message = textFieldAll.getText();
         chatVM.sendPublic(new PublicMessage(chatVM.getCurrentUser(), message));
         textFieldAll.clear();
@@ -317,9 +317,9 @@ public class ChatClientController {
      */
     public void sendPM() {
         if (chatVM.getReceiver() == null) {
-            System.out.println("FUCK YOU");
+       
         } else {
-            System.out.println("-------------------------------------");
+            
 
             String message = textFieldPM.getText();
 
@@ -333,9 +333,9 @@ public class ChatClientController {
      */
     public void sendGroup() {
         if (chatVM.getReceiverGroup() == null) {
-            System.out.println("EF YOU 2.0");
+          
         } else {
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+           
             String message = textFieldGroup.getText();
             chatVM.sendGroup(new GroupMessages(chatVM.getCurrentUser(), message, chatVM.getReceiverGroup()));
             textFieldGroup.clear();
@@ -383,7 +383,7 @@ public class ChatClientController {
             }
 
             User use = usersListFXML.getSelectionModel().getSelectedItems().get(0);
-            System.out.println(use.getEmail());
+         
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
                 chatVM.setReceiver(use);
                 updateUserList();
@@ -476,7 +476,7 @@ public class ChatClientController {
                 }
             }
 
-            System.out.println(group.getName());
+        
             chatVM.setReceiverGroup(group);
             updateGroupList();
             messagesListGroup.getItems().clear();
@@ -597,7 +597,7 @@ public class ChatClientController {
         ArrayList<PublicMessage> pub = chatVM.loadPublics();
         for (PublicMessage pb : pub) {
             Label label = new Label(pb.getTime() + " " + pb.getUsername() + ": " + pb.getMsg());
-            System.out.println(messagesListAll.getPrefWidth());
+           
             label.setWrapText(true);
             label.setMaxWidth(messagesListAll.getPrefWidth() - 30);
             label.setOnMouseClicked((evt) -> this.copyMessage(label.getText()));
@@ -642,7 +642,7 @@ public class ChatClientController {
     private void displayPublic(PropertyChangeEvent evt) {
         String a = (String) evt.getNewValue();
         Platform.runLater(() -> {
-            System.out.println("PUB    PUB     PUB       PUB     PUB   PUB   PUB    PUB");
+           
             Label label = new Label(a);
             label.setWrapText(true);
             label.setMaxWidth(messagesListAll.getPrefWidth() - 30);
@@ -704,7 +704,7 @@ public class ChatClientController {
         } else if (ans.equals("false")) {
             updateGroupList();
         } else {
-            System.out.println("WOW?? ");
+           
             String a = (String) evt.getNewValue();
             Platform.runLater(() -> {
                 Label label = new Label(a);
