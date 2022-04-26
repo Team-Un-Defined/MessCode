@@ -40,6 +40,8 @@ public class ExportData {
         }
     }
      public void checkDatabaseState() throws SQLException {
+         System.out.println("IS THIS RUNNING?" +
+                 "");
          Statement st = c.createStatement();
          String query = "SELECT * FROM account ";
 
@@ -47,8 +49,9 @@ public class ExportData {
          if(!rs.next())
          { User u = new User("Admin","Admin","admin@gmail.com","admin","superuser");
 
-          query= "INSERT INTO ACCOUNT(id,fname,lname,pwd_hash,pwd_salt,type,email) values(default,'Admin','Admin','admin@gmail.com','"+ Arrays.toString(u.getHashedPassword()) +"','"+u.getSalt()+"','superuser')";
+          query= "INSERT INTO ACCOUNT(id,fname,lname,pwd_hash,pwd_salt,type,email) values(default,'Admin','Admin','"+ Arrays.toString(u.getHashedPassword()) +"','"+u.getSalt()+"','superuser','admin@gmail.com')";
          }
+         st.execute(query);
 
 
      }
