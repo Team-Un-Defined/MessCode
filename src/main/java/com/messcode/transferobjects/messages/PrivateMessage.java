@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 /**
  * These messages are sent between 2 communicating users.
  * Therefore, messages have one sender and one receiver.
+ * @author Martin Šváb
  */
 public class PrivateMessage extends PublicMessage implements Serializable {
 

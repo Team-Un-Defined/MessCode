@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 /**
  * These messages are sent to public chat
  * Therefore, messages only have one sender.
+ * @author Martin Šváb
  */
 public class PublicMessage implements Serializable {
 

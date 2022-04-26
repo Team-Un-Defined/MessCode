@@ -11,6 +11,7 @@ import java.util.ArrayList;
 /**
  * This class is used for storing important account information such as name, email, RSA keys etc...
  * Attribute type can be employee, superuser, projectLeader or employer.
+ * @author Martin Šváb
  */
 public class User implements Serializable {
 
@@ -23,7 +24,6 @@ public class User implements Serializable {
     private byte[] hashedPassword;
     private String salt;
     private ArrayList<PublicMessage> unreadMessages;
-    // for login
 
     /**
      * @param email email address

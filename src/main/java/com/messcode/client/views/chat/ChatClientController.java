@@ -581,8 +581,10 @@ public class ChatClientController {
                         setText(null);
                     } else {
                         String a = "-fx-background-color: " + SettingsConfig.getConfigOf("message_color") +
-                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color");
+                                "; -fx-text-fill: " + SettingsConfig.getConfigOf("text_color") + "";
                         setStyle(a);
+                        setWrapText(true);
+                        setMaxWidth(messagesListAll.getPrefWidth() - 30);
                         setText(item.getText());
                     }
                 }
