@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
+ *This class is responsible for listening and reacting to packets that come from the client
  *
  */
 public class ServerSocketHandler implements Runnable {
@@ -34,12 +35,13 @@ public class ServerSocketHandler implements Runnable {
 
     /**
      * Constructor where the Socket, ConnectionPool, ImportData,ExportData, ObjectOutputStream,ObjectInputStream are initialized
+     * It also contains the user.
      *
-     * @param socket
-     * @param pool
-     * @param dbii
-     * @param dbee
-     * @throws IOException
+     * @param socket Socket object for connection
+     * @param pool ConnectionPool object for keeping track of all clients
+     * @param dbii ImportData object for JDBC
+     * @param dbee ExportDate object for JDBC
+     * @throws IOException an exception that provides information on errors.
      */
     public ServerSocketHandler(Socket socket, ConnectionPool pool, ImportData dbii, ExportData dbee) throws IOException {
         dbe = dbee;
@@ -52,7 +54,7 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
-     *
+     *This run method is responsible for listening to the packets from clients.
      */
     @Override
     public void run() {
@@ -204,6 +206,7 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
+     *This function updates the user list  for the client
      *
      */
     public void updateUsersList() {
@@ -220,7 +223,9 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
-     * @param publicMessage
+     * This method is responsible for sending a public message to the clients
+     *
+     * @param publicMessage PublicMessage object containing a message for clients
      */
     public void sendMessage(PublicMessage publicMessage) {
         try {
@@ -236,14 +241,18 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
-     * @return
+     * Returns the current user of this instance.
+     *
+     * @return User User object
      */
     public User getUser() {
         return user;
     }
 
     /**
-     * @param user
+     * This method is called when a client joins the chat system to update the userlist for other users.
+     *
+     * @param user User object
      */
     public void joinChat(User user) {
         try {
@@ -257,7 +266,9 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
-     * @param pm
+     * This method is responsible for sending private messages to both parties
+     *
+     * @param pm PrivateMessage object
      */
     public void sendMessageInPM(PrivateMessage pm) {
         try {
@@ -272,7 +283,9 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
-     * @param user
+     * This method notifies the clients that a user left the chat system.
+     *
+     * @param user User object
      */
     public void userLeft(User user) {
         Container packet = new Container(user, ClassName.USER_LEFT);
@@ -285,7 +298,9 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
-     * @param updateGroups
+     * This method sends all the groups to the clients.
+     *
+     * @param updateGroups Group object
      */
     void sendGroups(Container updateGroups) {
         try {
@@ -297,7 +312,9 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
-     * @param message
+     * This method sends the group message to all the clients connected to that group
+     *
+     * @param message Group object
      */
     public void sendGroupMessage(GroupMessages message) {
         try {
@@ -313,7 +330,9 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
+     *This method is responsible for sending a ban notification to client, and other clients.
      *
+     * @param u User object
      */
     public void removeUser(User u) {
         try {
@@ -327,7 +346,9 @@ public class ServerSocketHandler implements Runnable {
     }
 
     /**
-     * @param groupMessages
+     * This method is responsible for sending all the group messages to a client
+     *
+     * @param groupMessages ArrayList<PublicMessage></PublicMessage> Object
      */
     public void sendAllGroupMessage(ArrayList<PublicMessage> groupMessages) {
         try {
@@ -339,6 +360,11 @@ public class ServerSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * This method is responsible for sending a new user to the offline list for clients
+     *
+     * @param u User object
+     */
     public void updateOfflineList(User u) {
         try {
 

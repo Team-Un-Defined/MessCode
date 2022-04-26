@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
+ *This is where the main bussiness logic happens.
  *
  */
 public class MainModelManager implements MainModel {
@@ -32,6 +33,7 @@ public class MainModelManager implements MainModel {
     private Hashtable<String,PrivateMessage> lastMessages;
 
     /**
+     * This constructor initializes all the Users,Groups,Messages and the current user and also adds listener for the client.
      * @param client
      */
     public MainModelManager(Client client) {
@@ -61,6 +63,11 @@ public class MainModelManager implements MainModel {
         }
     }
 
+    /**
+     * This method is responsible for removing out a user from the allUsers list and sending out an event for the listeners with the deleted user.
+     * @param propertyChangeEvent PropertyChangeEvent object
+     */
+
     private void kickUser(PropertyChangeEvent propertyChangeEvent) {
         Container packet = (Container)propertyChangeEvent.getNewValue();
         if(((User)packet.getObject()).getEmail().equals(user.getEmail()))
@@ -80,6 +87,7 @@ public class MainModelManager implements MainModel {
     }
 
     /**
+     * This method is responsible for adding a new offline user to the list when the user is createad, and sending a event to the listeners with the user in it.
      * @param propertyChangeEvent
      */
     private void addOfflineUser(PropertyChangeEvent propertyChangeEvent) {
@@ -89,15 +97,11 @@ public class MainModelManager implements MainModel {
         support.firePropertyChange("AddNewOfflineUser", null, u);
     }
 
-    /**
-     * @return
-     */
-    public Group getSelectedGroup() {
-        return selectedGroup;
-    }
+
 
     /**
-     * @return
+     * This method is responsible for getting the current user.
+     * @return User object
      */
     @Override
     public User getCurrentUser() {
@@ -105,7 +109,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param use
+     * This method is responsible for calling the deleteUser on the client.
+     * @param use User object
      */
     @Override
     public void deleteUser(User use) {
@@ -113,7 +118,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for adding all the group messages for a new user and sending an event to the listeners with a boolean in it.
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     private void addAllGroupMessages(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<GroupMessages> msgs = (ArrayList<GroupMessages>) ((Container) propertyChangeEvent.getNewValue()).getObject();
@@ -127,7 +133,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for sending the user object that was deleted to the listeners to update the views
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     private void userDeleted(PropertyChangeEvent propertyChangeEvent) {
         User u = (User) ((Container) propertyChangeEvent.getNewValue()).getObject();
@@ -135,7 +142,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for sending a packet containing a boolean to the views
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     private void passChangeResponse(PropertyChangeEvent propertyChangeEvent) {
         Container packet = ((Container) propertyChangeEvent.getNewValue());
@@ -143,7 +151,9 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method sends an event to the listener if the arguments is a null User object or 2 different events if its a user object and its not null.
+     * In the first case it means the account creation failed. In the second case it means it worked, and the gui needs to be updated with the new user.
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     private void createAccount(PropertyChangeEvent propertyChangeEvent) {
         if (((User) ((Container) propertyChangeEvent.getNewValue()).getObject()) == null) {
@@ -157,7 +167,9 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for distributing all the different data, such as User, UserList, all types of messages and last seen messages to the user by
+     * sending events to the listeners
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     private void loginData(PropertyChangeEvent propertyChangeEvent) {
         Container packet = ((Container) propertyChangeEvent.getNewValue());
@@ -188,7 +200,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for sending a boolean to the gui which means whether the login was successful or not
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     private void loginResponse(PropertyChangeEvent propertyChangeEvent) {
         boolean answer = (boolean) propertyChangeEvent.getNewValue();
@@ -197,24 +210,18 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for firing an event to the listeners with the removed user in it as argument.
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         support.firePropertyChange("RemoveUser",null,propertyChangeEvent);
     }
 
-    /**
-     * @param usersPM
-     */
-    //  GLOBAL CHAT
-    @Override
-    public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
-        this.usersPM = usersPM;
-        support.firePropertyChange("UsersOnlineInPM", null, usersPM);
-    }
+
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for adding a new public message to the list of messages and firing an event to the listeners with the message in it.
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     public void receivePublic(PropertyChangeEvent propertyChangeEvent) {
         PublicMessage publicMessage = (PublicMessage) propertyChangeEvent.getNewValue();
@@ -224,7 +231,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for filtering the recieved private message to decide how the GUI should react to it, meanwhile firing events to the listeners
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     public void receivePM(PropertyChangeEvent propertyChangeEvent) {
         PrivateMessage pm = (PrivateMessage) propertyChangeEvent.getNewValue();
@@ -255,7 +263,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for filtering the recieved group message to decide how the GUI should react to it, meanwhile firing events to the listeners
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     private void receiveGroup(PropertyChangeEvent propertyChangeEvent) {
         GroupMessages gm = (GroupMessages) propertyChangeEvent.getNewValue();
@@ -280,7 +289,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for firing an event to the listeners containing the newly added user
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
@@ -288,8 +298,9 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param email
-     * @param pwd
+     * This method calls the addUser method on the client
+     * @param email String object
+     * @param pwd String object
      */
     @Override
     public void addUser(String email, String pwd) {
@@ -298,6 +309,7 @@ public class MainModelManager implements MainModel {
     }
 
     /**
+     * This method is responsible for adding the PropertyChangeListener
      * @param eventName
      * @param listener
      */
@@ -307,6 +319,7 @@ public class MainModelManager implements MainModel {
     }
 
     /**
+     * This method is responsible for removing the PropertyChangeListener
      * @param eventName
      * @param listener
      */
@@ -316,7 +329,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param mess
+     * This method is responsible for calling the sendPublic method on the client
+     * @param mess PublicMessage object
      */
     @Override
     public void sendPublic(PublicMessage mess) {
@@ -324,7 +338,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param message
+     * This method is responsible for calling the sendPM method on the client
+     * @param message PrivateMessage object
      */
     @Override
     public void sendPM(PrivateMessage message) {
@@ -332,33 +347,24 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param mess
+     * This method is responsible for calling the sendGroup method on the client
+     * @param mess GroupMessage object
      */
     @Override
     public void sendGroup(GroupMessages mess) {
         client.sendGroup(mess);
     }
 
-    /**
-     * @return
-     */
-    public ArrayList<PublicMessage> getAllMessage() {
-        return allMessage;
-    }
+
+
 
     /**
-     * @param allMessage
-     */
-    public void setAllMessage(ArrayList<PublicMessage> allMessage) {
-        this.allMessage = allMessage;
-    }
-
-    /**
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param password
-     * @param type
+     * This method is responsible for calling the register method on the client
+     * @param firstName String object
+     * @param lastName  String object
+     * @param email  String object
+     * @param password  String object
+     * @param type  String object
      */
     @Override
     public void register(String firstName, String lastName, String email, String password, String type) {
@@ -367,8 +373,9 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param receiver
-     * @return
+     * This method is responsible for loading and selecting all the Private Messages associated with a user from the all messages list
+     * @param receiver User  object
+     * @return ArrayList<PrivateMessage></PrivateMessage>
      */
     @Override
     public ArrayList<PrivateMessage> loadPMs(User receiver) {
@@ -385,7 +392,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @return
+     * This method is responsible for loading and selecting all the Public Messages from the all messages list
+     * @return  ArrayList<PublicMessage>
      */
     @Override
     public ArrayList<PublicMessage> loadPublics() {
@@ -401,8 +409,9 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param selectedGroup
-     * @return
+     * This method is responsible for loading and selecting all the Group Messages associated with the group from the all messages list
+     * @param selectedGroup Group object
+     * @return ArrayList<GroupMessages>
      */
     @Override
     public ArrayList<GroupMessages> loadGroup(Group selectedGroup) {
@@ -416,9 +425,10 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param current
-     * @param password
-     * @param passwordConfirmed
+     * This method is responsible for calling the changePassword method on the client
+     * @param current String object
+     * @param password String object
+     * @param passwordConfirmed String object
      */
     @Override
     public void changePassword(String current, String password, String passwordConfirmed) {
@@ -429,6 +439,7 @@ public class MainModelManager implements MainModel {
     }
 
     /**
+     * This method is responsible for calling the newGroup method on the client if its not already in the group list
      * @param g
      */
     @Override
@@ -445,7 +456,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param propertyChangeEvent
+     * This method is responsible for refereshing the group lists and firing an event for the listeners.
+     * @param propertyChangeEvent PropertyChangeEvent object
      */
     public void refreshGroupList(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> g = (ArrayList<Group>) propertyChangeEvent.getNewValue();
@@ -463,7 +475,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param u
+     * This method is responsible for calling the addMember method on the client
+     * @param u ArrayList<User> object
      */
     @Override
     public void addMember(ArrayList<User> u) {
@@ -474,7 +487,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param u
+     * This method is responsible for calling the removeMember method on the client
+     * @param u ArrayList<User> object
      */
     @Override
     public void removeMember(ArrayList<User> u) {
@@ -484,7 +498,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param g
+     * This method is responsible for calling the deleteGroup method on the client
+     * @param g Group object
      */
     @Override
     public void deleteGroup(Group g) {
@@ -492,7 +507,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param use
+     * This method is responsible for calling the resetPassword method on the client
+     * @param use User pobject
      */
     @Override
     public void resetPassword(User use) {
@@ -500,7 +516,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param g
+     * This method is responsible for calling the changeLeader method on the client
+     * @param g Group object
      */
     @Override
     public void changeLeader(Group g) {
@@ -508,8 +525,9 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param u
-     * @return
+     * This method is responsible for updating the last read Private Messages of the user
+     * @param u User object
+     * @return boolean true, if there is a new unread message, false if there is no new message.
      */
     @Override
     public boolean unredPMs(User u) {
@@ -577,7 +595,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param us
+     * This method is responsible for setting the current selected user for the mainModelManager.
+     * @param us User object
      */
     @Override
     public void setSelectedUser(User us) {
@@ -599,15 +618,17 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @return
+     * get method
+     * @return User object
      */
     public User getSelectedUser() {
         return selectedUser;
     }
 
     /**
-     * @param g
-     * @return
+     * This method is responsible for updating the last read Group Messages of the user in a specific group
+     * @param g Group object
+     * @return boolean true, if there is a new unread message, false if there is no new message.
      */
     @Override
     public boolean unredGMs(Group g) {
@@ -650,7 +671,7 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     *
+     *This method is responsible for calling the saveDataOnExit method on the client
      */
     @Override
     public void saveDataOnExit() {
@@ -658,7 +679,8 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * @param selectedGroup
+     * This method is responsible for setting the currently selected group from the gui into the MainModelManager
+     * @param selectedGroup Group object
      */
     public void setSelectedGroup(Group selectedGroup) {
 

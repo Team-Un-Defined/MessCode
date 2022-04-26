@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ *This class contains all the clients that are connected to the server and also their corresponding user objects
  *
  */
 public class ConnectionPool {
@@ -25,7 +26,9 @@ public class ConnectionPool {
     private List<User> users = new ArrayList<>();
 
     /**
-     * @param publicMessage
+     * This method broadcasts all the public messages to all clients
+     *
+     * @param publicMessage PublicMessage object
      */
     public void broadcastMessage(PublicMessage publicMessage) {
         for (ServerSocketHandler handler : connections) {
@@ -34,7 +37,9 @@ public class ConnectionPool {
     }
 
     /**
-     * @param user
+     * This method is responsible for updating clients when a user joins the chat
+     *
+     * @param user User object
      */
     public void userJoin(User user) {
         for (ServerSocketHandler handler : connections) {
@@ -46,7 +51,9 @@ public class ConnectionPool {
     }
 
     /**
-     * @param pm
+     * This method is responisble for sending Private Messages to the connected clients
+     *
+     * @param pm PrivateMessage Object
      */
     public void sendMessageInPM(PrivateMessage pm) {
         for (ServerSocketHandler handler : connections) {
@@ -60,21 +67,27 @@ public class ConnectionPool {
     }
 
     /**
-     * @return
+     * This method gets the user list
+     *
+     * @return List<User></User> Object
      */
     public List<User> getUsers() {
         return users;
     }
 
     /**
-     * @param handler
+     * This method is responsible for adding the clients correspondig server socket thread to the connections pool
+     *
+     * @param handler ServerSocketHandler object
      */
     public synchronized void addHandler(ServerSocketHandler handler) {
         connections.add(handler);
     }
 
     /**
-     * @param handler
+     * This method is responsible for removing the server socket handler from the connections pool
+     *
+     * @param handler ServerSocketHandler Object
      */
     public void removeHandler(ServerSocketHandler handler) {
         connections.remove(handler);
@@ -82,7 +95,9 @@ public class ConnectionPool {
     }
 
     /**
-     * @param user
+     * This method updates the clients when a user leaves the chat system
+     *
+     * @param user User object
      */
     private void userLeft(User user) {
         users.remove(user);
@@ -94,14 +109,16 @@ public class ConnectionPool {
     }
 
     /**
-     * @param us
-     * @return
+     * This method checks whether the user is already connected to the server
+     *
+     * @param us User object
+     * @return boolean True if connected false if not.
      */
     public boolean userCheck(User us) {
         boolean ans = false;
         for (ServerSocketHandler handler : connections) {
 
-            System.out.println("kur a bigi " + us.getEmail());
+
             System.out.println(us);
             System.out.println(handler.getUser());
             System.out.println(handler.getUser().getEmail());
@@ -114,7 +131,9 @@ public class ConnectionPool {
     }
 
     /**
-     * @param dbe
+     * This updates all the groups for all the users in the database
+     *
+     * @param dbe ExportDate JDBC object
      */
     public void updateGroup(ExportData dbe) {
         for (ServerSocketHandler handler : connections) {
@@ -128,7 +147,9 @@ public class ConnectionPool {
     }
 
     /**
-     * @param message
+     * This method is responsible for sending the group messages to the corresponding users.
+     *
+     * @param message GroupMessage object
      */
     public void sendGroupMessages(GroupMessages message) {
         for (ServerSocketHandler handler : connections) {
@@ -144,7 +165,9 @@ public class ConnectionPool {
     }
 
     /**
-     * @param u
+     * This method is responsible for kicking a specific user and notifying all the other users.
+     *
+     * @param u User object
      */
     public void kickUser(User u) {
         for (ServerSocketHandler handler : connections) {
@@ -158,7 +181,9 @@ public class ConnectionPool {
     }
 
     /**
-     * @param groupMessages
+     * This method is responsible for sending all the group messages of a user  for a specific group
+     *
+     * @param groupMessages Arraylist<PublicMessage></PublicMessage> object
      */
     public void sendAllGroupMessages(ArrayList<PublicMessage> groupMessages) {
         if (groupMessages != null) {
@@ -174,6 +199,13 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     *
+     * This method is responsible for adding a newly created users who is still offline and haven't logged in yet.
+     *
+     * @param u User Object the one being added
+     * @param userr User object the one who added the user.
+     */
     public void addNewOfflineUser(User u, User userr) {
 
         for (ServerSocketHandler handler : connections) {

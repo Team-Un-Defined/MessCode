@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 /**
+ *This class is responsible for sending  and listening to packets from the server
  *
  */
 public class ClientSocketHandler implements Runnable {
@@ -32,9 +33,11 @@ public class ClientSocketHandler implements Runnable {
     private ObjectInputStream inFromServer;
 
     /**
-     * @param socket
-     * @param socketClient
-     * @throws IOException
+     * This constructor initialized the Socket, SocketClient and ObjectInput/OutputStreams
+     *
+     * @param socket Socket object
+     * @param socketClient SocketClient object
+     * @throws IOException connection errors
      */
     public ClientSocketHandler(Socket socket, SocketClient socketClient) throws IOException {
         this.socket = socket;
@@ -44,7 +47,7 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     *
+     *This method is where the client is listening to the packets coming from the server
      */
     @Override
     public void run() {
@@ -164,51 +167,68 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * This method is responsible for calling the kickUser method on the socketClient
+     * @param packet Container object
+     *
+     */
     private void userKick(Container packet) {
         socketClient.kickUser(packet);
     }
 
     /**
-     * @param packet
+     *  This method is responsible for calling the addNewOfflineUser method on the socketClient
+     * @param packet Container packet
      */
     private void addNewOfflineUser(Container packet) {
         socketClient.addOfflineUser(packet);
     }
 
     /**
-     * @param pckt
+     *  This method is responsible for calling the getAllGroupMessages method on the socketClient
+     * @param pckt Cotainer object
      */
     private void getALlGroupMessages(Container pckt) {
         socketClient.getAllGroupMessages(pckt);
     }
 
     /**
-     * @param packet
+     *  This method is responsible for calling the removedUser method on the socketClient
+     * @param packet Container object
      */
     private void removedUser(Container packet) {
         socketClient.removeUser(packet);
     }
 
     /**
-     * @param packet
+     *  This method is responsible for calling the passChangeResponse method on the socketClient
+     *
+     * @param packet Container packet
      */
     private void passChangeResponse(Container packet) {
         socketClient.passChangeResponse(packet);
     }
 
     /**
-     * @param cont
+     *  This method is responsible for calling the userCreateResponse method on the socketClient
+     * @param cont Container object
      */
     private void userCreateResponse(Container cont) {
         socketClient.userCreateResponse(cont);
     }
 
+    /**
+     *
+     *  This method is responsible for calling the loginDate method on the socketClient
+     * @param packet Container packet
+     */
     private void loginData(Container packet) {
         socketClient.loginData(packet);
     }
 
     /**
-     * @param arg
+     *  This method is responsible for calling the userLeft method on the socketClient
+     * @param arg Object
      */
     private void userLeft(Object arg) {
         User user = (User) arg;
@@ -216,22 +236,26 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param answ
+     *  This method is responsible for calling the loginResponse method on the socketClient
+     *
+     * @param answ boolean object
      */
-    //  BACK TO FXML
+
     private void loginResponse(boolean answ) {
         socketClient.loginResponse(answ);
     }
 
     /**
-     * @param user
+     *  This method is responsible for calling the addToUsersList method on the socketClient
+     * @param user User object
      */
     private void addToUsersList(User user) {
         socketClient.addToList(user);
     }
 
     /**
-     * @param message
+     *  This method is responsible for calling the displayMessage method on the socketClient
+     * @param message PublicMessage object
      */
     private void receivePublic(PublicMessage message) {
         socketClient.displayMessage(message);
@@ -241,7 +265,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param message
+     *  This method is responsible for calling the recievePM method on the socketClient
+     * @param message PrivateMessage object
      */
     private void receivePM(PrivateMessage message) {
         socketClient.displayPM(message);
@@ -251,7 +276,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param gm
+     *  This method is responsible for calling the receiveGroup method on the socketClient
+     * @param gm GroupMessages object
      */
     private void receiveGroup(GroupMessages gm) {
         socketClient.displayGroup(gm);
@@ -261,7 +287,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param message
+     *  This method is responsible for sending a packet to the server
+     * @param message PrivateMessage object
      */
     public void sendPM(PrivateMessage message) {
         try {
@@ -273,7 +300,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param message
+     * This method is responsible for sending a packet to the server
+     * @param message PublicMessage object
      */
     //  TO SERVER
     public void sendPublic(PublicMessage message) {
@@ -286,7 +314,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param username
+     * This method is responsible for sending a packet to the server
+     * @param username User object
      */
     public void addUser(User username) {
         try {
@@ -310,7 +339,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param newUser
+     * This method is responsible for sending a packet to the server
+     * @param newUser User object
      */
     public void register(User newUser) {
         try {
@@ -323,7 +353,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param g
+     * This method is responsible for sending a packet to the server
+     * @param g Group object
      */
     public void addGroup(Group g) {
         try {
@@ -335,14 +366,16 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param groups
+     * This method is responsible for sending a packet to the server
+     * @param groups ArrayList<Group></Group> object
      */
     private void receiveGroups(ArrayList<Group> groups) {
         socketClient.refreshGroupList(groups);
     }
 
     /**
-     * @param mess
+     * This method is responsible for sending a packet to the server
+     * @param mess GroupMessages object
      */
     void sendGroup(GroupMessages mess) {
         try {
@@ -354,7 +387,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param u
+     * This method is responsible for sending a packet to the server
+     * @param u User object
      */
     public void changePassword(User u) {
         try {
@@ -366,7 +400,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param use
+     * This method is responsible for sending a packet to the server
+     * @param use User object
      */
     public void deleteUser(User use) {
         try {
@@ -378,7 +413,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param selectedGroup
+     * This method is responsible for sending a packet to the server
+     * @param selectedGroup Group object
      */
     void addMember(Group selectedGroup) {
         try{
@@ -390,7 +426,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param selectedGroup
+     * This method is responsible for sending a packet to the server
+     * @param selectedGroup Group object
      */
     void removeMember(Group selectedGroup) {
         try{
@@ -402,7 +439,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param g
+     * This method is responsible for sending a packet to the server
+     * @param g Group object
      */
     void deleteGroup(Group g) {
          try{
@@ -414,7 +452,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param use
+     * This method is responsible for sending a packet to the server
+     * @param use User object
      */
     public void resetPassword(User use) {
         try{
@@ -426,7 +465,8 @@ public class ClientSocketHandler implements Runnable {
     }
 
     /**
-     * @param g
+     * This method is responsible for sending a packet to the server
+     * @param g Group object
      */
     void changeLeader(Group g) {
         try{
@@ -437,6 +477,10 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+    /**
+     * This method is responsible for sending a packet to the server
+     * @param user User object
+     */
     public void saveDataOnExit(User user) {
         try{
             Container packet = new Container(user,ClassName.USER_LEFT);

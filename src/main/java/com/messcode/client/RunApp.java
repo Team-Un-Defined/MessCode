@@ -14,7 +14,8 @@ import javafx.stage.Stage;
 public class RunApp extends Application {
 
     /**
-     * @param stage
+     * All the factories are initialized here
+     * @param stage Stage object
      */
     @Override
     public void start(Stage stage) {
