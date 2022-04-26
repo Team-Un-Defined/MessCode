@@ -64,6 +64,18 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
         mainModel.addListener("LoginData",this::refresh);
+        mainModel.addListener("removeOfflineUser",this::removeOfflineUser);
+    }
+
+    private void removeOfflineUser(PropertyChangeEvent propertyChangeEvent) {
+        ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
+        Platform.runLater(() -> {
+            usersList.clear();
+            usersList.addAll(users);
+            System.out.println(usersList);
+        });
+
+
     }
 
     private void refresh(PropertyChangeEvent propertyChangeEvent) {
@@ -107,15 +119,16 @@ public class ChatClientViewModel implements Subject {
      */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
+        user.setSalt("");
         Platform.runLater(() -> {
-            user.setSalt("");
+
             for (int i = 0; i < usersList.size(); i++) {
                 if (usersList.get(i).getEmail().equals(user.getEmail())) {
                     usersList.set(i, user);
                     break;
                 }
             }
-            System.out.println(usersList);
+
         });
     }
 
@@ -185,7 +198,7 @@ public class ChatClientViewModel implements Subject {
      * @return ObservableList<User>
      */
     public ObservableList<User> getUsersList() {
-        return usersList;
+        return usersList.filtered(p-> !p.getSalt().equals(" - deleted"));
     }
 
     /**
@@ -272,6 +285,10 @@ public class ChatClientViewModel implements Subject {
         else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
+        }
+        else 
+        {
+        support.firePropertyChange("newPM", null, "true");
         }
     }
 
@@ -417,7 +434,6 @@ public class ChatClientViewModel implements Subject {
      */
     public boolean getUnredGMs(Group g) {
         boolean lul = mainModel.unredGMs(g);
-        System.out.println(" THIS IS MY LIFE " + lul);
         return lul;
     }
 

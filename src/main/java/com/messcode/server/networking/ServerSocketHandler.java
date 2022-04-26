@@ -172,6 +172,7 @@ public class ServerSocketHandler implements Runnable {
                         boolean result = dbi.deleteUser(u);
                         if (result) {
                             Container pckt = new Container(u, ClassName.REMOVE_USER);
+
                             outToClient.writeObject(pckt);
                             pool.kickUser(u);
                         }
@@ -312,9 +313,9 @@ public class ServerSocketHandler implements Runnable {
     /**
      *
      */
-    public void removeUser() {
+    public void removeUser(User u) {
         try {
-            Container b = new Container("byebye", ClassName.KICK_USER);
+            Container b = new Container(u, ClassName.KICK_USER);
             outToClient.writeObject(b);
         } catch (IOException e) {
             e.printStackTrace();
