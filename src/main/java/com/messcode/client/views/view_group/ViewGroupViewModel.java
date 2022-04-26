@@ -4,10 +4,12 @@ import com.messcode.client.model.MainModel;
 import com.messcode.transferobjects.Group;
 import com.messcode.transferobjects.User;
 import com.messcode.transferobjects.util.Subject;
+
 import java.beans.PropertyChangeEvent;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +18,9 @@ public class ViewGroupViewModel implements Subject {
     private MainModel mainModel;
     private PropertyChangeSupport support;
     private Group selectedGroup;
-    private ObservableList<User> users; 
+    private ObservableList<User> users;
     private ObservableList<User> allUsers;
-       private ObservableList<User> usersNotInGroup;
+    private ObservableList<User> usersNotInGroup;
 
     public ViewGroupViewModel(MainModel mainModel) {
         this.mainModel = mainModel;
@@ -31,8 +33,9 @@ public class ViewGroupViewModel implements Subject {
 
     /**
      * Method for adding a listener. Inherited from Subject
+     *
      * @param eventName String name of the event
-     * @param listener PropertyChangeListener listener of the event
+     * @param listener  PropertyChangeListener listener of the event
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -41,8 +44,9 @@ public class ViewGroupViewModel implements Subject {
 
     /**
      * Method for removing a listener. Inherited from Subject
+     *
      * @param eventName String name of the event
-     * @param listener PropertyChangeListener listener of the event
+     * @param listener  PropertyChangeListener listener of the event
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -62,7 +66,7 @@ public class ViewGroupViewModel implements Subject {
             setUsers();
         });
     }
-    
+
     public void setUsers() {
         usersNotInGroup.clear();
         ObservableList<User> help = FXCollections.observableArrayList();
@@ -75,8 +79,8 @@ public class ViewGroupViewModel implements Subject {
         }
         usersNotInGroup.addAll(help);
     }
-    
-     public ObservableList<User> getMembers() {
+
+    public ObservableList<User> getMembers() {
         return users;
     }
 
@@ -85,15 +89,13 @@ public class ViewGroupViewModel implements Subject {
     }
 
     String getLead() {
-       
+
         return selectedGroup.getLeader().getName() + "  " + selectedGroup.getLeader().getSurname();
     }
 
     String getDescription() {
-       return selectedGroup.getDescription();
+        return selectedGroup.getDescription();
     }
-     
-     
-     
-    
+
+
 }

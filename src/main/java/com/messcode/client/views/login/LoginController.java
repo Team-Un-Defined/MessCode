@@ -24,6 +24,7 @@ public class LoginController implements Subject {
     public Label usernameErrorLabel;
     public PasswordField passwordField;
     public Button signInButton;
+
     private PropertyChangeSupport support;
     private LoginViewModel loginVM;
     private ViewHandler vh;

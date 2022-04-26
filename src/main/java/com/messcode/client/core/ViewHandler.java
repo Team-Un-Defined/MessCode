@@ -11,7 +11,6 @@ import com.messcode.client.views.remove_group.RemoveGroupController;
 import com.messcode.client.views.remove_user.RemoveUserController;
 import com.messcode.client.views.view_group.ViewGroupController;
 import com.messcode.client.views.view_profile.ViewProfileController;
-import com.messcode.transferobjects.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

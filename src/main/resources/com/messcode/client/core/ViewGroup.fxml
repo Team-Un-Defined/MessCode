@@ -15,12 +15,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="20.0" layoutY="70.0" text="Project leader" />
-      <Label layoutX="20.0" layoutY="110.0" text="Description" />
-      <Label layoutX="20.0" layoutY="200.0" text="Members" />
+      <Label layoutX="20.0" layoutY="70.0" text="%view_group.leader" />
+      <Label layoutX="20.0" layoutY="110.0" text="%view_group.description" />
+      <Label layoutX="20.0" layoutY="200.0" text="%view_group.members" />
       <Label fx:id="projectLeaderLabel" layoutX="140.0" layoutY="70.0" text="Label" />
       <TextArea fx:id="descriptionArea" layoutX="140.0" layoutY="110.0" prefHeight="71.0" prefWidth="229.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
       <ListView fx:id="membersList" layoutX="140.0" layoutY="200.0" prefHeight="129.0" prefWidth="229.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" />
-      <Button fx:id="closeButton" layoutX="269.0" layoutY="349.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="Close" />
+      <Button fx:id="closeButton" layoutX="269.0" layoutY="349.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="100.0" style="-fx-background-radius: 1em; -fx-border-radius: 1em;" text="%view_group.close" />
    </children>
 </Pane>

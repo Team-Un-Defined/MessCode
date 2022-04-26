@@ -56,12 +56,14 @@ public class ImportData {
         myPreparedStatement.setString(4, us.getSalt());
         myPreparedStatement.setString(5, us.getType());
         myPreparedStatement.setString(6, us.getEmail());
-        System.out.println("name: "+ us.getName() + " email : "+ us.getEmail());
+        System.out.println("name: " + us.getName() + " email : " + us.getEmail());
         ResultSet rs = myPreparedStatement.executeQuery();
 
         if (rs.next()) {
             done = us;
         }
+
+        log4j.info("Account created: " + us.getEmail());
 
         return new Container(done, ClassName.CREATE_ACCOUNT);
     }
@@ -102,6 +104,9 @@ public class ImportData {
             myPreparedStatement.setTimestamp(4, pm.getTime());
             myPreparedStatement.executeUpdate();
 
+            log4j.info("Private message saved from: " + pm1.getSender().getEmail() + "\n" +
+                    "to: " + pm1.getReceiver().getEmail());
+
         } else if (pm instanceof GroupMessages) {
             GroupMessages pm1 = (GroupMessages) pm;
             int gid = 0;
@@ -135,6 +140,9 @@ public class ImportData {
             myPreparedStatement.setString(3, pm1.getMsg());
             myPreparedStatement.setTimestamp(4, pm.getTime());
             myPreparedStatement.executeUpdate();
+
+            log4j.info("Group message saved from: " + pm1.getSender().getEmail() + "\n" +
+                    "to: " + pm1.getGroup().getName());
         } else {
             int grid = 0;
 
@@ -153,6 +161,8 @@ public class ImportData {
             myPreparedStatement.setString(2, pm.getMsg());
             myPreparedStatement.setTimestamp(3, pm.getTime());
             myPreparedStatement.executeUpdate();
+
+            log4j.info("Public message saved from: " + pm.getSender().getEmail());
         }
     }
 
@@ -202,6 +212,8 @@ public class ImportData {
             myPreparedStatement.setInt(1, projectId);
             myPreparedStatement.setInt(2, userId);
             myPreparedStatement.executeQuery();
+
+            log4j.info("Group " + g.getName() + " created");
         } catch (SQLException ex) {
             ex.printStackTrace();
             log4j.error(ex.getMessage(), ex);
@@ -235,6 +247,8 @@ public class ImportData {
                 myPreparedStatement.executeUpdate();
             }
         }
+
+        log4j.info("New group members added to: " + g.getName());
     }
 
     /**
@@ -262,6 +276,8 @@ public class ImportData {
                 myPreparedStatement.executeUpdate();
             }
         }
+
+        log4j.info("Group members removed from: " + g.getName());
     }
 
     /**
@@ -273,91 +289,88 @@ public class ImportData {
             PreparedStatement myPreparedStatement;
             PreparedStatement myPreparedStatement2;
             PreparedStatement myPreparedStatementt;
-            ResultSet rs0=null;
+            ResultSet rs0 = null;
             ResultSet rs;
             ResultSet rs2;
             int delete = 0;
-          
-            if(g.getLeader()!=null){
-            String query0 ="Select a.id \n" +
-                     "from account as a\n" +
-                     "where a.email = ?";
-            myPreparedStatement0 = c.prepareStatement(query0, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            myPreparedStatement0.setString(1, g.getLeader().getEmail());
-            rs0 = myPreparedStatement0.executeQuery();
+
+            if (g.getLeader() != null) {
+                String query0 = "Select a.id \n" +
+                        "from account as a\n" +
+                        "where a.email = ?";
+                myPreparedStatement0 = c.prepareStatement(query0, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                myPreparedStatement0.setString(1, g.getLeader().getEmail());
+                rs0 = myPreparedStatement0.executeQuery();
                 System.out.println("IDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-            rs0.next();
-            }
-            else{
+                rs0.next();
+            } else {
                 delete = 1;
             }
-            
+
             String query = "SELECT a.id as account_id, p.id AS project_id FROM account AS a LEFT JOIN projects AS p ON p.leader_id = a.id " +
                     "WHERE p.name = ?";
             myPreparedStatement = c.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
             myPreparedStatement.setString(1, g.getName());
-          
+
             rs = myPreparedStatement.executeQuery();
             rs.next();
-            
-         if(delete==0){   String query4 = "Update projects\n" +
-            "SET\n" +
-            "leader_id = ?\n" +
-            "where id = ?";
-            myPreparedStatement2 = c.prepareStatement(query4, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            myPreparedStatement2.setInt(1, rs0.getInt("id"));
-            myPreparedStatement2.setInt(2, rs.getInt("project_id"));
-            myPreparedStatement2.executeUpdate();
-         }
-         else{
-         int i =0;
-          do {
-                String queryy = "Update projects \n" +
-                        "SET \n" +
-                        "leader_id = null,\n" +
-                        "name = ? \n" +
-                        "   where name = ? RETURNING name";
-                myPreparedStatementt = c.prepareStatement(queryy, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                String name = g.getName() + "(DELETED" + i + ")";
-                myPreparedStatementt.setString(1, name);
-                myPreparedStatementt.setString(2, g.getName());
-                rs = myPreparedStatementt.executeQuery();
-                i++;
-            } while (!rs.next());
-         
-         
-         
-         }
-         
-            String query2 ="SELECT \n" +
-            "a.id as account_id,\n" +
-            "a.type\n" +
-            "from account as a\n" +
-            "join projects as p\n" +
-            "on p.leader_id = a.id\n" +
-            "where a.id=?";
-                    
-            myPreparedStatement2 = c.prepareStatement(query2, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            myPreparedStatement2.setInt(1, rs.getInt("account_id"));
-           
-            rs2 = myPreparedStatement2.executeQuery();
-            
-            
-            if(!rs2.next()){
-            String query3 ="Update account\n" +
-            "SET\n" +
-            "type ='employee'\n" +
-            "where id =?";
-            myPreparedStatement2 = c.prepareStatement(query3, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            myPreparedStatement2.setInt(1, rs.getInt("account_id"));
-            myPreparedStatement2.executeUpdate();
+
+            if (delete == 0) {
+                String query4 = "Update projects\n" +
+                        "SET\n" +
+                        "leader_id = ?\n" +
+                        "where id = ?";
+                myPreparedStatement2 = c.prepareStatement(query4, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                myPreparedStatement2.setInt(1, rs0.getInt("id"));
+                myPreparedStatement2.setInt(2, rs.getInt("project_id"));
+                myPreparedStatement2.executeUpdate();
+            } else {
+                int i = 0;
+                do {
+                    String queryy = "Update projects \n" +
+                            "SET \n" +
+                            "leader_id = null,\n" +
+                            "name = ? \n" +
+                            "   where name = ? RETURNING name";
+                    myPreparedStatementt = c.prepareStatement(queryy, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                    String name = g.getName() + "(DELETED" + i + ")";
+                    myPreparedStatementt.setString(1, name);
+                    myPreparedStatementt.setString(2, g.getName());
+                    rs = myPreparedStatementt.executeQuery();
+                    i++;
+                } while (!rs.next());
+
+
             }
 
-            
+            String query2 = "SELECT \n" +
+                    "a.id as account_id,\n" +
+                    "a.type\n" +
+                    "from account as a\n" +
+                    "join projects as p\n" +
+                    "on p.leader_id = a.id\n" +
+                    "where a.id=?";
+
+            myPreparedStatement2 = c.prepareStatement(query2, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            myPreparedStatement2.setInt(1, rs.getInt("account_id"));
+
+            rs2 = myPreparedStatement2.executeQuery();
+
+
+            if (!rs2.next()) {
+                String query3 = "Update account\n" +
+                        "SET\n" +
+                        "type ='employee'\n" +
+                        "where id =?";
+                myPreparedStatement2 = c.prepareStatement(query3, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                myPreparedStatement2.setInt(1, rs.getInt("account_id"));
+                myPreparedStatement2.executeUpdate();
+            }
+
+            log4j.info("Group leader updated for: " + g.getName());
         } catch (SQLException ex) {
-           log4j.error(ex.getMessage(), ex);
+            log4j.error(ex.getMessage(), ex);
         }
-    
     }
 
 
@@ -388,14 +401,14 @@ public class ImportData {
                 String query1 = "SELECT p.receiver_id, p.sender_id, p.date, p.id FROM private_messages AS p " +
                         "JOIN account AS a ON a.id = p.sender_id OR a.id = p.receiver_id " +
                         "WHERE ((p.receiver_id = ? AND a.email = ?) OR (p.sender_id = ? AND a.email = ?)) AND date = ?";
-                myPreparedStatement = c.prepareStatement(query1,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                myPreparedStatement = c.prepareStatement(query1, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 myPreparedStatement.setInt(1, userid);
                 myPreparedStatement.setString(2, ((PrivateMessage) (us.getUnreadMessages().get(i))).getReceiver().getEmail());
                 myPreparedStatement.setInt(3, userid);
                 myPreparedStatement.setString(4, ((PrivateMessage) (us.getUnreadMessages().get(i))).getReceiver().getEmail());
                 myPreparedStatement.setTimestamp(5, us.getUnreadMessages().get(i).getTime());
                 rs = myPreparedStatement.executeQuery();
-                  rs.beforeFirst();
+                rs.beforeFirst();
                 while (rs.next()) {
 
                     pmid = rs.getInt("id");
@@ -419,35 +432,33 @@ public class ImportData {
                     lid = rs.getInt("id");
                 }
 
-                if(lid !=0){
+                if (lid != 0) {
 
-                String query3 = "UPDATE public.last_seen SET private_message_id = ? WHERE id = ?";
+                    String query3 = "UPDATE public.last_seen SET private_message_id = ? WHERE id = ?";
 
-                myPreparedStatement = c.prepareStatement(query3);
-                myPreparedStatement.setInt(1, pmid);
-                myPreparedStatement.setInt(2, lid);
-                myPreparedStatement.executeUpdate();
+                    myPreparedStatement = c.prepareStatement(query3);
+                    myPreparedStatement.setInt(1, pmid);
+                    myPreparedStatement.setInt(2, lid);
+                    myPreparedStatement.executeUpdate();
 
-                System.out.println("EXECUTED QUERY");
-                }
-                else
-                {
+                    System.out.println("EXECUTED QUERY");
+                } else {
 
-                     String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
-                                    "VALUES (default,null,null,?,?)";
-                myPreparedStatement = c.prepareStatement(query3);
-                myPreparedStatement.setInt(1, pmid);
-                myPreparedStatement.setInt(2, userid);
-                myPreparedStatement.executeUpdate();
+                    String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
+                            "VALUES (default,null,null,?,?)";
+                    myPreparedStatement = c.prepareStatement(query3);
+                    myPreparedStatement.setInt(1, pmid);
+                    myPreparedStatement.setInt(2, userid);
+                    myPreparedStatement.executeUpdate();
 
                 }
             } else if (us.getUnreadMessages().get(i) instanceof GroupMessages) {
                 int gmid = 0;
-                int groupid=0;
+                int groupid = 0;
                 int lid = 0;
 
-                    System.out.println("hi : "+ us.getUnreadMessages().get(i).getMsg() + " group : "+ ((GroupMessages) us.getUnreadMessages().get(i)).getGroup().getName()
-                    + " time "+ us.getUnreadMessages().get(i).getTime());
+                System.out.println("hi : " + us.getUnreadMessages().get(i).getMsg() + " group : " + ((GroupMessages) us.getUnreadMessages().get(i)).getGroup().getName()
+                        + " time " + us.getUnreadMessages().get(i).getTime());
 
                 String query1 = "SELECT gm.id AS gmid, gm.project_id, gm.sender_id, gm.message, date, p.id, p.leader_id, p.name, p.description " +
                         "FROM group_messages gm JOIN projects AS p ON p.id = gm.project_id WHERE p.name = ? AND date = ? ";
@@ -459,38 +470,37 @@ public class ImportData {
                 while (rs.next()) {
 
                     gmid = rs.getInt("gmid");
-                    groupid= rs.getInt("project_id");
+                    groupid = rs.getInt("project_id");
                 }
 
                 String query2 = "SELECT ls.group_message_id, gm.sender_id, ls.id FROM last_seen AS ls " +
                         "JOIN group_messages AS gm ON gm.id = ls.group_message_id WHERE ls.user_id = ? AND gm.project_id = ? ";
-                myPreparedStatement = c.prepareStatement(query2,ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                myPreparedStatement = c.prepareStatement(query2, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 myPreparedStatement.setInt(1, userid);
-                myPreparedStatement.setInt(2,groupid);
+                myPreparedStatement.setInt(2, groupid);
                 rs = myPreparedStatement.executeQuery();
-                  rs.beforeFirst();
+                rs.beforeFirst();
                 while (rs.next()) {
-                    System.out.println(" also : "+ userid + " gmid : "+ gmid);
-                    System.out.println(rs.getInt("group_message_id") + " "+ rs.getInt("sender_id") + " "+ rs.getInt("id"));
+                    System.out.println(" also : " + userid + " gmid : " + gmid);
+                    System.out.println(rs.getInt("group_message_id") + " " + rs.getInt("sender_id") + " " + rs.getInt("id"));
                     lid = rs.getInt("id");
                 }
 
-                if(lid!=0){
+                if (lid != 0) {
 
-                String query3 = "UPDATE public.last_seen SET group_message_id = ? WHERE id = ?";
-                myPreparedStatement = c.prepareStatement(query3);
-                myPreparedStatement.setInt(1, gmid);
-                myPreparedStatement.setInt(2, lid);
-                myPreparedStatement.executeUpdate();
-                }
-                else{
-                    System.out.println("LAST SEEN ID was null: "+ ((GroupMessages) us.getUnreadMessages().get(i)).getGroup().getName() + " "+us.getUnreadMessages().get(i).getMsg());
-                String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
-                "VALUES (default,?,null,null,?)";
-                myPreparedStatement = c.prepareStatement(query3);
-                myPreparedStatement.setInt(1, gmid);
-                myPreparedStatement.setInt(2, userid);
-                myPreparedStatement.executeUpdate();
+                    String query3 = "UPDATE public.last_seen SET group_message_id = ? WHERE id = ?";
+                    myPreparedStatement = c.prepareStatement(query3);
+                    myPreparedStatement.setInt(1, gmid);
+                    myPreparedStatement.setInt(2, lid);
+                    myPreparedStatement.executeUpdate();
+                } else {
+                    System.out.println("LAST SEEN ID was null: " + ((GroupMessages) us.getUnreadMessages().get(i)).getGroup().getName() + " " + us.getUnreadMessages().get(i).getMsg());
+                    String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
+                            "VALUES (default,?,null,null,?)";
+                    myPreparedStatement = c.prepareStatement(query3);
+                    myPreparedStatement.setInt(1, gmid);
+                    myPreparedStatement.setInt(2, userid);
+                    myPreparedStatement.executeUpdate();
 
                 }
                 System.out.println("EXECUTED QUERY");
@@ -517,25 +527,22 @@ public class ImportData {
                 while (rs.next()) {
                     lid = rs.getInt("id");
                 }
-                if(lid!=0){
-                String query3 = "UPDATE public.last_seen SET public_message_id = ? WHERE id = ?";
-                myPreparedStatement = c.prepareStatement(query3);
-                myPreparedStatement.setInt(1, pmid);
-                myPreparedStatement.setInt(2, lid);
-                myPreparedStatement.executeUpdate();
+                if (lid != 0) {
+                    String query3 = "UPDATE public.last_seen SET public_message_id = ? WHERE id = ?";
+                    myPreparedStatement = c.prepareStatement(query3);
+                    myPreparedStatement.setInt(1, pmid);
+                    myPreparedStatement.setInt(2, lid);
+                    myPreparedStatement.executeUpdate();
 
-                System.out.println("EXECUTED QUERY");
-                }
-                else{
+                    System.out.println("EXECUTED QUERY");
+                } else {
                     String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
-                "VALUES (default,null,null,?,?)";
-                myPreparedStatement = c.prepareStatement(query3);
-                myPreparedStatement.setInt(1, pmid);
-                myPreparedStatement.setInt(2,userid);
-                myPreparedStatement.executeUpdate();
-
-            }
-
+                            "VALUES (default,null,null,?,?)";
+                    myPreparedStatement = c.prepareStatement(query3);
+                    myPreparedStatement.setInt(1, pmid);
+                    myPreparedStatement.setInt(2, userid);
+                    myPreparedStatement.executeUpdate();
+                }
             }
         }
     }
@@ -625,6 +632,7 @@ public class ImportData {
         myPreparedStatement.executeUpdate();
 
         System.out.println("PASSWORDS MATCHED");
+        log4j.info("Password change for: " + us.getEmail());
         return true;
     }
 
@@ -643,6 +651,7 @@ public class ImportData {
         String query1 = "select * from account where email='" + u.getEmail() + "' ;";
 
         ResultSet rs = st.executeQuery(query1);
+        log4j.info("User deleted: " + u.getEmail());
         while (rs.next()) {
             if (rs.getString("pwd_hash").equals("deleted")) {
                 return true;
@@ -659,8 +668,6 @@ public class ImportData {
         PreparedStatement myPreparedStatement;
         ResultSet rs;
 
-
-
         String query1 = "UPDATE account SET pwd_salt = ? WHERE email = ?";
         myPreparedStatement = c.prepareStatement(query1);
         myPreparedStatement.setString(1, u.getSalt());
@@ -669,11 +676,10 @@ public class ImportData {
 
         String query = "UPDATE account SET pwd_hash = ? WHERE email = ?";
         myPreparedStatement = c.prepareStatement(query);
-        myPreparedStatement.setString(1,  Arrays.toString(u.getHashedPassword()));
-        myPreparedStatement.setString(2,u.getEmail());
+        myPreparedStatement.setString(1, Arrays.toString(u.getHashedPassword()));
+        myPreparedStatement.setString(2, u.getEmail());
         myPreparedStatement.executeUpdate();
 
+        log4j.info("Password reset for: " + u.getEmail());
     }
-
-
 }

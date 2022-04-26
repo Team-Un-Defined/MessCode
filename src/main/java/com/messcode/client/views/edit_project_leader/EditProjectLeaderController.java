@@ -12,9 +12,9 @@ import javafx.scene.control.ListCell;
  */
 public class EditProjectLeaderController {
 
-    private EditProjectLeaderViewModel editProjectLeaderVM;
     public ComboBox<User> groupLeaderComboBox;
     public Label errorLabel;
+    private EditProjectLeaderViewModel editProjectLeaderVM;
 
     /**
      * Initialization method for the Controller. Prepares the panel and its components.
