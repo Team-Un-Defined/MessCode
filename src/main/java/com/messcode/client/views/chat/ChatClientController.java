@@ -372,7 +372,7 @@ public class ChatClientController {
         if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
-            if (chatVM.getCurrentUser().getType().equals("superuser")) {
+            if (chatVM.getCurrentUser().isSuperuser()) {
                 resetPasswordButton.setVisible(true);
             }
             if (usersListFXML.getSelectionModel().getSelectedItems().get(0).getSalt().equals(" - deleted")) {
@@ -450,12 +450,12 @@ public class ChatClientController {
         });
 
         if (!groupsList.getSelectionModel().getSelectedItems().isEmpty()) {
-            if (chatVM.getCurrentUser().getType().equals("superuser") || chatVM.getCurrentUser().getType().equals("employer")) {
+            if (chatVM.getCurrentUser().isSuperuser() || chatVM.getCurrentUser().isEmployer()) {
                 editProjectLeaderButton.setVisible(true);
                 editMemberButton.setVisible(true);
             }
 
-            if (chatVM.getCurrentUser().getType().equals("project_leader")) {
+            if (chatVM.getCurrentUser().isProjectLeader()) {
                 editMemberButton.setVisible(true);
             }
 
