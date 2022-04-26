@@ -5,9 +5,12 @@
 In order to run the program, Java version 11 or higher must be installed on the device.
 
 It is also necessary to locally create the database with the following parameters:
-name: MessCode
-username: postgres
-password: chickenattack777
+> name: MessCode
+
+> username: postgres
+
+> password: chickenattack777
+
 And restore it from database backup file “backupName.tz”.
 
 The program can be run using the two included JAR files, a server-side and a client program:
