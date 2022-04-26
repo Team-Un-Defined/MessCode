@@ -14,7 +14,7 @@ It is also necessary to locally create the database with the following parameter
 And restore it from database backup file “backupName.tz”.
 
 The program can be run using the two included JAR files, a server-side and a client program:
-> your_11_java_version\bin\java.exe -jar MessCode.jar
+> your_11_java_version\bin\java.exe -jar MessCodeClient.jar
 
 > your_11_java_version\bin\java.exe -jar MessCodeServer.jar
 
