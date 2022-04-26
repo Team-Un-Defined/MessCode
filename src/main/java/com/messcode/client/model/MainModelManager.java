@@ -182,7 +182,7 @@ public class MainModelManager implements MainModel {
         user = (User) objs.get(1);
         allUsers = (ArrayList<User>) objs.get(2); //ALL USERS ADDED TO THE ALLUSER LIST.
         for (User u : allUsers) {
-            System.out.println("///////////" + u.getSalt() + "////////////");
+         
 
         }
 
@@ -251,11 +251,7 @@ public class MainModelManager implements MainModel {
        }
        
         
-       System.out.println("///////////////////////444444///////////////////////////////////");
-       user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
-       System.out.println("//////////////////////////////////////////////////////////");
-       
-        if (saved!=0) System.out.println("/////////////////THE PM WAS SAVED IN THE UNREAD LIST//////////////////////");
+     
         if(saved!=2) lastMessages.put(pm.getSender().getEmail(),pm);
         
         
@@ -401,7 +397,6 @@ public class MainModelManager implements MainModel {
         PublicMessage puu = new PublicMessage(user, "dasd");
         for (PublicMessage p : this.allMessage) {
             if (p.getClass().equals(puu.getClass())) {
-                System.out.println("messa: time : " + p.getTime() + "  mes: " + p.getMsg());
                 pubi.add(p);
             }
         }
@@ -549,31 +544,21 @@ public class MainModelManager implements MainModel {
         if(lastMessages.get(u.getEmail())!=null)
         last = lastMessages.get(u.getEmail());
         
-         System.out.println("///////////////////////LASTTT777777777777777777777777///////////////////////////////////");
-                        this.user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() +"[MESSAGE]  "+h.getMsg()+"[TIME]: " + h.getTime()));
-                        System.out.println("//////////////////////"+last.getMsg() + "[TIME] "+last.getTime() +"    "+last.getReceiver().getEmail()+"   "+ last.getSender().getEmail()   +"////////////////////////////////////");
-                        
-        System.out.println("THE LAST MESSAAGE IS : " + last.getMsg() + "[OTHER PARTY    ]" + u.getEmail()  );
+      
+    
         int m = 0;
         for (PrivateMessage p : this.user.getUnreadPMs()) {
           String pSender = p.getSender().getEmail();
           String pReceiver = p.getReceiver().getEmail();
           String lastSender = last.getSender().getEmail();
           String lastReceiver = last.getReceiver().getEmail();
-                System.out.println("LAST SENDER: "+lastReceiver + "NOTED SENDER:  "+ pReceiver + " IS "+(pSender.equals(lastSender) && pReceiver.equals(lastReceiver)));
-                System.out.println("LAST SENDER: " + lastSender +"NOTED RCEIVER: " + pReceiver + " IS  " +(pSender.equals(lastReceiver) && pReceiver.equals(lastSender)));
+               
                 if ((pSender.equals(lastSender) && pReceiver.equals(lastReceiver)) || (pSender.equals(lastReceiver) && pReceiver.equals(lastSender)) ){ m++;
                   
                     System.out.println(p.getTime() + "  "+ last.getTime() +"  IS  "+ (p.getTime().before(last.getTime())));
               
                     if (p.getTime().getNanos()< last.getTime().getNanos()) {
-
                        
-                        
-                        System.out.println("///////////////////////LASTTT11122222221///////////////////////////////////");
-                        this.user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() +"[MESSAGE]  "+h.getMsg()+"[TIME]: " + h.getTime()));
-                        System.out.println("//////////////////////"+last.getMsg() + "[TIME] "+last.getTime() +"    "+last.getReceiver().getEmail()+"   "+ last.getSender().getEmail()   +"////////////////////////////////////");
-                        
                          return true;
 
                     }
@@ -584,13 +569,10 @@ public class MainModelManager implements MainModel {
            
         }
         if (last != null && m == 0) {
-              System.out.println("///////////////////////LASTTT11122222221///////////////////////////////////");
-            user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() +"[MESSAGE]  "+h.getMsg()+"[TIME]: " + h.getTime()));
-           System.out.println("//////////////////////"+last.getMsg() + "[TIME] "+last.getTime() +"    "+last.getReceiver().getEmail()+"   "+ last.getSender().getEmail()   +"////////////////////////////////////");
-
+             
             return true;
         }
-         System.out.println("///////////////////////THIS IS FALSE///////////////////////////////////");
+        
         return false;
     }
 
@@ -684,10 +666,9 @@ public class MainModelManager implements MainModel {
      */
     public void setSelectedGroup(Group selectedGroup) {
 
-        System.out.println("/////////////////////PPPPPPPPPPPPPPPPPPPP//////////////////////");
+       
         if (!user.getUnreadGMs().isEmpty())
-            user.getUnreadGMs().forEach(g -> System.out.println("[GROUP]  " + g.getGroup().getName() + "[MESSAGE]  " + g.getMsg() + "   TIME:" + g.getTime()));
-        System.out.println("//////////////////////////////////////////////////////////////");
+           
 
         support.firePropertyChange("changeSelectedGroup", null, selectedGroup);
         this.selectedGroup = selectedGroup;

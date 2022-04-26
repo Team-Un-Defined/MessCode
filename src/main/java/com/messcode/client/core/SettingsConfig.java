@@ -68,7 +68,7 @@ public class SettingsConfig {
             Element myelement = (Element) mynode;
 
             result = myelement.getElementsByTagName(parameter).item(0).getTextContent();
-            //System.out.println("Get config of " + stuff + ": " + result);
+           
         }
         return result;
     }
@@ -84,11 +84,11 @@ public class SettingsConfig {
         if (mynode.getNodeType() == Node.ELEMENT_NODE) {
             Element myelement = (Element) mynode;
 
-            System.out.println("Set config of " + stuff + ": " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
+          
 
             myelement.getElementsByTagName(stuff).item(0).setTextContent(value);
 
-            System.out.println("Updated " + stuff + " to " + myelement.getElementsByTagName(stuff).item(0).getTextContent());
+           
         }
         saveConfig();
     }

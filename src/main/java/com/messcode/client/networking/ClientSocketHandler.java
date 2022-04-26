@@ -56,7 +56,7 @@ public class ClientSocketHandler implements Runnable {
                 Container packet = (Container) inFromServer.readObject();
                 java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                         "Im the client and i got the PM finally pls wtf" + packet.getClassName());
-                System.out.println("Im the client and i got the PM finally pls wtf" + packet.getClassName());
+               
                 switch (packet.getClassName()) {
                     case GROUP_UPDATE: {
                         ArrayList<Group> groups = (ArrayList<Group>) packet.getObject();
@@ -96,8 +96,8 @@ public class ClientSocketHandler implements Runnable {
                         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                                 "got this message from server: " + users.getSize()
                                         + " user: " + users.get(0).getEmail());
-                        System.out.println("got this message from server: " + users.getSize()
-                                + " user: " + users.get(0).getEmail());
+                    
+                          
                         for (int i = 0; i < users.getSize(); i++) {
                             addToUsersList(users.get(i));
                         }
@@ -112,14 +112,14 @@ public class ClientSocketHandler implements Runnable {
                         boolean answ = (boolean) packet.getObject();
                         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                                 "in client: " + answ);
-                        System.out.println("in client: " + answ);
+                      
                         loginResponse(answ);
                         break;
                     }
                     case LOGIN_DATA: {
                         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                                 "i got the data " + packet);
-                        System.out.println("i got the data " + packet);
+                      
 
                         loginData(packet);
                         break;
@@ -127,21 +127,21 @@ public class ClientSocketHandler implements Runnable {
                     case PASSWORD_CHANGE: {
                         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                                 "i got the  pass change data " + packet);
-                        System.out.println("i got the  pass change data " + packet);
+                      
                         passChangeResponse(packet);
                         break;
                     }
                     case REMOVE_USER: {
                         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                                 "i got the  remove user data " + packet);
-                        System.out.println("i got the  remove user data " + packet);
+                       
                         removedUser(packet);
                         break;
                     }
                     case KICK_USER: {
                         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                                 "i got banned " + packet);
-                        System.out.println("user got banned " + packet);
+                     
                         userKick(packet);
                         break;
                     }
@@ -261,7 +261,7 @@ public class ClientSocketHandler implements Runnable {
         socketClient.displayMessage(message);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                 "I GOT THIS: " + message.getUsername() + " " + message.getMsg());
-        System.out.println("I GOT THIS: " + message.getUsername() + " " + message.getMsg());
+       
     }
 
     /**
@@ -272,7 +272,7 @@ public class ClientSocketHandler implements Runnable {
         socketClient.displayPM(message);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                 "CLIENT GOT THE PM : " + message.getUsername() + " " + message.getMsg());
-        System.out.println("CLIENT GOT THE PM : " + message.getUsername() + " " + message.getMsg());
+       
     }
 
     /**
@@ -283,7 +283,7 @@ public class ClientSocketHandler implements Runnable {
         socketClient.displayGroup(gm);
         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                 "CLIENT GOT THE Group message : " + gm.getUsername() + " " + gm.getMsg());
-        System.out.println("CLIENT GOT THE Group message : " + gm.getUsername() + " " + gm.getMsg());
+        
     }
 
     /**
@@ -319,19 +319,8 @@ public class ClientSocketHandler implements Runnable {
      */
     public void addUser(User username) {
         try {
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE, "wgatdup: " + username);
-            System.out.println("wgatdup: " + username);
+            
             Container packet = new Container(username, ClassName.USER_JOIN);
-
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                    "WTF IS GOING ON: : " + username.getEmail() + " pwd " + username.getStrPassword());
-            System.out.println("WTF IS GOING ON: : " + username.getEmail() + " pwd " + username.getStrPassword());
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                    "FASZOMAT A KURVA JAVAÁBA :? " + packet.getObject());
-            System.out.println("FASZOMAT A KURVA JAVAÁBA :? " + packet.getObject());
-            java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
-                    "FASZOMAT A KURVA JAVAÁBA user  :? " + packet.getObject());
-            System.out.println("FASZOMAT A KURVA JAVAÁBA user  :? " + packet.getObject());
             outToServer.writeObject(packet);
         } catch (IOException e) {
             e.printStackTrace();

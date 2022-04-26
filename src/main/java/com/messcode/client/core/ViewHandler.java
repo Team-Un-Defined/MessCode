@@ -124,10 +124,10 @@ public class ViewHandler {
      */
     public void changeLanguage(String language) {
         if (language.equals("SK")) {
-            System.out.println("Bundle SK");
+           
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("sk", "SK"));
         } else {
-            System.out.println("Bundle ENG");
+           
             this.bundle = ResourceBundle.getBundle("bundle", new Locale("en", "EN"));
         }
         double x = stage.getX();
