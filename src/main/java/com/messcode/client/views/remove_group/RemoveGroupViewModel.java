@@ -39,11 +39,12 @@ public class RemoveGroupViewModel implements Subject {
      */
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
         ArrayList<Group> groupList = (ArrayList<Group>) propertyChangeEvent.getNewValue();
+        if(groupList==null){}else{
         Platform.runLater(() -> {
             groupList.removeIf(group -> group.getLeader() == null);
             groups.clear();
             groups.addAll(groupList);
-        });
+        });}
     }
 
     /**

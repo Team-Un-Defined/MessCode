@@ -67,8 +67,11 @@ public class ImportData {
     }
 
     /**
-     * @param pm
-     * @throws SQLException
+     * Creates a sql statement that will store the message object into the database
+     *
+     * @param pm PublicMessage object containing the message type
+     * @throws SQLException an exception that provides information on a database access error or other errors.
+     *      *
      */
     public void saveMessage(PublicMessage pm) throws SQLException {
         boolean done = false;
@@ -157,7 +160,9 @@ public class ImportData {
     }
 
     /**
-     * @param g
+     *Creates a sql statement that will store the group object into the database
+     *
+     * @param g Group object containing information about the group
      */
     public void createGroup(Group g) {
         PreparedStatement myPreparedStatement;
@@ -209,8 +214,10 @@ public class ImportData {
     }
 
     /**
-     * @param g
-     * @throws SQLException
+     * Creates a sql statement that will store the group member  into the database
+     *
+     * @param g Group object containing the members of the group
+     * @throws SQLException an exception that provides information on a database access error or other errors.
      */
     public void addGroupMembers(Group g) throws SQLException {
         PreparedStatement myPreparedStatement;
@@ -238,8 +245,10 @@ public class ImportData {
     }
 
     /**
-     * @param g
-     * @throws SQLException
+     * Creates a sql statement that will remove a group member from the database
+     *
+     * @param g Group object containing the current group members
+     * @throws SQLException an exception that provides information on a database access error or other errors.
      */
     public void removeGroupMembers(Group g) throws SQLException {
         PreparedStatement myPreparedStatement;
@@ -265,7 +274,9 @@ public class ImportData {
     }
 
     /**
-     * @param g
+     * Creates a sql statement that will update the leader of the given group in the database
+     *
+     * @param g Group object containing the leader of the group
      */
     public void updateLeader(Group g) {
         try {
@@ -360,8 +371,10 @@ public class ImportData {
 
 
     /**
-     * @param us
-     * @throws SQLException
+     * Creates a sql statement that will store the last seen messages of the user in the database
+     *
+     * @param us User object containing all the data about the user
+     * @throws SQLException an exception that provides information on a database access error or other errors.
      */
     public void saveDataOnExit(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
@@ -538,52 +551,14 @@ public class ImportData {
         }
     }
 
-    /**
-     * @param password
-     * @param email
-     * @return
-     * @throws SQLException
-     */
-    public boolean test(String password, String email) throws SQLException {
-        boolean unique = false;
 
-        String query = "SELECT * FROM account WHERE email = ?";
-        PreparedStatement myPreparedStatement = c.prepareStatement(query);
-        myPreparedStatement.setString(1, email);
-        ResultSet rs = myPreparedStatement.executeQuery();
-
-        String ema = null;
-        String salt = null;
-        String hashedPassword = null;
-        byte[] pass = null;
-
-        if (rs.next()) {
-            hashedPassword = rs.getString("pwd_hash");
-            ema = rs.getString("email");
-            salt = rs.getString("pwd_salt");
-
-            System.out.println("salt = " + salt);
-            System.out.println("password =  " + hashedPassword);
-            AccountManager am = new AccountManager();
-            pass = am.hashPassword(password, salt);
-            System.out.println("cli:" + Arrays.toString(pass));
-        }
-
-        String query2 = "UPDATE public.account SET pwd_hash = ? WHERE email = ?";
-        myPreparedStatement = c.prepareStatement(query2);
-        myPreparedStatement.setString(1, Arrays.toString(pass));
-        myPreparedStatement.setString(2, email);
-        myPreparedStatement.executeUpdate();
-
-        System.out.println("EXECUTED QUERY");
-
-        return unique;
-    }
 
     /**
-     * @param us
-     * @return
-     * @throws SQLException
+     * Creates a sql statement that will update the password of the user in the database
+     *
+     * @param us User object containing the login credentials
+     * @return boolean object true if successfull, false if not
+     * @throws SQLException an exception that provides information on a database access error or other errors.
      */
     public boolean changePassword(User us) throws SQLException {
         PreparedStatement myPreparedStatement;
@@ -627,9 +602,11 @@ public class ImportData {
     }
 
     /**
-     * @param u
-     * @return
-     * @throws SQLException
+     * Creates a sql statement that will change a user's password in the database
+     *
+     * @param u User object containing user information
+     * @return boolean if the user deletion was successfull return true
+     * @throws SQLException an exception that provides information on a database access error or other errors.
      */
     public boolean deleteUser(User u) throws SQLException {
 
@@ -650,8 +627,10 @@ public class ImportData {
     }
 
     /**
-     * @param u
-     * @throws SQLException
+     * Creates a sql statement that will reset the password of the given user in the database
+     *
+     * @param u User object containing the login credentials
+     * @throws SQLException an exception that provides information on a database access error or other errors.
      */
     public void resetPassword(User u) throws SQLException {
         PreparedStatement myPreparedStatement;

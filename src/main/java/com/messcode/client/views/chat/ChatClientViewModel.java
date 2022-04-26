@@ -106,12 +106,12 @@ public class ChatClientViewModel implements Subject {
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
-        User user = (User) propertyChangeEvent.getNewValue();
+        User user1 = (User) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
-            user.setSalt("");
+            user1.setSalt("");
             for (int i = 0; i < usersList.size(); i++) {
-                if (usersList.get(i).getEmail().equals(user.getEmail())) {
-                    usersList.set(i, user);
+                if (usersList.get(i).getEmail().equals(user1.getEmail())) {
+                    usersList.set(i, user1);
                     break;
                 }
             }
