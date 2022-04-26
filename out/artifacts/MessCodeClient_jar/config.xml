@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><xml>
+  <config>
+    <dark_theme>0</dark_theme>
+    <language>SK</language>
+    <message_color>#ffcc66</message_color>
+    <text_color>black</text_color>
+    <message_color_r>1.0</message_color_r>
+    <message_color_g>0.800000011920929</message_color_g>
+    <message_color_b>0.4000000059604645</message_color_b>
+    <message_color_a>1</message_color_a>
+  </config>
+</xml>
