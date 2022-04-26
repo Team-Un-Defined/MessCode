@@ -84,7 +84,7 @@ public class MainModelManager implements MainModel {
      */
     private void addOfflineUser(PropertyChangeEvent propertyChangeEvent) {
         User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
-
+        
         allUsers.add(u);
         support.firePropertyChange("AddNewOfflineUser", null, u);
     }
@@ -152,7 +152,7 @@ public class MainModelManager implements MainModel {
             User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
             support.firePropertyChange("createUserResponse", null, true);
             allUsers.add(u);
-            support.firePropertyChange("AddOfflineUsers", null, u);
+            support.firePropertyChange("AddOfflineU", null, u);
         }
     }
 

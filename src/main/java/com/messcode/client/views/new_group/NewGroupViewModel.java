@@ -58,7 +58,7 @@ public class NewGroupViewModel implements Subject {
      * @return the list of users usersList
      */
     public ObservableList<User> getUsersList() {
-        return usersList;
+        return usersList.filtered(p-> !p.getSalt().equals(" - deleted"));
     }
 
     /**
