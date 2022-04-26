@@ -273,6 +273,10 @@ public class ChatClientViewModel implements Subject {
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
         }
+        else 
+        {
+        support.firePropertyChange("newPM", null, "true");
+        }
     }
 
     /**
@@ -417,7 +421,6 @@ public class ChatClientViewModel implements Subject {
      */
     public boolean getUnredGMs(Group g) {
         boolean lul = mainModel.unredGMs(g);
-        System.out.println(" THIS IS MY LIFE " + lul);
         return lul;
     }
 
