@@ -77,10 +77,10 @@ public class ChatClientViewModel implements Subject {
     }
 
     private void removeOfflineUser(PropertyChangeEvent propertyChangeEvent) {
-        ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
+        User users = (User) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
-            usersList.clear();
-            usersList.addAll(users);
+
+            usersList.add(users);
             System.out.println(usersList);
         });
 
