@@ -15,6 +15,7 @@ import java.util.ArrayList;
 /**
  * These messages are sent to group chats.
  * Therefore, group to which this message belongs to must be provided.
+ * @author Martin Šváb
  */
 public class GroupMessages extends PublicMessage implements Serializable {
 

@@ -18,7 +18,6 @@ import java.util.logging.Level;
 public class ImportData {
 
     private static final Logger log4j = LogManager.getLogger(ImportData.class);
-    private Character character;
     private Connection c;
     private DatabaseConnection conn;
 
