@@ -260,6 +260,10 @@ public class SocketClient implements Client {
     public void addOfflineUser(Container packet) {
         support.firePropertyChange("addOfflineUser", null, packet);
     }
+
+    public void kickUser(Container packet) {
+        support.firePropertyChange("kickUser",null,packet);
+    }
 }
 
 

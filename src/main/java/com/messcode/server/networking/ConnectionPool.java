@@ -148,8 +148,9 @@ public class ConnectionPool {
      */
     public void kickUser(User u) {
         for (ServerSocketHandler handler : connections) {
+            handler.removeUser(u);
             if (handler.getUser().getEmail().equals(u.getEmail())) {
-                handler.removeUser();
+
                 removeHandler(handler);
                 break;
             }

@@ -55,8 +55,27 @@ public class MainModelManager implements MainModel {
             client.addListener("userDeleted", this::userDeleted);
             client.addListener("AddAllGroupMessages", this::addAllGroupMessages);
             client.addListener("addOfflineUser", this::addOfflineUser);
+            client.addListener("kickUser",this::kickUser);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void kickUser(PropertyChangeEvent propertyChangeEvent) {
+        Container packet = (Container)propertyChangeEvent.getNewValue();
+        if(((User)packet.getObject()).getEmail().equals(user.getEmail()))
+        {System.exit(1);}
+        else {
+            User u = (User)packet.getObject();
+           for(int i =0; i<allUsers.size();i++)
+           {
+               if(allUsers.get(i).getEmail().equals(u.getEmail()))
+               {
+                   allUsers.remove(i);
+                   break;
+               }
+           }
+            support.firePropertyChange("removeOfflineUser",null,allUsers);
         }
     }
 
