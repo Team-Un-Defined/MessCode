@@ -75,7 +75,7 @@ public class MainModelManager implements MainModel {
                    break;
                }
            }
-            support.firePropertyChange("removeOfflineUser",null,allUsers);
+            support.firePropertyChange("removeOfflineUser",null,allUsers );
         }
     }
 
@@ -86,7 +86,7 @@ public class MainModelManager implements MainModel {
         User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
 
         allUsers.add(u);
-        support.firePropertyChange("AddOfflineUsers", null, allUsers);
+        support.firePropertyChange("AddNewOfflineUser", null, u);
     }
 
     /**
@@ -152,7 +152,7 @@ public class MainModelManager implements MainModel {
             User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
             support.firePropertyChange("createUserResponse", null, true);
             allUsers.add(u);
-            support.firePropertyChange("AddOfflineUsers", null, allUsers);
+            support.firePropertyChange("AddOfflineUsers", null, u);
         }
     }
 
@@ -200,7 +200,7 @@ public class MainModelManager implements MainModel {
      * @param propertyChangeEvent
      */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
-        support.firePropertyChange(propertyChangeEvent);
+        support.firePropertyChange("RemoveUser",null,propertyChangeEvent);
     }
 
     /**
