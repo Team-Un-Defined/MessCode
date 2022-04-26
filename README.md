@@ -1,6 +1,6 @@
 ##### MessCode - Secure Encrypted Messenger
 
-###### Video Presentation Link - i_am_link.com
+###### Video Presentation Link - https://vimeo.com/703456436/670b161522
 
 In order to run the program, Java version 11 or higher must be installed on the device.
 
