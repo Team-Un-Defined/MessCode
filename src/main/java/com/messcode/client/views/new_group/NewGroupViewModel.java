@@ -65,8 +65,9 @@ public class NewGroupViewModel implements Subject {
      * Initializes the creation of the new group
      * @param g Group
      */
-    public void newGroup(Group g) {
-        mainModel.newGroup(g);
+    public boolean newGroup(Group g) {
+        
+    return  mainModel.newGroup(g);
     }
 
     /**

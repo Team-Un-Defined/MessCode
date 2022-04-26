@@ -59,9 +59,9 @@ public class NewEmployeeController implements Subject {
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void evalute(PropertyChangeEvent propertyChangeEvent) {
-        System.out.println("WOTÖFÖK? AGAIN");
+       
         errorLabel.setVisible(true);
-        System.out.println("WOTÖFÖK? AGAIN2");
+       
         // put here the exit
     }
 

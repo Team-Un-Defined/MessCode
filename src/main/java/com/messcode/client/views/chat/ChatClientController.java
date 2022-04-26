@@ -195,15 +195,6 @@ public class ChatClientController {
             resetPasswordButton.setVisible(false);
         }
 
-        for (PublicMessage msg : chatVM.getCurrentUser().getUnreadMessages()) {
-            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-            if (msg instanceof GroupMessages)
-                groupButtonImage.setImage(new Image(reddot));
-            else if (msg instanceof PrivateMessage)
-                PMButtonImage.setImage(new Image(reddot));
-            else allButtonImage.setImage(new Image(reddot));
-        }
-
         usersListFXML.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 inviteToPmButton();
@@ -268,7 +259,11 @@ public class ChatClientController {
                 super.updateItem(item, empty);
                 if (empty) {
                     setText(null);
-                } else {
+                }
+                  else if (item.getSalt().equals(" - deleted")) {
+                           
+                        }
+                else {
                     if (chatVM.getUnredPMs(item)) {
                         if (item.getSalt().equals(" - online")) {
                             InputStream in = getClass().getResourceAsStream("/orange-green.png");
@@ -292,15 +287,12 @@ public class ChatClientController {
                             this.setGraphic(imageView);
                             String text = item.getName() + " " + item.getSurname(); // get text from item
                             setText(text);
-                        } else if (item.getSalt().equals(" - deleted")) {
+                        }
+                        else {
                             this.setGraphic(null);
                             String text = item.getName() + " " + item.getSurname(); // get text from item
                             setText(text);
-                            this.setTextFill(Color.GRAY);
-                        } else {
-                            this.setGraphic(null);
-                            String text = item.getName() + " " + item.getSurname(); // get text from item
-                            setText(text);
+                            
                         }
                     }
                     String text = item.getName() + " " + item.getSurname(); // get text from item
@@ -393,7 +385,6 @@ public class ChatClientController {
             User use = usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
-                updateUserList();
                 chatVM.setReceiver(use);
                 updateUserList();
                 messagesListPM.getItems().clear();
@@ -406,7 +397,7 @@ public class ChatClientController {
                     messagesListPM.getItems().add(label);
                 }
                 messagesListPM.scrollTo(messagesListPM.getItems().size());
-
+                updateUserList();
                 paneInFront = "pm";
                 panePrivate.toFront();
                 userListPane.toFront();
@@ -677,9 +668,9 @@ public class ChatClientController {
         String a = (String) evt.getNewValue();
         if (a.equals("true")) {
 
-            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+            //InputStream reddot = getClass().getResourceAsStream("/reddot.png");
 
-            PMButtonImage.setImage(new Image(reddot));
+            // PMButtonImage.setImage(new Image(reddot));
 
             updateUserList();
         }
@@ -692,7 +683,9 @@ public class ChatClientController {
                 label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
                 messagesListPM.getItems().add(label);
                 messagesListPM.scrollTo(messagesListPM.getItems().size());
+                updateUserList();
             });
+         
         }
     }
 
@@ -704,9 +697,9 @@ public class ChatClientController {
 
         String ans = (String) evt.getNewValue();
         if (ans.equals("true")) {
-            System.out.println("WTHIS SHOULD BE RUNNING? ");
-            InputStream reddot = getClass().getResourceAsStream("/reddot.png");
-            groupButtonImage.setImage(new Image(reddot));
+           
+           // InputStream reddot = getClass().getResourceAsStream("/reddot.png");
+           // groupButtonImage.setImage(new Image(reddot));
             updateGroupList();
         } else if (ans.equals("false")) {
             updateGroupList();
