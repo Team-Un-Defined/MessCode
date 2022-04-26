@@ -138,8 +138,8 @@ public class ClientSocketHandler implements Runnable {
                     case KICK_USER: {
                         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                                 "i got banned " + packet);
-                        System.out.println("i got banned " + packet);
-                        System.exit(1);
+                        System.out.println("user got banned " + packet);
+                        userKick(packet);
                         break;
                     }
                     case ALL_GROUP_MESSAGES: {
@@ -162,6 +162,10 @@ public class ClientSocketHandler implements Runnable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void userKick(Container packet) {
+        socketClient.kickUser(packet);
     }
 
     /**
