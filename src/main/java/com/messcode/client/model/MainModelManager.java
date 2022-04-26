@@ -210,15 +210,17 @@ public class MainModelManager implements MainModel {
         System.out.println("////////////////////////////11111//////////////////////////////");
         user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
        System.out.println("//////////////////////////////////////////////////////////");
-        if (selectedUser != null && (pm.getSender().getEmail().equals(selectedUser.getEmail()))) {
+        if (selectedUser != null && (pm.getSender().getEmail().equals(selectedUser.getEmail()) || pm.getReceiver().getEmail().equals(selectedUser.getEmail())) ) {
             int i=0;
             for (PublicMessage u : user.getUnreadMessages()) {
                 
                 if (u instanceof PrivateMessage) {
                     if (((PrivateMessage) u).getReceiver().getEmail().equals(selectedUser.getEmail()) || u.getSender().getEmail().equals(selectedUser.getEmail())) 
                     {
-                        user.getUnreadMessages().set(i, pm);
-                        support.firePropertyChange("newPM", null, pm);
+                        ArrayList<PublicMessage> unred = user.getUnreadMessages();
+                        unred.set(i,pm);
+                        user.setUnreadMessages(unred);
+                        support.firePropertyChange("newPM", "ok", pm);
                           System.out.println("/////////////////////////22222/////////////////////////////////");
                           user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
                           System.out.println("//////////////////////////////////////////////////////////");
@@ -227,7 +229,7 @@ public class MainModelManager implements MainModel {
                 }
                 i++;
             }
-        } else if ((pm.getSender().getEmail().equals(user.getEmail()))) {
+        } else if (selectedUser!=null && (!pm.getSender().getEmail().equals(selectedUser.getEmail()) || !pm.getReceiver().getEmail().equals(selectedUser.getEmail())) ) {
 
             for (int i = 0; i < user.getUnreadMessages().size(); i++) {
 
@@ -235,9 +237,11 @@ public class MainModelManager implements MainModel {
                     if (((PrivateMessage) user.getUnreadMessages().get(i)).getReceiver().getEmail().equals(pm.getReceiver().getEmail()) ||
                             user.getUnreadMessages().get(i).getSender().getEmail().equals(pm.getReceiver().getEmail())) 
                     {
-                        user.getUnreadMessages().set(i, pm);
+                        ArrayList<PublicMessage> unred = user.getUnreadMessages();
+                        unred.set(i,pm);
+                        user.setUnreadMessages(unred);
 
-                        support.firePropertyChange("newPM", null, pm);
+                        support.firePropertyChange("newPM", "true", pm);
                           System.out.println("/////////////////////////////////3333/////////////////////////");
                           user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
                             System.out.println("//////////////////////////////////////////////////////////");
@@ -251,7 +255,7 @@ public class MainModelManager implements MainModel {
         user.getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
        System.out.println("//////////////////////////////////////////////////////////");
         System.out.println("//////////////////////////PMPM//////////////////////////////");
-        support.firePropertyChange("newPM", null, pm);
+        support.firePropertyChange("newPM", "false", pm);
     }
 
     /**
@@ -266,7 +270,7 @@ public class MainModelManager implements MainModel {
                 if (g instanceof GroupMessages) {
                     if (((GroupMessages) g).getGroup().getName().equals(selectedGroup.getName())) {
                         user.getUnreadMessages().set(i, gm);
-                      
+
 
                         support.firePropertyChange("newGroupMessage", null, gm);
                         return;
@@ -515,7 +519,9 @@ public class MainModelManager implements MainModel {
                     last = pub;
                 }
             } else last = pub;
+
         }
+        System.out.println("THE LAST MESSAAGE IS : " + last.getMsg());
         int m = 0;
         for (PublicMessage p : user.getUnreadMessages()) {
             if (p instanceof PrivateMessage) {

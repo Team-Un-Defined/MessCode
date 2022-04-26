@@ -63,6 +63,13 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
         mainModel.addListener("RemoveUser", this::removeFromUsersList);
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+        mainModel.addListener("LoginData",this::refresh);
+    }
+
+    private void refresh(PropertyChangeEvent propertyChangeEvent) {
+        Platform.runLater(() -> {
+            support.firePropertyChange("refresh", null, "false");
+        });
     }
 
     /**
@@ -72,8 +79,10 @@ public class ChatClientViewModel implements Subject {
      */
     private void refreshGroups(PropertyChangeEvent propertyChangeEvent) {
         Platform.runLater(() -> {
+            if((ArrayList<Group>)propertyChangeEvent.getNewValue()==null){}
+            else {
             groups.clear();
-            groups.addAll((ArrayList<Group>) propertyChangeEvent.getNewValue());
+            groups.addAll((ArrayList<Group>) propertyChangeEvent.getNewValue());}
         });
     }
 
@@ -224,14 +233,7 @@ public class ChatClientViewModel implements Subject {
         return currentUser;
     }
 
-    /**
-     * Sends list of PM room users
-     *
-     * @param usersPM PrivateMessage
-     */
-    public void sendListOfPmRoomUsers(PrivateMessage usersPM) {
-        mainModel.sendListOfPmRoomUsers(usersPM);
-    }
+
 
     /**
      * Method for adding a listener. Inherited from Subject
@@ -266,11 +268,10 @@ public class ChatClientViewModel implements Subject {
         if (this.receiver == null) {
             support.firePropertyChange("newPM", null, "true");
             return;
-        } else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
+        }
+        else if (pm.getReceiver().getEmail().equals(this.receiver.getEmail()) || pm.getSender().getEmail().equals(this.receiver.getEmail())) {
             support.firePropertyChange("newPM", null, pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
             System.out.println("got to PMPM :" + pm.getTime() + " " + pm.getUsername() + ": " + pm.getMsg());
-        }else{
-            support.firePropertyChange("newPM",null, "false");
         }
     }
 
