@@ -434,7 +434,7 @@ public class ImportData {
                 {
 
                      String query3 = "Insert into last_seen (id,group_message_id,private_message_id,public_message_id,user_id)\n" +
-                                    "VALUES (default,null,?,null,?)";
+                                    "VALUES (default,null,null,?,?)";
                 myPreparedStatement = c.prepareStatement(query3);
                 myPreparedStatement.setInt(1, pmid);
                 myPreparedStatement.setInt(2, userid);

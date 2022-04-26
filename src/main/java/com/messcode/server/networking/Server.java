@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 
 /**
  *
@@ -27,6 +28,12 @@ public class Server {
             ConnectionPool pool = new ConnectionPool();
             ImportData dbi = new ImportData();
             ExportData dbe = new ExportData();
+            try {System.out.println("MOHAMED");
+                dbe.checkDatabaseState();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             while (true) {
                 System.out.println("[SERVER] Waiting for client connection");
                 Socket socket = serverSocket.accept();
