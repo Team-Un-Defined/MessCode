@@ -11,7 +11,7 @@ It is also necessary to locally create the database with the following parameter
 
 > password: chickenattack777
 
-And restore it from database backup file “backupName.tz”.
+And restore it from database backup file “UN-defined-messcode.tz”.
 
 The program can be run using the two included JAR files, a server-side and a client program:
 
