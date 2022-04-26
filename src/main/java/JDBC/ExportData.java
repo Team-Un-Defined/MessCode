@@ -39,6 +39,12 @@ public class ExportData {
             log4j.error(e.getMessage(), e);
         }
     }
+
+    /**
+     * Creates a sql statement that will create a superuser automatically if the database contains no accounts.
+     *
+     * @throws SQLException an exception that provides information on a database access error or other errors.
+     */
      public void checkDatabaseState() throws SQLException {
          System.out.println("IS THIS RUNNING?" +
                  "");
@@ -58,7 +64,7 @@ public class ExportData {
 
     /**
      * Creates an SQL statement that checks if the username and password are found in
-     * the database. If the credentials are found a Container will be created containing the
+     * the database and whether the password is correct. If the credentials are found and are correct a Container will be created containing the
      * answer(true), otherwise the answer will be false
      *
      * @param email    String containing the username
@@ -114,13 +120,14 @@ public class ExportData {
     }
 
     /**
-     * Creates an SQL statement that will get the account information and the groups, that
-     * the user is part of , from the database.
+     * Creates an SQL statement that will get the account information,groups and all messages and users that
+     * the user is associated with from the database.
      *
-     * @param email String containing the username
+     * @param email String containing the email
+     * @param password String containing the password
      * @throws SQLException an exception that provides information on a database
      *                      access error or other errors.
-     * @returns Container that contains a boolean true stating that the login was successfull, the account of the user and an ArrayList of groups.
+     * @returns Container that contains an Arraylist of objects
      */
     public Container acceptLogin(String email, String password) throws SQLException {
         PreparedStatement myPreparedStatement;
@@ -155,7 +162,7 @@ public class ExportData {
             salt = rs.getString("pwd_salt");
             type = rs.getString("type");
         }
-
+        User use = new User(fname, lname, ema, password.getBytes(StandardCharsets.UTF_8), salt, type);   // fix this too
         String query2 = "SELECT m.public_message_id FROM last_seen AS m " +
                 "WHERE m.user_id = ? AND m.public_message_id IS NOT NULL";
         myPreparedStatement = c.prepareStatement(query2, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -198,7 +205,7 @@ public class ExportData {
         myPreparedStatement.setInt(2, id);
         rs = myPreparedStatement.executeQuery();
 
-        User use = new User(fname, lname, ema, password.getBytes(StandardCharsets.UTF_8), salt, type);   // fix this too
+
         System.out.println("database: " + use.getSurname() + " " + use.getName());
 
         rs.beforeFirst();
@@ -331,6 +338,7 @@ public class ExportData {
         ArrayList<Object> objs = new ArrayList<>();
         objs.add(allMessages);
         use.setUnreadMessages(lastSeen);
+        use.setSalt(" - online");
         objs.add(use);
         objs.add(users);
         objs.add(groups);
@@ -340,9 +348,11 @@ public class ExportData {
 
 
     /**
-     * @param current
-     * @return
-     * @throws SQLException
+     * Creates a sql statement that will update the groups and return them to the user they are associated with.
+     *
+     * @param current User object
+     * @return ArrayList<Group> Object containing the groups that the user is associated with
+     * @throws SQLException an exception that provides information on a database access error or other errors.
      */
     public ArrayList<Group> updateGroups(User current) throws SQLException {
         ArrayList<Group> groups = new ArrayList<Group>();
@@ -416,9 +426,11 @@ public class ExportData {
     }
 
     /**
-     * @param g
-     * @return
-     * @throws SQLException
+     * Creates a sql statement that will get all the groups associated with the group given as argument
+     *
+     * @param g Group object
+     * @return ArrayList<PublicMessage> array list containing all the group messages for the given group
+     * @throws SQLException an exception that provides information on a database access error or other errors.
      */
     public ArrayList<PublicMessage> getGroupMessages(Group g) throws SQLException {
         PreparedStatement myPreparedStatement;
