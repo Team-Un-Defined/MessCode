@@ -75,7 +75,7 @@ public class MainModelManager implements MainModel {
                    break;
                }
            }
-            support.firePropertyChange("removeOfflineUser",null,allUsers );
+            support.firePropertyChange("removeOfflineUser",null,u);
         }
     }
 
