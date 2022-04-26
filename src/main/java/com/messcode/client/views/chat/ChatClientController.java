@@ -393,7 +393,6 @@ public class ChatClientController {
             User use = usersListFXML.getSelectionModel().getSelectedItems().get(0);
             System.out.println(use.getEmail());
             if (!use.getEmail().equals(chatVM.getCurrentUser().getEmail()) && !use.getEmail().equals(chatVM.getCurrentUser().getEmail())) {
-                updateUserList();
                 chatVM.setReceiver(use);
                 updateUserList();
                 messagesListPM.getItems().clear();
@@ -406,7 +405,7 @@ public class ChatClientController {
                     messagesListPM.getItems().add(label);
                 }
                 messagesListPM.scrollTo(messagesListPM.getItems().size());
-
+                updateUserList();
                 paneInFront = "pm";
                 panePrivate.toFront();
                 userListPane.toFront();
@@ -692,7 +691,9 @@ public class ChatClientController {
                 label.setOnMouseClicked((event) -> this.copyMessage(label.getText()));
                 messagesListPM.getItems().add(label);
                 messagesListPM.scrollTo(messagesListPM.getItems().size());
+                updateUserList();
             });
+         
         }
     }
 
