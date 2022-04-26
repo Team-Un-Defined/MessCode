@@ -61,7 +61,12 @@ public class NewGroupController {
         AccountManager myAccountManager = new AccountManager();
         if (myAccountManager.groupNameRegex(groupName)) {
             errorLabel.setVisible(false);
-            newGroupVM.newGroup(new Group(groupName, description, groupLeader));
+            boolean what = newGroupVM.newGroup(new Group(groupName, description, groupLeader));
+            
+            if(!what){
+            errorLabel.setText(bundle.getString("new_group.incorrect_name"));
+            errorLabel.setVisible(true);
+            }
         } else {
             errorLabel.setText(bundle.getString("new_group.incorrect_format"));
             errorLabel.setVisible(true);

@@ -128,7 +128,7 @@ public class ChatClientViewModel implements Subject {
                     break;
                 }
             }
-            System.out.println(usersList);
+
         });
     }
 
@@ -198,7 +198,7 @@ public class ChatClientViewModel implements Subject {
      * @return ObservableList<User>
      */
     public ObservableList<User> getUsersList() {
-        return usersList;
+        return usersList.filtered(p-> !p.getSalt().equals(" - deleted"));
     }
 
     /**

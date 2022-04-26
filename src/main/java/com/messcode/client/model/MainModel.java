@@ -64,7 +64,7 @@ public interface MainModel extends Subject {
     /**
      * @param g
      */
-    void newGroup(Group g);
+    boolean newGroup(Group g);
 
     /**
      * @param selectedGroup

@@ -432,8 +432,16 @@ public class MainModelManager implements MainModel {
      * @param g
      */
     @Override
-    public void newGroup(Group g) {
+    public boolean newGroup(Group g) {
+      for(Group gr :this.allGroups){
+      if(gr.getName().equals(g.getName())){
+      return false;
+      }
+      
+      }
+        
         client.newGroup(g);
+        return true;
     }
 
     /**
@@ -534,13 +542,13 @@ public class MainModelManager implements MainModel {
           String pReceiver = p.getReceiver().getEmail();
           String lastSender = last.getSender().getEmail();
           String lastReceiver = last.getReceiver().getEmail();
+                System.out.println("LAST SENDER: "+lastReceiver + "NOTED SENDER:  "+ pReceiver + " IS "+(pSender.equals(lastSender) && pReceiver.equals(lastReceiver)));
+                System.out.println("LAST SENDER: " + lastSender +"NOTED RCEIVER: " + pReceiver + " IS  " +(pSender.equals(lastReceiver) && pReceiver.equals(lastSender)));
+                if ((pSender.equals(lastSender) && pReceiver.equals(lastReceiver)) || (pSender.equals(lastReceiver) && pReceiver.equals(lastSender)) ){ m++;
                   
-                if ((pSender.equals(lastSender) && pReceiver.equals(lastReceiver)) || (pSender.equals(lastReceiver) && pReceiver.equals(lastSender)) )
-                
-                { m++;
-                  
+                    System.out.println(p.getTime() + "  "+ last.getTime() +"  IS  "+ (p.getTime().before(last.getTime())));
               
-                    if ((p.getTime().getNanos() < last.getTime().getNanos())) {
+                    if (p.getTime().getNanos()< last.getTime().getNanos()) {
 
                        
                         
