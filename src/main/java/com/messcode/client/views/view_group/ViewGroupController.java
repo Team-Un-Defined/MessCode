@@ -18,7 +18,6 @@ public class ViewGroupController {
     public Button closeButton;
 
     private ViewGroupViewModel viewGroupVM;
-    private Group currentGroup;
 
     public void init(ViewGroupViewModel viewGroupVM) {
         this.viewGroupVM = viewGroupVM;

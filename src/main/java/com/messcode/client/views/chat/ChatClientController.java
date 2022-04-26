@@ -32,7 +32,7 @@ import java.util.ResourceBundle;
 /**
  * The Controller of the ChatClient (main) panel.
  * Processes the input of the user and forwards it to the ViewModel.
- * @author Kamilla Kisová, Roman Khorzov, Noémi Farkas
+ * @author Kamilla Kisová, Noémi Farkas, Roman Khorzov
  */
 public class ChatClientController {
 
@@ -79,10 +79,10 @@ public class ChatClientController {
     public Button removeUserButton;
     public Button editProjectLeaderButton;
     public Button resetPasswordButton;
-
     public ImageView allButtonImage;
     public ImageView groupButtonImage;
     public ImageView PMButtonImage;
+
     private ChatClientViewModel chatVM;
     private ViewHandler vh;
     private ResourceBundle bundle;
@@ -378,7 +378,7 @@ public class ChatClientController {
         if (usersListFXML.getSelectionModel().getSelectedItems().isEmpty()) {
             invitePmErrorLabel.setText(bundle.getString("select_user"));
         } else {
-            if (chatVM.getCurrentUser().getType().equals("superuser")) {
+            if (chatVM.getCurrentUser().isSuperuser()) {
                 resetPasswordButton.setVisible(true);
             }
             if (usersListFXML.getSelectionModel().getSelectedItems().get(0).getSalt().equals(" - deleted")) {
@@ -456,12 +456,12 @@ public class ChatClientController {
         });
 
         if (!groupsList.getSelectionModel().getSelectedItems().isEmpty()) {
-            if (chatVM.getCurrentUser().getType().equals("superuser") || chatVM.getCurrentUser().getType().equals("employer")) {
+            if (chatVM.getCurrentUser().isSuperuser() || chatVM.getCurrentUser().isEmployer()) {
                 editProjectLeaderButton.setVisible(true);
                 editMemberButton.setVisible(true);
             }
 
-            if (chatVM.getCurrentUser().getType().equals("project_leader")) {
+            if (chatVM.getCurrentUser().isProjectLeader()) {
                 editMemberButton.setVisible(true);
             }
 
@@ -590,12 +590,12 @@ public class ChatClientController {
                         setStyle(null);
                         setText(null);
                     } else {
-                        setText(item.getText());
                         String a = " -fx-control-inner-background:" + SettingsConfig.getConfigOf("message_color") +
                                 ";" + " -fx-text-fill: " + SettingsConfig.getConfigOf("text_color") +
                                 ";" + " -fx-max-width: " + (messagesListAll.getPrefWidth() - 30) +
                                 ";" + " -fx-wrap-text: true";
                         setStyle(a);
+                        setText(item.getText());
                     }
                 }
             };
