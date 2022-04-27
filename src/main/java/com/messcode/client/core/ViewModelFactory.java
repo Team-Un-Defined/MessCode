@@ -14,7 +14,7 @@ import com.messcode.client.views.view_group.ViewGroupViewModel;
 import com.messcode.client.views.view_profile.ViewProfileViewModel;
 
 /**
- *
+ *This class is responsible for initializing and returning the instance of different viewmodel
  */
 public class ViewModelFactory {
 
@@ -32,7 +32,8 @@ public class ViewModelFactory {
     private ViewGroupViewModel viewGroupVM;
 
     /**
-     * @param mf
+     * Assigning the MainModelManager to all viewmodels and initializing them.
+     * @param mf ModelFactory object
      */
     public ViewModelFactory(ModelFactory mf) {
         this.mf = mf;
@@ -50,75 +51,89 @@ public class ViewModelFactory {
     }
 
     /**
-     * @return
+     * Get method
+     * @return ChatClientViewModel
      */
     public ChatClientViewModel getChatVM() {
         return chatVM;
     }
 
     /**
-     * @return
+     * Get method
+     * @return LoginViewModel
      */
     public LoginViewModel getLoginVM() {
         return loginVM;
     }
 
     /**
-     * @return
+     * Get method
+     * @return NewEmployeeViewModel
      */
     public NewEmployeeViewModel getNewEmployeeVM() {
         return newEmployeeVM;
     }
 
     /**
-     * @return
+     * get method
+     * @return NewGroupViewModel
      */
     public NewGroupViewModel getNewGroupVM() {
         return newGroupVM;
     }
 
     /**
-     * @return
+     * get method
+     * @return ChangePasswordViewModel
      */
     public ChangePasswordViewModel getChangePasswordVM() {
         return changePasswordVM;
     }
 
     /**
-     * @return
+     * get method
+     * @return EditMemberViewModel
      */
     public EditMemberViewModel getEditMemberVM() {
         return editMemberVM;
     }
 
     /**
-     * @return
+     * get method
+     * @return RemoveGroupViewModel
      */
     public RemoveGroupViewModel getRemoveGroupVM() {
         return removeGroupVM;
     }
 
     /**
-     * @return
+     * get method
+     * @return RemoveUserViewModel
      */
     public RemoveUserViewModel getRemoveUserVM() {
         return removeUserVM;
     }
 
     /**
-     * @return
+     * get method
+     * @return EditProjectLeaderViewModel
      */
     public EditProjectLeaderViewModel getEditProjectLeaderVM() {
         return editProjectLeaderVM;
     }
 
     /**
-     * @return
+     * get method
+     * @return ViewProfileViewModel
      */
     public ViewProfileViewModel getViewProfileVM() {
         return viewProfileVM;
     }
 
+    /**
+     * get method
+     * @return ViewGroupViewModel
+     */
     public ViewGroupViewModel getViewGroupVM() {
         return viewGroupVM;
     }

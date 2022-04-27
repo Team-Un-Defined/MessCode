@@ -40,9 +40,9 @@ public class RemoveUserViewModel implements Subject {
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
+        usersList.clear();
         ArrayList<User> use = (ArrayList<User>) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
-            System.out.println("TÖFÖFÖGK");
             use.removeIf(user -> user.getSalt().equals(" - deleted") );
             usersList.addAll(use);
             System.out.println(usersList);
