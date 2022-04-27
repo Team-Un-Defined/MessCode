@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
+ * This class is responsible for connecting the client to the server
  *
  */
 public class SocketClient implements Client {
@@ -26,14 +27,16 @@ public class SocketClient implements Client {
     private PropertyChangeSupport support;
 
     /**
-     * @throws IOException
+     * Start method initializes Socket, ClientSocketHandler, new Thread, and PropertyChangeSupport
+     *
+     * @throws IOException connection error
      */
     @Override
     public void start() throws IOException {
         support = new PropertyChangeSupport(this);
         socket = new Socket(SERVER_IP, SERVER_PORT);
 
-        System.out.println("ip " + socket.getInetAddress());
+    
         socketHandler = new ClientSocketHandler(socket, this);
         Thread thread = new Thread(socketHandler);
         thread.setDaemon(true);
@@ -41,7 +44,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param message
+     * This method calls the sendPublic method on the sockethandler
+     *
+     * @param message PublicMessage object
      */
     @Override
     public void sendPublic(PublicMessage message) {
@@ -49,7 +54,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param message
+     *  This method fires the displayMessage property for the MainModelManager
+     *
+     * @param message PublicMessage object
      */
     @Override
     public void displayMessage(PublicMessage message) {
@@ -57,24 +64,30 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param username
+     *  This method calls the addUser method on the sockethandler
+     *
+     * @param username User object
      */
     @Override
     public void addUser(User username) {
-        System.out.println("IS THIS NULL? " + username);
+
         socketHandler.addUser(username);
     }
 
     /**
-     * @param user
+     *  This method fires the addTolistproperty for the MainModelManager
+     *
+     * @param user User object
      */
     public void addToList(User user) {
         support.firePropertyChange("AddNewUser", null, user);
     }
 
     /**
-     * @param eventName
-     * @param listener
+     *  This method calls the addListener method on the PropertyChangeSupport
+     *
+     * @param eventName String object
+     * @param listener PropertyChangeListener object
      */
     @Override
     public void addListener(String eventName, PropertyChangeListener listener) {
@@ -82,8 +95,10 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param eventName
-     * @param listener
+     *  This method calls the removeListener method on the PropertyChangeSupport
+     *
+     * @param eventName String object
+     * @param listener PropertyChangeListener object
      */
     @Override
     public void removeListener(String eventName, PropertyChangeListener listener) {
@@ -91,28 +106,36 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param pm
+     *  This method fires the displayPM property for the MainModelManager
+     *
+     * @param pm PrivateMessage object
      */
     public void displayPM(PrivateMessage pm) {
         support.firePropertyChange("newPM", null, pm);
     }
 
     /**
-     * @param gm
+     *  This method fires the displayGroup property for the MainModelManager
+     *
+     * @param gm GroupMessage object
      */
     void displayGroup(GroupMessages gm) {
         support.firePropertyChange("newGroupMessage", null, gm);
     }
 
     /**
-     * @param user
+     * This method fires the removeFromList property for the MainModelManager
+     *
+     * @param user User object
      */
     public void removeFromList(User user) {
         support.firePropertyChange("RemoveUser", null, user);
     }
 
     /**
-     * @param pm
+     * This method calls the sendPM method on the sockethandler
+     *
+     * @param pm PrivateMessage object
      */
     @Override
     public void sendPM(PrivateMessage pm) {
@@ -120,21 +143,27 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param answ
+     * This method fires the loginResponse property for the MainModelManager
+     *
+     * @param answ boolean object
      */
     public void loginResponse(boolean answ) {
         support.firePropertyChange("LoginResponse", null, answ);
     }
 
     /**
-     * @param packet
+     * This method fires the loginDate property for the MainModelManager
+     *
+     * @param packet Container object
      */
     public void loginData(Container packet) {
         support.firePropertyChange("LoginData", null, packet);
     }
 
     /**
-     * @param newUser
+     * This method calls the register method on the sockethandler
+     *
+     * @param newUser User object
      */
     @Override
     public void register(User newUser) {
@@ -142,7 +171,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param g
+     * This method fires the refreshGroupList property for the MainModelManager
+     *
+     * @param g ArrayList<Group></Group> object
      */
     @Override
     public void refreshGroupList(ArrayList<Group> g) {
@@ -150,7 +181,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param g
+     * This method calls the newGroup method on the sockethandler
+     *
+     * @param g Group object
      */
     @Override
     public void newGroup(Group g) {
@@ -158,7 +191,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param mess
+     * This method calls the sendGroup method on the sockethandler
+     *
+     * @param mess GroupMessages object
      */
     @Override
     public void sendGroup(GroupMessages mess) {
@@ -166,7 +201,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param u
+     * This method calls the changePassword method on the sockethandler
+     *
+     * @param u User object
      */
     @Override
     public void changePassword(User u) {
@@ -174,7 +211,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param use
+     * This method calls the deleteUser method on the sockethandler
+     *
+     * @param use User object
      */
     @Override
     public void deleteUser(User use) {
@@ -182,28 +221,36 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param acc
+     * This method fires the userCreateResponse property for the MainModelManager
+     *
+     * @param acc Container object
      */
     public void userCreateResponse(Container acc) {
         support.firePropertyChange("createUserResponse", null, acc);
     }
 
     /**
-     * @param packet
+     * This method fires the passChangeResponse property for the MainModelManager
+     *
+     * @param packet Container object
      */
     public void passChangeResponse(Container packet) {
         support.firePropertyChange("passChangeResponse", null, packet);
     }
 
     /**
-     * @param packet
+     * This method fires the removeUser property for the MainModelManager
+     *
+     * @param packet Container object
      */
     public void removeUser(Container packet) {
         support.firePropertyChange("userDeleted", null, packet);
     }
 
     /**
-     * @param selectedGroup
+     * This method calls the addMember method on the sockethandler
+     *
+     * @param selectedGroup Group object
      */
     @Override
     public void addMember(Group selectedGroup) {
@@ -211,7 +258,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param selectedGroup
+     * This method calls the removeMember method on the sockethandler
+     *
+     * @param selectedGroup Group object
      */
     @Override
     public void removeMember(Group selectedGroup) {
@@ -219,7 +268,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param g
+     * This method calls the deleteGroup method on the sockethandler
+     *
+     * @param g Group object
      */
     @Override
     public void deleteGroup(Group g) {
@@ -227,7 +278,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param use
+     * This method calls the resetPassword method on the sockethandler
+     *
+     * @param use User object
      */
     @Override
     public void resetPassword(User use) {
@@ -235,7 +288,9 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param user
+     * This method calls the saveDataOnExit method on the sockethandler
+     *
+     * @param user User object
      */
     @Override
     public void saveDataOnExit(User user) {
@@ -243,24 +298,38 @@ public class SocketClient implements Client {
     }
 
     /**
-     * @param pckt
+     * This method fires the getAllGroupMessages property for the MainModelManager
+     *
+     * @param pckt Container object
      */
     public void getAllGroupMessages(Container pckt) {
         support.firePropertyChange("AddAllGroupMessages", null, pckt);
     }
 
     /**
-     * @param g
+     * This method calls the changeLeader method on the sockethandler
+     *
+     * @param g Group object
      */
     @Override
     public void changeLeader(Group g) {
         socketHandler.changeLeader(g);
     }
 
+    /**
+     * This method fires the addOfflineUser property for the MainModelManager
+     *
+     * @param packet Container object
+     */
     public void addOfflineUser(Container packet) {
         support.firePropertyChange("addOfflineUser", null, packet);
     }
 
+    /**
+     * This method fires the kickUser property for the MainModelManager
+     *
+     * @param packet Container object
+     */
     public void kickUser(Container packet) {
         support.firePropertyChange("kickUser",null,packet);
     }

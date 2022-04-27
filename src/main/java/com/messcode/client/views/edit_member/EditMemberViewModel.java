@@ -134,7 +134,7 @@ public class EditMemberViewModel implements Subject {
      * @return ObservableList<User>
      */
     public ObservableList<User> getUsers() {
-        return usersNotInGroup;
+        return usersNotInGroup.filtered(p-> !p.getSalt().equals(" - deleted"));
     }
 
     /**

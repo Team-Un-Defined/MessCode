@@ -65,13 +65,23 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
         mainModel.addListener("LoginData",this::refresh);
         mainModel.addListener("removeOfflineUser",this::removeOfflineUser);
+        mainModel.addListener("AddNewOfflineUser",this::addOfflineUserOne);
+        mainModel.addListener("addOfflineU",this::addOfflineUser);
+    }
+
+    private void addOfflineUserOne(PropertyChangeEvent propertyChangeEvent) {
+     User us = (User) propertyChangeEvent.getNewValue();
+        Platform.runLater(() -> {
+            usersList.add(us);
+            System.out.println(usersList);
+        });
     }
 
     private void removeOfflineUser(PropertyChangeEvent propertyChangeEvent) {
-        ArrayList<User> users = (ArrayList<User>) propertyChangeEvent.getNewValue();
+        User users = (User) propertyChangeEvent.getNewValue();
         Platform.runLater(() -> {
-            usersList.clear();
-            usersList.addAll(users);
+
+            usersList.add(users);
             System.out.println(usersList);
         });
 
@@ -112,13 +122,24 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
+     private void addOfflineUser(PropertyChangeEvent propertyChangeEvent) {
+        User users = (User) propertyChangeEvent.getNewValue();
+        Platform.runLater(() -> {
+            usersList.clear();
+            usersList.add(users);
+            System.out.println(usersList);
+        });
+    }
+    
     /**
      * Removes the user from the list
      *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
-        User user = (User) propertyChangeEvent.getNewValue();
+        com.messcode.transferobjects.Container c = (com.messcode.transferobjects.Container) propertyChangeEvent.getNewValue();
+
+        User user =(User)c.getObject()  ;
         user.setSalt("");
         Platform.runLater(() -> {
 

@@ -14,7 +14,9 @@ public class DatabaseConnection {
     private final String pass = "chickenattack777";
 
     /**
-     * @return
+     * Get method
+     *
+     * @return String object
      */
     public String getConn() {
 
@@ -22,21 +24,25 @@ public class DatabaseConnection {
     }
 
     /**
-     * @return
+     * Get method
+     *
+     * @return String object
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return
+     *  Get method
+     *
+     * @return String object
      */
     public String getPass() {
         return pass;
     }
 
     /**
-     *
+     * Empty  constructor
      */
     public DatabaseConnection() {
     }
