@@ -129,7 +129,7 @@ public class SocketClient implements Client {
      * @param user User object
      */
     public void removeFromList(User user) {
-        support.firePropertyChange("RemoveUser", null, user);
+        support.firePropertyChange("UserLeave", null, user);
     }
 
     /**

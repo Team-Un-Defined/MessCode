@@ -50,7 +50,7 @@ public class MainModelManager implements MainModel {
             client.addListener("AddNewUser", this::modifyAllUsersList);
             client.addListener("MessageForEveryone", this::receivePublic);
             client.addListener("newPM", this::receivePM);
-            client.addListener("RemoveUser", this::modifyAllUsersList);
+            client.addListener("UserLeave", this::userLeft);
             client.addListener("LoginResponse", this::loginResponse);
             client.addListener("LoginData", this::loginData);
             client.addListener("createUserResponse", this::createAccount);
@@ -63,12 +63,26 @@ public class MainModelManager implements MainModel {
             e.printStackTrace();
         }
     }
+    public void userLeft(PropertyChangeEvent propertyChangeEvent){
+    User u = (User) propertyChangeEvent.getNewValue();
+      u.setSalt("");
+       
 
+            for (int i = 0; i < allUsers.size(); i++) {
+                if (allUsers.get(i).getEmail().equals(u.getEmail())) {
+                    allUsers.set(i, u);
+                    break;
+                }
+            }
+            
+       support.firePropertyChange("ReloadUsers",null,allUsers);
+    }
+    
+    
     /**
      * This method is responsible for removing out a user from the allUsers list and sending out an event for the listeners with the deleted user.
      * @param propertyChangeEvent PropertyChangeEvent object
      */
-
     private void kickUser(PropertyChangeEvent propertyChangeEvent) {
         System.out.println("Step one goes");
         Container packet = (Container)propertyChangeEvent.getNewValue();
@@ -210,14 +224,6 @@ public class MainModelManager implements MainModel {
     }
 
     /**
-     * This method is responsible for firing an event to the listeners with the removed user in it as argument.
-     * @param propertyChangeEvent PropertyChangeEvent object
-     */
-    
-    
-
-
-    /**
      * This method is responsible for adding a new public message to the list of messages and firing an event to the listeners with the message in it.
      * @param propertyChangeEvent PropertyChangeEvent object
      */
@@ -238,8 +244,8 @@ public class MainModelManager implements MainModel {
        
        int saved =0;
        if(selectedUser!=null && pm.getSender().getEmail().equals(selectedUser.getEmail())){
-       lastMessages.put(pm.getSender().getEmail(), pm);
        this.user.addUnreadMessages(pm);
+       lastMessages.put(pm.getSender().getEmail(), pm);
        saved =1;
        }
        if(pm.getSender().getEmail().equals(this.user.getEmail())){
@@ -250,7 +256,7 @@ public class MainModelManager implements MainModel {
        
         
      
-        if(saved!=2) lastMessages.put(pm.getSender().getEmail(),pm);
+        if(saved==0 ) lastMessages.put(pm.getSender().getEmail(),pm);
         
         
         support.firePropertyChange("newPM", "false", pm);

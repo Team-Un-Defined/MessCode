@@ -61,7 +61,6 @@ public class ChatClientViewModel implements Subject {
         mainModel.addListener("MessageForEveryone", this::displayPublic);
         mainModel.addListener("newPM", this::displayPM);
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
-        mainModel.addListener("RemoveUser", this::removeFromUsersList);
         mainModel.addListener("ReloadUsers", this::addOfflineUsers);
         mainModel.addListener("LoginData",this::refresh);
       
@@ -102,29 +101,6 @@ public class ChatClientViewModel implements Subject {
         });
     }
 
-    
-    
-    /**
-     * Removes the user from the list
-     *
-     * @param propertyChangeEvent PropertyChangeEvent triggered event
-     */
-    private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
-        User user = (User) propertyChangeEvent.getNewValue();
-
-       
-        user.setSalt("");
-        Platform.runLater(() -> {
-
-            for (int i = 0; i < usersList.size(); i++) {
-                if (usersList.get(i).getEmail().equals(user.getEmail())) {
-                    usersList.set(i, user);
-                    break;
-                }
-            }
-
-        });
-    }
 
     /**
      * Sets the current user's name
