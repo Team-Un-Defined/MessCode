@@ -175,9 +175,9 @@ public class ServerSocketHandler implements Runnable {
                         u.setSalt(" - deleted");
                         boolean result = dbi.deleteUser(u);
                         if (result) {
-                            Container pckt = new Container(u, ClassName.REMOVE_USER);
+                           //Container pckt = new Container(u, ClassName.REMOVE_USER);
 
-                            outToClient.writeObject(pckt);
+                           // outToClient.writeObject(pckt);
                             pool.kickUser(u);
                         }
                         break;

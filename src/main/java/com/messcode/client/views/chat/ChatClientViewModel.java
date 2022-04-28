@@ -27,6 +27,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * The ViewModel of the ChatClient (main) panel.
@@ -57,37 +58,15 @@ public class ChatClientViewModel implements Subject {
         this.mainModel = mainModel;
         mainModel.addListener("newGroupMessage", this::displayGroup);
         mainModel.addListener("RefresgGroups", this::refreshGroups);
-        mainModel.addListener("AddNewUser", this::getUsersList);
         mainModel.addListener("MessageForEveryone", this::displayPublic);
         mainModel.addListener("newPM", this::displayPM);
         mainModel.addListener("SetUsernameInChat", this::setUsernameInChat);
-        mainModel.addListener("RemoveUser", this::removeFromUsersList);
-        mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+        mainModel.addListener("ReloadUsers", this::addOfflineUsers);
         mainModel.addListener("LoginData",this::refresh);
-        mainModel.addListener("removeOfflineUser",this::removeOfflineUser);
-        mainModel.addListener("AddNewOfflineUser",this::addOfflineUserOne);
-        mainModel.addListener("addOfflineU",this::addOfflineUser);
+      
     }
 
-    private void addOfflineUserOne(PropertyChangeEvent propertyChangeEvent) {
-     User us = (User) propertyChangeEvent.getNewValue();
-        Platform.runLater(() -> {
-            usersList.add(us);
-            System.out.println(usersList);
-        });
-    }
-
-    private void removeOfflineUser(PropertyChangeEvent propertyChangeEvent) {
-        User users = (User) propertyChangeEvent.getNewValue();
-        Platform.runLater(() -> {
-
-            usersList.add(users);
-            System.out.println(usersList);
-        });
-
-
-    }
-
+    
     private void refresh(PropertyChangeEvent propertyChangeEvent) {
         Platform.runLater(() -> {
             support.firePropertyChange("refresh", null, "false");
@@ -118,40 +97,10 @@ public class ChatClientViewModel implements Subject {
         Platform.runLater(() -> {
             usersList.clear();
             usersList.addAll(users);
-            System.out.println(usersList);
+            System.out.println("THIS IS IN THE MODEL"+usersList);
         });
     }
 
-     private void addOfflineUser(PropertyChangeEvent propertyChangeEvent) {
-        User users = (User) propertyChangeEvent.getNewValue();
-        Platform.runLater(() -> {
-            usersList.clear();
-            usersList.add(users);
-            System.out.println(usersList);
-        });
-    }
-    
-    /**
-     * Removes the user from the list
-     *
-     * @param propertyChangeEvent PropertyChangeEvent triggered event
-     */
-    private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
-        com.messcode.transferobjects.Container c = (com.messcode.transferobjects.Container) propertyChangeEvent.getNewValue();
-
-        User user =(User)c.getObject()  ;
-        user.setSalt("");
-        Platform.runLater(() -> {
-
-            for (int i = 0; i < usersList.size(); i++) {
-                if (usersList.get(i).getEmail().equals(user.getEmail())) {
-                    usersList.set(i, user);
-                    break;
-                }
-            }
-
-        });
-    }
 
     /**
      * Sets the current user's name
@@ -178,40 +127,7 @@ public class ChatClientViewModel implements Subject {
      *
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
-    private void getUsersList(PropertyChangeEvent propertyChangeEvent) {
-        User user = (User) propertyChangeEvent.getNewValue();
-        System.out.println("USER SALT: " + user.getSalt());
-        Platform.runLater(() -> {
-            if (user.getSalt().equals(" - deleted")) {
-                for (int i = 0; i < usersList.size(); i++) {
-                    if (usersList.get(i).getEmail().equals(user.getEmail())) {
-                        usersList.set(i, user);
-                        break;
-                    }
-                }
-            } else {
-                user.setSalt(" - online");
-                for (int i = 0; i < usersList.size(); i++) {
-                    if (usersList.get(i).getEmail().equals(user.getEmail())) {
-                        usersList.remove(i);
-                        for (int j = 0; j < usersList.size(); j++) {
-                            if ((!usersList.get(j).getSalt().equals(" - online"))) {
-                                User temp = usersList.get(j);
-                                usersList.set(j, user);
-                                if (!temp.getEmail().equals(user.getEmail())) {
-                                    usersList.add(temp);
-                                }
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-            System.out.println("NEW USER ADDED WHLEO");
-            System.out.println(usersList);
-        });
-    }
+    
 
     /**
      * Getter for the list of users
