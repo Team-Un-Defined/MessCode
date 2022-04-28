@@ -14,6 +14,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import javafx.application.Platform;
 
 /**
  *This is where the main bussiness logic happens.
@@ -46,15 +47,15 @@ public class MainModelManager implements MainModel {
             client.start();
             client.addListener("newGroupMessage", this::receiveGroup);
             client.addListener("RefresgGroups", this::refreshGroupList);
-            client.addListener("AddNewUser", this::addToUsersList);
+            client.addListener("AddNewUser", this::modifyAllUsersList);
             client.addListener("MessageForEveryone", this::receivePublic);
             client.addListener("newPM", this::receivePM);
-            client.addListener("RemoveUser", this::removeFromUsersList);
+            client.addListener("RemoveUser", this::modifyAllUsersList);
             client.addListener("LoginResponse", this::loginResponse);
             client.addListener("LoginData", this::loginData);
             client.addListener("createUserResponse", this::createAccount);
             client.addListener("passChangeResponse", this::passChangeResponse);
-            client.addListener("userDeleted", this::userDeleted);
+            client.addListener("userDeleted", this::modifyAllUsersList);
             client.addListener("AddAllGroupMessages", this::addAllGroupMessages);
             client.addListener("addOfflineUser", this::addOfflineUser);
             client.addListener("kickUser",this::kickUser);
@@ -69,20 +70,22 @@ public class MainModelManager implements MainModel {
      */
 
     private void kickUser(PropertyChangeEvent propertyChangeEvent) {
+        System.out.println("Step one goes");
         Container packet = (Container)propertyChangeEvent.getNewValue();
         if(((User)packet.getObject()).getEmail().equals(user.getEmail()))
         {System.exit(1);}
         else {
+            System.out.println("Step two goes");
             User u = (User)packet.getObject();
            for(int i =0; i<allUsers.size();i++)
            {
                if(allUsers.get(i).getEmail().equals(u.getEmail()))
                {
-                   allUsers.remove(i);
+                   allUsers.set(i,u);
                    break;
                }
            }
-            support.firePropertyChange("removeOfflineUser",null,u);
+            support.firePropertyChange("ReloadUsers",null,allUsers);
         }
     }
 
@@ -94,7 +97,7 @@ public class MainModelManager implements MainModel {
         User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
         
         allUsers.add(u);
-        support.firePropertyChange("AddNewOfflineUser", null, u);
+        support.firePropertyChange("ReloadUsers", null, allUsers);
     }
 
 
@@ -136,10 +139,7 @@ public class MainModelManager implements MainModel {
      * This method is responsible for sending the user object that was deleted to the listeners to update the views
      * @param propertyChangeEvent PropertyChangeEvent object
      */
-    private void userDeleted(PropertyChangeEvent propertyChangeEvent) {
-        User u = (User) ((Container) propertyChangeEvent.getNewValue()).getObject();
-        support.firePropertyChange("AddNewUser", null, u);
-    }
+   
 
     /**
      * This method is responsible for sending a packet containing a boolean to the views
@@ -162,7 +162,7 @@ public class MainModelManager implements MainModel {
             User u = ((User) ((Container) propertyChangeEvent.getNewValue()).getObject());
             support.firePropertyChange("createUserResponse", null, true);
             allUsers.add(u);
-            support.firePropertyChange("AddOfflineU", null, u);
+            support.firePropertyChange("ReloadUsers", null, allUsers);
         }
     }
 
@@ -186,7 +186,7 @@ public class MainModelManager implements MainModel {
 
         }
 
-        support.firePropertyChange("AddOfflineUsers", null, allUsers);
+        support.firePropertyChange("ReloadUsers", null, allUsers);
         support.firePropertyChange("RefresgGroups", null, allGroups);
         System.out.println("Everything has been casted");
 
@@ -213,10 +213,8 @@ public class MainModelManager implements MainModel {
      * This method is responsible for firing an event to the listeners with the removed user in it as argument.
      * @param propertyChangeEvent PropertyChangeEvent object
      */
-    private void removeFromUsersList(PropertyChangeEvent propertyChangeEvent) {
-        support.firePropertyChange("RemoveUser",null,propertyChangeEvent);
-    }
-
+    
+    
 
 
     /**
@@ -288,9 +286,43 @@ public class MainModelManager implements MainModel {
      * This method is responsible for firing an event to the listeners containing the newly added user
      * @param propertyChangeEvent PropertyChangeEvent object
      */
-    public void addToUsersList(PropertyChangeEvent propertyChangeEvent) {
+    public void modifyAllUsersList(PropertyChangeEvent propertyChangeEvent) {
         User user = (User) propertyChangeEvent.getNewValue();
-        support.firePropertyChange("AddNewUser", null, user);
+        if(user==null){
+            System.out.println("OLI FUCKED UP THE RETURN");
+            return;
+        }
+       
+            if (user.getSalt().equals(" - deleted")) {
+                for (int i = 0; i < allUsers.size(); i++) {
+                    if (allUsers.get(i).getEmail().equals(user.getEmail())) {
+                        allUsers.set(i, user);
+                        break;
+                    }
+                }
+            } else {
+                user.setSalt(" - online");
+                for (int i = 0; i < allUsers.size(); i++) {
+                    if (allUsers.get(i).getEmail().equals(user.getEmail())) {
+                        allUsers.remove(i);
+                        for (int j = 0; j < allUsers.size(); j++) {
+                            if ((!allUsers.get(j).getSalt().equals(" - online"))) {
+                                User temp = allUsers.get(j);
+                                allUsers.set(j, user);
+                                if (!temp.getEmail().equals(user.getEmail())) {
+                                    allUsers.add(temp);
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+             support.firePropertyChange("ReloadUsers", null, allUsers);
+       
+       
+       
     }
 
     /**
@@ -547,33 +579,8 @@ public class MainModelManager implements MainModel {
       
     
         int m = 0;
-        for (PrivateMessage p : this.user.getUnreadPMs()) {
-          String pSender = p.getSender().getEmail();
-          String pReceiver = p.getReceiver().getEmail();
-          String lastSender = last.getSender().getEmail();
-          String lastReceiver = last.getReceiver().getEmail();
-               
-                if ((pSender.equals(lastSender) && pReceiver.equals(lastReceiver)) || (pSender.equals(lastReceiver) && pReceiver.equals(lastSender)) ){ m++;
-                  
-                    System.out.println(p.getTime() + "  "+ last.getTime() +"  IS  "+ (p.getTime().before(last.getTime())));
-              
-                    if (p.getTime().getNanos()< last.getTime().getNanos()) {
-                       
-                         return true;
-
-                    }
-                    }
-
-                 
-                
-           
-        }
-        if (last != null && m == 0) {
-             
-            return true;
-        }
+        return this.user.addableUnreadMessages(last);
         
-        return false;
     }
 
     /**

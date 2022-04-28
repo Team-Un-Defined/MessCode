@@ -32,7 +32,7 @@ public class RemoveUserViewModel implements Subject {
         support = new PropertyChangeSupport(this);
         usersList= FXCollections.observableArrayList();
 
-        mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+        mainModel.addListener("ReloadUsers", this::addOfflineUsers);
     }
 
     /**
@@ -40,10 +40,10 @@ public class RemoveUserViewModel implements Subject {
      * @param propertyChangeEvent PropertyChangeEvent triggered event
      */
     private void addOfflineUsers(PropertyChangeEvent propertyChangeEvent) {
-        usersList.clear();
+       
         ArrayList<User> use = (ArrayList<User>) propertyChangeEvent.getNewValue();
-        Platform.runLater(() -> {
-            use.removeIf(user -> user.getSalt().equals(" - deleted") );
+        Platform.runLater(() ->
+        {   usersList.clear();
             usersList.addAll(use);
             System.out.println(usersList);
         });
@@ -54,7 +54,7 @@ public class RemoveUserViewModel implements Subject {
      * @return ObservableList<User>
      */
     public ObservableList<User> getUsers() {
-        return usersList;
+        return usersList.filtered(p-> !p.getSalt().equals(" - deleted"));
     }
 
     /**
@@ -67,14 +67,11 @@ public class RemoveUserViewModel implements Subject {
     }
 
     /**
-     * Initiates the removel of the user
+     * Initiates the remove of the user
      * @param use User
      */
     public void deleteUser(User use) {
         mainModel.deleteUser(use);
-        Platform.runLater(() -> {
-            usersList.remove(use);
-        });
     }
 
     /**

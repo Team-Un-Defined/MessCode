@@ -252,7 +252,9 @@ public class ChatClientController {
      * Updates the list of users
      */
     private void updateUserList() {
+        Platform.runLater(()->{
         usersListFXML.setItems(chatVM.getUsersList());
+        
         usersListFXML.setCellFactory(lv -> new ListCell<>() {
             @Override
             public void updateItem(User item, boolean empty) {
@@ -299,6 +301,7 @@ public class ChatClientController {
                     setText(text);
                 }
             }
+        });
         });
     }
 

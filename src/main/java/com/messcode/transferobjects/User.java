@@ -304,9 +304,67 @@ public class User implements Serializable {
      * @param unreadMessages all unread public messages
      */
     public void setUnreadMessages(ArrayList<PublicMessage> unreadMessages) {
+        
+    
         this.unreadMessages = unreadMessages;
     }
 
+    
+       public boolean addableUnreadMessages(PublicMessage unreadMessages) {
+           System.out.println("..................."+unreadMessages.getMsg());
+        if(unreadMessages.getSender()==null)return false;
+        int end=0;
+        ListIterator<PublicMessage> listIterator = this.unreadMessages.listIterator();
+       if(unreadMessages instanceof PrivateMessage){
+       while(listIterator.hasNext()){
+      PublicMessage mess = listIterator.next();
+  
+       if(mess instanceof PrivateMessage){
+           
+       String senderNow = unreadMessages.getSender().getEmail();
+       String senderThen = mess.getSender().getEmail();
+       String receiverNow = ((PrivateMessage) unreadMessages).getReceiver().getEmail();
+       String receiverThen = ((PrivateMessage) mess).getReceiver().getEmail();
+           
+      //System.out.println("GOT NOW SENDER: "+senderNow + "GOT THEN SENDER: "+ senderThen + "GOT NOW RECEICER: "+ receiverNow + "GOT THEN RECEIVER: " + receiverThen);
+     // System.out.println("SENDER NOW = SENDER THEN ?  "+(senderNow.equals(senderThen)&& receiverNow.contains(receiverThen)));
+     // System.out.println("SENDER Then = SENDER NOW ?  "+ (senderNow.equals(receiverThen) && receiverNow.equals(senderThen)));
+       if((senderNow.equals(senderThen)&& receiverNow.contains(receiverThen)) || (senderNow.equals(receiverThen) && receiverNow.equals(senderThen) ))
+       {
+           System.out.println(" IN UNREAD "+mess.getMsg() + mess.getTime() +"        " +unreadMessages.getMsg() + unreadMessages.getTime());
+           end=1;
+           if(mess.getTime().getNanos()< unreadMessages.getTime().getNanos()){
+             // System.out.println("///////////////////////_____1_________///////////////////////////////////");
+             // getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
+            System.out.println("/////////////////////////BEMENNE1/////////////////////////////////");
+   
+             return true;
+            
+            //System.out.println("///////////////////////_____2________///////////////////////////////////");
+            //getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
+            //System.out.println("//////////////////////////////////////////////////////////");
+           
+           }
+       }
+       }
+       }
+         if(end==1){
+              System.out.println("/////////////////////////NEM MENNE BE/////////////////////////////////");
+             return false;}
+          System.out.println("/////////////////////////BEMENNE2/////////////////////////////////");
+        return true;
+       }
+       
+        
+       else {
+            System.out.println("/////////////////////////BEMENNE3/////////////////////////////////");
+           return true;}
+    }
+    
+    
+    
+    
+    
     /**
      * @param unreadMessages all unread messages
      */
