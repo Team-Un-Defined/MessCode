@@ -28,3 +28,9 @@ You can find jar files in "out/artifacts/...".
 When running client you must have config file in the same file path as executable.
 
 To be able to effectively test the messenger it is recommended to run three client instances, with the employer, project manager, and worker accounts.
+
+Accounts' information:
+
+> email: xfarkasn@stuba.sk ; password: a
+
+> email: xkiss@stuba.sk ; password: a
