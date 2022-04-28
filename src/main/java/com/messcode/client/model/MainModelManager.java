@@ -245,18 +245,18 @@ public class MainModelManager implements MainModel {
        int saved =0;
        if(selectedUser!=null && pm.getSender().getEmail().equals(selectedUser.getEmail())){
        this.user.addUnreadMessages(pm);
-       lastMessages.put(pm.getSender().getEmail(), pm);
+       System.out.println("IT IS IN THE UNREAD " + pm.getMsg());
        saved =1;
        }
        if(pm.getSender().getEmail().equals(this.user.getEmail())){
        this.user.addUnreadMessages(pm);
-       lastMessages.put(pm.getReceiver().getEmail(),pm);
+        System.out.println("IT IS IN THE UNREAD " + pm.getMsg());
        saved = 2;
        }
        
         
      
-        if(saved==0 ) lastMessages.put(pm.getSender().getEmail(),pm);
+       lastMessages.put(pm.getSender().getEmail(),pm);
         
         
         support.firePropertyChange("newPM", "false", pm);
@@ -310,16 +310,14 @@ public class MainModelManager implements MainModel {
                 user.setSalt(" - online");
                 for (int i = 0; i < allUsers.size(); i++) {
                     if (allUsers.get(i).getEmail().equals(user.getEmail())) {
-                        allUsers.remove(i);
-                        for (int j = 0; j < allUsers.size(); j++) {
-                            if ((!allUsers.get(j).getSalt().equals(" - online"))) {
-                                User temp = allUsers.get(j);
-                                allUsers.set(j, user);
+                
+                            if ((!allUsers.get(i).getSalt().equals(" - online"))) {
+                                User temp = allUsers.get(i);
+                                allUsers.set(i, user);
                                 if (!temp.getEmail().equals(user.getEmail())) {
                                     allUsers.add(temp);
                                 }
                                 break;
-                            }
                         }
                         break;
                     }
@@ -584,7 +582,7 @@ public class MainModelManager implements MainModel {
         
       
     
-        int m = 0;
+       
         return this.user.addableUnreadMessages(last);
         
     }
@@ -606,9 +604,13 @@ public class MainModelManager implements MainModel {
 
                 } else lastMessage = pub;
         }
-//        System.out.println("**************************************"+lastMessage.getMsg());
+        
+        if(lastMessages.get(us.getEmail())!=null){
+        lastMessage = lastMessages.get(us.getEmail());
+        }
+        
         if (lastMessage != null) {
-       this.user.addUnreadMessages(lastMessage);
+        this.user.addUnreadMessages(lastMessage);
         }
     }
 

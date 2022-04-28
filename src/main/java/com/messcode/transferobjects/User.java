@@ -333,7 +333,7 @@ public class User implements Serializable {
        {
            System.out.println(" IN UNREAD "+mess.getMsg() + mess.getTime() +"        " +unreadMessages.getMsg() + unreadMessages.getTime());
            end=1;
-           if(mess.getTime().getNanos()< unreadMessages.getTime().getNanos()){
+           if(unreadMessages.getTime().after(mess.getTime() )){
              // System.out.println("///////////////////////_____1_________///////////////////////////////////");
              // getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
             System.out.println("/////////////////////////BEMENNE1/////////////////////////////////");
@@ -388,7 +388,7 @@ public class User implements Serializable {
       // System.out.println("SENDER Then = SENDER NOW ?  "+ (senderNow.equals(receiverThen) && receiverNow.equals(senderThen)));
        if((senderNow.equals(senderThen)&& receiverNow.contains(receiverThen)) || (senderNow.equals(receiverThen) && receiverNow.equals(senderThen) ))
        {end=1;
-           if(mess.getTime().getNanos()< unreadMessages.getTime().getNanos()){
+           if(unreadMessages.getTime().after(mess.getTime())){
              // System.out.println("///////////////////////_____1_________///////////////////////////////////");
              // getUnreadPMs().forEach(h-> System.out.println("[RECEIVER] "+h.getReceiver().getEmail() + "[SENDER] "+ h.getSender().getEmail() ));
              // System.out.println("//////////////////////////////////////////////////////////");
