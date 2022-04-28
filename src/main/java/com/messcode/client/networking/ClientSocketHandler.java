@@ -64,7 +64,7 @@ public class ClientSocketHandler implements Runnable {
                         break;
                     }
                     case CREATE_ACCOUNT: {
-
+                        System.out.println("WHHHHHHHHHHHHHHHHAAAAAAAAAAAAAAAAAAAAAATTTTTTTTTTT");
                         userCreateResponse(packet);
                         break;
                     }
@@ -139,6 +139,8 @@ public class ClientSocketHandler implements Runnable {
                         break;
                     }
                     case KICK_USER: {
+                        
+                        System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                         java.util.logging.Logger.getLogger(Start.class.getName()).log(Level.FINE,
                                 "i got banned " + packet);
                      
@@ -228,10 +230,10 @@ public class ClientSocketHandler implements Runnable {
 
     /**
      *  This method is responsible for calling the userLeft method on the socketClient
-     * @param arg Object
+     * @param user User
      */
-    private void userLeft(Object arg) {
-        User user = (User) arg;
+    private void userLeft(User user) {
+      
         socketClient.removeFromList(user);
     }
 
