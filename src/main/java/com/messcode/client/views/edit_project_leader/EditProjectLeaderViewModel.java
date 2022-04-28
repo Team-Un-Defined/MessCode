@@ -34,7 +34,7 @@ public class EditProjectLeaderViewModel implements Subject {
         this.mainModel = mainModel;
 
         mainModel.addListener("changeSelectedGroup", this::updateGroup);
-        mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+        mainModel.addListener("ReloadUsers", this::addOfflineUsers);
     }
 
     /**

@@ -129,7 +129,7 @@ public class SocketClient implements Client {
      * @param user User object
      */
     public void removeFromList(User user) {
-        support.firePropertyChange("RemoveUser", null, user);
+        support.firePropertyChange("UserLeave", null, user);
     }
 
     /**
@@ -244,6 +244,9 @@ public class SocketClient implements Client {
      * @param packet Container object
      */
     public void removeUser(Container packet) {
+        
+         User user =(User)packet.getObject()  ;
+        
         support.firePropertyChange("userDeleted", null, packet);
     }
 

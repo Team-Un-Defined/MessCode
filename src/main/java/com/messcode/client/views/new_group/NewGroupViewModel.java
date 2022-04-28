@@ -33,7 +33,7 @@ public class NewGroupViewModel implements Subject {
         this.mainModel = mainModel;
         support = new PropertyChangeSupport(this);
         //  this.usersList.addAll(mainModel.getAllUsers());
-        mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+        mainModel.addListener("ReloadUsers", this::addOfflineUsers);
     }
 
     /**

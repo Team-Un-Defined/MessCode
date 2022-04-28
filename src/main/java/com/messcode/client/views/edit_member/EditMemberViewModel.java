@@ -38,7 +38,7 @@ public class EditMemberViewModel implements Subject {
         usersNotInGroup = FXCollections.observableArrayList();
         users = FXCollections.observableArrayList();
         mainModel.addListener("changeSelectedGroup", this::updateUsers);
-        mainModel.addListener("AddOfflineUsers", this::addOfflineUsers);
+        mainModel.addListener("ReloadUsers", this::addOfflineUsers);
     }
 
     /**
