@@ -1,36 +1,89 @@
-##### MessCode - Secure Encrypted Messenger
+# Messcode: Encrypted Messenger Application
 
-###### Video Presentation Link - https://vimeo.com/703456436/670b161522
+Messcode is a secure messenger application designed for sending encrypted messages between individuals and groups. It offers a public chat accessible to everyone and includes essential features such as user registration, login authentication, and user management, including profile management, group creation, addition and removal of users from groups, and password changes.
 
-In order to run the program, Java version 11 or higher must be installed on the device.
+## Architecture
 
-It is also necessary to locally create the database with the following parameters:
-> name: MessCode
+Messcode is built using the MVVM (Model-View-ViewModel) architectural pattern, enhancing modularity and maintainability. It also employs the Factory Method creational pattern for object instantiation.
 
-> username: postgres
+### MVVM Architecture
 
-> password: chickenattack777
+- **ViewHandler**: Responsible for creating views, instantiating view controllers, and view models.
+- **View Controllers**: Handle view representation.
+- **View Models**: Manage presentation and UI logic, connected through data binding.
+- **Model**: Contains the core business logic of the application.
 
-And restore it from database backup file “UN-defined-messcode.tz”.
+### Networking
 
-The program can be run using the two included JAR files, a server-side and a client program:
+Networking is a crucial component of Messcode, and it comprises two primary classes:
 
-Firstly start-up the server:
+- **ClientSocketHandler**: Manages the sending and receiving of packets to/from the server.
+- **SocketClient**: Accepts client connections and establishes communication with the server.
 
-> your_11_java_version\bin\java.exe -jar MessCodeServer.jar
+On the server side, two classes are significant:
 
-Then run client-side application:
+- **ConnectionPool**: Keeps track of users and facilitates various user-related functions.
+- **ServerSocketHandler**: Listens for incoming packets from clients and responds accordingly.
 
-> your_11_java_version\bin\java.exe -jar MessCodeClient.jar
+### Security
 
-You can find jar files in "out/artifacts/...".
+Messcode prioritizes security and ensures encrypted communication using the SHA-512 encryption algorithm with password salting. This approach guarantees the confidentiality and integrity of user data during transmission.
 
-When running client you must have config file in the same file path as executable.
+## Database
 
-To be able to effectively test the messenger it is recommended to run three client instances, with the employer, project manager, and worker accounts.
+Messcode employs PostgreSQL as its relational database management system, with pgAdmin4 for database administration. JDBC is utilized for seamless communication with the database.
 
-Accounts' information:
+The following tables are used in the database:
 
-> email: xfarkasn@stuba.sk ; password: a
+- **last_seen**: Tracks user last seen timestamps.
+- **account**: Stores user account information.
+- **private_messages**: Manages private message data.
+- **group_messages**: Stores group message data.
+- **public_messages**: Contains public chat messages.
+- **project_members**: Keeps records of project members.
+- **projects**: Stores information about projects and groups.
 
-> email: xkiss@stuba.sk ; password: a
+## Getting Started
+
+To get started with Messcode, follow these steps:
+
+1. Clone the repository.
+2. Install the required dependencies.
+3. Set up and configure your PostgreSQL database.
+4. Compile and run the application.
+
+### Prerequisites
+
+- Java version 11 or higher must be installed on your device.
+
+### Locating JAR Files
+
+- You can find the JAR files in the "out/artifacts/..." directory.
+
+### Database Setup
+
+To use Messcode, you need to create a local database with the following parameters:
+
+- **Database Name**: MessCode
+- **Username**: postgres
+- **Password**: chickenattack777
+
+You can restore the database from the provided backup file named "UN-defined-messcode.tz."
+
+### Running the Application
+
+1. Start the server by executing the following command using your Java 11 (or higher) installation:
+   
+   ```shell
+   your_11_java_version\bin\java.exe -jar MessCodeServer.jar
+
+## Contributors
+
+- [Farkas Noémi](https://github.com/yourusername)
+- [Olivér Izsák](https://github.com/anotherusername)
+- [Kami](https://github.com/anotherusername)
+- [Roma](https://github.com/anotherusername)
+- [Zerg](https://github.com/anotherusername)
+
+
+![image](https://github.com/Team-Un-Defined/MessCode/assets/71821927/4c0f2f81-6be7-4680-9578-e138748cccc9)
