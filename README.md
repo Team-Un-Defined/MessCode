@@ -79,11 +79,11 @@ You can restore the database from the provided backup file named "UN-defined-mes
 
 ## Contributors
 
-- [Farkas Noémi](https://github.com/yourusername)
+- [Farkas Noémi](https://github.com/dqmpb)
 - [Olivér Izsák](https://github.com/anotherusername)
-- [Kami](https://github.com/anotherusername)
-- [Roma](https://github.com/anotherusername)
-- [Zerg](https://github.com/anotherusername)
+- [Kamilla Kisová](https://github.com/KamillaKisova)
+- [Roman Khorzov](https://github.com/RomanKorzhov)
+- [Martin Šváb](https://github.com/MS-101)
 
 
 ![image](https://github.com/Team-Un-Defined/MessCode/assets/71821927/4c0f2f81-6be7-4680-9578-e138748cccc9)
